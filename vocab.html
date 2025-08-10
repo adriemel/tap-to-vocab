@@ -1,9 +1,159 @@
+w,de,lang,sent,mode
+gato,Katze,es-ES,El gato duerme.,prompt-de
+perro,Hund,es-ES,El perro corre.,listen-spell-es
+rojo,rot,es-ES,,prompt-es
+escuela,Schule,es-ES,,listen-spell-es
+biblioteca,Bibliothek,es-ES,Voy a la biblioteca.,prompt-de
+
 <!doctype html>
-<html lang="en">
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Link‑Generator (DE ↔ ES)</title>
+  <style>
+    body { font: 17px/1.5 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    label { display:block; margin:.4rem 0 .2rem; }
+    input, select { width: 100%; padding: .6rem; box-sizing: border-box; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    button { margin-top: .8rem; padding: .6rem 1rem; cursor: pointer; }
+    code { background: #f5f5f5; padding: .2rem .4rem; border-radius: 4px; display:block; word-break: break-all; }
+    .small { color:#555; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Tap‑to‑Vocab Link‑Generator (Deutsch ↔ Español)</h1>
+  <p class="small">1) Nutze GitHub Pages für die Veröffentlichung. 2) Trage unten deine öffentliche <strong>Basis‑URL</strong> ein (endet mit <code>/vocab.html</code>). 3) Felder ausfüllen → „Generieren“.</p>
+
+  <label>Basis‑URL zu <code>vocab.html</code> (z. B. <em>https://username.github.io/tap-to-vocab/vocab.html</em>)</label>
+  <input id="base" placeholder="https://username.github.io/tap-to-vocab/vocab.html" />
+
+  <div class="row">
+    <div>
+      <label>Spanisches Wort (<em>w</em>)</label>
+      <input id="w" placeholder="gato" />
+    </div>
+    <div>
+      <label>Deutsches Wort/Übersetzung (<em>de</em>)</label>
+      <input id="de" placeholder="Katze" />
+    </div>
+  </div>
+
+  <label>Beispielsatz (<em>sent</em>) – optional</label>
+  <input id="sent" placeholder="El gato duerme." />
+
+  <div class="row">
+    <div>
+      <label>Spanische Stimme (<em>lang</em>)</label>
+      <select id="lang">
+        <option value="es-ES">es-ES (Spanien)</option>
+        <option value="es-MX">es-MX (Mexiko)</option>
+        <option value="es-AR">es-AR (Argentinien)</option>
+      </select>
+    </div>
+    <div>
+      <label>Modus</label>
+      <select id="mode">
+        <option value="prompt-de">Deutsch als Hinweis → Spanisch lösen</option>
+        <option value="prompt-es">Spanisch als Hinweis → Deutsch lösen</option>
+        <option value="listen-spell-es">Anhören (ES) → spanisch schreiben</option>
+        <option value="listen-spell-de">Anhören (DE) → deutsch schreiben</option>
+      </select>
+    </div>
+  </div>
+
+  <button id="gen">NFC‑URL generieren</button>
+  <code id="url"></code>
+  <button id="copy">URL kopieren</button>
+
+<script>
+const $ = (id) => document.getElementById(id);
+$("gen").addEventListener("click", () => {
+  const base = $("base").value.trim();
+  const w = $("w").value.trim();
+  const de = $("de").value.trim();
+  const sent = $("sent").value.trim();
+  const lang = $("lang").value;
+  const mode = $("mode").value;
+  if (!base || (!w && !de)) { $("url").textContent = "Bitte Basis‑URL und mindestens ein Wort angeben."; return; }
+  const params = new URLSearchParams({ lang, mode });
+  if (w) params.set("w", w);
+  if (de) params.set("de", de);
+  if (sent) params.set("sent", sent);
+  $("url").textContent = base + "?" + params.toString();
+});
+$("copy").addEventListener("click", async () => {
+  const t = $("url").textContent;
+  if (!t) return;
+  try { await navigator.clipboard.writeText(t); alert("Kopiert!"); } catch (e) { alert("Kopieren fehlgeschlagen. Bitte manuell markieren."); }
+});
+</script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
+  <style>
+    body { font: 17px/1.5 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    a { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>Tap‑to‑Vocab Starter (Deutsch ↔ Español)</h1>
+  <ol>
+    <li>Öffne <a href="./builder.html">builder.html</a>, um NFC‑Links zu erzeugen.</li>
+    <li>Schreibe die erzeugten URLs auf NFC‑Sticker (Datensatz‑Typ: URL).</li>
+    <li>Jede URL öffnet <code>vocab.html</code> und übernimmt Wort/Modus aus den Parametern.</li>
+  </ol>
+  <p>Demo‑Links:</p>
+  <ul>
+    <li><a href="./vocab.html?w=gato&de=Katze&lang=es-ES&mode=prompt-de">Deutsch → Spanisch (Katze → gato)</a></li>
+    <li><a href="./vocab.html?w=rojo&de=rot&lang=es-ES&mode=prompt-es">Spanisch → Deutsch (rojo → rot)</a></li>
+    <li><a href="./vocab.html?w=escuela&de=Schule&lang=es-ES&mode=listen-spell-es">Anhören (ES) → escuela schreiben</a></li>
+    <li><a href="./vocab.html?de=Schule&mode=listen-spell-de">Anhören (DE) → Schule schreiben</a></li>
+  </ul>
+</body>
+</html>
+
+# Tap‑to‑Vocab (Deutsch ↔ Español)
+
+`vocab.html` zeigt ein Wort, spricht es (Spanisch oder Deutsch) und prüft die Schreibweise. Inhalte kommen über URL‑Parameter.
+
+## Dateien
+- `index.html` — Startseite mit Demos
+- `vocab.html` — Lernseite (Audio + Schreibweise)
+- `builder.html` — Generator für NFC‑Links
+
+## Schnellstart
+1. Dateien in ein GitHub‑Repository laden.
+2. GitHub Pages aktivieren (Settings → Pages → Deploy from a branch → `main` / root).
+3. Öffentliche URL: `https://USERNAME.github.io/REPO/`
+4. Lernseite: `https://USERNAME.github.io/REPO/vocab.html`
+
+## URL‑Parameter
+- `w`  — spanisches Wort (optional, wenn Deutsch‑Prompt genutzt wird)
+- `de` — deutsches Wort/Übersetzung (optional, wenn Spanisch‑Prompt genutzt wird)
+- `lang` — spanische Stimme für TTS (Standard `es-ES`)
+- `sent` — Beispielsatz (optional)
+- `mode` — `prompt-de`, `prompt-es`, `listen-spell-es`, `listen-spell-de`
+
+**Ziel der Schreibübung**
+- `prompt-de` / `listen-spell-es`: Lösung ist **Spanisch** (`w`).
+- `prompt-es` / `listen-spell-de`: Lösung ist **Deutsch** (`de`).
+
+## NFC
+Schreibe die vollständige URL auf einen NFC‑Tag (Record: URL). Drucke einen QR‑Code der gleichen URL als Fallback.
+
+<!doctype html>
+<html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tap-to-Vocab</title>
+  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
   <style>
     body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
@@ -11,21 +161,24 @@
     .big { font-size: 2rem; letter-spacing: 1px; margin: 0.8rem 0; }
     input { font-size: 1.2rem; padding: 0.6rem; width: 100%; box-sizing: border-box; }
     button { font-size: 1rem; padding: 0.6rem 1rem; margin-right: .5rem; cursor: pointer; }
-    .ok { display:inline-block; padding:0.2rem 0.5rem; border-radius:6px; }
+    .hint { color:#555; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1 id="title">Tap-to-Vocab</h1>
+    <h1 id="title">Tap‑to‑Vocab (Deutsch ↔ Español)</h1>
     <div id="prompt" class="big"></div>
-    <div id="translation"></div>
-    <p><button id="speak">🔊 Hör zu</button><button id="reveal">👀 Anzeigen</button></p>
+    <div id="translation" class="hint"></div>
+    <p>
+      <button id="speak">🔊 Anhören</button>
+      <button id="reveal">👀 Anzeigen/Verbergen</button>
+    </p>
     <p><strong>Schreibweise üben:</strong></p>
     <form id="spell-form">
-      <input id="spell" autocomplete="off" placeholder="Tippe das Wort…" />
+      <input id="spell" autocomplete="off" placeholder="Schreibe das Wort…" />
       <p id="feedback"></p>
       <button type="submit">Prüfen</button>
-      <button type="button" id="showLetter">Tipp: nächsten Buchstaben zeigen</button>
+      <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
     </form>
     <p id="sentence"></p>
   </div>
@@ -33,11 +186,17 @@
 <script>
 (function () {
   const qs = new URLSearchParams(location.search);
-  const word = (qs.get("w") || "").trim();           // Spanish word
-  const en = (qs.get("en") || "").trim();            // English/German hint
-  const lang = qs.get("lang") || "es-ES";            // voice locale
-  const sent = (qs.get("sent") || "").trim();        // example sentence
-  const mode = qs.get("mode") || "prompt-en";        // "prompt-en" or "prompt-es"
+  // Parameters:
+  // w  = Spanish word (optional if using German prompt)
+  // de = German word/translation (optional if using Spanish prompt)
+  // lang = speech locale for audio (default es-ES)
+  // sent = example sentence (any language)
+  // mode = prompt-de | prompt-es | listen-spell-es | listen-spell-de
+  const w = (qs.get("w") || "").trim();
+  const de = (qs.get("de") || "").trim();
+  const lang = qs.get("lang") || "es-ES";
+  const sent = (qs.get("sent") || "").trim();
+  const mode = qs.get("mode") || "prompt-de";
 
   const promptEl = document.getElementById("prompt");
   const translationEl = document.getElementById("translation");
@@ -49,21 +208,30 @@
   const feedback = document.getElementById("feedback");
   const showLetter = document.getElementById("showLetter");
 
-  // Initial display: either show hint and hide Spanish, or vice versa
+  // For listen-spell-de mode, we want German TTS
+  function voiceForMode() {
+    if (mode === "listen-spell-de" || mode === "prompt-es-to-de") return "de-DE";
+    return lang; // Spanish variants
+  }
+
   let hidden = true;
   function render() {
-    if (mode === "prompt-en") {
-      promptEl.textContent = en || "Hint";
-      translationEl.textContent = hidden ? "…" : word;
+    // What to show as prompt vs hidden translation
+    if (mode === "prompt-de" || mode === "listen-spell-es") {
+      promptEl.textContent = de || "Hinweis (Deutsch)";
+      translationEl.textContent = hidden ? "…" : (w || "");
+    } else if (mode === "prompt-es" || mode === "listen-spell-de") {
+      promptEl.textContent = w || "Palabra (Español)";
+      translationEl.textContent = hidden ? "…" : (de || "");
     } else {
-      promptEl.textContent = word || "Palabra";
-      translationEl.textContent = hidden ? "…" : (en || "");
+      promptEl.textContent = de || "Hinweis (Deutsch)";
+      translationEl.textContent = hidden ? "…" : (w || "");
     }
     sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
   }
   render();
 
-  // Speech synthesis (browser built-in)
+  // Speech synthesis helper
   function speak(text, locale) {
     if (!("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
@@ -72,29 +240,48 @@
     window.speechSynthesis.speak(u);
   }
 
-  speakBtn.addEventListener("click", () => speak(word, lang));
-  revealBtn.addEventListener("click", () => { hidden = !hidden; render(); });
-
-  // Spelling check (case/diacritics tolerant)
-  function normalize(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const ok = normalize(input.value) === normalize(word);
-    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
-    if (ok) { speak(word, lang); localStorage.setItem("lastOk_"+word, Date.now()); }
+  // Speak button: speak the *target* language word
+  speakBtn.addEventListener("click", () => {
+    if (mode === "prompt-de" || mode === "listen-spell-es") {
+      // target Spanish
+      if (w) speak(w, lang);
+    } else {
+      // target German
+      if (de) speak(de, "de-DE");
+    }
   });
 
-  // Reveal next correct letter as a hint
+  revealBtn.addEventListener("click", () => { hidden = !hidden; render(); });
+
+  // Spelling check (diacritics tolerant)
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // In prompt-de or listen-spell-es the answer should be Spanish; else German
+    const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
+    const ok = normalize(input.value) === normalize(target);
+    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+    if (ok) {
+      // speak target
+      if (mode === "prompt-de" || mode === "listen-spell-es") speak(w, lang);
+      else speak(de, "de-DE");
+      try { localStorage.setItem("lastOk_"+(target||""), Date.now()); } catch(e){}
+    }
+  });
+
+  // Reveal next correct letter
   showLetter.addEventListener("click", () => {
+    const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
     const typed = input.value;
     let i = 0;
-    while (i < typed.length && normalize(typed[i]) === normalize(word[i])) i++;
-    input.value = typed.slice(0, i) + word[i] + typed.slice(i);
+    while (i < typed.length && normalize(typed[i]) === normalize((target||"")[i])) i++;
+    input.value = typed.slice(0, i) + ((target||"")[i] || "") + typed.slice(i);
     input.focus();
   });
 
-  // Auto-speak once on load if Spanish is hidden (so the task is "listen → spell")
-  if (mode === "listen-spell") speak(word, lang);
+  // Auto-speak on load for listen-spell modes
+  if (mode === "listen-spell-es" && w) speak(w, lang);
+  if (mode === "listen-spell-de" && de) speak(de, "de-DE");
 })();
 </script>
 </body>
