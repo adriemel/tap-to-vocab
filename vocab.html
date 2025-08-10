@@ -3,20 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
+  <title>Tap-to-Vocab (DE ↔ ES)</title>
   <style>
     body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
     .card { border: 1px solid #ddd; border-radius: 12px; padding: 1rem; }
     .big { font-size: 2rem; letter-spacing: 1px; margin: 0.8rem 0; }
-    input { font-size: 1.2rem; padding: 0.6rem; width: 100%; box-sizing: border-box; }
-    button { font-size: 1rem; padding: 0.6rem 1rem; margin-right: .5rem; cursor: pointer; }
+    input, select { font-size: 1.2rem; padding: 0.6rem; width: 100%; box-sizing: border-box; }
+    button { font-size: 1rem; padding: 0.6rem 1rem; margin: 0.3rem 0.3rem 0.3rem 0; cursor: pointer; }
     .hint { color:#555; }
+    .controls { margin: 0.5rem 0; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1 id="title">Tap‑to‑Vocab (Deutsch ↔ Español)</h1>
+    <h1 id="title">Tap-to-Vocab (Deutsch ↔ Español)</h1>
+    <div class="controls">
+      <label>Richtung:
+        <select id="direction">
+          <option value="de-es">Deutsch → Spanisch</option>
+          <option value="es-de">Spanisch → Deutsch</option>
+        </select>
+      </label>
+    </div>
     <div id="prompt" class="big"></div>
     <div id="translation" class="hint"></div>
     <p>
@@ -36,17 +45,14 @@
 <script>
 (function () {
   const qs = new URLSearchParams(location.search);
-  // Parameters:
-  // w  = Spanish word (optional if using German prompt)
-  // de = German word/translation (optional if using Spanish prompt)
-  // lang = speech locale for audio (default es-ES)
-  // sent = example sentence (any language)
-  // mode = prompt-de | prompt-es | listen-spell-es | listen-spell-de
-  const w = (qs.get("w") || "").trim();
-  const de = (qs.get("de") || "").trim();
-  const lang = qs.get("lang") || "es-ES";
+  const w = (qs.get("w") || "").trim();   // Spanish word
+  const de = (qs.get("de") || "").trim(); // German word
+  const lang = qs.get("lang") || "es-ES"; // Spanish locale
+  const voiceParam = (qs.get("voice") || "").trim();
   const sent = (qs.get("sent") || "").trim();
-  const mode = qs.get("mode") || "prompt-de";
+
+  // Direction default from URL mode, fallback to de-es
+  let direction = qs.get("mode") === "prompt-es" || qs.get("mode") === "listen-spell-de" ? "es-de" : "de-es";
 
   const promptEl = document.getElementById("prompt");
   const translationEl = document.getElementById("translation");
@@ -57,71 +63,70 @@
   const input = document.getElementById("spell");
   const feedback = document.getElementById("feedback");
   const showLetter = document.getElementById("showLetter");
+  const dirSelect = document.getElementById("direction");
 
-  // For listen-spell-de mode, we want German TTS
-  function voiceForMode() {
-    if (mode === "listen-spell-de" || mode === "prompt-es-to-de") return "de-DE";
-    return lang; // Spanish variants
-  }
+  dirSelect.value = direction;
 
   let hidden = true;
   function render() {
-    // What to show as prompt vs hidden translation
-    if (mode === "prompt-de" || mode === "listen-spell-es") {
+    if (direction === "de-es") {
       promptEl.textContent = de || "Hinweis (Deutsch)";
       translationEl.textContent = hidden ? "…" : (w || "");
-    } else if (mode === "prompt-es" || mode === "listen-spell-de") {
+    } else {
       promptEl.textContent = w || "Palabra (Español)";
       translationEl.textContent = hidden ? "…" : (de || "");
-    } else {
-      promptEl.textContent = de || "Hinweis (Deutsch)";
-      translationEl.textContent = hidden ? "…" : (w || "");
     }
     sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
   }
   render();
 
-  // Speech synthesis helper
+  // Find a voice by exact name
+  function findVoiceByName(name) {
+    return (speechSynthesis.getVoices() || []).find(v => v.name.toLowerCase() === name.toLowerCase());
+  }
+
+  // Speak helper, forcing voiceParam if set
   function speak(text, locale) {
     if (!("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = locale || "es-ES";
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    if (voiceParam) {
+      const v = findVoiceByName(voiceParam);
+      if (v) {
+        u.voice = v;
+        u.lang = v.lang;
+      }
+    } else {
+      u.lang = locale || "es-ES";
+    }
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
   }
 
-  // Speak button: speak the *target* language word
   speakBtn.addEventListener("click", () => {
-    if (mode === "prompt-de" || mode === "listen-spell-es") {
-      // target Spanish
+    if (direction === "de-es") {
       if (w) speak(w, lang);
     } else {
-      // target German
       if (de) speak(de, "de-DE");
     }
   });
 
   revealBtn.addEventListener("click", () => { hidden = !hidden; render(); });
 
-  // Spelling check (diacritics tolerant)
-  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    // In prompt-de or listen-spell-es the answer should be Spanish; else German
-    const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
+    const target = (direction === "de-es") ? w : de;
     const ok = normalize(input.value) === normalize(target);
     feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
     if (ok) {
-      // speak target
-      if (mode === "prompt-de" || mode === "listen-spell-es") speak(w, lang);
+      if (direction === "de-es") speak(w, lang);
       else speak(de, "de-DE");
       try { localStorage.setItem("lastOk_"+(target||""), Date.now()); } catch(e){}
     }
   });
 
-  // Reveal next correct letter
   showLetter.addEventListener("click", () => {
-    const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
+    const target = (direction === "de-es") ? w : de;
     const typed = input.value;
     let i = 0;
     while (i < typed.length && normalize(typed[i]) === normalize((target||"")[i])) i++;
@@ -129,10 +134,16 @@
     input.focus();
   });
 
-  // Auto-speak on load for listen-spell modes
-  if (mode === "listen-spell-es" && w) speak(w, lang);
-  if (mode === "listen-spell-de" && de) speak(de, "de-DE");
-})();
-</script>
-</body>
-</html>
+  // React when direction is changed
+  dirSelect.addEventListener("change", () => {
+    direction = dirSelect.value;
+    render();
+  });
+
+  // Auto-speak after voices load if listen-spell style desired
+  if (qs.get("mode") === "listen-spell-es" && direction === "de-es" && w) speak(w, lang);
+  if (qs.get("mode") === "listen-spell-de" && direction === "es-de" && de) speak(de, "de-DE");
+
+  // Ensure voices loaded before first speak
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.onvo
