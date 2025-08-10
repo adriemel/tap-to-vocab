@@ -128,4 +128,12 @@
     if (dbg) {
       dbg.style.display = 'block';
       dbg.classList.add('err');
-      dbg.textContent = 'Script error
+      dbg.textContent = 'Script error: ' + err.message;
+    } else {
+      console.error(err);
+    }
+  }
+})();
+</script>
+</body>
+</html>
