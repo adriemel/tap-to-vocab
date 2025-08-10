@@ -17,7 +17,10 @@
 <body>
 <div class="card">
   <h1>Deutsch → Español</h1>
-  <div id="prompt" class="big"></div>
+  <div id="prompt" class="big">
+   <span id="promptText"></span>
+   <span id="wordSpeaker" style="cursor:pointer; display:none;"> 🔊</span>
+  </div>
   <div id="translation" class="hint"></div>
   <p>
     <button id="speak">🔊 Anhören (ES)</button>
@@ -44,6 +47,7 @@
 
   const $ = id => document.getElementById(id);
   const promptEl = $("prompt"), translationEl=$("translation"),
+  const promptTextEl = $("promptText"), wordSpeaker = $("wordSpeaker");
         sentenceEl=$("sentence"), speakBtn=$("speak"),
         revealBtn=$("reveal"), form=$("spell-form"),
         input=$("spell"), feedback=$("feedback"),
@@ -51,7 +55,8 @@
 
   let hidden = true;
   function render(){
-    promptEl.textContent = de || "Hinweis (Deutsch)";
+    promptTextEl.textContent = de || "Hinweis (Deutsch)";
+    wordSpeaker.style.display = w ? "inline" : "none";
     translationEl.textContent = hidden ? "…" : (w || "");
     sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
   }
@@ -94,6 +99,7 @@
   });
 
   // Ensure voices loaded before first use on iOS
+  wordSpeaker.addEventListener("click", () => speak(w));
   if (typeof speechSynthesis !== "undefined") speechSynthesis.onvoiceschanged = function(){};
 })();
 </script>
