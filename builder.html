@@ -79,7 +79,7 @@ $("gen").addEventListener("click", () => {
   if (w) params.set("w", w);
   if (de) params.set("de", de);
   if (sent) params.set("sent", sent);
-  if (dir === "de-es") params.set("lang", lang); // only relevant when target is ES
+  params.set("lang", lang); // always voice Spanish, so always include
   if (voice) params.set("voice", voice);
 
   $("url").textContent = base + "/" + page + "?" + params.toString();
