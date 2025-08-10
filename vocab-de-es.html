@@ -12,11 +12,14 @@
   input { font-size: 1.2rem; padding: .6rem; width: 100%; box-sizing: border-box; }
   button { font-size: 1rem; padding: .6rem 1rem; margin-right: .5rem; cursor: pointer; }
   .hint { color:#555; }
+  .debug { font-size:.9rem; color:#666; margin:.4rem 0 .2rem; display:none; white-space:pre-wrap; }
+  .err { color:#b00; }
 </style>
 </head>
 <body>
 <div class="card">
   <h1>Deutsch → Español</h1>
+  <div id="dbg" class="debug"></div>
   <div id="prompt" class="big">
     <span id="promptText"></span>
     <span id="wordSpeaker" style="cursor:pointer; display:none;"> 🔊</span>
@@ -38,9 +41,91 @@
 
 <script>
 (function(){
-  const qs   = new URLSearchParams(location.search);
-  const w    = (qs.get("w")    || "").trim();        // Spanish target
-  const de   = (qs.get("de")   || "").trim();        // German prompt
-  const sent = (qs.get("sent") || "").trim();
-  const lang = (qs.get("lang") || "es-ES").trim();   // es-ES / es-MX / es-AR
-  const v
+  try {
+    const qs   = new URLSearchParams(location.search);
+    const w    = (qs.get("w")    || "").trim();        // Spanish target
+    const de   = (qs.get("de")   || "").trim();        // German prompt
+    const sent = (qs.get("sent") || "").trim();
+    const lang = (qs.get("lang") || "es-ES").trim();   // es-ES / es-MX / es-AR
+    const voiceName = (qs.get("voice") || "").trim();  // exact voice (e.g., Mónica, Paulina)
+    const debugOn = qs.get("debug") === "1";
+
+    const $ = id => document.getElementById(id);
+    const dbg = $("dbg");
+    const promptTextEl = $("promptText");
+    const wordSpeaker  = $("wordSpeaker");
+    const translationEl= $("translation");
+    const sentenceEl   = $("sentence");
+    const speakBtn     = $("speak");
+    const revealBtn    = $("reveal");
+    const form         = $("spell-form");
+    const input        = $("spell");
+    const feedback     = $("feedback");
+    const showLetter   = $("showLetter");
+
+    if (debugOn) {
+      dbg.style.display = 'block';
+      dbg.textContent = `Params:\nw="${w}"\nde="${de}"\nlang="${lang}"\nvoice="${voiceName}"`;
+    }
+
+    let hidden = true;
+
+    function render(){
+      const hasAny = w || de || sent;
+      promptTextEl.textContent = de || (hasAny ? "(Deutsch fehlt)" : "Hinweis (Deutsch) fehlt");
+      translationEl.textContent = hidden ? "…" : (w || (hasAny ? "(Spanisch fehlt)" : "Spanisches Wort fehlt"));
+      wordSpeaker.style.display = w ? "inline" : "none"; // 🔊 always Spanish
+      sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+    }
+    render();
+
+    // Voice selection (force exact name if provided)
+    function getVoiceByName(name){
+      const voices = speechSynthesis.getVoices() || [];
+      return voices.find(v => v.name && v.name.toLowerCase() === name.toLowerCase());
+    }
+    function speakSpanish(text){
+      if (!("speechSynthesis" in window) || !text) return;
+      const u = new SpeechSynthesisUtterance(text);
+      if (voiceName){
+        const v = getVoiceByName(voiceName);
+        if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = lang; }
+      } else {
+        u.lang = lang;
+      }
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    }
+
+    // Controls
+    speakBtn.addEventListener("click", ()=> speakSpanish(w));
+    wordSpeaker.addEventListener("click", ()=> speakSpanish(w));
+    revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
+
+    // Spelling check (accent-insensitive)
+    function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+    form.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      const ok = normalize(input.value) === normalize(w);
+      feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+      if (ok){ speakSpanish(w); try{ localStorage.setItem("lastOk_"+w, Date.now()); }catch(e){} }
+    });
+
+    // Next-letter hint
+    showLetter.addEventListener("click", ()=>{
+      const typed = input.value;
+      let i=0; while (i < typed.length && normalize(typed[i]) === normalize((w||"")[i])) i++;
+      input.value = typed.slice(0,i) + ((w||"")[i]||"") + typed.slice(i);
+      input.focus();
+    });
+
+    // Ensure voices are loaded on iOS
+    if (typeof speechSynthesis !== "undefined") {
+      speechSynthesis.onvoiceschanged = function(){ /* no-op */ };
+    }
+  } catch (err) {
+    const dbg = document.getElementById('dbg');
+    if (dbg) {
+      dbg.style.display = 'block';
+      dbg.classList.add('err');
+      dbg.textContent = 'Script error
