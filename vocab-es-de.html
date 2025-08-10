@@ -17,10 +17,13 @@
 <body>
 <div class="card">
   <h1>Español → Deutsch</h1>
-  <div id="prompt" class="big"></div>
+  <div id="prompt" class="big">
+    <span id="promptText"></span>
+    <span id="wordSpeaker" style="cursor:pointer; display:none;"> 🔊</span>
+  </div>
   <div id="translation" class="hint"></div>
   <p>
-    <button id="speak">🔊 Anhören (SIEMPRE Español)</button>
+    <button id="speak">🔊 Anhören (Spanisch)</button>
     <button id="reveal">👀 Anzeigen/Verbergen</button>
   </p>
   <p><strong>Schreibweise üben (Deutsch):</strong></p>
@@ -36,23 +39,24 @@
 <script>
 (function(){
   const qs   = new URLSearchParams(location.search);
-  const w    = (qs.get("w")    || "").trim();        // Spanish word (we will always voice this)
+  const w    = (qs.get("w")    || "").trim();        // Spanish prompt (we speak this)
   const de   = (qs.get("de")   || "").trim();        // German answer
   const sent = (qs.get("sent") || "").trim();
-  const lang = (qs.get("lang") || "es-ES").trim();   // ensure Spanish locale is present
-  const voiceName = (qs.get("voice") || "").trim();  // exact voice name (e.g., Paulina, Mónica)
+  const lang = (qs.get("lang") || "es-ES").trim();   // es-ES / es-MX / es-AR
+  const voiceName = (qs.get("voice") || "").trim();  // exact voice name e.g. "Mónica", "Paulina"
 
   const $ = id => document.getElementById(id);
-  const promptEl = $("prompt"), translationEl=$("translation"),
-        sentenceEl=$("sentence"), speakBtn=$("speak"),
-        revealBtn=$("reveal"), form=$("spell-form"),
-        input=$("spell"), feedback=$("feedback"),
+  const promptEl = $("prompt"), promptTextEl=$("promptText"), wordSpeaker=$("wordSpeaker"),
+        translationEl=$("translation"), sentenceEl=$("sentence"),
+        speakBtn=$("speak"), revealBtn=$("reveal"),
+        form=$("spell-form"), input=$("spell"), feedback=$("feedback"),
         showLetter=$("showLetter");
 
   let hidden = true;
   function render(){
-    promptEl.textContent = w || "Palabra (Español)";
+    promptTextEl.textContent = w || "Palabra (Español)";
     translationEl.textContent = hidden ? "…" : (de || "");
+    wordSpeaker.style.display = w ? "inline" : "none"; // 🔊 always Spanish
     sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
   }
   render();
@@ -66,8 +70,7 @@
     const u = new SpeechSynthesisUtterance(text);
     if (voiceName){
       const v = getVoiceByName(voiceName);
-      if (v){ u.voice = v; u.lang = v.lang; }
-      else { u.lang = lang; }
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = lang; }
     } else {
       u.lang = lang;
     }
@@ -75,8 +78,9 @@
     speechSynthesis.speak(u);
   }
 
-  // Always speak the Spanish word (w)
+  // Always speak Spanish word
   speakBtn.addEventListener("click", ()=> speakSpanish(w));
+  wordSpeaker.addEventListener("click", ()=> speakSpanish(w));
   revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
 
   function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
