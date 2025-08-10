@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tap-to-Vocab</title>
+  <style>
+    body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 1rem; }
+    .big { font-size: 2rem; letter-spacing: 1px; margin: 0.8rem 0; }
+    input { font-size: 1.2rem; padding: 0.6rem; width: 100%; box-sizing: border-box; }
+    button { font-size: 1rem; padding: 0.6rem 1rem; margin-right: .5rem; cursor: pointer; }
+    .ok { display:inline-block; padding:0.2rem 0.5rem; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="title">Tap-to-Vocab</h1>
+    <div id="prompt" class="big"></div>
+    <div id="translation"></div>
+    <p><button id="speak">🔊 Hör zu</button><button id="reveal">👀 Anzeigen</button></p>
+    <p><strong>Schreibweise üben:</strong></p>
+    <form id="spell-form">
+      <input id="spell" autocomplete="off" placeholder="Tippe das Wort…" />
+      <p id="feedback"></p>
+      <button type="submit">Prüfen</button>
+      <button type="button" id="showLetter">Tipp: nächsten Buchstaben zeigen</button>
+    </form>
+    <p id="sentence"></p>
+  </div>
+
+<script>
+(function () {
+  const qs = new URLSearchParams(location.search);
+  const word = (qs.get("w") || "").trim();           // Spanish word
+  const en = (qs.get("en") || "").trim();            // English/German hint
+  const lang = qs.get("lang") || "es-ES";            // voice locale
+  const sent = (qs.get("sent") || "").trim();        // example sentence
+  const mode = qs.get("mode") || "prompt-en";        // "prompt-en" or "prompt-es"
+
+  const promptEl = document.getElementById("prompt");
+  const translationEl = document.getElementById("translation");
+  const sentenceEl = document.getElementById("sentence");
+  const speakBtn = document.getElementById("speak");
+  const revealBtn = document.getElementById("reveal");
+  const form = document.getElementById("spell-form");
+  const input = document.getElementById("spell");
+  const feedback = document.getElementById("feedback");
+  const showLetter = document.getElementById("showLetter");
+
+  // Initial display: either show hint and hide Spanish, or vice versa
+  let hidden = true;
+  function render() {
+    if (mode === "prompt-en") {
+      promptEl.textContent = en || "Hint";
+      translationEl.textContent = hidden ? "…" : word;
+    } else {
+      promptEl.textContent = word || "Palabra";
+      translationEl.textContent = hidden ? "…" : (en || "");
+    }
+    sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+  }
+  render();
+
+  // Speech synthesis (browser built-in)
+  function speak(text, locale) {
+    if (!("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = locale || "es-ES";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+
+  speakBtn.addEventListener("click", () => speak(word, lang));
+  revealBtn.addEventListener("click", () => { hidden = !hidden; render(); });
+
+  // Spelling check (case/diacritics tolerant)
+  function normalize(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const ok = normalize(input.value) === normalize(word);
+    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+    if (ok) { speak(word, lang); localStorage.setItem("lastOk_"+word, Date.now()); }
+  });
+
+  // Reveal next correct letter as a hint
+  showLetter.addEventListener("click", () => {
+    const typed = input.value;
+    let i = 0;
+    while (i < typed.length && normalize(typed[i]) === normalize(word[i])) i++;
+    input.value = typed.slice(0, i) + word[i] + typed.slice(i);
+    input.focus();
+  });
+
+  // Auto-speak once on load if Spanish is hidden (so the task is "listen → spell")
+  if (mode === "listen-spell") speak(word, lang);
+})();
+</script>
+</body>
+</html>
