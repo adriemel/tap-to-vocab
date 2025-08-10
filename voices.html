@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Speech Voice Inspector</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: .5rem; font-size: .95rem; }
+    th { background: #f7f7f7; text-align: left; }
+    input { padding: .4rem; width: 100%; box-sizing: border-box; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; margin: 1rem 0; }
+    button { padding: .5rem .8rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Web Speech Voice Inspector</h1>
+  <p>Wenn hier keine spanischen Stimmen erscheinen, stellt Safari sie der Webseite nicht bereit. Lade ggf. zusätzliche Stimmen in iOS unter
+  <em>Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen</em>, dann Safari vollständig schließen und neu öffnen.</p>
+
+  <div class="controls">
+    <input id="filter" placeholder="Filtern nach Name oder Sprache (z. B. es-ES, Monica, Paulina)">
+    <input id="sample" value="hola, ¿cómo estás?">
+    <button id="refresh">Neu laden</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Lang</th><th>Local</th><th>Test</th><th>URL-Parameter</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+<script>
+function listVoices() {
+  const voices = window.speechSynthesis.getVoices() || [];
+  return voices.map((v, i) => ({i, name: v.name, lang: v.lang, localService: v.localService, default: v.default}));
+}
+
+function render() {
+  const tbody = document.getElementById("tbody");
+  const q = document.getElementById("filter").value.trim().toLowerCase();
+  const sample = document.getElementById("sample").value || "hola";
+  const rows = listVoices().filter(v => !q || v.name.toLowerCase().includes(q) || v.lang.toLowerCase().includes(q));
+  tbody.innerHTML = "";
+  rows.forEach(v => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>"+v.i+"</td><td>"+v.name+"</td><td>"+v.lang+"</td><td>"+(v.localService?"yes":"no")+"</td>"+
+      "<td><button data-name='"+v.name.replace(/'/g,"&#39;")+"'>Sprechen</button></td>"+
+      "<td><code>voice="+encodeURIComponent(v.name)+"</code></td>";
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const name = btn.getAttribute("data-name");
+      speak(sample, name);
+    });
+  });
+}
+
+function speak(text, name) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  const voice = (speechSynthesis.getVoices() || []).find(v => v.name === name);
+  if (voice) { u.voice = voice; u.lang = voice.lang; }
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+render();
+if (typeof speechSynthesis !== "undefined") {
+  speechSynthesis.onvoiceschanged = render;
+}
+document.getElementById("refresh").addEventListener("click", render);
+document.getElementById("filter").addEventListener("input", render);
+</script>
+</body>
+</html>
