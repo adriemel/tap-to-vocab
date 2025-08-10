@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
+  <style>
+    body { font: 17px/1.5 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    a { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>Tap‑to‑Vocab Starter (Deutsch ↔ Español)</h1>
+  <ol>
+    <li>Öffne <a href="./builder.html">builder.html</a>, um NFC‑Links zu erzeugen.</li>
+    <li>Schreibe die erzeugten URLs auf NFC‑Sticker (Datensatz‑Typ: URL).</li>
+    <li>Jede URL öffnet <code>vocab.html</code> und übernimmt Wort/Modus aus den Parametern.</li>
+  </ol>
+  <p>Demo‑Links:</p>
+  <ul>
+    <li><a href="./vocab.html?w=gato&de=Katze&lang=es-ES&mode=prompt-de">Deutsch → Spanisch (Katze → gato)</a></li>
+    <li><a href="./vocab.html?w=rojo&de=rot&lang=es-ES&mode=prompt-es">Spanisch → Deutsch (rojo → rot)</a></li>
+    <li><a href="./vocab.html?w=escuela&de=Schule&lang=es-ES&mode=listen-spell-es">Anhören (ES) → escuela schreiben</a></li>
+    <li><a href="./vocab.html?de=Schule&mode=listen-spell-de">Anhören (DE) → Schule schreiben</a></li>
+  </ul>
+</body>
+</html>

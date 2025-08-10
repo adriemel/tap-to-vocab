@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tap‑to‑Vocab (DE ↔ ES) – Better Voices</title>
+  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
   <style>
     body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
@@ -12,8 +12,6 @@
     input { font-size: 1.2rem; padding: 0.6rem; width: 100%; box-sizing: border-box; }
     button { font-size: 1rem; padding: 0.6rem 1rem; margin-right: .5rem; cursor: pointer; }
     .hint { color:#555; }
-    .small { color:#666; font-size: .9rem; }
-    select { font-size: 1rem; padding: .4rem; }
   </style>
 </head>
 <body>
@@ -24,12 +22,6 @@
     <p>
       <button id="speak">🔊 Anhören</button>
       <button id="reveal">👀 Anzeigen/Verbergen</button>
-    </p>
-    <p class="small">
-      Stimme: 
-      <select id="voiceSelect"></select>
-      <button id="testVoice" type="button">Stimme testen</button>
-      <span id="voiceInfo" class="small"></span>
     </p>
     <p><strong>Schreibweise üben:</strong></p>
     <form id="spell-form">
@@ -44,19 +36,17 @@
 <script>
 (function () {
   const qs = new URLSearchParams(location.search);
-  // Params:
-  // w  = Spanish word
-  // de = German word/translation
-  // lang = preferred Spanish locale (es-ES, es-MX, es-AR). Used as a *hint*.
-  // sent = example sentence
+  // Parameters:
+  // w  = Spanish word (optional if using German prompt)
+  // de = German word/translation (optional if using Spanish prompt)
+  // lang = speech locale for audio (default es-ES)
+  // sent = example sentence (any language)
   // mode = prompt-de | prompt-es | listen-spell-es | listen-spell-de
-  // voice = optional substring to match a specific voice name (e.g., "Google español" or "Microsoft Sabina")
   const w = (qs.get("w") || "").trim();
   const de = (qs.get("de") || "").trim();
-  const langPref = (qs.get("lang") || "es-ES").trim();
+  const lang = qs.get("lang") || "es-ES";
   const sent = (qs.get("sent") || "").trim();
-  const mode = (qs.get("mode") || "prompt-de").trim();
-  const voiceHint = (qs.get("voice") || "").trim().toLowerCase();
+  const mode = qs.get("mode") || "prompt-de";
 
   const promptEl = document.getElementById("prompt");
   const translationEl = document.getElementById("translation");
@@ -68,12 +58,15 @@
   const feedback = document.getElementById("feedback");
   const showLetter = document.getElementById("showLetter");
 
-  const voiceSelect = document.getElementById("voiceSelect");
-  const testVoice = document.getElementById("testVoice");
-  const voiceInfo = document.getElementById("voiceInfo");
+  // For listen-spell-de mode, we want German TTS
+  function voiceForMode() {
+    if (mode === "listen-spell-de" || mode === "prompt-es-to-de") return "de-DE";
+    return lang; // Spanish variants
+  }
 
   let hidden = true;
   function render() {
+    // What to show as prompt vs hidden translation
     if (mode === "prompt-de" || mode === "listen-spell-es") {
       promptEl.textContent = de || "Hinweis (Deutsch)";
       translationEl.textContent = hidden ? "…" : (w || "");
@@ -88,110 +81,45 @@
   }
   render();
 
-  // Speech synthesis helpers
-  function getVoicesSafe() {
-    // Some browsers load voices async
-    let list = speechSynthesis.getVoices();
-    if (!list || !list.length) return [];
-    return list;
-  }
-
-  function populateVoiceList() {
-    const voices = getVoicesSafe();
-    voiceSelect.innerHTML = "";
-    // Filter: we want Spanish voices and German voices
-    const wantEs = (mode === "prompt-de" || mode === "listen-spell-es");
-    const targetLang = wantEs ? "es" : "de";
-    const candidates = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(targetLang));
-    // Sort: prefer exact locale match and known natural voices
-    const preferredNames = ["Google español", "Google español de Estados Unidos", "Microsoft Sabina", "Microsoft Helena", "Paulina", "Conchita", "Lucia", "Mila", "Elena", "Diego", "Francisco", "Klaus", "Hans", "Vicki"];
-    candidates.sort((a,b)=>{
-      // exact locale priority
-      const score = (v)=>{
-        let s = 0;
-        if ((v.lang||"").toLowerCase().startsWith(targetLang)) s += 1;
-        if ((v.lang||"").toLowerCase() === langPref.toLowerCase()) s += 3;
-        if (preferredNames.some(n=> (v.name||"").toLowerCase().includes(n.toLowerCase()))) s += 2;
-        if (v.localService) s += 0.5; // sometimes more natural
-        return -s;
-      };
-      return score(a) - score(b);
-    });
-    const finalList = candidates.length ? candidates : voices; // fallback to all voices
-
-    finalList.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v.name;
-      opt.textContent = v.name + " (" + v.lang + ")";
-      voiceSelect.appendChild(opt);
-    });
-
-    // Try to preselect: voice hint, else best match by locale
-    let pre = null;
-    if (voiceHint) pre = finalList.find(v => v.name.toLowerCase().includes(voiceHint)) || null;
-    if (!pre) pre = finalList.find(v => (v.lang||"").toLowerCase() === langPref.toLowerCase()) || null;
-    if (!pre) pre = finalList[0] || null;
-    if (pre) voiceSelect.value = pre.name;
-    voiceInfo.textContent = finalList.length ? "" : "Keine Stimmen gefunden – Browser unterstützt evtl. keine TTS‑Stimmen.";
-  }
-
-  function currentVoiceFor(textLang) {
-    const name = voiceSelect.value;
-    const voices = getVoicesSafe();
-    let v = voices.find(v => v.name === name);
-    if (!v) {
-      // fallback by language
-      v = voices.find(v => (v.lang||"").toLowerCase().startsWith(textLang)) || null;
-    }
-    return v;
-  }
-
-  function speak(text, textLang) {
+  // Speech synthesis helper
+  function speak(text, locale) {
     if (!("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    const v = currentVoiceFor(textLang);
-    if (v) u.voice = v;
-    u.lang = v ? v.lang : (textLang === "es" ? langPref : "de-DE");
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+    u.lang = locale || "es-ES";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
   }
 
-  // Init voice list (with async fallback)
-  populateVoiceList();
-  if (typeof speechSynthesis !== "undefined") {
-    speechSynthesis.onvoiceschanged = populateVoiceList;
-  }
-
-  testVoice.addEventListener("click", () => {
-    const wantEs = (mode === "prompt-de" || mode === "listen-spell-es");
-    const sample = wantEs ? (w || "hola") : (de || "hallo");
-    speak(sample, wantEs ? "es" : "de");
-  });
-
-  // Speak button: target language
+  // Speak button: speak the *target* language word
   speakBtn.addEventListener("click", () => {
-    const wantEs = (mode === "prompt-de" || mode === "listen-spell-es");
-    if (wantEs && w) speak(w, "es");
-    if (!wantEs && de) speak(de, "de");
+    if (mode === "prompt-de" || mode === "listen-spell-es") {
+      // target Spanish
+      if (w) speak(w, lang);
+    } else {
+      // target German
+      if (de) speak(de, "de-DE");
+    }
   });
 
   revealBtn.addEventListener("click", () => { hidden = !hidden; render(); });
 
-  // Spelling check
+  // Spelling check (diacritics tolerant)
   function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    // In prompt-de or listen-spell-es the answer should be Spanish; else German
     const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
     const ok = normalize(input.value) === normalize(target);
     feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
     if (ok) {
-      const wantEs = (mode === "prompt-de" || mode === "listen-spell-es");
-      if (wantEs && w) speak(w, "es");
-      if (!wantEs && de) speak(de, "de");
+      // speak target
+      if (mode === "prompt-de" || mode === "listen-spell-es") speak(w, lang);
+      else speak(de, "de-DE");
       try { localStorage.setItem("lastOk_"+(target||""), Date.now()); } catch(e){}
     }
   });
 
+  // Reveal next correct letter
   showLetter.addEventListener("click", () => {
     const target = (mode === "prompt-de" || mode === "listen-spell-es") ? w : de;
     const typed = input.value;
@@ -201,12 +129,9 @@
     input.focus();
   });
 
-  // Auto-speak for listen-spell modes (after voices load)
-  function autoSpeakIfNeeded() {
-    if (mode === "listen-spell-es" && w) speak(w, "es");
-    if (mode === "listen-spell-de" && de) speak(de, "de");
-  }
-  setTimeout(autoSpeakIfNeeded, 400); // small delay for voices to populate
+  // Auto-speak on load for listen-spell modes
+  if (mode === "listen-spell-es" && w) speak(w, lang);
+  if (mode === "listen-spell-de" && de) speak(de, "de-DE");
 })();
 </script>
 </body>
