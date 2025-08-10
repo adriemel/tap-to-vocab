@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tap-to-Vocab DE→ES</title>
+<style>
+  body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
+  .card { border: 1px solid #ddd; border-radius: 12px; padding: 1rem; }
+  .big { font-size: 2rem; letter-spacing: 1px; margin: .8rem 0; }
+  input { font-size: 1.2rem; padding: .6rem; width: 100%; box-sizing: border-box; }
+  button { font-size: 1rem; padding: .6rem 1rem; margin-right: .5rem; cursor: pointer; }
+  .hint { color:#555; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Deutsch → Español</h1>
+  <div id="prompt" class="big"></div>
+  <div id="translation" class="hint"></div>
+  <p>
+    <button id="speak">🔊 Anhören (ES)</button>
+    <button id="reveal">👀 Anzeigen/Verbergen</button>
+  </p>
+  <p><strong>Schreibweise üben (Spanisch):</strong></p>
+  <form id="spell-form">
+    <input id="spell" autocomplete="off" placeholder="Spanisches Wort schreiben…" />
+    <p id="feedback"></p>
+    <button type="submit">Prüfen</button>
+    <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
+  </form>
+  <p id="sentence"></p>
+</div>
+
+<script>
+(function(){
+  const qs = new URLSearchParams(location.search);
+  const w   = (qs.get("w")    || "").trim();   // Spanish word (target)
+  const de  = (qs.get("de")   || "").trim();   // German hint/prompt
+  const sent= (qs.get("sent") || "").trim();
+  const lang= (qs.get("lang") || "es-ES").trim(); // es-ES / es-MX / es-AR
+  const voiceName = (qs.get("voice") || "").trim(); // exact name (e.g., Paulina, Mónica)
+
+  const $ = id => document.getElementById(id);
+  const promptEl = $("prompt"), translationEl=$("translation"),
+        sentenceEl=$("sentence"), speakBtn=$("speak"),
+        revealBtn=$("reveal"), form=$("spell-form"),
+        input=$("spell"), feedback=$("feedback"),
+        showLetter=$("showLetter");
+
+  let hidden = true;
+  function render(){
+    promptEl.textContent = de || "Hinweis (Deutsch)";
+    translationEl.textContent = hidden ? "…" : (w || "");
+    sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+  }
+  render();
+
+  function getVoiceByName(name){
+    const voices = speechSynthesis.getVoices() || [];
+    return voices.find(v => v.name.toLowerCase() === name.toLowerCase());
+  }
+  function speak(text){
+    if (!("speechSynthesis" in window) || !text) return;
+    const u = new SpeechSynthesisUtterance(text);
+    if (voiceName){
+      const v = getVoiceByName(voiceName);
+      if (v){ u.voice = v; u.lang = v.lang; }
+      else { u.lang = lang; }
+    } else {
+      u.lang = lang;
+    }
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+
+  speakBtn.addEventListener("click", ()=> speak(w));
+  revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const ok = normalize(input.value) === normalize(w);
+    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+    if (ok){ speak(w); try{ localStorage.setItem("lastOk_"+w, Date.now()); }catch(e){} }
+  });
+
+  showLetter.addEventListener("click", ()=>{
+    const typed = input.value;
+    let i=0; while (i < typed.length && normalize(typed[i]) === normalize(w[i])) i++;
+    input.value = typed.slice(0,i) + (w[i]||"") + typed.slice(i);
+    input.focus();
+  });
+
+  // Ensure voices loaded before first use on iOS
+  if (typeof speechSynthesis !== "undefined") speechSynthesis.onvoiceschanged = function(){};
+})();
+</script>
+</body>
+</html>
