@@ -17,11 +17,85 @@
 <body>
 <div class="card">
   <h1>Español → Deutsch</h1>
-  <div id="prompt" class="big">
-    <span id="promptText"></span>
-    <span id="wordSpeaker" style="cursor:pointer; display:none;"> 🔊</span>
-  </div>
+  <div id="prompt" class="big"></div>
   <div id="translation" class="hint"></div>
   <p>
-    <button id="speak">🔊 Anhören (Spanisch)</button>
-    <button id="reveal">👀 Anzeigen/Ver
+    <button id="speak">🔊 Anhören (SIEMPRE Español)</button>
+    <button id="reveal">👀 Anzeigen/Verbergen</button>
+  </p>
+  <p><strong>Schreibweise üben (Deutsch):</strong></p>
+  <form id="spell-form">
+    <input id="spell" autocomplete="off" placeholder="Deutsches Wort schreiben…" />
+    <p id="feedback"></p>
+    <button type="submit">Prüfen</button>
+    <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
+  </form>
+  <p id="sentence"></p>
+</div>
+
+<script>
+(function(){
+  const qs   = new URLSearchParams(location.search);
+  const w    = (qs.get("w")    || "").trim();        // Spanish word (we will always voice this)
+  const de   = (qs.get("de")   || "").trim();        // German answer
+  const sent = (qs.get("sent") || "").trim();
+  const lang = (qs.get("lang") || "es-ES").trim();   // ensure Spanish locale is present
+  const voiceName = (qs.get("voice") || "").trim();  // exact voice name (e.g., Paulina, Mónica)
+
+  const $ = id => document.getElementById(id);
+  const promptEl = $("prompt"), translationEl=$("translation"),
+        sentenceEl=$("sentence"), speakBtn=$("speak"),
+        revealBtn=$("reveal"), form=$("spell-form"),
+        input=$("spell"), feedback=$("feedback"),
+        showLetter=$("showLetter");
+
+  let hidden = true;
+  function render(){
+    promptEl.textContent = w || "Palabra (Español)";
+    translationEl.textContent = hidden ? "…" : (de || "");
+    sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+  }
+  render();
+
+  function getVoiceByName(name){
+    const voices = speechSynthesis.getVoices() || [];
+    return voices.find(v => v.name.toLowerCase() === name.toLowerCase());
+  }
+  function speakSpanish(text){
+    if (!("speechSynthesis" in window) || !text) return;
+    const u = new SpeechSynthesisUtterance(text);
+    if (voiceName){
+      const v = getVoiceByName(voiceName);
+      if (v){ u.voice = v; u.lang = v.lang; }
+      else { u.lang = lang; }
+    } else {
+      u.lang = lang;
+    }
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+
+  // Always speak the Spanish word (w)
+  speakBtn.addEventListener("click", ()=> speakSpanish(w));
+  revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const ok = normalize(input.value) === normalize(de);
+    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+    if (ok){ speakSpanish(w); try{ localStorage.setItem("lastOk_"+de, Date.now()); }catch(e){} }
+  });
+
+  showLetter.addEventListener("click", ()=>{
+    const typed = input.value;
+    let i=0; while (i < typed.length && normalize(typed[i]) === normalize(de[i])) i++;
+    input.value = typed.slice(0,i) + (de[i]||"") + typed.slice(i);
+    input.focus();
+  });
+
+  if (typeof speechSynthesis !== "undefined") speechSynthesis.onvoiceschanged = function(){};
+})();
+</script>
+</body>
+</html>
