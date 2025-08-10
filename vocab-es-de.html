@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tap-to-Vocab ES→DE</title>
+<title>Tap-to-Vocab ES→DE (Spanish voice)</title>
 <style>
   body { font: 18px/1.4 system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
   h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
@@ -20,80 +20,8 @@
   <div id="prompt" class="big"></div>
   <div id="translation" class="hint"></div>
   <p>
-    <button id="speak">🔊 Anhören (DE)</button>
+    <button id="speak">🔊 Anhören (SIEMPRE Español)</button>
     <button id="reveal">👀 Anzeigen/Verbergen</button>
   </p>
   <p><strong>Schreibweise üben (Deutsch):</strong></p>
-  <form id="spell-form">
-    <input id="spell" autocomplete="off" placeholder="Deutsches Wort schreiben…" />
-    <p id="feedback"></p>
-    <button type="submit">Prüfen</button>
-    <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
-  </form>
-  <p id="sentence"></p>
-</div>
-
-<script>
-(function(){
-  const qs = new URLSearchParams(location.search);
-  const w   = (qs.get("w")    || "").trim();   // Spanish prompt
-  const de  = (qs.get("de")   || "").trim();   // German target
-  const sent= (qs.get("sent") || "").trim();
-  const voiceName = (qs.get("voice") || "").trim(); // exact name (e.g., "Anna (Deutsch)" etc.)
-
-  const $ = id => document.getElementById(id);
-  const promptEl = $("prompt"), translationEl=$("translation"),
-        sentenceEl=$("sentence"), speakBtn=$("speak"),
-        revealBtn=$("reveal"), form=$("spell-form"),
-        input=$("spell"), feedback=$("feedback"),
-        showLetter=$("showLetter");
-
-  let hidden = true;
-  function render(){
-    promptEl.textContent = w || "Palabra (Español)";
-    translationEl.textContent = hidden ? "…" : (de || "");
-    sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
-  }
-  render();
-
-  function getVoiceByName(name){
-    const voices = speechSynthesis.getVoices() || [];
-    return voices.find(v => v.name.toLowerCase() === name.toLowerCase());
-  }
-  function speak(text){
-    if (!("speechSynthesis" in window) || !text) return;
-    const u = new SpeechSynthesisUtterance(text);
-    if (voiceName){
-      const v = getVoiceByName(voiceName);
-      if (v){ u.voice = v; u.lang = v.lang; }
-      else { u.lang = "de-DE"; }
-    } else {
-      u.lang = "de-DE";
-    }
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-  }
-
-  speakBtn.addEventListener("click", ()=> speak(de));
-  revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
-
-  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
-  form.addEventListener("submit", (e)=>{
-    e.preventDefault();
-    const ok = normalize(input.value) === normalize(de);
-    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
-    if (ok){ speak(de); try{ localStorage.setItem("lastOk_"+de, Date.now()); }catch(e){} }
-  });
-
-  showLetter.addEventListener("click", ()=>{
-    const typed = input.value;
-    let i=0; while (i < typed.length && normalize(typed[i]) === normalize(de[i])) i++;
-    input.value = typed.slice(0,i) + (de[i]||"") + typed.slice(i);
-    input.focus();
-  });
-
-  if (typeof speechSynthesis !== "undefined") speechSynthesis.onvoiceschanged = function(){};
-})();
-</script>
-</body>
-</html>
+  <
