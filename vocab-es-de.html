@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tap-to-Vocab ES→DE (tap Spanish)</title>
+<title>Tap-to-Vocab ES→DE (tap Spanish + sounds)</title>
 <style>
   :root{
     --accent:#2563eb; --accent-ink:#fff; --bg:#f8fafc; --card:#ffffff;
@@ -42,7 +42,6 @@
   .built { font-size: 1.6rem; min-height: 2.2rem; letter-spacing: .5px; padding:.25rem 0; }
   .keys { display:grid; grid-template-columns: repeat(auto-fit, minmax(56px, 1fr)); gap:.5rem; margin-top:.75rem; }
   .key { background: var(--card); color: var(--ink); border:1px solid var(--border); box-shadow:none; }
-  .key.used { opacity:.45; pointer-events:none; }
   .actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem; }
   .pill { border-radius:999px; }
 </style>
@@ -101,8 +100,25 @@
 
   let hidden = true;
   let built = "";
-  let pool = [];
-  const target = w;   // ALWAYS Spanish
+  let pool = [];       // {ch, idx, used}
+  const target = w;
+
+  // --- tiny sound engine (Web Audio) ---
+  let actx;
+  function ensureCtx(){ if (!actx && window.AudioContext) actx = new AudioContext(); }
+  function beep(freq=880, dur=0.09, type='sine', vol=0.3){
+    ensureCtx(); if (!actx) return;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.value = vol;
+    o.connect(g); g.connect(actx.destination);
+    const t = actx.currentTime;
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + Math.max(0.05, dur));
+    o.start(t); o.stop(t + dur);
+  }
+  function okSound(){ beep(880, 0.08, 'sine', 0.25); }
+  function dohSound(){ beep(220, 0.16, 'sawtooth', 0.18); }
 
   function renderHeader(){
     const hasAny = w || de || sent;
@@ -129,17 +145,17 @@
   function renderKeys(){
     keysEl.innerHTML = "";
     pool.forEach((cell, k) => {
+      if (cell.used) return;   // HIDE used letters completely
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "key";
-      if (cell.used) btn.classList.add("used");
       btn.textContent = cell.ch === " " ? "␣ Leer" : cell.ch;
-      btn.addEventListener("click", () => onTapKey(k));
+      btn.addEventListener("click", () => onTapKey(k, btn));
       keysEl.appendChild(btn);
     });
   }
 
-  function onTapKey(k){
+  function onTapKey(k, btn){
     const cell = pool[k];
     if (!cell || cell.used) return;
     const nextIndex = built.length;
@@ -147,13 +163,14 @@
       built += cell.ch;
       cell.used = true;
       builtEl.textContent = built;
-      renderKeys();
-      feedback.textContent = "";
+      okSound();
+      if (btn && btn.parentNode) btn.parentNode.removeChild(btn); // vanish
       if (built.length === target.length){
         onSolved();
       }
     } else {
       feedback.innerHTML = "<span class='err'>❌ Falscher Buchstabe – probier den nächsten.</span>";
+      dohSound();
     }
   }
 
@@ -168,7 +185,7 @@
     const lastIndex = built.length - 1;
     const lastChar = built[lastIndex];
     built = built.slice(0, lastIndex);
-    const cell = pool.find(c => c.used && c.ch === lastChar && c.idx === lastIndex);
+    const cell = pool.find(c => c.ch === lastChar && c.idx === lastIndex);
     if (cell) cell.used = false;
     builtEl.textContent = built;
     renderKeys();
@@ -177,8 +194,7 @@
 
   function resetAll(){
     built = "";
-    makePool();
-    shufflePool();
+    makePool(); shufflePool();
     builtEl.textContent = "";
     renderKeys();
     feedback.textContent = "";
@@ -201,7 +217,6 @@
     speechSynthesis.speak(u);
   }
 
-  // wire UI
   speakBtn.addEventListener("click", ()=> speakSpanish(w));
   wordSpeaker.addEventListener("click", ()=> speakSpanish(w));
   revealBtn.addEventListener("click", ()=>{ hidden = !hidden; renderHeader(); });
@@ -211,9 +226,7 @@
 
   // init
   renderHeader();
-  makePool();
-  shufflePool();
-  renderKeys();
+  makePool(); shufflePool(); renderKeys();
 
   if (typeof speechSynthesis !== "undefined") {
     speechSynthesis.onvoiceschanged = function(){ /* no-op */ };
