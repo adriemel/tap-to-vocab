@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tap-to-Vocab DE→ES (tap letters)</title>
+<title>Tap-to-Vocab DE→ES (tap Spanish)</title>
 <style>
   :root{
     --accent:#2563eb; --accent-ink:#fff; --bg:#f8fafc; --card:#ffffff;
@@ -39,8 +39,6 @@
   #wordSpeaker { cursor:pointer; display:none; font-size:.9em; user-select:none; margin-left:.35rem; }
   #feedback { margin:.4rem 0; }
   .ok { color:#16a34a; } .err { color:#b91c1c; }
-
-  /* Tap-letters UI */
   .built { font-size: 1.6rem; min-height: 2.2rem; letter-spacing: .5px; padding:.25rem 0; }
   .keys { display:grid; grid-template-columns: repeat(auto-fit, minmax(56px, 1fr)); gap:.5rem; margin-top:.75rem; }
   .key { background: var(--card); color: var(--ink); border:1px solid var(--border); box-shadow:none; }
@@ -81,7 +79,7 @@
 <script>
 (function(){
   const qs   = new URLSearchParams(location.search);
-  const w    = (qs.get("w")    || "").trim();        // Spanish target
+  const w    = (qs.get("w")    || "").trim();        // Spanish target (we always build this)
   const de   = (qs.get("de")   || "").trim();        // German prompt
   const sent = (qs.get("sent") || "").trim();
   const lang = (qs.get("lang") || "es-ES").trim();
@@ -103,8 +101,8 @@
 
   let hidden = true;
   let built = "";
-  let pool = [];          // array of {ch, idx, used}
-  let target = w;         // we build the Spanish word here
+  let pool = [];
+  const target = w;  // ALWAYS Spanish
 
   function renderHeader(){
     const hasAny = w || de || sent;
@@ -115,7 +113,6 @@
   }
 
   function makePool(){
-    // Build letter pool from target (include space if present). Keep duplicates!
     pool = [];
     for (let i=0;i<target.length;i++){
       pool.push({ ch: target[i], idx: i, used:false });
@@ -146,7 +143,6 @@
     const cell = pool[k];
     if (!cell || cell.used) return;
     const nextIndex = built.length;
-    // Only accept if this letter matches the next required target char
     if (cell.ch === target[nextIndex]){
       built += cell.ch;
       cell.used = true;
@@ -157,7 +153,6 @@
         onSolved();
       }
     } else {
-      // small gentle nudge
       feedback.innerHTML = "<span class='err'>❌ Falscher Buchstabe – probier den nächsten.</span>";
     }
   }
@@ -173,7 +168,6 @@
     const lastIndex = built.length - 1;
     const lastChar = built[lastIndex];
     built = built.slice(0, lastIndex);
-    // free up the first used pool cell that corresponds to that position
     const cell = pool.find(c => c.used && c.ch === lastChar && c.idx === lastIndex);
     if (cell) cell.used = false;
     builtEl.textContent = built;
