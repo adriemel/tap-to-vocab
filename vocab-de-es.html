@@ -77,4 +77,107 @@
   .ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); box-shadow:none; }
 
   #wordSpeaker { cursor:pointer; display:none; font-size:.9em; user-select:none; margin-left:.35rem; }
-  #feedback { margin:.4rem
+  #feedback { margin:.4rem 0; }
+  .ok { color:#16a34a; }
+  .err { color:#b91c1c; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>Deutsch → Español</h1>
+    <div id="prompt" class="big">
+      <span id="promptText"></span>
+      <span id="wordSpeaker"> 🔊</span>
+    </div>
+    <div id="translation" class="hint"></div>
+    <p class="row">
+      <button id="speak">🔊 Anhören (Spanisch)</button>
+      <button id="reveal" class="ghost">👀 Anzeigen / Verbergen</button>
+    </p>
+    <p><strong>Schreibweise üben (Spanisch):</strong></p>
+    <form id="spell-form">
+      <input id="spell" autocomplete="off" placeholder="Spanisches Wort schreiben…" />
+      <p id="feedback"></p>
+      <button type="submit">Prüfen</button>
+      <button type="button" id="showLetter" class="ghost">Tipp: nächsten Buchstaben</button>
+    </form>
+    <p id="sentence"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const qs   = new URLSearchParams(location.search);
+  const w    = (qs.get("w")    || "").trim();        // Spanish target
+  const de   = (qs.get("de")   || "").trim();        // German prompt
+  const sent = (qs.get("sent") || "").trim();
+  const lang = (qs.get("lang") || "es-ES").trim();   // es-ES / es-MX / es-AR
+  const voiceName = (qs.get("voice") || "").trim();  // exact voice name e.g. "Mónica", "Paulina"
+
+  const $ = id => document.getElementById(id);
+  const promptTextEl = $("promptText");
+  const wordSpeaker  = $("wordSpeaker");
+  const translationEl= $("translation");
+  const sentenceEl   = $("sentence");
+  const speakBtn     = $("speak");
+  const revealBtn    = $("reveal");
+  const form         = $("spell-form");
+  const input        = $("spell");
+  const feedback     = $("feedback");
+  const showLetter   = $("showLetter");
+
+  let hidden = true;
+
+  function render(){
+    const hasAny = w || de || sent;
+    promptTextEl.textContent = de || (hasAny ? "(Deutsch fehlt)" : "Hinweis (Deutsch) fehlt");
+    translationEl.textContent = hidden ? "…" : (w || (hasAny ? "(Spanisch fehlt)" : "Spanisches Wort fehlt"));
+    wordSpeaker.style.display = w ? "inline" : "none"; // 🔊 shows only if Spanish word exists
+    sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+  }
+  render();
+
+  function getVoiceByName(name){
+    const voices = speechSynthesis.getVoices() || [];
+    return voices.find(v => v.name && v.name.toLowerCase() === name.toLowerCase());
+  }
+  function speakSpanish(text){
+    if (!("speechSynthesis" in window) || !text) return;
+    const u = new SpeechSynthesisUtterance(text);
+    if (voiceName){
+      const v = getVoiceByName(voiceName);
+      if (v){ u.voice = v; u.lang = v.lang; } else { u.lang = lang; }
+    } else {
+      u.lang = lang;
+    }
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+
+  speakBtn.addEventListener("click", ()=> speakSpanish(w));
+  wordSpeaker.addEventListener("click", ()=> speakSpanish(w));
+  revealBtn.addEventListener("click", ()=>{ hidden = !hidden; render(); });
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const ok = normalize(input.value) === normalize(w);
+    feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
+    if (ok){ speakSpanish(w); try{ localStorage.setItem("lastOk_"+w, Date.now()); }catch(e){} }
+  });
+
+  showLetter.addEventListener("click", ()=>{
+    const typed = input.value;
+    let i=0; while (i < typed.length && normalize(typed[i]) === normalize((w||"")[i])) i++;
+    input.value = typed.slice(0,i) + ((w||"")[i]||"") + typed.slice(i);
+    input.focus();
+  });
+
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.onvoiceschanged = function(){ /* no-op */ };
+  }
+})();
+</script>
+</body>
+</html>
