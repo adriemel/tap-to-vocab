@@ -2,9 +2,9 @@ Hola!	Hallo!
 Buenos dias!	Guten Morgen! Guten Tag!
 Buenas tardes!	Guten Tag! (Nachmittag)
 Buenas noches!	Guten Abend! Gute Nacht!
-Que tal?	Wie geht's?
+Qué tal?	Wie geht's?
 Como estás? 	Wie geht's?
-bien, gracias	gut, Danke
+Estoy bien, gracias	Mie geht es gut, danke
 muy	sehr
 muy mal	sehr schlecht
 mejor	besser
@@ -14,46 +14,27 @@ tambien	auch
 Como te llamas?	Wie heißt du?
 Me llamo Pablo	Ich heiße Pablo
 Yo soy Pablo	Ich bin Pablo
+Mi nombre es Pablo	Mein Name ist Pablo
 De donde eres?	Woher kommst du?
 Soy de Alemania	Ich komme aus Deutschland
+Soy de Madrid	Ich komme aus Madrid
 Cuantos años tienes?	Wie alt bist du?
 Tengo once años	Ich bin 11 Jahre alt
 Adios!	Auf Wiedersehen!; Tschüs!
 Hasta luego!	Bis später!
 Como es tu apellido?	Wie ist dein Nachname?
 el apellido	der Nachname
-Se escribe...	Man schreibt ...
-Como se escribe...?	Wie schreibt man...?
-con acento	mit Akzent
-con dos puntos	mit Umlaut
-quizás	vielleicht
 de acuerdo	alles klar
-entonces	dann
-también	auch
-pero	aber
-donde	wo
-cuándo	wann
-quién	wer
-por qué	warum
-seguro	sicher
 negro	schwarz
 blanco	weiß
+naranja	orange
+gris	grau
+pink	rosa
 azul	blau
 verde	grün
 marrón	braun
 amarillo	gelb
 rojo	rot
-el parque	der Park
-el hotel	das Hotel
-el centro	das (Stadt) Zentrum
-el zoo	der Zoo
-el restaurante	das Restaurant
-el museo	das Museum
-la plaza	der Platz
-la librería	die Buchhandlung
-la casa	das Haus, die Wohnung
-el número	die Nummer, die Zahl
-el zorro	der Fuchs
 el perro	der Hund
 el gato	die Katze
 el elefante	der Elefant
@@ -65,6 +46,7 @@ la tarantula	die Vogelspinne
 el mono	der Affe
 la rana	der Frosch
 la vaca	die Kuh
+la oveja	das Schaf
 mi perro	mein Hund
 el móvil	das Handy
 el teléfono	das Telefon
@@ -85,15 +67,18 @@ la mascota	das Haustier
 mi mascota se llama Tigo	mein Haustier heisst Tigo
 tu	dein / deine
 Como se llama tu mascota?	Wie heisst Dein Haustier?
-tener	haben
-Quién?	Wer?
-el profesor / la profesora	der Lehrer / die Lehrerin
-trabajar	arbeiten
-en	in, auf, an
 hablar	sprechen, reden
 el alemán	Deutsch, die deutsche Sprache
 el inglés	Englisch, die englische Sprache
 el español	Spanisch, die spanische Sprache
+entonces	dann
+también	auch
+pero	aber
+donde	wo
+cuándo	wann
+quién	wer
+por qué	warum
+seguro	sicher
 en casa	zu Hause
 Claro!	Ja, natürlich!
 pero	aber
@@ -104,6 +89,27 @@ con	mit
 siempre	immer
 Qué?	Was für ein? Was?
 nada	nichts
+la mochila	der Rucksack
+los zapatos	die Schuhe
+el juego	das Spiel
+el barco	das Schiff
+el hotel	das Hotel
+el restaurante	das Restaurant
+el museo	das Museum
+la casa	das Haus
+el número	die Nummer, die Zahl
+las nubes	die Wolken
+la isla	die Insel
+tener	haben
+Quién?	Wer?
+el profesor / la profesora	der Lehrer / die Lehrerin
+trabajar	arbeiten
+en	in, auf, an
+Se escribe...	Man schreibt ...
+Como se escribe...?	Wie schreibt man...?
+con acento	mit Akzent
+con dos puntos	mit Umlaut
+quizás	vielleicht
 el idioma	die Sprache
 escuchar algo	etw. hören
 contestar	antworten
@@ -113,10 +119,6 @@ Adelante!	Herein!
 Qué pasa?	Was ist los?
 el problema	das Problem
 buscar algo	etw. suchen
-el secreto	das Geheimnis
-la idea	die Idee
-la sorpresa	die Überraschung
-la mochila	der Rucksack
 nuevo	neu
 largo	lang
 genial	großartig
@@ -210,3 +212,6 @@ amable	freundlich, nett
 divertido	lustig
 malo	böse, gemein
 simpático	sympathisch
+el secreto	das Geheimnis
+la idea	die Idee
+la sorpresa	die Überraschung
