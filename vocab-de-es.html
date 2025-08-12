@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tap-to-Vocab DE→ES (Kategorien + Reihenfolge)</title>
+<title>Tap-to-Vocab DE→ES (Kategorien + iPhone Audio)</title>
 <style>
   :root{ --accent:#2563eb; --accent-ink:#fff; --bg:#f8fafc; --card:#ffffff;
          --ink:#0f172a; --muted:#64748b; --border:rgba(148,163,184,.35); --shadow:rgba(2,6,23,.12); }
@@ -82,6 +82,8 @@
   let w    = (qs.get("w")    || "").trim();   // Spanish to build
   let de   = (qs.get("de")   || "").trim();   // German hint
   let sent = (qs.get("sent") || "").trim();
+  const catParam = (qs.get("cat") || "").trim();          // jump to category
+  const onlyCat  = qs.get("onlyCat")==="1" || qs.get("scope")==="cat";
   const lang  = (qs.get("lang") || "es-ES").trim();
   const voiceName = (qs.get("voice") || "").trim();
   const listFile  = (qs.get("list") || "words.tsv").trim();
@@ -96,21 +98,32 @@
 
   let hidden=true, built="", pool=[], entries=[], idx=0;
   let categories=[]; // [{name,start}]
+  let paramMode = !!(w || de || sent) && !catParam; // show URL word first
+
+  /* ---------- helpers ---------- */
+  const normalize = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+
   /* ---------- canvas sizing ---------- */
   function sizeCanvas(){ const r=confettiCanvas.parentElement.getBoundingClientRect(); confettiCanvas.width=r.width|0; confettiCanvas.height=r.height|0; }
   sizeCanvas(); window.addEventListener("resize", sizeCanvas);
 
-  /* ---------- iPhone-safe audio (global unlock on first interaction) ---------- */
+  /* ---------- iPhone-safe audio unlock ---------- */
   let actx, audioUnlocked=false;
   function getCtx(){ const C=window.AudioContext||window.webkitAudioContext; if(!actx&&C) actx=new C({latencyHint:'interactive'}); return actx; }
   function resumeCtxSync(){ const ctx=getCtx(); if(ctx&&ctx.state==="suspended"){ try{ctx.resume();}catch(e){} } return ctx; }
-  function unlockAudio(){ if(audioUnlocked) return; audioUnlocked=true; resumeCtxSync(); try{ if(window.speechSynthesis && speechSynthesis.paused) speechSynthesis.resume(); }catch(e){} }
+  function primeTick(){ // very short tick to warm the pipe
+    const ctx=resumeCtxSync(); if(!ctx) return;
+    const len=Math.floor(0.03*ctx.sampleRate), buf=ctx.createBuffer(1,len,ctx.sampleRate), ch=buf.getChannelData(0);
+    for(let i=0;i<len;i++){ const t=i/ctx.sampleRate; ch[i]=Math.sin(2*Math.PI*1200*t)*Math.exp(-20*t)*0.4; }
+    const src=ctx.createBufferSource(); src.buffer=buf; src.connect(ctx.destination); try{src.start();}catch(e){}
+  }
+  function unlockAudio(){ if(audioUnlocked) return; audioUnlocked=true; resumeCtxSync(); primeTick(); try{ if(window.speechSynthesis && speechSynthesis.paused) speechSynthesis.resume(); }catch(e){} }
   window.addEventListener("pointerdown", unlockAudio, {once:true});
   window.addEventListener("touchend", unlockAudio, {once:true});
   window.addEventListener("click", unlockAudio, {once:true});
 
-  /* tiny buffered beeps (reliable on iOS) */
-  function makeBeep({freq=880, dur=0.08, type='sine', gain=0.22}={}){
+  /* tiny buffered beeps (audible on iPhone) */
+  function makeBeep({freq=880, dur=0.1, type='sine', gain=0.35}={}){
     const ctx=resumeCtxSync(); if(!ctx) return ()=>{};
     const sr=ctx.sampleRate, len=Math.max(1,Math.floor(dur*sr)); const buf=ctx.createBuffer(1,len,sr), ch=buf.getChannelData(0);
     for(let i=0;i<len;i++){ const t=i/sr; let s=0;
@@ -122,18 +135,17 @@
     }
     return function play(){ const c=resumeCtxSync(); if(!c) return; const src=c.createBufferSource(); src.buffer=buf; src.connect(c.destination); try{src.start();}catch(e){} };
   }
-  const okSound  = makeBeep({freq:880, dur:0.09, type:'sine',     gain:0.28});
-  const dohSound = makeBeep({freq:220, dur:0.16, type:'sawtooth', gain:0.20});
+  const okSound  = makeBeep({freq:880, dur:0.1, type:'sine',     gain:0.42});
+  const dohSound = makeBeep({freq:220, dur:0.18, type:'sawtooth', gain:0.32});
   function partySound(){
     const ctx=resumeCtxSync(); if(!ctx) return;
     const notes=[523.25,659.25,783.99]; let when=ctx.currentTime;
     for(const f of notes){
       const src=ctx.createBufferSource();
-      const buf=ctx.createBuffer(1, Math.floor(0.12*ctx.sampleRate), ctx.sampleRate);
+      const buf=ctx.createBuffer(1, Math.floor(0.14*ctx.sampleRate), ctx.sampleRate);
       const ch=buf.getChannelData(0);
-      for(let i=0;i<ch.length;i++){ const t=i/ctx.sampleRate, env=Math.exp(-6*t/0.12); ch[i]=Math.sin(2*Math.PI*f*t)*env*0.25; }
-      src.buffer=buf; src.connect(ctx.destination); try{src.start(when);}catch(e){}
-      when+=0.09;
+      for(let i=0;i<ch.length;i++){ const t=i/ctx.sampleRate, env=Math.exp(-6*t/0.14); ch[i]=Math.sin(2*Math.PI*f*t)*env*0.3; }
+      src.buffer=buf; src.connect(ctx.destination); try{src.start(when);}catch(e){}; when+=0.1;
     }
   }
 
@@ -155,7 +167,7 @@
   /* ---------- Counter + category header ---------- */
   function updateCounter(){ if(entries.length){ counterEl.style.display="inline"; counterEl.textContent=`${idx+1} / ${entries.length}`; } else { counterEl.style.display="none"; } }
   function updateCategoryHeader(){
-    if(!entries.length){ categoryEl.style.display="none"; return; }
+    if(!entries.length || idx<0 || idx>=entries.length){ categoryEl.style.display="none"; return; }
     const cat = entries[idx]?.cat || "";
     if(cat){ categoryEl.style.display="block"; categoryEl.textContent = "Kategorie: " + cat; }
     else { categoryEl.style.display="none"; }
@@ -168,6 +180,7 @@
     translationEl.textContent = hidden ? "…" : (w || (hasAny?"(Spanisch fehlt)":"Spanisches Wort fehlt"));
     wordSpeaker.style.display = w ? "inline" : "none";
     sentenceEl.textContent = sent ? ("🧩 " + sent) : "";
+    // Only show category if we're in list mode or we matched URL to a list entry
     updateCategoryHeader();
   }
   function makePool(){
@@ -207,6 +220,14 @@
   }
 
   /* ---------- TSV list with categories ---------- */
+  function findCategoryRange(name){
+    const pos = categories.findIndex(c=> (c.name||"") === (name||""));
+    if(pos<0) return null;
+    const start = categories[pos].start;
+    const end   = (pos < categories.length-1) ? categories[pos+1].start - 1 : entries.length - 1;
+    return {start, end};
+  }
+
   async function loadList(){
     try{
       const res=await fetch(listFile,{cache:"no-store"}); if(!res.ok) throw new Error(res.status+" "+res.statusText);
@@ -221,11 +242,24 @@
         const e = { w:(p[0]||"").trim(), de:(p[1]||"").trim(), sent:(p[2]||"").trim(), cat: currentCat };
         if(e.w && e.de) entries.push(e);
       });
-      // Build category index list
+      // categories
       categories=[]; let lastName=null;
       entries.forEach((e,i)=>{ if(e.cat!==lastName){ categories.push({name:e.cat, start:i}); lastName=e.cat; } });
-      const saved=parseInt(localStorage.getItem(PROG_KEY)||"0",10);
-      idx=isNaN(saved)?0:Math.min(Math.max(saved,0), Math.max(entries.length-1,0));
+      // starting index
+      if (catParam){ // category link takes priority
+        const rg = findCategoryRange(catParam);
+        if (rg) idx = rg.start;
+        paramMode = false; // we're in list mode
+      } else {
+        const saved=parseInt(localStorage.getItem(PROG_KEY)||"0",10);
+        idx=isNaN(saved)?0:Math.min(Math.max(saved,0), Math.max(entries.length-1,0));
+      }
+      // if URL has w/de, sync idx to exact match so header shows right category
+      if ((w || de) && !catParam){
+        const wi = normalize(w), dei = normalize(de);
+        const found = entries.findIndex(e => normalize(e.w)===wi && (!de || normalize(e.de)===dei));
+        if (found >= 0){ idx = found; }
+      }
     }catch(e){ console.warn("TSV load failed:",e); entries=[]; categories=[]; }
     updateCounter(); updateCategoryHeader();
   }
@@ -236,23 +270,50 @@
     w=e.w; de=e.de; sent=e.sent||""; hidden=true; built="";
     renderHeader(); makePool(); renderKeys();
     builtEl.textContent=""; feedback.textContent="";
-    updateCounter();
+    updateCounter(); updateCategoryHeader();
   }
 
-  async function nextFromList(){ if(!entries.length) await loadList(); if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
-    idx = (idx < entries.length-1) ? idx+1 : 0; localStorage.setItem(PROG_KEY,String(idx)); setFromEntry(idx); }
-  async function prevFromList(){ if(!entries.length) await loadList(); if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
-    idx = (idx>0) ? idx-1 : entries.length-1; localStorage.setItem(PROG_KEY,String(idx)); setFromEntry(idx); }
+  async function nextFromList(){
+    if(!entries.length) await loadList();
+    if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
+    // if onlyCat: wrap within current category range
+    if (onlyCat && entries[idx]){
+      const rg = findCategoryRange(entries[idx].cat);
+      if (rg){
+        idx = (idx < rg.end) ? idx+1 : rg.start;
+      } else { idx = (idx < entries.length-1) ? idx+1 : 0; }
+    } else {
+      idx = (idx < entries.length-1) ? idx+1 : 0;
+    }
+    localStorage.setItem(PROG_KEY,String(idx));
+    paramMode = false; // entering list mode
+    setFromEntry(idx);
+  }
+
+  async function prevFromList(){
+    if(!entries.length) await loadList();
+    if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
+    if (onlyCat && entries[idx]){
+      const rg = findCategoryRange(entries[idx].cat);
+      if (rg){
+        idx = (idx > rg.start) ? idx-1 : rg.end;
+      } else { idx = (idx>0) ? idx-1 : entries.length-1; }
+    } else {
+      idx = (idx>0) ? idx-1 : entries.length-1;
+    }
+    localStorage.setItem(PROG_KEY,String(idx));
+    paramMode = false;
+    setFromEntry(idx);
+  }
 
   async function nextCategory(){
     if(!entries.length) await loadList(); if(!entries.length) return;
-    // find current category
     const curCat = entries[idx]?.cat || "";
-    // find its position in categories
     const pos = categories.findIndex(c => c.name === curCat);
     const next = (pos >= 0) ? (pos+1) % categories.length : 0;
     idx = categories[next].start;
     localStorage.setItem(PROG_KEY,String(idx));
+    paramMode = false;
     setFromEntry(idx);
   }
 
@@ -269,7 +330,10 @@
   (async function init(){
     renderHeader(); makePool(); renderKeys();
     await loadList();
-    if((!w || !de) && entries.length){ setFromEntry(idx); } else { updateCounter(); updateCategoryHeader(); }
+    // If URL had w/de OR cat, show that selection; otherwise show saved idx
+    if (catParam){ setFromEntry(idx); }
+    else if ((w || de) && entries.length){ setFromEntry(idx); }
+    else if (entries.length){ setFromEntry(idx); }
   })();
 
   if(typeof speechSynthesis!=="undefined"){ speechSynthesis.onvoiceschanged=function(){}; }
