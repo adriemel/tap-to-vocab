@@ -175,7 +175,6 @@
   }
 
   /* TSV */
-  let entries=[];
   async function loadList(){
     try{
       const res=await fetch(listFile,{cache:"no-store"}); if(!res.ok) throw new Error(res.status+" "+res.statusText);
