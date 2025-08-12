@@ -78,7 +78,7 @@ la amiga	die Freundin
 la mascota	das Haustier
 mi mascota se llama Tigo	mein Haustier heisst Tigo
 tu	dein / deine
-Como se llama tu mascota?	Wie heisst Dein Haustier?
+¿Como se llama tu mascota?	Wie heisst Dein Haustier?
 la mochila	der Rucksack
 los zapatos	die Schuhe
 el juego	das Spiel
@@ -98,7 +98,7 @@ el español	Spanisch, die spanische Sprache
 el idioma	die Sprache
 estudiar	lernen
 Se escribe...	Man schreibt ...
-Como se escribe...?	Wie schreibt man...?
+¿Como se escribe...?	Wie schreibt man...?
 con acento	mit Akzent
 con dos puntos	mit Umlaut
 ## Palabras
@@ -117,9 +117,9 @@ además	außerdem
 ahora	jetzt
 con	mit
 siempre	immer
-Qué?	Was für ein? Was?
+¿Qué?	Was für ein? Was?
 nada	nichts
-Quién?	Wer?
+¿Quién?	Wer?
 trabajar	arbeiten
 en	in, auf, an
 quizás	vielleicht
@@ -129,7 +129,7 @@ contestar	antworten
 preguntar	fragen
 el chico / la chica	der Junge / das Mädchen
 Adelante!	Herein!
-Qué pasa?	Was ist los?
+¿Qué pasa?	Was ist los?
 el problema	das Problem
 buscar algo	etw. suchen
 nuevo	neu
@@ -230,3 +230,4 @@ cien	hundert
 doscientos	zweihundert
 mil	tausend
 millón	Million
+
