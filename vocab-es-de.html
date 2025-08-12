@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tap-to-Vocab ES→DE (tap Spanish + sounds + confetti)</title>
+<title>Tap-to-Vocab ES→DE (list + next + better confetti)</title>
 <style>
   :root{
     --accent:#2563eb; --accent-ink:#fff; --bg:#f8fafc; --card:#ffffff;
@@ -36,6 +36,7 @@
   }
   button:hover { filter: brightness(1.03); } button:active { transform: translateY(1px); }
   .ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); box-shadow:none; }
+  .row { display:flex; gap:.5rem; flex-wrap:wrap; }
   #wordSpeaker { cursor:pointer; display:none; font-size:.9em; user-select:none; margin-left:.35rem; }
   #feedback { margin:.4rem 0; }
   .ok { color:#16a34a; } .err { color:#b91c1c; }
@@ -43,7 +44,7 @@
   .built { font-size: 1.6rem; min-height: 2.2rem; letter-spacing: .5px; padding:.25rem 0; }
   .keys { display:grid; grid-template-columns: repeat(auto-fit, minmax(56px, 1fr)); gap:.5rem; margin-top:.75rem; }
   .key { background: var(--card); color: var(--ink); border:1px solid var(--border); box-shadow:none; height:48px; display:flex; align-items:center; justify-content:center; }
-  .key.used { visibility:hidden; pointer-events:none; } /* invisible placeholders keep layout stable */
+  .key.used { visibility:hidden; pointer-events:none; }
   .actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem; }
   .pill { border-radius:999px; }
 
@@ -65,6 +66,7 @@
     <p class="row">
       <button id="speak">🔊 Anhören (Spanisch)</button>
       <button id="reveal" class="ghost">👀 Anzeigen / Verbergen</button>
+      <button id="next" class="ghost">➡️ Nächstes Wort</button>
     </p>
 
     <p><strong>Baue das spanische Wort:</strong></p>
@@ -83,12 +85,13 @@
 
 <script>
 (function(){
-  const qs   = new URLSearchParams(location.search);
-  const w    = (qs.get("w")    || "").trim();        // Spanish (WE BUILD THIS)
-  const de   = (qs.get("de")   || "").trim();        // German translation (on reveal)
-  const sent = (qs.get("sent") || "").trim();
-  const lang = (qs.get("lang") || "es-ES").trim();
+  const qs    = new URLSearchParams(location.search);
+  let   w     = (qs.get("w")    || "").trim();   // Spanish (we build this)
+  let   de    = (qs.get("de")   || "").trim();   // German (shown on reveal)
+  let   sent  = (qs.get("sent") || "").trim();
+  const lang  = (qs.get("lang") || "es-ES").trim();
   const voiceName = (qs.get("voice") || "").trim();
+  const listFile  = (qs.get("list") || "words.tsv").trim();
 
   const $ = id => document.getElementById(id);
   const promptTextEl = $("promptText");
@@ -97,6 +100,7 @@
   const sentenceEl   = $("sentence");
   const speakBtn     = $("speak");
   const revealBtn    = $("reveal");
+  const nextBtn      = $("next");
   const builtEl      = $("built");
   const keysEl       = $("keys");
   const backspaceBtn = $("backspace");
@@ -106,10 +110,13 @@
   const confettiCanvas = $("confetti");
   const ctx2d = confettiCanvas.getContext("2d");
 
+  const PROG_KEY = "tsvIndex::" + listFile;
+
   let hidden = true;
   let built = "";
-  let pool = [];       // {ch, idx, used}
-  const target = w;
+  let pool = [];        // {ch, idx, used}
+  let entries = [];
+  let idx = 0;
 
   function sizeCanvas(){
     const card = confettiCanvas.parentElement.getBoundingClientRect();
@@ -119,7 +126,7 @@
   sizeCanvas();
   window.addEventListener("resize", sizeCanvas);
 
-  // --- iPhone-friendly sound engine ---
+  // Audio
   let actx;
   function ensureCtx(){
     const C = window.AudioContext || window.webkitAudioContext;
@@ -127,7 +134,7 @@
     if (actx && actx.state === "suspended") actx.resume();
   }
   window.addEventListener("pointerdown", ensureCtx, { once:true });
-  function beep(freq=880, dur=0.09, type='sine', vol=0.3){
+  function beep(freq=880, dur=0.08, type='sine', vol=0.28){
     ensureCtx(); if (!actx) return;
     const o = actx.createOscillator(), g = actx.createGain();
     o.type = type; o.frequency.value = freq;
@@ -138,55 +145,68 @@
     g.gain.exponentialRampToValueAtTime(0.0001, t + Math.max(0.05, dur));
     o.start(t); o.stop(t + dur);
   }
-  function okSound(){ beep(880, 0.08, 'sine', 0.25); }
-  function dohSound(){ beep(220, 0.16, 'sawtooth', 0.18); }
+  const okSound  = () => beep(880, 0.08, 'sine', 0.25);
+  const dohSound = () => beep(220, 0.16, 'sawtooth', 0.18);
 
-  // --- Minimal confetti ---
+  // Confetti
   let confetti = [];
   function burstConfetti(){
     confetti = [];
-    const N = 90;
+    const N = 110;
     for (let i=0;i<N;i++){
       confetti.push({
-        x: confettiCanvas.width/2,
+        x: confettiCanvas.width*0.5,
         y: confettiCanvas.height*0.25,
-        vx: (Math.random()*2-1)*3,
-        vy: -Math.random()*4-2,
-        g: 0.15+Math.random()*0.05,
-        r: 3+Math.random()*3,
+        vx: (Math.random()*2-1)*3.4,
+        vy: -Math.random()*4.8-2.2,
+        g: 0.18+Math.random()*0.06,
+        size: 3+Math.random()*4,
         a: 1,
-        hue: Math.floor(200 + Math.random()*80)
+        hue: Math.floor(190 + Math.random()*140),
+        rot: Math.random()*Math.PI*2,
+        vr: (Math.random()*2-1)*0.2,
+        shape: Math.random()<0.5 ? 'rect' : 'tri'
       });
     }
     animateConfetti();
   }
+  function drawPiece(p){
+    ctx2d.save();
+    ctx2d.translate(p.x, p.y);
+    ctx2d.rotate(p.rot);
+    ctx2d.fillStyle = `hsla(${p.hue},98%,58%,${Math.max(0,p.a)})`;
+    if (p.shape === 'rect'){
+      ctx2d.fillRect(-p.size, -p.size, p.size*2, p.size*2);
+    } else {
+      ctx2d.beginPath();
+      ctx2d.moveTo(0,-p.size*1.6);
+      ctx2d.lineTo(p.size*1.4, p.size*1.2);
+      ctx2d.lineTo(-p.size*1.4, p.size*1.2);
+      ctx2d.closePath();
+      ctx2d.fill();
+    }
+    ctx2d.restore();
+  }
   function animateConfetti(){
-    const t0 = performance.now();
-    let last = t0;
+    let last = performance.now();
     function frame(now){
-      const dt = Math.min(32, now - last) / 16.666;
-      last = now;
-
+      const dt = Math.min(32, now - last) / 16.666; last = now;
       ctx2d.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
       let alive = 0;
       for (const p of confetti){
         p.vy += p.g*dt;
-        p.x += p.vx*dt;
-        p.y += p.vy*dt;
-        p.a -= 0.015*dt;
-        if (p.a > 0 && p.y < confettiCanvas.height+20){
-          alive++;
-          ctx2d.fillStyle = `hsla(${p.hue},100%,50%,${Math.max(0,p.a)})`;
-          ctx2d.beginPath();
-          ctx2d.arc(p.x, p.y, p.r, 0, Math.PI*2);
-          ctx2d.fill();
-        }
+        p.x  += p.vx*dt;
+        p.y  += p.vy*dt;
+        p.rot+= p.vr*dt;
+        p.a  -= 0.014*dt;
+        if (p.a > 0 && p.y < confettiCanvas.height+30){ alive++; drawPiece(p); }
       }
-      if (alive > 0) requestAnimationFrame(frame);
+      if (alive) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
 
+  // UI
   function renderHeader(){
     const hasAny = w || de || sent;
     promptTextEl.textContent = w || (hasAny ? "(Spanisch fehlt)" : "Palabra (Español) fehlt");
@@ -197,18 +217,11 @@
 
   function makePool(){
     pool = [];
-    for (let i=0;i<target.length;i++){
-      pool.push({ ch: target[i], idx: i, used:false });
+    for (let i=0;i<w.length;i++){
+      pool.push({ ch: w[i], idx: i, used:false });
     }
   }
-
-  function shufflePool(){
-    for (let i=pool.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [pool[i],pool[j]] = [pool[j],pool[i]];
-    }
-  }
-
+  function shufflePool(){ for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; } }
   function renderKeys(){
     keysEl.innerHTML = "";
     pool.forEach((cell, k) => {
@@ -226,14 +239,14 @@
     const cell = pool[k];
     if (!cell || cell.used) return;
     const nextIndex = built.length;
-    if (cell.ch === target[nextIndex]){
+    if (cell.ch === w[nextIndex]){
       built += cell.ch;
       cell.used = true;
       builtEl.textContent = built;
       okSound();
-      renderKeys(); // re-render so the used key becomes invisible but keeps space
+      renderKeys();
       feedback.textContent = "";
-      if (built.length === target.length){
+      if (built.length === w.length){
         onSolved();
       }
     } else {
@@ -287,16 +300,61 @@
     speechSynthesis.speak(u);
   }
 
+  // TSV
+  async function loadList(){
+    try{
+      const res = await fetch(listFile, { cache: "no-store" });
+      if (!res.ok) throw new Error(res.status + " " + res.statusText);
+      const txt = await res.text();
+      entries = txt.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith("#")).map(l => {
+        const parts = l.split("\t");
+        return { w: (parts[0]||"").trim(), de: (parts[1]||"").trim(), sent: (parts[2]||"").trim() };
+      }).filter(e => e.w && e.de);
+      const saved = parseInt(localStorage.getItem(PROG_KEY)||"0",10);
+      idx = isNaN(saved)?0:saved;
+    }catch(e){
+      console.warn("TSV load failed:", e);
+      entries = [];
+    }
+  }
+  function setFromEntry(i){
+    if (!entries.length) return;
+    const ent = entries[((i%entries.length)+entries.length)%entries.length];
+    w = ent.w; de = ent.de; sent = ent.sent || "";
+    hidden = true;
+    built = "";
+    renderHeader();
+    makePool(); shufflePool(); renderKeys();
+    builtEl.textContent = "";
+    feedback.textContent = "";
+  }
+  async function nextFromList(){
+    if (!entries.length){ await loadList(); }
+    if (!entries.length){ feedback.innerHTML = "<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
+    idx = (idx + 1) % entries.length;
+    localStorage.setItem(PROG_KEY, String(idx));
+    setFromEntry(idx);
+  }
+
+  // Wire
   speakBtn.addEventListener("click", ()=> speakSpanish(w));
   wordSpeaker.addEventListener("click", ()=> speakSpanish(w));
   revealBtn.addEventListener("click", ()=>{ hidden = !hidden; renderHeader(); });
   backspaceBtn.addEventListener("click", backspace);
   resetBtn.addEventListener("click", resetAll);
   shuffleBtn.addEventListener("click", ()=>{ shufflePool(); renderKeys(); });
+  nextBtn.addEventListener("click", nextFromList);
 
-  // init
-  renderHeader();
-  makePool(); shufflePool(); renderKeys();
+  (async function init(){
+    renderHeader();
+    makePool(); shufflePool(); renderKeys();
+    if (!w || !de) {
+      await loadList();
+      if (entries.length){ setFromEntry(idx); }
+    } else {
+      await loadList(); // preload
+    }
+  })();
 
   if (typeof speechSynthesis !== "undefined") {
     speechSynthesis.onvoiceschanged = function(){ /* no-op */ };
