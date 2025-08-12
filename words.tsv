@@ -1,30 +1,32 @@
-Hola!	Hallo!
-Buenos dias!	Guten Morgen! Guten Tag!
-Buenas tardes!	Guten Tag! (Nachmittag)
-Buenas noches!	Guten Abend! Gute Nacht!
-Qué tal?	Wie geht's?
-Como estás? 	Wie geht's?
+## Saludar
+Hola	Hallo
+Buenos días	Guten Morgen, Guten Tag
+Buenas tardes	Guten Tag (Nachmittag)
+Buenas noches	Guten Abend, Gute Nacht
+¿Qué tal?	Wie geht's?
+¿Como estás? 	Wie geht's?
 Estoy bien, gracias	Mie geht es gut, danke
 muy	sehr
 muy mal	sehr schlecht
 mejor	besser
 Gracias	Danke
-Y tu?	Und du?
+¿Y tu?	Und du?
 tambien	auch
-Como te llamas?	Wie heißt du?
+¿Como te llamas?	Wie heißt du?
 Me llamo Pablo	Ich heiße Pablo
 Yo soy Pablo	Ich bin Pablo
 Mi nombre es Pablo	Mein Name ist Pablo
-De donde eres?	Woher kommst du?
+¿De donde eres?	Woher kommst du?
 Soy de Alemania	Ich komme aus Deutschland
 Soy de Madrid	Ich komme aus Madrid
-Cuantos años tienes?	Wie alt bist du?
+¿Cuántos años tienes?	Wie alt bist du?
 Tengo once años	Ich bin 11 Jahre alt
-Adios!	Auf Wiedersehen!; Tschüs!
-Hasta luego!	Bis später!
-Como es tu apellido?	Wie ist dein Nachname?
+Adios!	Auf Wiedersehen! Tschüs!
+Hasta luego	Bis später
+¿Como es tu apellido?	Wie ist dein Nachname?
 el apellido	der Nachname
 de acuerdo	alles klar
+## Colores
 negro	schwarz
 blanco	weiß
 naranja	orange
@@ -35,6 +37,8 @@ verde	grün
 marrón	braun
 amarillo	gelb
 rojo	rot
+morado	violett
+## Animales
 el perro	der Hund
 el gato	die Katze
 el elefante	der Elefant
@@ -48,11 +52,19 @@ la rana	der Frosch
 la vaca	die Kuh
 la oveja	das Schaf
 mi perro	mein Hund
+## Casa, Familia
+en casa	zu Hause
 el móvil	das Handy
 el teléfono	das Telefon
+la silla	der Stuhl
+la cama	das Bett
 la ciudad	die Stadt
 el mundo	die Welt
 el colegio	die Schule
+la escuela	die (Grund)Schule
+el profesor	der Lehrer
+la profesora	die Lehrerin
+la familia	die Familie
 la madre	die Mutter
 el padre	der Vater
 los padres	die Eltern
@@ -67,28 +79,6 @@ la mascota	das Haustier
 mi mascota se llama Tigo	mein Haustier heisst Tigo
 tu	dein / deine
 Como se llama tu mascota?	Wie heisst Dein Haustier?
-hablar	sprechen, reden
-el alemán	Deutsch, die deutsche Sprache
-el inglés	Englisch, die englische Sprache
-el español	Spanisch, die spanische Sprache
-entonces	dann
-también	auch
-pero	aber
-donde	wo
-cuándo	wann
-quién	wer
-por qué	warum
-seguro	sicher
-en casa	zu Hause
-Claro!	Ja, natürlich!
-pero	aber
-además	außerdem
-ahora	jetzt
-estudiar	lernen
-con	mit
-siempre	immer
-Qué?	Was für ein? Was?
-nada	nichts
 la mochila	der Rucksack
 los zapatos	die Schuhe
 el juego	das Spiel
@@ -100,18 +90,41 @@ la casa	das Haus
 el número	die Nummer, die Zahl
 las nubes	die Wolken
 la isla	die Insel
-tener	haben
-Quién?	Wer?
-el profesor / la profesora	der Lehrer / die Lehrerin
-trabajar	arbeiten
-en	in, auf, an
+## Idiomas
+hablar	sprechen, reden
+el alemán	Deutsch, die deutsche Sprache
+el inglés	Englisch, die englische Sprache
+el español	Spanisch, die spanische Sprache
+el idioma	die Sprache
+estudiar	lernen
 Se escribe...	Man schreibt ...
 Como se escribe...?	Wie schreibt man...?
 con acento	mit Akzent
 con dos puntos	mit Umlaut
+## Palabras
+la palabra	das Wort
+entonces	dann
+también	auch
+pero	aber
+donde	wo
+cuándo	wann
+quién	wer
+por qué	warum
+seguro	sicher
+Claro!	Ja, natürlich!
+pero	aber
+además	außerdem
+ahora	jetzt
+con	mit
+siempre	immer
+Qué?	Was für ein? Was?
+nada	nichts
+Quién?	Wer?
+trabajar	arbeiten
+en	in, auf, an
 quizás	vielleicht
-el idioma	die Sprache
 escuchar algo	etw. hören
+tener	haben
 contestar	antworten
 preguntar	fragen
 el chico / la chica	der Junge / das Mädchen
@@ -132,6 +145,21 @@ fácil	einfach
 difícil	schwierig
 pobre	arm
 rico	reich
+lindo/linda	schön
+feo	hässlich
+alto	hoch
+pequeño/pequeña	klein
+grande	groß
+viejo	alt
+joven	jung
+amable	freundlich, nett
+divertido	lustig
+malo	böse, gemein
+simpático	sympathisch
+el secreto	das Geheimnis
+la idea	die Idee
+la sorpresa	die Überraschung
+## El tiempo
 ahora	jetzt
 hoy	heute
 mañana	morgen
@@ -170,6 +198,7 @@ noviembre	November
 diciembre	Dezember
 el tiempo	die Zeit
 ¿Qué hora es?	Wie spät ist es?
+## Los números
 uno	eins
 dos	zwei
 tres	drei
@@ -201,17 +230,3 @@ cien	hundert
 doscientos	zweihundert
 mil	tausend
 millón	Million
-lindo/linda	schön
-feo	hässlich
-alto	hoch
-pequeño/pequeña	klein
-grande	groß
-viejo	alt
-joven	jung
-amable	freundlich, nett
-divertido	lustig
-malo	böse, gemein
-simpático	sympathisch
-el secreto	das Geheimnis
-la idea	die Idee
-la sorpresa	die Überraschung
