@@ -65,7 +65,7 @@
     <div class="actions">
       <button class="ghost pill" id="backspace">⌫ Zurück</button>
       <button class="ghost pill" id="reset">↻ Neu</button>
-      <!-- Removed shuffle button -->
+      <!-- Shuffle removed -->
     </div>
 
     <p id="feedback"></p>
@@ -97,65 +97,40 @@
   function sizeCanvas(){ const r=confettiCanvas.parentElement.getBoundingClientRect(); confettiCanvas.width=r.width|0; confettiCanvas.height=r.height|0; }
   sizeCanvas(); window.addEventListener("resize", sizeCanvas);
 
-  /* iPhone-friendly audio: always resume INSIDE the tap, and use AudioBuffer beeps */
+  /* iPhone-friendly audio with AudioBuffer beeps */
   let actx;
-  function getCtx(){
-    const C = window.AudioContext || window.webkitAudioContext;
-    if (!actx && C) actx = new C({ latencyHint: 'interactive' });
-    return actx;
-  }
-  function resumeCtxSync(){
-    const ctx = getCtx();
-    if (ctx && ctx.state === "suspended") { try{ ctx.resume(); }catch(e){} }
-    return ctx;
-  }
+  function getCtx(){ const C=window.AudioContext||window.webkitAudioContext; if(!actx&&C) actx=new C({latencyHint:'interactive'}); return actx; }
+  function resumeCtxSync(){ const ctx=getCtx(); if(ctx&&ctx.state==="suspended"){ try{ctx.resume();}catch(e){} } return ctx; }
   function makeBeep({freq=880, dur=0.08, type='sine', gain=0.22}={}){
-    const ctx = resumeCtxSync(); if (!ctx) return ()=>{};
-    const sr = ctx.sampleRate, len = Math.max(1, Math.floor(dur*sr));
-    const buf = ctx.createBuffer(1, len, sr);
-    const ch = buf.getChannelData(0);
-    for (let i=0;i<len;i++){
-      const t = i/sr;
-      let s=0;
-      if (type==='sine') s=Math.sin(2*Math.PI*freq*t);
-      else if (type==='square') s=Math.sign(Math.sin(2*Math.PI*freq*t));
-      else if (type==='sawtooth') s=2*(t*freq - Math.floor(0.5 + t*freq));
+    const ctx=resumeCtxSync(); if(!ctx) return ()=>{};
+    const sr=ctx.sampleRate, len=Math.max(1,Math.floor(dur*sr)); const buf=ctx.createBuffer(1,len,sr), ch=buf.getChannelData(0);
+    for(let i=0;i<len;i++){ const t=i/sr; let s=0;
+      if(type==='sine') s=Math.sin(2*Math.PI*freq*t);
+      else if(type==='square') s=Math.sign(Math.sin(2*Math.PI*freq*t));
+      else if(type==='sawtooth') s=2*(t*freq - Math.floor(0.5 + t*freq));
       else s=Math.sin(2*Math.PI*freq*t);
-      // simple exp envelope
-      const env = Math.exp(-6*t/dur);
-      ch[i] = s * env * gain;
+      const env=Math.exp(-6*t/dur); ch[i]=s*env*gain;
     }
-    return function play(){
-      const ctx2 = resumeCtxSync(); if (!ctx2) return;
-      const src = ctx2.createBufferSource(); src.buffer = buf;
-      src.connect(ctx2.destination); try{ src.start(); }catch(e){}
-    };
+    return function play(){ const c=resumeCtxSync(); if(!c) return; const src=c.createBufferSource(); src.buffer=buf; src.connect(c.destination); try{src.start();}catch(e){} };
   }
   const okSound  = makeBeep({freq:880, dur:0.09, type:'sine',     gain:0.28});
   const dohSound = makeBeep({freq:220, dur:0.16, type:'sawtooth', gain:0.20});
 
-  /* Party sound: quick arpeggio (C–E–G) */
+  /* Party sound (C–E–G arpeggio) */
   function partySound(){
-    const ctx = resumeCtxSync(); if (!ctx) return;
-    const notes = [523.25, 659.25, 783.99]; // C5 E5 G5
-    let when = ctx.currentTime;
-    for (const f of notes){
-      const src = ctx.createBufferSource();
-      const buf = ctx.createBuffer(1, Math.floor(0.12*ctx.sampleRate), ctx.sampleRate);
-      const ch = buf.getChannelData(0);
-      for (let i=0;i<ch.length;i++){
-        const t=i/ctx.sampleRate;
-        const env = Math.exp(-6*t/0.12);
-        ch[i] = Math.sin(2*Math.PI*f*t) * env * 0.25;
-      }
-      src.buffer = buf;
-      src.connect(ctx.destination);
-      try{ src.start(when); }catch(e){}
-      when += 0.09;
+    const ctx=resumeCtxSync(); if(!ctx) return;
+    const notes=[523.25,659.25,783.99]; let when=ctx.currentTime;
+    for(const f of notes){
+      const src=ctx.createBufferSource();
+      const buf=ctx.createBuffer(1, Math.floor(0.12*ctx.sampleRate), ctx.sampleRate);
+      const ch=buf.getChannelData(0);
+      for(let i=0;i<ch.length;i++){ const t=i/ctx.sampleRate, env=Math.exp(-6*t/0.12); ch[i]=Math.sin(2*Math.PI*f*t)*env*0.25; }
+      src.buffer=buf; src.connect(ctx.destination); try{src.start(when);}catch(e){}
+      when+=0.09;
     }
   }
 
-  /* Confetti (upgraded) */
+  /* Confetti */
   let confetti=[];
   function burstConfetti(){
     confetti=[];
@@ -175,11 +150,11 @@
     ctx2d.restore();
   }
   function animateConfetti(){ let last=performance.now(); (function frame(now){ const dt=Math.min(32,now-last)/16.666; last=now;
-    ctx2d.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); let alive=0;
+    ctx2d.clearRect(0,0,confettiCanvas.width, confettiCanvas.height); let alive=0;
     for(const p of confetti){ p.vy+=p.g*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.rot+=p.vr*dt; p.a-=0.014*dt;
       if(p.a>0 && p.y<confettiCanvas.height+30){ alive++; drawPiece(p); } }
-    if(alive) requestAnimationFrame(frame); }) (last);
-  }
+    if(alive) requestAnimationFrame(frame);
+  })(last); }
 
   /* Counter */
   function updateCounter(){ if(entries.length){ counterEl.style.display="inline"; counterEl.textContent=`${idx+1} / ${entries.length}`; } else { counterEl.style.display="none"; } }
@@ -204,22 +179,25 @@
     });
   }
   function onTapKey(k){
-    resumeCtxSync(); // ensure audio ready on each tap (iOS)
+    resumeCtxSync(); // ensure audio on iOS
     const cell=pool[k]; if(!cell||cell.used) return; const next=built.length;
     if(cell.ch===w[next]){ built+=cell.ch; cell.used=true; builtEl.textContent=built; okSound(); renderKeys(); feedback.textContent="";
       if(built.length===w.length){ onSolved(); } }
     else { feedback.innerHTML="<span class='err'>❌ Falscher Buchstabe – probier den nächsten.</span>"; dohSound(); }
   }
-  function onSolved(){ feedback.innerHTML="<span class='ok'>✅ Richtig!</span>"; speakSpanish(w); burstConfetti(); partySound();
-    try{localStorage.setItem("lastOk_"+w,Date.now());}catch(e){} }
+  function onSolved(){
+    feedback.innerHTML="<span class='ok'>✅ Richtig!</span>";
+    speakSpanish(w); burstConfetti(); partySound();
+    try{localStorage.setItem("lastOk_"+w,Date.now());}catch(e){}
+  }
   function backspace(){ resumeCtxSync(); if(!built.length) return; const lastIdx=built.length-1; const ch=built[lastIdx]; built=built.slice(0,lastIdx);
     const cell=pool.find(c=>c.ch===ch && c.idx===lastIdx); if(cell) cell.used=false; builtEl.textContent=built; renderKeys(); feedback.textContent=""; }
   function resetAll(){ resumeCtxSync(); built=""; makePool(); builtEl.textContent=""; renderKeys(); feedback.textContent=""; }
 
-  function getVoiceByName(name){ const vs=speechSynthesis.getVoices()||[]; return vs.find(v=>v.name&&v.name.toLowerCase()===name.toLowerCase()); }
   function speakSpanish(text){
     if(!("speechSynthesis" in window)||!text) return; const u=new SpeechSynthesisUtterance(text);
-    const vs=speechSynthesis.getVoices()||[]; if(voiceName){ const v=vs.find(v=>v.name&&v.name.toLowerCase()===voiceName.toLowerCase()); if(v){u.voice=v; u.lang=v.lang;} else {u.lang=lang;} } else { u.lang=lang; }
+    const vs=speechSynthesis.getVoices()||[]; if(voiceName){ const v=vs.find(v=>v.name&&v.name.toLowerCase()===voiceName.toLowerCase());
+      if(v){u.voice=v; u.lang=v.lang;} else {u.lang=lang;} } else { u.lang=lang; }
     speechSynthesis.cancel(); speechSynthesis.speak(u);
   }
 
@@ -228,23 +206,34 @@
     try{
       const res=await fetch(listFile,{cache:"no-store"}); if(!res.ok) throw new Error(res.status+" "+res.statusText);
       const txt=await res.text();
-      entries = txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l && !l.startsWith("#")).map(l=>{ const p=l.split("\t");
-        return { w:(p[0]||"").trim(), de:(p[1]||"").trim(), sent:(p[2]||"").trim() }; }).filter(e=>e.w&&e.de);
-      const saved=parseInt(localStorage.getItem(PROG_KEY)||"0",10); idx=isNaN(saved)?0:Math.min(Math.max(saved,0), Math.max(entries.length-1,0));
+      entries = txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l && !l.startsWith("#")).map(l=>{
+        const p=l.split("\t"); return { w:(p[0]||"").trim(), de:(p[1]||"").trim(), sent:(p[2]||"").trim() };
+      }).filter(e=>e.w&&e.de);
+      const saved=parseInt(localStorage.getItem(PROG_KEY)||"0",10);
+      idx=isNaN(saved)?0:Math.min(Math.max(saved,0), Math.max(entries.length-1,0));
     }catch(e){ console.warn("TSV load failed:",e); entries=[]; }
     updateCounter();
   }
+
   function setFromEntry(i){
-    if(!entries.length) return; const e=entries[((i%entries.length)+entries.length)%entries.length];
-    w=e.w; de=e.de; sent=e.sent||""; hidden=true; built=""; renderHeader(); makePool(); renderKeys(); builtEl.textContent=""; feedback.textContent=""; updateCounter();
+    if(!entries.length) return;
+    const e=entries[((i%entries.length)+entries.length)%entries.length];
+    w=e.w; de=e.de; sent=e.sent||"";
+    hidden=true; built="";
+    renderHeader(); makePool(); renderKeys();
+    builtEl.textContent=""; feedback.textContent="";
+    updateCounter();
   }
-  async function nextFromList(){ resumeCtxSync(); if(!entries.length) await loadList(); if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
+
+  async function nextFromList(){ resumeCtxSync(); if(!entries.length) await loadList();
+    if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
     idx=(idx+1)%entries.length; localStorage.setItem(PROG_KEY,String(idx)); setFromEntry(idx); }
-  async function prevFromList(){ resumeCtxSync(); if(!entries.length) await loadList(); if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
+
+  async function prevFromList(){ resumeCtxSync(); if(!entries.length) await loadList();
+    if(!entries.length){ feedback.innerHTML="<span class='err'>⚠️ Keine gültige Liste gefunden.</span>"; return; }
     idx=(idx-1+entries.length)%entries.length; localStorage.setItem(PROG_KEY,String(idx)); setFromEntry(idx); }
 
   /* Wire */
-  const revealBtn=$("reveal"), speakBtn=$("speak"), wordSpeaker=$("wordSpeaker");
   speakBtn.addEventListener("click",()=>{ resumeCtxSync(); speakSpanish(w); });
   wordSpeaker.addEventListener("click",()=>{ resumeCtxSync(); speakSpanish(w); });
   revealBtn.addEventListener("click",()=>{ hidden=!hidden; renderHeader(); });
