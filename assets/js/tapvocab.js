@@ -6,12 +6,22 @@
  */
 (function () {
   // --- Speech helpers ---
-  function getSpanishVoice() {
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-    if (preferred.length) return preferred[0];
-    return voices[0] || null;
-  }
+function getSpanishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+
+  // Try Monica first (exact match or partial match)
+  const monica = voices.find(v =>
+    v.name.toLowerCase().includes("monica") && v.lang.toLowerCase().startsWith("es")
+  );
+  if (monica) return monica;
+
+  // Otherwise pick any Spanish voice
+  const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+  if (preferred.length) return preferred[0];
+
+  // Fallback: any voice
+  return voices[0] || null;
+}
 
   function speakSpanish(text) {
     try {
