@@ -24,22 +24,24 @@
   })();
 
   // --- Speech helpers ---
-  function getSpanishVoice() {
-    const voices = window.speechSynthesis.getVoices();
-    // Prefer Monica if present
-    const monica = voices.find(v =>
-      v.name && v.name.toLowerCase().includes("monica") &&
-      v.lang && v.lang.toLowerCase().startsWith("es")
-    );
-    if (monica) return monica;
+function getSpanishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  const normalize = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-    // Otherwise any Spanish voice
-    const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-    if (preferred.length) return preferred[0];
+  // Prefer Monica/Mónica if present
+  const monica = voices.find(v =>
+    normalize(v.name).includes("monica") &&
+    v.lang && v.lang.toLowerCase().startsWith("es")
+  );
+  if (monica) return monica;
 
-    // Fallback: any voice
-    return voices[0] || null;
-  }
+  // Otherwise any Spanish voice
+  const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+  if (preferred.length) return preferred[0];
+
+  return voices[0] || null;
+}
+
 
   function speakSpanish(text) {
     try {
