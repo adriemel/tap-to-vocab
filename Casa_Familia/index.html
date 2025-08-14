@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title id="page-title">Tap-to-Vocab – Category</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
-  <meta name="description" content="Spanish vocabulary practice. Always speaks the Spanish word." />
+  <meta name="description" content="Spanish vocabulary practice. Build the word or just listen. Always speaks the Spanish word." />
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
         <h1 id="title">Category</h1>
         <span class="badge" id="cat-badge">—</span>
         <span class="badge" id="counter">0 / 0</span>
@@ -30,12 +30,22 @@
           <input type="checkbox" id="auto-speak" checked />
           Auto-speak
         </label>
+        <label class="badge">
+          <input type="checkbox" id="toggle-build" />
+          Build the word
+        </label>
+        <button class="btn secondary" id="btn-clear" title="Clear built letters">Clear</button>
+      </div>
+
+      <div class="build-wrap">
+        <div class="build-slots"></div>
+        <div class="build-bank"></div>
       </div>
 
       <div class="error" id="error" style="display:none; margin-top:12px;"></div>
 
       <div class="footer">
-        Pages load data from <code>/data/words.tsv</code>. Category is inferred from the folder name (e.g., <code>/colors/</code>).
+        Pages load data from <code>/data/words.tsv</code>. Category is the folder name (e.g., <code>/colors/</code>). Build mode hides letter buttons when placed and locks them into slots.
       </div>
     </div>
   </div>
