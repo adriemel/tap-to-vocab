@@ -1,9 +1,9 @@
 /**
- * Tap-to-Vocab (TSV-driven) — Build mode always on + confetti + Monica voice
+ * Tap-to-Vocab (TSV-driven) — Build mode (strict) + confetti + Monica/Mónica voice
  * - Loads /data/words.tsv
  * - Infers category from URL path (/colors/ -> colors)
- * - Always voices Spanish (es-ES), prefers "Monica" if available
- * - Build mode is always active: click letters to build the Spanish word
+ * - Always voices Spanish (es-ES), prefers "Monica/Mónica" if available
+ * - Build mode is always active: click letters to build the Spanish word (only correct next letter is accepted)
  */
 (function () {
   // --- Inject tiny CSS for confetti (so you don't have to edit styles.css) ---
@@ -24,24 +24,24 @@
   })();
 
   // --- Speech helpers ---
-function getSpanishVoice() {
-  const voices = window.speechSynthesis.getVoices();
-  const normalize = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  function getSpanishVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    const normalize = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-  // Prefer Monica/Mónica if present
-  const monica = voices.find(v =>
-    normalize(v.name).includes("monica") &&
-    v.lang && v.lang.toLowerCase().startsWith("es")
-  );
-  if (monica) return monica;
+    // Prefer Monica/Mónica if present
+    const monica = voices.find(v =>
+      normalize(v.name).includes("monica") &&
+      v.lang && v.lang.toLowerCase().startsWith("es")
+    );
+    if (monica) return monica;
 
-  // Otherwise any Spanish voice
-  const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-  if (preferred.length) return preferred[0];
+    // Otherwise any Spanish voice
+    const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+    if (preferred.length) return preferred[0];
 
-  return voices[0] || null;
-}
-
+    // Fallback: any voice
+    return voices[0] || null;
+  }
 
   function speakSpanish(text) {
     try {
@@ -58,9 +58,6 @@ function getSpanishVoice() {
     }
   }
 
-  // --- (Optional) Voice debug: open devtools console to see voices ---
-  // window.speechSynthesis.onvoiceschanged = () => console.log(window.speechSynthesis.getVoices());
-
   // --- Confetti burst near a target element ---
   function confettiBurst(targetEl, count = 24) {
     if (!targetEl) return;
@@ -74,7 +71,6 @@ function getSpanishVoice() {
       const top = rect.top + 10;
       piece.style.left = `${left}px`;
       piece.style.top = `${top}px`;
-      // random pastel-ish colors
       const hue = Math.floor(Math.random() * 360);
       piece.style.background = `hsl(${hue} 80% 60%)`;
       piece.style.setProperty("--dx", `${Math.random() * 120 - 60}px`);
@@ -120,10 +116,10 @@ function getSpanishVoice() {
   }
 
   function normalizeWord(w) {
-    return w.trim();
+    return (w || "").trim();
   }
 
-  // --- Build Mode UI (always on) ---
+  // --- Build Mode UI (always on, strict matching) ---
   function shuffleArray(arr) {
     for (let j = arr.length - 1; j > 0; j--) {
       const k = Math.floor(Math.random() * (j + 1));
@@ -146,8 +142,8 @@ function getSpanishVoice() {
     slotsEl.innerHTML = "";
     bankEl.innerHTML = "";
 
+    // Create slots (keep spaces visible as fixed spacers)
     const slotMap = [];
-    // Create slots (keep spaces as visible spacers)
     chars.forEach(ch => {
       if (ch === " ") {
         const spacer = document.createElement("div");
@@ -156,7 +152,7 @@ function getSpanishVoice() {
         spacer.style.opacity = 0.5;
         spacer.style.borderStyle = "dotted";
         slotsEl.appendChild(spacer);
-        slotMap.push({ filled: true, char: " " });
+        slotMap.push({ filled: true, char: " " }); // fixed
       } else {
         const slot = document.createElement("div");
         slot.className = "slot";
@@ -169,32 +165,48 @@ function getSpanishVoice() {
     const letters = chars.filter(c => c !== " ");
     const bank = shuffleArray(letters.slice());
 
+    // Helper: index of next expected slot
+    function nextEmptyIndex() {
+      return slotMap.findIndex(s => s.el && !s.filled);
+    }
+
     bank.forEach(ch => {
       const b = document.createElement("button");
       b.className = "letter btn";
       b.textContent = ch;
       b.addEventListener("click", () => {
-        const next = slotMap.find(s => s.el && !s.filled);
-        if (!next) return;
-        next.el.textContent = ch;
-        next.filled = true;
-        next.char = ch;
-        b.classList.add("hidden");
-        b.disabled = true;
+        const idx = nextEmptyIndex();
+        if (idx < 0) return; // already complete
+        const expected = slotMap[idx];        // the slot object
+        const expectedChar = chars.filter(c => c !== " ")[idx]; // expected char in that position
 
-        const done = slotMap.filter(s => s.el).every(s => s.filled);
-        if (done) {
-          const finalBuilt = slotMap.map(s => s.char || "").join("");
-          if (finalBuilt === word) {
-            slotsEl.classList.add("success");
-            setTimeout(() => slotsEl.classList.remove("success"), 450);
-            speakSpanish(word);
-            confettiBurst(slotsEl, 24); // tiny party 🎉
-          } else {
-            // brief bounce nudge on wrong completion
-            slotsEl.style.animation = "bounce 200ms ease-in-out";
-            setTimeout(() => { slotsEl.style.animation = ""; }, 220);
+        if (ch === expectedChar) {
+          // correct: fill the slot and mark button "used" (keep its place)
+          expected.el.textContent = ch;
+          expected.filled = true;
+          expected.char = ch;
+          b.classList.add("used");
+          b.setAttribute("aria-disabled", "true");
+          b.disabled = true;
+
+          // if finished, check correctness and celebrate
+          const done = slotMap.filter(s => s.el).every(s => s.filled);
+          if (done) {
+            const finalBuilt = slotMap.map(s => s.char || "").join("");
+            if (finalBuilt === word) {
+              slotsEl.classList.add("success");
+              setTimeout(() => slotsEl.classList.remove("success"), 450);
+              speakSpanish(word);
+              confettiBurst(slotsEl, 24); // tiny party 🎉
+            } else {
+              slotsEl.style.animation = "bounce 200ms ease-in-out";
+              setTimeout(() => { slotsEl.style.animation = ""; }, 220);
+            }
           }
+        } else {
+          // wrong: ignore and give a tiny shake on the button (do not remove/move it)
+          b.classList.add("wrong");
+          setTimeout(() => b.classList.remove("wrong"), 220);
         }
       });
       bankEl.appendChild(b);
@@ -209,7 +221,8 @@ function getSpanishVoice() {
         }
       });
       bankEl.querySelectorAll(".letter").forEach(l => {
-        l.classList.remove("hidden");
+        l.classList.remove("used", "wrong");
+        l.removeAttribute("aria-disabled");
         l.disabled = false;
       });
       slotsEl.classList.remove("success");
