@@ -1,27 +1,26 @@
 /**
- * Tap-to-Vocab (TSV-driven)
+ * Tap-to-Vocab (TSV-driven) + Build-the-Word mode
  * - Loads /data/words.tsv
- * - Filters rows by category derived from the URL path (e.g., /colors/)
- * - Always voices the Spanish word (es)
+ * - Infers category from URL path (/colors/ -> colors)
+ * - Always voices Spanish (es-ES), prefers "Monica" if available
+ * - Optional Build mode: click letters to build the Spanish word
  */
 (function () {
   // --- Speech helpers ---
-function getSpanishVoice() {
-  const voices = window.speechSynthesis.getVoices();
+  function getSpanishVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    // Prefer Monica if present
+    const monica = voices.find(v =>
+      v.name && v.name.toLowerCase().includes("monica") &&
+      v.lang && v.lang.toLowerCase().startsWith("es")
+    );
+    if (monica) return monica;
 
-  // Try Monica first (exact match or partial match)
-  const monica = voices.find(v =>
-    v.name.toLowerCase().includes("monica") && v.lang.toLowerCase().startsWith("es")
-  );
-  if (monica) return monica;
+    const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+    if (preferred.length) return preferred[0];
 
-  // Otherwise pick any Spanish voice
-  const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-  if (preferred.length) return preferred[0];
-
-  // Fallback: any voice
-  return voices[0] || null;
-}
+    return voices[0] || null;
+  }
 
   function speakSpanish(text) {
     try {
@@ -68,7 +67,107 @@ function getSpanishVoice() {
   // Infer category from path: '/colors/' -> 'colors'
   function inferCategoryFromPath() {
     const segs = location.pathname.split("/").filter(Boolean);
-    return segs[segs.length - 1] || ""; // in '/colors/' last is 'colors'
+    return segs[segs.length - 1] || "";
+  }
+
+  function normalizeWord(w) {
+    return w.trim();
+  }
+
+  // --- Build Mode UI ---
+  function shuffleArray(arr) {
+    for (let j = arr.length - 1; j > 0; j--) {
+      const k = Math.floor(Math.random() * (j + 1));
+      [arr[j], arr[k]] = [arr[k], arr[j]];
+    }
+    return arr;
+  }
+
+  function setupBuildMode(targetWord) {
+    const wrap = document.querySelector(".build-wrap");
+    const slotsEl = document.querySelector(".build-slots");
+    const bankEl = document.querySelector(".build-bank");
+    const clearBtn = document.getElementById("btn-clear");
+    const buildToggle = document.getElementById("toggle-build");
+
+    if (!wrap || !slotsEl || !bankEl || !clearBtn || !buildToggle) return;
+
+    const word = normalizeWord(targetWord);
+    const chars = word.split("");
+    slotsEl.innerHTML = "";
+    bankEl.innerHTML = "";
+
+    const slotMap = [];
+    chars.forEach(ch => {
+      if (ch === " ") {
+        const spacer = document.createElement("div");
+        spacer.className = "slot";
+        spacer.textContent = "⎵";
+        spacer.style.opacity = 0.5;
+        spacer.style.borderStyle = "dotted";
+        slotsEl.appendChild(spacer);
+        slotMap.push({ filled: true, char: " " });
+      } else {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.accepts = ch;
+        slotsEl.appendChild(slot);
+        slotMap.push({ filled: false, char: null, el: slot });
+      }
+    });
+
+    const letters = chars.filter(c => c !== " ");
+    const bank = shuffleArray(letters.slice());
+
+    bank.forEach(ch => {
+      const b = document.createElement("button");
+      b.className = "letter btn";
+      b.textContent = ch;
+      b.addEventListener("click", () => {
+        const next = slotMap.find(s => s.el && !s.filled);
+        if (!next) return;
+        next.el.textContent = ch;
+        next.filled = true;
+        next.char = ch;
+        b.classList.add("hidden");
+        b.disabled = true;
+
+        const done = slotMap.filter(s => s.el).every(s => s.filled);
+        if (done) {
+          const finalBuilt = slotMap.map(s => s.char || "").join("");
+          if (finalBuilt === word) {
+            slotsEl.classList.add("success");
+            setTimeout(() => slotsEl.classList.remove("success"), 450);
+            speakSpanish(word);
+          } else {
+            slotsEl.style.animation = "bounce 200ms ease-in-out";
+            setTimeout(() => { slotsEl.style.animation = ""; }, 220);
+          }
+        }
+      });
+      bankEl.appendChild(b);
+    });
+
+    clearBtn.onclick = () => {
+      slotMap.forEach(s => {
+        if (s.el) {
+          s.el.textContent = "";
+          s.filled = false;
+          s.char = null;
+        }
+      });
+      bankEl.querySelectorAll(".letter").forEach(l => {
+        l.classList.remove("hidden");
+        l.disabled = false;
+      });
+      slotsEl.classList.remove("success");
+    };
+
+    const updateVisibility = () => {
+      wrap.style.display = buildToggle.checked ? "block" : "none";
+    };
+    buildToggle.onchange = updateVisibility;
+    updateVisibility();
   }
 
   function initCategoryUI(words, category) {
@@ -81,17 +180,10 @@ function getSpanishVoice() {
     const shuffleBtn = document.getElementById("btn-shuffle");
     const autoSpeakEl = document.getElementById("auto-speak");
     const counterEl = document.getElementById("counter");
+    const buildToggle = document.getElementById("toggle-build");
 
     let order = words.map((_, idx) => idx);
     let shuffled = false;
-
-    function shuffleArray(arr) {
-      for (let j = arr.length - 1; j > 0; j--) {
-        const k = Math.floor(Math.random() * (j + 1));
-        [arr[j], arr[k]] = [arr[k], arr[j]];
-      }
-      return arr;
-    }
 
     function render() {
       const w = words[order[i]];
@@ -99,6 +191,10 @@ function getSpanishVoice() {
       elDe.textContent = w.de;
       counterEl.textContent = (i + 1) + " / " + words.length;
       if (autoSpeakEl.checked) setTimeout(() => speakSpanish(w.es), 80);
+
+      if (buildToggle && buildToggle.checked) {
+        setupBuildMode(w.es);
+      }
     }
 
     function next() { i = (i + 1) % words.length; render(); }
@@ -121,6 +217,8 @@ function getSpanishVoice() {
     nextBtn.addEventListener("click", next);
     prevBtn.addEventListener("click", prev);
     shuffleBtn.addEventListener("click", toggleShuffle);
+
+    window.speechSynthesis.onvoiceschanged = () => {};
 
     render();
   }
@@ -149,5 +247,5 @@ function getSpanishVoice() {
     }
   }
 
-  window.TapVocabTSV = { initFromTSV };
+  window.TapVocabTSV = { initFromTSV, setupBuildMode };
 })();
