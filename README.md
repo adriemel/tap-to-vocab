@@ -1,28 +1,36 @@
-# Tap‑to‑Vocab (Deutsch ↔ Español)
+# Tap-to-Vocab Template (TSV-driven)
 
-`vocab.html` zeigt ein Wort, spricht es (Spanisch oder Deutsch) und prüft die Schreibweise. Inhalte kommen über URL‑Parameter.
+This version loads words from a single TSV file at `/data/words.tsv`.
+Each category page is generic and infers its category from the URL path
+(e.g., `/colors/` → `colors`).
 
-## Dateien
-- `index.html` — Startseite mit Demos
-- `vocab.html` — Lernseite (Audio + Schreibweise)
-- `builder.html` — Generator für NFC‑Links
+## TSV format
 
-## Schnellstart
-1. Dateien in ein GitHub‑Repository laden.
-2. GitHub Pages aktivieren (Settings → Pages → Deploy from a branch → `main` / root).
-3. Öffentliche URL: `https://USERNAME.github.io/REPO/`
-4. Lernseite: `https://USERNAME.github.io/REPO/vocab.html`
+File: `/data/words.tsv`
 
-## URL‑Parameter
-- `w`  — spanisches Wort (optional, wenn Deutsch‑Prompt genutzt wird)
-- `de` — deutsches Wort/Übersetzung (optional, wenn Spanisch‑Prompt genutzt wird)
-- `lang` — spanische Stimme für TTS (Standard `es-ES`)
-- `sent` — Beispielsatz (optional)
-- `mode` — `prompt-de`, `prompt-es`, `listen-spell-es`, `listen-spell-de`
+```
+category	es	de
+colors	rojo	rot
+colors	azul	blau
+...
+```
 
-**Ziel der Schreibübung**
-- `prompt-de` / `listen-spell-es`: Lösung ist **Spanisch** (`w`).
-- `prompt-es` / `listen-spell-de`: Lösung ist **Deutsch** (`de`).
+- Columns must be: `category`, `es`, `de` (tab-separated).
+- Add rows for new categories (e.g., `food`, `school`).
+- Make a folder matching the category (e.g., `/food/`) and copy `index.html` from any category into it (or just create the folder; the provided `index.html` is generic).
 
-## NFC
-Schreibe die vollständige URL auf einen NFC‑Tag (Record: URL). Drucke einen QR‑Code der gleichen URL als Fallback.
+## Adding a new category
+
+1. Add rows to `data/words.tsv`, e.g.:
+```
+food	manzana	Apfel
+food	pan	Brot
+```
+2. Create a folder `/food/` and put an `index.html` (you can copy one from `/colors/`).
+3. Push to GitHub Pages. Then your NFC URL is `https://YOUR-DOMAIN/food/`.
+
+## Notes
+
+- The app always **voices Spanish (es-ES)** using the Web Speech API.
+- Works on modern mobile browsers. iOS may require a tap before speech is allowed.
+- If a category has **no rows**, the page shows a helpful error message.
