@@ -39,6 +39,24 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 8px; }
 .success { animation: bounce 400ms ease-in-out; background:#0f1a46; border-color:#1d4; }
 .error { background:#2a1030; border:1px solid #6a2a70; padding:12px; border-radius:12px; }
 
+/* Keep used letters in place (no layout shift), just fade & disable */
+.letter.used {
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* Tiny shake when a wrong letter is clicked */
+.letter.wrong {
+  animation: tv-shake 180ms ease-in-out;
+}
+@keyframes tv-shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
 @keyframes pop { from { transform: scale(.9); opacity:.0 } to { transform: scale(1); opacity:1 } }
 @keyframes bounce {
   0% { transform: scale(1) }
