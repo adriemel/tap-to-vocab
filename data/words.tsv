@@ -1,19 +1,226 @@
 category	es	de
-colors	rojo	rot
-colors	azul	blau
-colors	verde	grün
-colors	amarillo	gelb
-colors	negro	schwarz
-colors	blanco	weiß
-animals	gato	Katze
-animals	perro	Hund
-animals	pájaro	Vogel
-animals	pez	Fisch
-animals	caballo	Pferd
-animals	vaca	Kuh
-numbers	uno	eins
-numbers	dos	zwei
-numbers	tres	drei
-numbers	cuatro	vier
-numbers	cinco	fünf
-numbers	seis	sechs
+Saludar	Hola!	Hallo!
+Saludar	Buenos días!	Guten Morgen! Guten Tag!
+Saludar	Buenas tardes!	Guten Tag! (Nachmittag)
+Saludar	Buenas noches!	Guten Abend! Gute Nacht!
+Saludar	Qué tal?	Wie geht's?
+Saludar	Como estás? 	Wie geht's?
+Saludar	Estoy bien, gracias	Mie geht es gut, danke
+Saludar	muy	sehr
+Saludar	muy mal	sehr schlecht
+Saludar	mejor	besser
+Saludar	Gracias	Danke
+Saludar	Y tu?	Und du?
+Saludar	tambien	auch
+Saludar	Como te llamas?	Wie heißt du?
+Saludar	Me llamo Pablo	Ich heiße Pablo
+Saludar	Yo soy Pablo	Ich bin Pablo
+Saludar	Mi nombre es Pablo	Mein Name ist Pablo
+Saludar	De donde eres?	Woher kommst du?
+Saludar	Soy de Alemania	Ich komme aus Deutschland
+Saludar	Soy de Madrid	Ich komme aus Madrid
+Saludar	Cuántos años tienes?	Wie alt bist du?
+Saludar	Tengo once años	Ich bin 11 Jahre alt
+Saludar	Adios!	Auf Wiedersehen!; Tschüs!
+Saludar	Hasta luego!	Bis später!
+Saludar	Como es tu apellido?	Wie ist dein Nachname?
+Saludar	el apellido	der Nachname
+Saludar	de acuerdo	alles klar
+Colores	negro	schwarz
+Colores	blanco	weiß
+Colores	naranja	orange
+Colores	gris	grau
+Colores	pink	rosa
+Colores	azul	blau
+Colores	verde	grün
+Colores	marrón	braun
+Colores	amarillo	gelb
+Colores	rojo	rot
+Colores	morado	violett
+Animales	el perro	der Hund
+Animales	el gato	die Katze
+Animales	el elefante	der Elefant
+Animales	el oso	der Bär
+Animales	el caballo	das Pferd
+Animales	el burro	der Esel
+Animales	la abeja	die Biene
+Animales	la tarantula	die Vogelspinne
+Animales	el mono	der Affe
+Animales	la rana	der Frosch
+Animales	la vaca	die Kuh
+Animales	la oveja	das Schaf
+Animales	mi perro	mein Hund
+Casa_Familia	en casa	zu Hause
+Casa_Familia	el móvil	das Handy
+Casa_Familia	el teléfono	das Telefon
+Casa_Familia	la silla	der Stuhl
+Casa_Familia	la cama	das Bett
+Casa_Familia	la ciudad	die Stadt
+Casa_Familia	el mundo	die Welt
+Casa_Familia	el colegio	die Schule
+Casa_Familia	la escuela	die (Grund)Schule
+Casa_Familia	el profesor	der Lehrer
+Casa_Familia	la profesora	die Lehrerin
+Casa_Familia	la familia	die Familie
+Casa_Familia	la madre	die Mutter
+Casa_Familia	el padre	der Vater
+Casa_Familia	los padres	die Eltern
+Casa_Familia	el hermano	der Bruder
+Casa_Familia	la hermana	die Schwester
+Casa_Familia	los hermanos	die Geschwister
+Casa_Familia	el amigo	der Freund
+Casa_Familia	mi amigo	mein Freund
+Casa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
+Casa_Familia	la amiga	die Freundin
+Casa_Familia	la mascota	das Haustier
+Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
+Casa_Familia	tu	dein/deine
+Casa_Familia	Como se llama tu mascota?	Wie heisst Dein Haustier?
+Casa_Familia	la mochila	der Rucksack
+Casa_Familia	los zapatos	die Schuhe
+Casa_Familia	el juego	das Spiel
+Casa_Familia	el barco	das Schiff
+Casa_Familia	el hotel	das Hotel
+Casa_Familia	el restaurante	das Restaurant
+Casa_Familia	el museo	das Museum
+Casa_Familia	la casa	das Haus
+Casa_Familia	el número	die Nummer, die Zahl
+Casa_Familia	las nubes	die Wolken
+Casa_Familia	la isla	die Insel
+Idiomas	hablar	sprechen, reden
+Idiomas	el alemán	Deutsch, die deutsche Sprache
+Idiomas	el inglés	Englisch, die englische Sprache
+Idiomas	el español	Spanisch, die spanische Sprache
+Idiomas	el idioma	die Sprache
+Idiomas	estudiar	lernen
+Idiomas	Se escribe...	Man schreibt ...
+Idiomas	Como se escribe...?	Wie schreibt man...?
+Idiomas	con acento	mit Akzent
+Idiomas	con dos puntos	mit Umlaut
+Palabras	la palabra	das Wort
+Palabras	entonces	dann
+Palabras	también	auch
+Palabras	pero	aber
+Palabras	donde	wo
+Palabras	cuándo	wann
+Palabras	quién	wer
+Palabras	por qué	warum
+Palabras	seguro	sicher
+Palabras	Claro!	Ja, natürlich!
+Palabras	pero	aber
+Palabras	además	außerdem
+Palabras	ahora	jetzt
+Palabras	con	mit
+Palabras	siempre	immer
+Palabras	Qué?	Was für ein? Was?
+Palabras	nada	nichts
+Palabras	Quién?	Wer?
+Palabras	trabajar	arbeiten
+Palabras	en	in, auf, an
+Palabras	quizás	vielleicht
+Palabras	escuchar algo	etw. hören
+Palabras	tener	haben
+Palabras	contestar	antworten
+Palabras	preguntar	fragen
+Palabras	el chico / la chica	der Junge / das Mädchen
+Palabras	Adelante!	Herein!
+Palabras	Qué pasa?	Was ist los?
+Palabras	el problema	das Problem
+Palabras	buscar algo	etw. suchen
+Palabras	nuevo	neu
+Palabras	largo	lang
+Palabras	genial	großartig
+Palabras	diferente	anders
+Palabras	importante	wichtig
+Palabras	malo	schlecht
+Palabras	divertido	lustig
+Palabras	serio	ernst
+Palabras	fuerte	stark
+Palabras	fácil	einfach
+Palabras	difícil	schwierig
+Palabras	pobre	arm
+Palabras	rico	reich
+Palabras	lindo/linda	schön
+Palabras	feo	hässlich
+Palabras	alto	hoch
+Palabras	pequeño/pequeña	klein
+Palabras	grande	groß
+Palabras	viejo	alt
+Palabras	joven	jung
+Palabras	amable	freundlich, nett
+Palabras	divertido	lustig
+Palabras	malo	böse, gemein
+Palabras	simpático	sympathisch
+Palabras	el secreto	das Geheimnis
+Palabras	la idea	die Idee
+Palabras	la sorpresa	die Überraschung
+Tiempo	ahora	jetzt
+Tiempo	hoy	heute
+Tiempo	mañana	morgen
+Tiempo	ayer	gestern
+Tiempo	el segundo	die Sekunde
+Tiempo	el minuto	die Minute
+Tiempo	la hora	die Stunde, die Uhrzeit
+Tiempo	el dia	der Tag
+Tiempo	la semana	die Woche
+Tiempo	el mes	der Monat
+Tiempo	el año	das Jahr
+Tiempo	temprano	früh
+Tiempo	tarde	spät
+Tiempo	lunes	Montag
+Tiempo	martes	Dienstag
+Tiempo	miércoles	Mittwoch
+Tiempo	jueves	Donnerstag
+Tiempo	viernes	Freitag
+Tiempo	sábado	Samstag
+Tiempo	domingo	Sonntag
+Tiempo	la primavera	der Frühling
+Tiempo	el verano	der Sommer
+Tiempo	el otoño	der Herbst
+Tiempo	el invierno	der Winter
+Tiempo	enero	Januar
+Tiempo	febrero	Februar
+Tiempo	marzo	März
+Tiempo	abril	April
+Tiempo	mayo	Mai
+Tiempo	junio	Juni
+Tiempo	julio	Juli
+Tiempo	agosto	August
+Tiempo	septiembre	September
+Tiempo	octubre	Oktober
+Tiempo	noviembre	November
+Tiempo	diciembre	Dezember
+Tiempo	el tiempo	die Zeit
+Tiempo	¿Qué hora es?	Wie spät ist es?
+Numeros	el número	die Nummer, die Zahl
+Numeros	uno	eins
+Numeros	dos	zwei
+Numeros	tres	drei
+Numeros	cuatro	vier
+Numeros	cinco	fünf
+Numeros	seis	sechs
+Numeros	siete	sieben
+Numeros	ocho	acht
+Numeros	nueve	neun
+Numeros	diez	zehn
+Numeros	once	elf
+Numeros	doce	zwölf
+Numeros	trece	dreizehn
+Numeros	catorce	vierzehn
+Numeros	quince	fünfzehn
+Numeros	dieciséis	sechszehn
+Numeros	diecisiete	siebzehn
+Numeros	dieciocho	achtzehn
+Numeros	diecinueve	neunzehn
+Numeros	veinte	zwanzig
+Numeros	treinta	dreißig
+Numeros	cuarenta	vierzig
+Numeros	cincuenta	fünfzig
+Numeros	sesenta	sechzig
+Numeros	setenta	siebzig
+Numeros	ochenta	achtzig
+Numeros	noventa	neunzig
+Numeros	cien	hundert
+Numeros	doscientos	zweihundert
+Numeros	mil	tausend
+Numeros	millón	Million
