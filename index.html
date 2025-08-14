@@ -1,27 +1,26 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tap‑to‑Vocab (DE ↔ ES)</title>
-  <style>
-    body { font: 17px/1.5 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
-    a { text-decoration: none; }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
 <body>
-  <h1>Tap‑to‑Vocab Starter (Deutsch ↔ Español)</h1>
-  <ol>
-    <li>Öffne <a href="./builder.html">builder.html</a>, um NFC‑Links zu erzeugen.</li>
-    <li>Schreibe die erzeugten URLs auf NFC‑Sticker (Datensatz‑Typ: URL).</li>
-    <li>Jede URL öffnet <code>vocab.html</code> und übernimmt Wort/Modus aus den Parametern.</li>
-  </ol>
-  <p>Demo‑Links:</p>
-  <ul>
-    <li><a href="./vocab.html?w=gato&de=Katze&lang=es-ES&mode=prompt-de">Deutsch → Spanisch (Katze → gato)</a></li>
-    <li><a href="./vocab.html?w=rojo&de=rot&lang=es-ES&mode=prompt-es">Spanisch → Deutsch (rojo → rot)</a></li>
-    <li><a href="./vocab.html?w=escuela&de=Schule&lang=es-ES&mode=listen-spell-es">Anhören (ES) → escuela schreiben</a></li>
-    <li><a href="./vocab.html?de=Schule&mode=listen-spell-de">Anhören (DE) → Schule schreiben</a></li>
-  </ul>
+  <div class="container">
+    <div class="card">
+      <h1>Tap-to-Vocab</h1>
+      <h2>Tap an NFC tag → open a category → hear the Spanish word.</h2>
+      <div class="grid" style="margin-top:14px;">
+        <a class="btn" href="/colors/">🎨 Colors</a>
+        <a class="btn" href="/animals/">🦊 Animals</a>
+        <a class="btn" href="/numbers/">🔢 Numbers</a>
+      </div>
+      <hr />
+      <div class="footer">
+        Add categories by adding rows in <code>/data/words.tsv</code> and creating a folder to route (e.g., <code>/food/</code>).
+      </div>
+    </div>
+  </div>
 </body>
 </html>
