@@ -20,11 +20,7 @@ html,body {
 
 a { color: var(--accent); text-decoration: none; }
 
-.container {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 16px;
-}
+.container { max-width: 760px; margin: 0 auto; padding: 16px; }
 
 .card {
   background: var(--card);
@@ -33,158 +29,93 @@ a { color: var(--accent); text-decoration: none; }
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
 }
 
-h1 {
-  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-  margin: 0 0 12px;
-}
+h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; }
+h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted); font-weight: 600; }
 
-h2 {
-  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-  margin-top: 0;
-  color: var(--muted);
-  font-weight: 600;
-}
-
-.grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: #1a2350;
-  color: var(--ink);
-  border: 1px solid #2a3a80;
-  cursor: pointer;
-  font-weight: 600;
-  user-select:none;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 16px; border-radius: 12px;
+  background: #1a2350; color: var(--ink); border: 1px solid #2a3a80;
+  cursor: pointer; font-weight: 600; user-select:none;
 }
 .btn:active { transform: translateY(1px); }
 .btn.secondary { background: transparent; border-color: #3a4b90; }
 
-.controls {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top: 12px;
-}
+.controls { display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
 
 .word-card {
-  text-align: center;
-  padding: 24px;
-  border-radius: 16px;
-  background: #121a3a;
-  border: 1px solid #23306b;
+  text-align: center; padding: 24px; border-radius: 16px;
+  background: #121a3a; border: 1px solid #23306b;
 }
 
 .big { font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; letter-spacing: .5px; }
-.sub { font-size: clamp(1rem, 3.5vw, 1.2rem); color: var(--muted); margin-top: 6px; }
+
+/* German translation – hidden by default, shown on click; slightly larger & yellow */
+.sub.translation {
+  display: none;
+  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+  color: #ffd54a;
+  margin-top: 6px;
+  font-weight: 700;
+}
+.sub.translation.shown { display: block; }
 
 .badge {
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background:#0f1a46;
-  border:1px solid #243688;
-  color: var(--ink);
-  font-size: .9rem;
+  display:inline-flex; align-items:center; gap:8px; padding: 6px 10px;
+  border-radius: 999px; background:#0f1a46; border:1px solid #243688;
+  color: var(--ink); font-size: .9rem;
 }
 
 hr { border: none; height: 1px; background: #24336d; margin: 16px 0; }
-
 input[type="checkbox"] { transform: scale(1.2); margin-right: 8px; }
 
 /* ---------- Build mode ---------- */
-.build-wrap { margin-top: 14px; display:block; } /* always visible in JS; safe default */
+.build-wrap { margin-top: 14px; display:block; } /* JS ensures it's on */
 .build-slots {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:12px;
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-bottom:12px;
 }
 .slot {
-  min-width: 34px;
-  min-height: 44px;
-  padding: 8px 10px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border-radius: 10px;
-  border: 1px dashed #3a4b90;
-  background:#0f1540;
-  font-weight: 800;
-  font-size: 1.3rem;
+  min-width: 34px; min-height: 44px; padding: 8px 10px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border-radius: 10px; border: 1px dashed #3a4b90; background:#0f1540;
+  font-weight: 800; font-size: 1.3rem;
 }
 
 /* Letter bank */
-.build-bank {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
+.build-bank { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
 
 /* Each letter button */
 .letter {
-  padding:10px 12px;
-  border-radius:10px;
-  background:#1a2350;
-  border:1px solid #2a3a80;
-  cursor:pointer;
-  font-weight:800;
-  font-size:1.1rem;
-  user-select:none;
+  padding:10px 12px; border-radius:10px; background:#1a2350; border:1px solid #2a3a80;
+  cursor:pointer; font-weight:800; font-size:1.1rem; user-select:none;
   animation: pop 160ms ease-out;
 }
 
 /* Keep used letters in place (no layout shift), just fade & disable */
-.letter.used {
-  opacity: 0.28;
-  pointer-events: none;
-}
+.letter.used { opacity: 0.28; pointer-events: none; }
 
 /* Tiny shake when a wrong letter is clicked */
-.letter.wrong {
-  animation: tv-shake 180ms ease-in-out;
-}
+.letter.wrong { animation: tv-shake 180ms ease-in-out; }
 
 /* Success feedback on the slots row */
-.success {
-  animation: bounce 400ms ease-in-out;
-  background:#0f1a46;
-  border-color:#1dd45f;
-}
+.success { animation: bounce 400ms ease-in-out; background:#0f1a46; border-color:#1dd45f; }
 
 /* Error/info box (if TSV missing, etc.) */
-.error {
-  background:#2a1030;
-  border:1px solid #6a2a70;
-  padding:12px;
-  border-radius:12px;
-}
+.error { background:#2a1030; border:1px solid #6a2a70; padding:12px; border-radius:12px; }
 
 /* ---------- Animations ---------- */
 @keyframes pop {
   from { transform: scale(.9); opacity:.0; }
   to   { transform: scale(1);  opacity:1;  }
 }
-
 @keyframes bounce {
   0%   { transform: scale(1) }
   30%  { transform: scale(1.06) }
   60%  { transform: scale(.98) }
   100% { transform: scale(1) }
 }
-
 @keyframes tv-shake {
   0%   { transform: translateX(0); }
   25%  { transform: translateX(-3px); }
