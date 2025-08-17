@@ -1,30 +1,30 @@
 category	es	de
-Saludar	Hola!	Hallo!
-Saludar	Buenos días!	Guten Morgen! Guten Tag!
-Saludar	Buenas tardes!	Guten Tag! (Nachmittag)
-Saludar	Buenas noches!	Guten Abend! Gute Nacht!
-Saludar	Qué tal?	Wie geht's?
-Saludar	Como estás? 	Wie geht's?
+Saludar	¡Hola!	Hallo!
+Saludar	¡Buenos días!	Guten Morgen! Guten Tag!
+Saludar	¡Buenas tardes!	Guten Tag! (Nachmittag)
+Saludar	¡Buenas noches!	Guten Abend! Gute Nacht!
+Saludar	¿Qué tal?	Wie geht's?
+Saludar	¿Como estás? 	Wie geht's?
 Saludar	Estoy bien, gracias	Mie geht es gut, danke
 Saludar	muy	sehr
 Saludar	muy mal	sehr schlecht
 Saludar	Estoy fatal	Mir geht's ziemlich schlecht  
 Saludar	mejor	besser
 Saludar	Gracias	Danke
-Saludar	Y tu?	Und du?
+Saludar	¿Y tu?	Und du?
 Saludar	tambien	auch
-Saludar	Como te llamas?	Wie heißt du?
+Saludar	¿Como te llamas?	Wie heißt du?
 Saludar	Me llamo Pablo	Ich heiße Pablo
 Saludar	Yo soy Pablo	Ich bin Pablo
 Saludar	Mi nombre es Pablo	Mein Name ist Pablo
-Saludar	De donde eres?	Woher kommst du?
+Saludar	¿De donde eres?	Woher kommst du?
 Saludar	Soy de Alemania	Ich komme aus Deutschland
 Saludar	Soy de Madrid	Ich komme aus Madrid
-Saludar	Cuántos años tienes?	Wie alt bist du?
+Saludar	¿Cuántos años tienes?	Wie alt bist du?
 Saludar	Tengo once años	Ich bin 11 Jahre alt
-Saludar	Adios!	Auf Wiedersehen!; Tschüs!
-Saludar	Hasta luego!	Bis später!
-Saludar	Como es tu apellido?	Wie ist dein Nachname?
+Saludar	¡Adios!	Auf Wiedersehen!; Tschüs!
+Saludar	¡Hasta luego!	Bis später!
+Saludar	¿Como es tu apellido?	Wie ist dein Nachname?
 Saludar	el apellido	der Nachname
 Saludar	de acuerdo	alles klar
 Colores	negro	schwarz
@@ -76,7 +76,7 @@ Casa_Familia	la amiga	die Freundin
 Casa_Familia	la mascota	das Haustier
 Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
 Casa_Familia	tu	dein/deine
-Casa_Familia	Como se llama tu mascota?	Wie heisst Dein Haustier?
+Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
 Casa_Familia	la mochila	der Rucksack
 Casa_Familia	los zapatos	die Schuhe
 Casa_Familia	el juego	das Spiel
@@ -95,7 +95,7 @@ Idiomas	el español	Spanisch, die spanische Sprache
 Idiomas	el idioma	die Sprache
 Idiomas	estudiar	lernen
 Idiomas	Se escribe...	Man schreibt ...
-Idiomas	Como se escribe...?	Wie schreibt man...?
+Idiomas	¿Como se escribe?	Wie schreibt man das?
 Idiomas	con acento	mit Akzent
 Idiomas	con dos puntos	mit Umlaut
 Palabras	la palabra	das Wort
@@ -107,15 +107,15 @@ Palabras	cuándo	wann
 Palabras	quién	wer
 Palabras	por qué	warum
 Palabras	seguro	sicher
-Palabras	Claro!	Ja, natürlich!
+Palabras	¡Claro!	Ja, natürlich!
 Palabras	pero	aber
 Palabras	además	außerdem
 Palabras	ahora	jetzt
 Palabras	con	mit
 Palabras	siempre	immer
-Palabras	Qué?	Was für ein? Was?
+Palabras	¿Qué?	Was für ein? Was?
 Palabras	nada	nichts
-Palabras	Quién?	Wer?
+Palabras	¿Quién?	Wer?
 Palabras	trabajar	arbeiten
 Palabras	en	in, auf, an
 Palabras	quizás	vielleicht
@@ -125,7 +125,7 @@ Palabras	contestar	antworten
 Palabras	preguntar	fragen
 Palabras	el chico / la chica	der Junge / das Mädchen
 Palabras	Adelante!	Herein!
-Palabras	Qué pasa?	Was ist los?
+Palabras	¿Qué pasa?	Was ist los?
 Palabras	el problema	das Problem
 Palabras	buscar algo	etw. suchen
 Palabras	nuevo	neu
