@@ -6,27 +6,27 @@ Saludar	¡Buenas noches!	Guten Abend! Gute Nacht!
 Saludar	¿Qué tal?	Wie geht's?
 Saludar	¿Como estás? 	Wie geht's?
 Saludar	Estoy bien, gracias	Mie geht es gut, danke
-Saludar	muy	sehr
+Saludar	muy bien	sehr gut
 Saludar	muy mal	sehr schlecht
-Saludar	Estoy fatal	Mir geht's ziemlich schlecht  
-Saludar	mejor	besser
+ASaludar	Estoy fatal	Mir geht's ziemlich schlecht  
+ASaludar	mejor	besser
 Saludar	Gracias	Danke
 Saludar	¿Y tu?	Und du?
-Saludar	tambien	auch
+Saludar	Yo tambien	ich auch (mir auch)
 Saludar	¿Como te llamas?	Wie heißt du?
 Saludar	Me llamo Pablo	Ich heiße Pablo
 Saludar	Yo soy Pablo	Ich bin Pablo
-Saludar	Mi nombre es Pablo	Mein Name ist Pablo
+ASaludar	Mi nombre es Pablo	Mein Name ist Pablo
 Saludar	¿De donde eres?	Woher kommst du?
 Saludar	Soy de Alemania	Ich komme aus Deutschland
 Saludar	Soy de Madrid	Ich komme aus Madrid
 Saludar	¿Cuántos años tienes?	Wie alt bist du?
 Saludar	Tengo once años	Ich bin 11 Jahre alt
-Saludar	¡Adios!	Auf Wiedersehen!; Tschüs!
+ASaludar	¡Adios!	Auf Wiedersehen!; Tschüs!
 Saludar	¡Hasta luego!	Bis später!
-Saludar	¿Como es tu apellido?	Wie ist dein Nachname?
-Saludar	el apellido	der Nachname
-Saludar	de acuerdo	alles klar
+ASaludar	¿Como es tu apellido?	Wie ist dein Nachname?
+ASaludar	el apellido	der Nachname
+ASaludar	de acuerdo	alles klar
 Colores	negro	schwarz
 Colores	blanco	weiß
 Colores	naranja	orange
