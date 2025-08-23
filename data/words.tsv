@@ -1,30 +1,38 @@
 category	es	de
-Saludar	¡Hola!	Hallo!
+Saludar	el día	der Tag
 Saludar	¡Buenos días!	Guten Morgen! Guten Tag!
-Saludar	¡Buenas tardes!	Guten Tag! (Nachmittag)
+Saludar	¡Buenas tardes!	Guten Tag! Guten Abend!
 Saludar	¡Buenas noches!	Guten Abend! Gute Nacht!
+Saludar	¡Hola!	Hallo!
 Saludar	¿Qué tal?	Wie geht's?
 Saludar	¿Como estás? 	Wie geht's?
+Saludar	bien	gut
 Saludar	Estoy bien, gracias	Mie geht es gut, danke
 Saludar	muy bien	sehr gut
-Saludar	muy mal	sehr schlecht
-ASaludar	Estoy fatal	Mir geht's ziemlich schlecht  
+Saludar	mal	schlecht
+Saludar	fatal	(sehr) schlecht  
 ASaludar	mejor	besser
 Saludar	Gracias	Danke
 Saludar	¿Y tu?	Und du?
 Saludar	Yo tambien	ich auch (mir auch)
+Saludar	Yo Ich
 Saludar	¿Como te llamas?	Wie heißt du?
 Saludar	Me llamo Pablo	Ich heiße Pablo
 Saludar	No, es una broma, me llamo Bjarne	Nein, das ist ein Witz, ich heiße Bjarne
 Saludar	Yo soy Bjarne	Ich bin Bjarne
+Saludar	Soy Bjarne	Ich bin Bjarne
 ASaludar	Mi nombre es Pablo	Mein Name ist Pablo
 Saludar	¿De donde eres?	Woher kommst du?
 Saludar	Soy de Alemania	Ich komme aus Deutschland
 Saludar	Soy de Madrid	Ich komme aus Madrid
 Saludar	¿Cuántos años tienes?	Wie alt bist du?
 Saludar	Tengo once años	Ich bin 11 Jahre alt
-ASaludar	¡Adios!	Auf Wiedersehen!; Tschüs!
+Saludar	¡Adios!	Auf Wiedersehen!; Tschüs!
 Saludar	¡Hasta luego!	Bis später!
+Saludar	Perdón	Entschuldigung
+Saludar	se dice	man sagt..; es heißt...
+Saludar	¿Como se dice "buenos días" en alemán?	Was heißt "buenos días" auf deutsch?
+Saludar	En alemán "buenos días" se dice "Guten Tag"	"Buenos días" heißt "Guten Tag" auf deutsch
 ASaludar	¿Como es tu apellido?	Wie ist dein Nachname?
 ASaludar	el apellido	der Nachname
 ASaludar	de acuerdo	alles klar
