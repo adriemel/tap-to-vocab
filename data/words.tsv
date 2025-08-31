@@ -49,54 +49,60 @@ Colores	rojo	rot
 Colores	morado	violett
 Animales	el perro	der Hund
 Animales	el gato	die Katze
-Animales	el elefante	der Elefant
-Animales	el oso	der Bär
+Animales	la tortuga	die Schildkröte
+Animales	el serpiente	die Schlange
+Animales	el toro	der Stier
+AAnimales	el elefante	der Elefant
+AAnimales	el oso	der Bär
 Animales	el caballo	das Pferd
-Animales	el burro	der Esel
-Animales	la abeja	die Biene
-Animales	la tarantula	die Vogelspinne
-Animales	el mono	der Affe
-Animales	la rana	der Frosch
-Animales	la vaca	die Kuh
-Animales	la oveja	das Schaf
+AAnimales	el burro	der Esel
+AAnimales	la abeja	die Biene
+AAnimales	la tarantula	die Vogelspinne
+AAnimales	el mono	der Affe
+AAnimales	la rana	der Frosch
+AAnimales	la vaca	die Kuh
+AAnimales	la oveja	das Schaf
 Animales	mi perro	mein Hund
-Casa_Familia	en casa	zu Hause
-Casa_Familia	el móvil	das Handy
-Casa_Familia	el teléfono	das Telefon
-Casa_Familia	la silla	der Stuhl
-Casa_Familia	la cama	das Bett
-Casa_Familia	la ciudad	die Stadt
-Casa_Familia	el mundo	die Welt
-Casa_Familia	el colegio	die Schule
-Casa_Familia	la escuela	die (Grund)Schule
-Casa_Familia	el profesor	der Lehrer
-Casa_Familia	la profesora	die Lehrerin
-Casa_Familia	la familia	die Familie
-Casa_Familia	la madre	die Mutter
-Casa_Familia	el padre	der Vater
-Casa_Familia	los padres	die Eltern
-Casa_Familia	el hermano	der Bruder
-Casa_Familia	la hermana	die Schwester
-Casa_Familia	los hermanos	die Geschwister
+ACasa_Familia	en casa	zu Hause
+ACasa_Familia	el móvil	das Handy
+ACasa_Familia	el teléfono	das Telefon
+ACasa_Familia	la silla	der Stuhl
+ACasa_Familia	la cama	das Bett
+ACasa_Familia	la ciudad	die Stadt
+ACasa_Familia	el mundo	die Welt
+ACasa_Familia	el colegio	die Schule
+ACasa_Familia	la escuela	die (Grund)Schule
+ACasa_Familia	el profesor	der Lehrer
+ACasa_Familia	la profesora	die Lehrerin
+ACasa_Familia	la familia	die Familie
+ACasa_Familia	la madre	die Mutter
+ACasa_Familia	el padre	der Vater
+ACasa_Familia	los padres	die Eltern
+ACasa_Familia	el hermano	der Bruder
+ACasa_Familia	la hermana	die Schwester
+ACasa_Familia	los hermanos	die Geschwister
 Casa_Familia	el amigo	der Freund
 Casa_Familia	mi amigo	mein Freund
-Casa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
+ACasa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
 Casa_Familia	la amiga	die Freundin
-Casa_Familia	la mascota	das Haustier
-Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
-Casa_Familia	tu	dein/deine
-Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
-Casa_Familia	la mochila	der Rucksack
-Casa_Familia	los zapatos	die Schuhe
-Casa_Familia	el juego	das Spiel
-Casa_Familia	el barco	das Schiff
-Casa_Familia	el hotel	das Hotel
-Casa_Familia	el restaurante	das Restaurant
-Casa_Familia	el museo	das Museum
-Casa_Familia	la casa	das Haus
-Casa_Familia	el número	die Nummer, die Zahl
-Casa_Familia	las nubes	die Wolken
-Casa_Familia	la isla	die Insel
+Casa_Familia	el primo	der Cousin
+Casa_Familia	la prima	die Cousine
+Casa_Familia	el chico	der Junge
+Casa_Familia	la chica	das Mädchen
+ACasa_Familia	la mascota	das Haustier
+ACasa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
+ACasa_Familia	tu	dein/deine
+ACasa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
+ACasa_Familia	la mochila	der Rucksack
+ACasa_Familia	los zapatos	die Schuhe
+ACasa_Familia	el juego	das Spiel
+ACasa_Familia	el barco	das Schiff
+ACasa_Familia	el hotel	das Hotel
+ACasa_Familia	el restaurante	das Restaurant
+ACasa_Familia	el museo	das Museum
+ACasa_Familia	la casa	das Haus
+ACasa_Familia	las nubes	die Wolken
+ACasa_Familia	la isla	die Insel
 Idiomas	hablar	sprechen, reden
 Idiomas	el alemán	Deutsch, die deutsche Sprache
 Idiomas	el inglés	Englisch, die englische Sprache
