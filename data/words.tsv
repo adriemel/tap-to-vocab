@@ -28,14 +28,16 @@ Saludar	Soy de Alemania	Ich komme aus Deutschland
 Saludar	Soy de Madrid	Ich komme aus Madrid
 Saludar	¿Cuántos años tienes?	Wie alt bist du?
 Saludar	Tengo once años	Ich bin 11 Jahre alt
+Saludar	no es correcto	das ist nicht richtig
 Saludar	¡Adios!	Auf Wiedersehen!; Tschüs!
 Saludar	¡Hasta luego!	Bis später!
 Saludar	Perdón	Entschuldigung
 Saludar	se dice	man sagt..; es heißt...
 Saludar	¿Como se dice 'buenos días' en alemán?	Was heißt 'buenos días' auf deutsch?
 Saludar	En alemán 'buenos días' se dice 'Guten Tag'	'Buenos días' heißt 'Guten Tag' auf deutsch
-ASaludar	¿Como es tu apellido?	Wie ist dein Nachname?
-ASaludar	el apellido	der Nachname
+Saludar	¿Como es tu apellido?	Wie ist dein Nachname?
+Saludar	el apellido	der Nachname
+Saludar	Me llamo Bjarne y mi apellido es Driemel	Ich heiße Bjarne und mit Nachnamen Driemel
 ASaludar	de acuerdo	alles klar
 Colores	negro	schwarz
 Colores	blanco	weiß
@@ -48,21 +50,28 @@ Colores	marrón	braun
 Colores	amarillo	gelb
 Colores	rojo	rot
 Colores	morado	violett
+Colores	¿De qué color es la tortuga?	Welche Farbe hat die Schildkröte?
+Colores	La tortuga es de color verde	Die Schildkröte ist grün
+Animales	el animal	das Tier
 Animales	el perro	der Hund
 Animales	el gato	die Katze
 Animales	la tortuga	die Schildkröte
 Animales	el serpiente	die Schlange
 Animales	el toro	der Stier
-AAnimales	el elefante	der Elefant
-AAnimales	el oso	der Bär
+Animales	el elefante	der Elefant
+Animales	el oso	der Bär
 Animales	el caballo	das Pferd
 AAnimales	el burro	der Esel
 AAnimales	la abeja	die Biene
 AAnimales	la tarantula	die Vogelspinne
 AAnimales	el mono	der Affe
-AAnimales	la rana	der Frosch
-AAnimales	la vaca	die Kuh
-AAnimales	la oveja	das Schaf
+Animales	la rana	der Frosch
+Animales	el toro	der Stier
+Animales	la vaca	die Kuh
+Animales	la foca	die Robbe
+Animales	la oveja	das Schaf
+Animales	la jirafa	die Giraffe
+Animales	el koala	der Koala
 Animales	mi perro	mein Hund
 ACasa_Familia	en casa	zu Hause
 ACasa_Familia	el móvil	das Handy
@@ -94,16 +103,22 @@ ACasa_Familia	la mascota	das Haustier
 ACasa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
 ACasa_Familia	tu	dein/deine
 ACasa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
-ACasa_Familia	la mochila	der Rucksack
-ACasa_Familia	los zapatos	die Schuhe
+Casa_Familia	la mochila	der Rucksack
+Casa_Familia	el zapato	der Schuh
 ACasa_Familia	el juego	das Spiel
-ACasa_Familia	el barco	das Schiff
+Casa_Familia	el barco	das Schiff
 ACasa_Familia	el hotel	das Hotel
 ACasa_Familia	el restaurante	das Restaurant
 ACasa_Familia	el museo	das Museum
 ACasa_Familia	la casa	das Haus
-ACasa_Familia	las nubes	die Wolken
-ACasa_Familia	la isla	die Insel
+Casa_Familia	la nube	die Wolke
+Casa_Familia	la playa	der Strand
+Casa_Familia	la isla	die Insel
+Casa_Familia	el dado	der Würfel
+Casa_Familia	el sol	die Sonne
+Casa_Familia	la luna	der Mond
+Casa_Familia	el tomate	die Tomate
+Casa_Familia	el queso	der Käse
 Idiomas	hablar	sprechen, reden
 Idiomas	el alemán	Deutsch, die deutsche Sprache
 Idiomas	el inglés	Englisch, die englische Sprache
