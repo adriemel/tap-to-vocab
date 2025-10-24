@@ -12,7 +12,7 @@ Saludar	muy bien	sehr gut
 Saludar	mal	schlecht
 Saludar	fatal	(sehr) schlecht
 Saludar	más o menos	mehr oder weniger (mittelmässig)
-ASaludar	mejor	besser
+Saludar	mejor	besser
 Saludar	Gracias	Danke
 Saludar	¿Y tu?	Und du?
 Saludar	Yo tambien	ich auch (mir auch)
@@ -22,7 +22,7 @@ Saludar	Me llamo Pablo	Ich heiße Pablo
 Saludar	No, es una broma, me llamo Bjarne	Nein, das ist ein Witz, ich heiße Bjarne
 Saludar	Yo soy Bjarne	Ich bin Bjarne
 Saludar	Soy Bjarne	Ich bin Bjarne
-ASaludar	Mi nombre es Pablo	Mein Name ist Pablo
+Saludar	Mi nombre es Pablo	Mein Name ist Pablo
 Saludar	¿De donde eres?	Woher kommst du?
 Saludar	Soy de Alemania	Ich komme aus Deutschland
 Saludar	Soy de Madrid	Ich komme aus Madrid
@@ -38,7 +38,7 @@ Saludar	En alemán 'buenos días' se dice 'Guten Tag'	'Buenos días' heißt 'Gut
 Saludar	¿Como es tu apellido?	Wie ist dein Nachname?
 Saludar	el apellido	der Nachname
 Saludar	Me llamo Bjarne y mi apellido es Driemel	Ich heiße Bjarne und mit Nachnamen Driemel
-ASaludar	de acuerdo	alles klar
+Saludar	de acuerdo	alles klar
 Colores	negro	schwarz
 Colores	blanco	weiß
 Colores	naranja	orange
@@ -61,10 +61,10 @@ Animales	el toro	der Stier
 Animales	el elefante	der Elefant
 Animales	el oso	der Bär
 Animales	el caballo	das Pferd
-AAnimales	el burro	der Esel
-AAnimales	la abeja	die Biene
-AAnimales	la tarantula	die Vogelspinne
-AAnimales	el mono	der Affe
+Animales	el burro	der Esel
+Animales	la abeja	die Biene
+Animales	la tarantula	die Vogelspinne
+Animales	el mono	der Affe
 Animales	la rana	der Frosch
 Animales	el toro	der Stier
 Animales	la vaca	die Kuh
@@ -73,44 +73,44 @@ Animales	la oveja	das Schaf
 Animales	la jirafa	die Giraffe
 Animales	el koala	der Koala
 Animales	mi perro	mein Hund
-ACasa_Familia	en casa	zu Hause
-ACasa_Familia	el móvil	das Handy
-ACasa_Familia	el teléfono	das Telefon
-ACasa_Familia	la silla	der Stuhl
-ACasa_Familia	la cama	das Bett
-ACasa_Familia	la ciudad	die Stadt
-ACasa_Familia	el mundo	die Welt
-ACasa_Familia	el colegio	die Schule
-ACasa_Familia	la escuela	die (Grund)Schule
-ACasa_Familia	el profesor	der Lehrer
-ACasa_Familia	la profesora	die Lehrerin
-ACasa_Familia	la familia	die Familie
-ACasa_Familia	la madre	die Mutter
-ACasa_Familia	el padre	der Vater
-ACasa_Familia	los padres	die Eltern
-ACasa_Familia	el hermano	der Bruder
-ACasa_Familia	la hermana	die Schwester
-ACasa_Familia	los hermanos	die Geschwister
+Casa_Familia	en casa	zu Hause
+Casa_Familia	el móvil	das Handy
+Casa_Familia	el teléfono	das Telefon
+Casa_Familia	la silla	der Stuhl
+Casa_Familia	la cama	das Bett
+Casa_Familia	la ciudad	die Stadt
+Casa_Familia	el mundo	die Welt
+Casa_Familia	el colegio	die Schule
+Casa_Familia	la escuela	die (Grund)Schule
+Casa_Familia	el profesor	der Lehrer
+Casa_Familia	la profesora	die Lehrerin
+Casa_Familia	la familia	die Familie
+Casa_Familia	la madre	die Mutter
+Casa_Familia	el padre	der Vater
+Casa_Familia	los padres	die Eltern
+Casa_Familia	el hermano	der Bruder
+Casa_Familia	la hermana	die Schwester
+Casa_Familia	los hermanos	die Geschwister
 Casa_Familia	el amigo	der Freund
 Casa_Familia	mi amigo	mein Freund
-ACasa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
+Casa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
 Casa_Familia	la amiga	die Freundin
 Casa_Familia	el primo	der Cousin
 Casa_Familia	la prima	die Cousine
 Casa_Familia	el chico	der Junge
 Casa_Familia	la chica	das Mädchen
-ACasa_Familia	la mascota	das Haustier
-ACasa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
-ACasa_Familia	tu	dein/deine
-ACasa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
+Casa_Familia	la mascota	das Haustier
+Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
+Casa_Familia	tu	dein/deine
+Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
 Casa_Familia	la mochila	der Rucksack
 Casa_Familia	el zapato	der Schuh
-ACasa_Familia	el juego	das Spiel
+Casa_Familia	el juego	das Spiel
 Casa_Familia	el barco	das Schiff
-ACasa_Familia	el hotel	das Hotel
-ACasa_Familia	el restaurante	das Restaurant
-ACasa_Familia	el museo	das Museum
-ACasa_Familia	la casa	das Haus
+Casa_Familia	el hotel	das Hotel
+Casa_Familia	el restaurante	das Restaurant
+Casa_Familia	el museo	das Museum
+Casa_Familia	la casa	das Haus
 Casa_Familia	la nube	die Wolke
 Casa_Familia	la playa	der Strand
 Casa_Familia	la isla	die Insel
@@ -256,3 +256,54 @@ Numeros	cien	hundert
 Numeros	doscientos	zweihundert
 Numeros	mil	tausend
 Numeros	millón	Million
+Unidad2	¿De qué color es / son…?	Welche Farbe hat / haben…?
+Unidad2	El gato es de color nego	Die Katze ist schwarz
+Unidad2	Veo…	Ich sehe…
+Unidad2	veo un perro, es de color blanco	ich sehe einen Hund, er ist weiß
+Unidad2	¿Qué ves? 	Was siehst du?
+Unidad2	¿Qué es? 	Was ist das?
+Unidad2	la cosa (la cosita)	die (kleine) Sache
+Unidad2	No es correcto. 	Das ist nicht richtig.
+Unidad2	mi 	mein / meine
+Unidad2	el mejor amigo	der beste Freund
+Unidad2	la mejor amiga	die beste Freundin
+Unidad2	la mascota 	das Haustier
+Unidad2	el lugar 	der Ort, der Platz
+Unidad2	la ciudad 	die Stadt
+Unidad2	favorito, favorita 	Lieblings-
+Unidad2	mi animal favorito es el perro	Mein Lieblingstier ist der Hund
+Unidad2	el padre 	der Vater
+Unidad2	la madre 	die Mutter
+Unidad2	el hermano	der Bruder
+Unidad2	la hermana	die Schwester
+Unidad2	mis padres	meine Eltern
+Unidad2	¿Cómo se llama…? 	Wie heißt…?
+Unidad2	¿Cómo se llama tu madre? 	Wie heißt deine Mutter?
+Unidad2	¿Cuál es el apellido de…?	Wie ist der Nachname von..?
+Unidad2	¿Tienes una mascota? 	Hast du ein Haustier?
+Unidad2	el nombre 	der Name
+Unidad2	la edad 	das Alter
+Unidad2	el color favorito 	die Lieblingsfarbe
+Unidad2	el año 	das Jahr
+Unidad2	el número de teléfono 	die Telefonnummer
+Unidad2	el móvil 	das Handy
+Unidad2	(ellos / ellas) son 	(sie) sind
+Unidad2	¿Cuál es tu número de móvil?	Wie lautet deine Handynummer?
+Unidad2	el teléfono 	das Telefon
+Unidad2	el hámster 	der Hamster
+Unidad2	¿Cuántos años tienes? 	Wie alt bist du?
+Unidad2	el profesor / la profesora 	der Lehrer / die Lehrerin
+Unidad2	nosotros / nosotras 	wir
+Unidad2	¿Cuál es tu color favorito? 	Was ist deine Lieblingsfarbe?
+Unidad2	yo soy de Alemania	ich bin aus Deutschland
+Unidad2	tu eres	du bist
+Unidad2	el es	er ist
+Unidad2	ella es	sie ist
+Unidad2	nosotros somos	wir sind
+Unidad2	vosotros sois	ihr seid
+Unidad2	ellos son /ellas son	sie sind
+Unidad2	mira	schau mal
+Unidad2	ahora	jetzt
+Unidad2	¿Verdad?	..nicht wahr?
+Unidad2	¿Qué pasa?	Was geht ab?
+Unidad2	el regalo es para ti	Das Geschenk ist für Dich
