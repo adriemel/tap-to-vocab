@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title id="page-title">Tap-to-Vocab – Category</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <meta name="description" content="Spanish vocabulary practice. Build the word or just listen. Always speaks the Spanish word." />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h1 id="title">Category</h1>
+        <span class="badge" id="cat-badge">—</span>
+        <span class="badge" id="counter">0 / 0</span>
+      </div>
+
+      <div class="word-card" id="word-card">
+        <div class="big" id="word-es">—</div>
+        <div class="sub translation" id="word-de">—</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="btn-hear">▶︎ Hear Spanish</button>
+        <button class="btn secondary" id="btn-prev">← Prev</button>
+        <button class="btn secondary" id="btn-next">Next →</button>
+        <button class="btn secondary" id="btn-shuffle">Shuffle</button>
+        <label class="badge">
+          <input type="checkbox" id="auto-speak" checked />
+          Auto-speak
+        </label>
+        <button class="btn secondary" id="btn-show" title="Show/Hide German">Show</button>
+        <button class="btn secondary" id="btn-clear" title="Clear built letters">Clear</button>
+      </div>
+
+      <div class="build-wrap">
+        <div class="build-slots"></div>
+        <div class="build-bank"></div>
+      </div>
+
+      <div class="error" id="error" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/tapvocab.js"></script>
+  <script> TapVocabTSV.initFromTSV(); </script>
+</body>
+</html>
