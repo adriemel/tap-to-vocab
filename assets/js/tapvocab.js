@@ -178,7 +178,7 @@
       b.addEventListener("click", () => {
         const idx = nextEmptyIndex();
         if (idx < 0) return; // already complete
-        const expectedSlot = slotMap[idx];         // has .expected
+        const expectedSlot = slotMap[idx];          // has .expected
         const expectedChar = expectedSlot.expected; // correct letter at this position
 
         if (ch === expectedChar) {
@@ -199,7 +199,7 @@
               slotsEl.classList.add("success");
               setTimeout(() => slotsEl.classList.remove("success"), 450);
               speakSpanish(word);
-              confettiBurst(slotsEl, 24); // tiny party 🎉
+              confettiBurst(slotsEl, 24);
             } else {
               slotsEl.style.animation = "bounce 200ms ease-in-out";
               setTimeout(() => { slotsEl.style.animation = ""; }, 220);
@@ -239,12 +239,9 @@
     const hearBtn = document.getElementById("btn-hear");
     const nextBtn = document.getElementById("btn-next");
     const prevBtn = document.getElementById("btn-prev");
-    const shuffleBtn = document.getElementById("btn-shuffle");
     const autoSpeakEl = document.getElementById("auto-speak");
     const counterEl = document.getElementById("counter");
-
-    let order = words.map((_, idx) => idx);
-    let shuffled = false;
+    const homeBtn = document.getElementById("btn-home"); // NEW: HOME button
 
     function hideTranslation() {
       elDe.classList.remove("shown");
@@ -252,7 +249,7 @@
     }
 
     function render() {
-      const w = words[order[i]];
+      const w = words[i];
       elEs.textContent = w.es;
       elDe.textContent = w.de;
       counterEl.textContent = (i + 1) + " / " + words.length;
@@ -266,23 +263,16 @@
     function next() { i = (i + 1) % words.length; render(); }
     function prev() { i = (i - 1 + words.length) % words.length; render(); }
 
-    function toggleShuffle() {
-      shuffled = !shuffled;
-      if (shuffled) {
-        order = (function(arr){ for (let j=arr.length-1;j>0;j--){ const k=Math.floor(Math.random()*(j+1)); [arr[j],arr[k]]=[arr[k],arr[j]] } return arr })(words.map((_, idx) => idx));
-        shuffleBtn.classList.add("active");
-      } else {
-        order = words.map((_, idx) => idx);
-        shuffleBtn.classList.remove("active");
-      }
-      i = 0;
-      render();
-    }
-
-    hearBtn.addEventListener("click", () => speakSpanish(words[order[i]].es));
+    hearBtn.addEventListener("click", () => speakSpanish(words[i].es));
     nextBtn.addEventListener("click", next);
     prevBtn.addEventListener("click", prev);
-    shuffleBtn.addEventListener("click", toggleShuffle);
+
+    // HOME button: go one level up (from /colors/ to /)
+    if (homeBtn) {
+      homeBtn.addEventListener("click", () => {
+        window.location.href = "../";
+      });
+    }
 
     if (btnShow) {
       btnShow.addEventListener("click", () => {
