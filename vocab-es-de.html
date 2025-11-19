@@ -55,11 +55,13 @@
     <div id="translation" class="hint"></div>
 
     <p class="row">
+      <!-- new: back to main page -->
+      <button id="backHome" class="ghost">🏠 Zurück zur Übersicht</button>
+
       <button id="speak">🔊 Anhören (Spanisch)</button>
       <button id="reveal" class="ghost">👀 Anzeigen / Verbergen</button>
       <button id="prev" class="ghost">⬅️ Vorheriges</button>
       <button id="next" class="ghost">➡️ Nächstes</button>
-      <button id="🏠 Home" onclick="window.location.href='index.html'">
       <button id="nextCat" class="ghost">⏭️ Nächste Kategorie</button>
       <span id="counter" class="counter" style="display:none">–/–</span>
     </p>
@@ -94,6 +96,7 @@
   const speakBtn=$("speak"), revealBtn=$("reveal"), nextBtn=$("next"), prevBtn=$("prev"), nextCatBtn=$("nextCat");
   const builtEl=$("built"), keysEl=$("keys"), backspaceBtn=$("backspace"), resetBtn=$("reset"), feedback=$("feedback");
   const confettiCanvas=$("confetti"), ctx2d=confettiCanvas.getContext("2d"), counterEl=$("counter"), categoryEl=$("category");
+  const backHomeBtn = $("backHome");
 
   const PROG_KEY = "tsvIndex::" + listFile;
 
@@ -309,6 +312,11 @@
   nextBtn.addEventListener("click", nextFromList);
   prevBtn.addEventListener("click", prevFromList);
   nextCatBtn.addEventListener("click", nextCategory);
+
+  // new: back to categories overview
+  backHomeBtn.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
 
   (async function init(){
     renderHeader(); makePool(); renderKeys();
