@@ -56,15 +56,15 @@ Animales	el animal	das Tier
 Animales	el perro	der Hund
 Animales	el gato	die Katze
 Animales	la tortuga	die Schildkröte
-Animales	el serpiente	die Schlange
+xAnimales	el serpiente	die Schlange
 Animales	el toro	der Stier
 Animales	el elefante	der Elefant
 Animales	el oso	der Bär
 Animales	el caballo	das Pferd
-Animales	el burro	der Esel
-Animales	la abeja	die Biene
-Animales	la tarantula	die Vogelspinne
-Animales	el mono	der Affe
+xAnimales	el burro	der Esel
+xAnimales	la abeja	die Biene
+xAnimales	la tarantula	die Vogelspinne
+xAnimales	el mono	der Affe
 Animales	la rana	der Frosch
 Animales	el toro	der Stier
 Animales	la vaca	die Kuh
@@ -73,15 +73,15 @@ Animales	la oveja	das Schaf
 Animales	la jirafa	die Giraffe
 Animales	el koala	der Koala
 Animales	mi perro	mein Hund
-Casa_Familia	en casa	zu Hause
-Casa_Familia	el móvil	das Handy
-Casa_Familia	el teléfono	das Telefon
-Casa_Familia	la silla	der Stuhl
-Casa_Familia	la cama	das Bett
+xCasa_Familia	en casa	zu Hause
+xCasa_Familia	el móvil	das Handy
+xCasa_Familia	el teléfono	das Telefon
+xCasa_Familia	la silla	der Stuhl
+xCasa_Familia	la cama	das Bett
 Casa_Familia	la ciudad	die Stadt
-Casa_Familia	el mundo	die Welt
-Casa_Familia	el colegio	die Schule
-Casa_Familia	la escuela	die (Grund)Schule
+xCasa_Familia	el mundo	die Welt
+xCasa_Familia	el colegio	die Schule
+xCasa_Familia	la escuela	die (Grund)Schule
 Casa_Familia	el profesor	der Lehrer
 Casa_Familia	la profesora	die Lehrerin
 Casa_Familia	la familia	die Familie
@@ -95,8 +95,8 @@ Casa_Familia	el amigo	der Freund
 Casa_Familia	mi amigo	mein Freund
 Casa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
 Casa_Familia	la amiga	die Freundin
-Casa_Familia	el primo	der Cousin
-Casa_Familia	la prima	die Cousine
+xCasa_Familia	el primo	der Cousin
+xCasa_Familia	la prima	die Cousine
 Casa_Familia	el chico	der Junge
 Casa_Familia	la chica	das Mädchen
 Casa_Familia	la mascota	das Haustier
@@ -130,32 +130,32 @@ Idiomas	¿Como se escribe?	Wie schreibt man das?
 Idiomas	con acento	mit Akzent
 Idiomas	con dos puntos	mit Umlaut
 Palabras	la palabra	das Wort
-Palabras	entonces	dann
+xPalabras	entonces	dann
 Palabras	también	auch
 Palabras	pero	aber
 Palabras	donde	wo
-Palabras	cuándo	wann
+xPalabras	cuándo	wann
 Palabras	quién	wer
-Palabras	por qué	warum
+xPalabras	por qué	warum
 Palabras	seguro	sicher
 Palabras	¡Claro!	Ja, natürlich!
 Palabras	pero	aber
-Palabras	además	außerdem
+xPalabras	además	außerdem
 Palabras	ahora	jetzt
-Palabras	con	mit
-Palabras	siempre	immer
+xPalabras	con	mit
+xPalabras	siempre	immer
 Palabras	¿Qué?	Was für ein? Was?
 Palabras	nada	nichts
 Palabras	¿Quién?	Wer?
-Palabras	trabajar	arbeiten
-Palabras	en	in, auf, an
-Palabras	quizás	vielleicht
-Palabras	escuchar algo	etw. hören
-Palabras	tener	haben
-Palabras	contestar	antworten
-Palabras	preguntar	fragen
-Palabras	el chico / la chica	der Junge / das Mädchen
-Palabras	Adelante!	Herein!
+xPalabras	trabajar	arbeiten
+xPalabras	en	in, auf, an
+xPalabras	quizás	vielleicht
+xPalabras	escuchar algo	etw. hören
+xPalabras	tener	haben
+xPalabras	contestar	antworten
+xPalabras	preguntar	fragen
+xPalabras	el chico / la chica	der Junge / das Mädchen
+xPalabras	Adelante!	Herein!
 Palabras	¿Qué pasa?	Was ist los?
 Palabras	el problema	das Problem
 Palabras	buscar algo	etw. suchen
@@ -165,31 +165,32 @@ Palabras	genial	großartig
 Palabras	diferente	anders
 Palabras	importante	wichtig
 Palabras	malo	schlecht
-Palabras	divertido	lustig
-Palabras	serio	ernst
-Palabras	fuerte	stark
-Palabras	fácil	einfach
-Palabras	difícil	schwierig
-Palabras	pobre	arm
-Palabras	rico	reich
-Palabras	lindo/linda	schön
-Palabras	feo	hässlich
-Palabras	alto	hoch
-Palabras	pequeño/pequeña	klein
-Palabras	grande	groß
-Palabras	viejo	alt
-Palabras	joven	jung
-Palabras	amable	freundlich, nett
-Palabras	divertido	lustig
-Palabras	malo	böse, gemein
-Palabras	simpático	sympathisch
+xPalabras	divertido	lustig
+xPalabras	serio	ernst
+xPalabras	fuerte	stark
+xPalabras	fácil	einfach
+xPalabras	difícil	schwierig
+xPalabras	pobre	arm
+xPalabras	rico	reich
+xPalabras	lindo/linda	schön
+xPalabras	feo	hässlich
+xPalabras	alto	hoch
+xPalabras	pequeño/pequeña	klein
+xPalabras	grande	groß
+xPalabras	viejo	alt
+xPalabras	joven	jung
+xPalabras	amable	freundlich, nett
+xPalabras	divertido	lustig
+xPalabras	malo	böse, gemein
+xPalabras	simpático	sympathisch
 Palabras	el secreto	das Geheimnis
 Palabras	la idea	die Idee
+Palabras	ni idea	keine Ahnung
 Palabras	la sorpresa	die Überraschung
 Tiempo	ahora	jetzt
 Tiempo	hoy	heute
 Tiempo	mañana	morgen
-Tiempo	ayer	gestern
+xTiempo	ayer	gestern
 Tiempo	el segundo	die Sekunde
 Tiempo	el minuto	die Minute
 Tiempo	la hora	die Stunde, die Uhrzeit
@@ -197,31 +198,31 @@ Tiempo	el dia	der Tag
 Tiempo	la semana	die Woche
 Tiempo	el mes	der Monat
 Tiempo	el año	das Jahr
-Tiempo	temprano	früh
-Tiempo	tarde	spät
-Tiempo	lunes	Montag
-Tiempo	martes	Dienstag
-Tiempo	miércoles	Mittwoch
-Tiempo	jueves	Donnerstag
-Tiempo	viernes	Freitag
-Tiempo	sábado	Samstag
-Tiempo	domingo	Sonntag
-Tiempo	la primavera	der Frühling
-Tiempo	el verano	der Sommer
-Tiempo	el otoño	der Herbst
-Tiempo	el invierno	der Winter
-Tiempo	enero	Januar
-Tiempo	febrero	Februar
-Tiempo	marzo	März
-Tiempo	abril	April
-Tiempo	mayo	Mai
-Tiempo	junio	Juni
-Tiempo	julio	Juli
-Tiempo	agosto	August
-Tiempo	septiembre	September
-Tiempo	octubre	Oktober
-Tiempo	noviembre	November
-Tiempo	diciembre	Dezember
+xTiempo	temprano	früh
+xTiempo	tarde	spät
+xTiempo	lunes	Montag
+xTiempo	martes	Dienstag
+xTiempo	miércoles	Mittwoch
+xTiempo	jueves	Donnerstag
+xTiempo	viernes	Freitag
+xTiempo	sábado	Samstag
+xTiempo	domingo	Sonntag
+xTiempo	la primavera	der Frühling
+xTiempo	el verano	der Sommer
+xTiempo	el otoño	der Herbst
+xTiempo	el invierno	der Winter
+xTiempo	enero	Januar
+xTiempo	febrero	Februar
+xTiempo	marzo	März
+xTiempo	abril	April
+xTiempo	mayo	Mai
+xTiempo	junio	Juni
+xTiempo	julio	Juli
+xTiempo	agosto	August
+xTiempo	septiembre	September
+xTiempo	octubre	Oktober
+xTiempo	noviembre	November
+xTiempo	diciembre	Dezember
 Tiempo	el tiempo	die Zeit
 Tiempo	¿Qué hora es?	Wie spät ist es?
 Numeros	el número	die Nummer, die Zahl
@@ -256,44 +257,44 @@ Numeros	cien	hundert
 Numeros	doscientos	zweihundert
 Numeros	mil	tausend
 Numeros	millón	Million
-eUnidad2	¿De qué color es…?	Welche Farbe hat…?
-eUnidad2	El gato es de color negro	Die Katze ist schwarz
-eUnidad2	Veo…	Ich sehe…
-eUnidad2	veo un perro, es de color blanco	ich sehe einen Hund, er ist weiß
-eUnidad2	¿Qué ves? 	Was siehst du?
-eUnidad2	¿Qué es? 	Was ist das?
-eUnidad2	la cosa (la cosita)	die (kleine) Sache
-eUnidad2	No es correcto. 	Das ist nicht richtig.
-eUnidad2	mi mejor amigo	mein bester Freund
-eUnidad2	la mejor amiga	die beste Freundin
-eUnidad2	la mascota 	das Haustier
-eUnidad2	el lugar 	der Ort, der Platz
-eUnidad2	la ciudad 	die Stadt
-eUnidad2	favorito, favorita 	Lieblings-
-eUnidad2	mi animal favorito es el perro	Mein Lieblingstier ist der Hund
-eUnidad2	el padre 	der Vater
-eUnidad2	la madre 	die Mutter
-eUnidad2	el hermano	der Bruder
-eUnidad2	la hermana	die Schwester
-eUnidad2	mis padres	meine Eltern
-eUnidad2	¿Cómo se llama…? 	Wie heißt…?
-eUnidad2	¿Cómo se llama tu madre? 	Wie heißt deine Mutter?
-eUnidad2	¿Cuál es el apellido de…?	Wie ist der Nachname von..?
-eUnidad2	¿Tienes una mascota? 	Hast du ein Haustier?
-eUnidad2	el nombre 	der Name
-eUnidad2	la edad 	das Alter
-eUnidad2	el color favorito 	die Lieblingsfarbe
-eUnidad2	el año 	das Jahr
-eUnidad2	el número de teléfono 	die Telefonnummer
-eUnidad2	el móvil 	das Handy
-eUnidad2	(ellos / ellas) son 	(sie) sind
-eUnidad2	¿Cuál es tu número de móvil?	Wie lautet deine Handynummer?
-eUnidad2	el teléfono 	das Telefon
-eUnidad2	el hámster 	der Hamster
-eUnidad2	¿Cuántos años tienes? 	Wie alt bist du?
-eUnidad2	el profesor / la profesora 	der Lehrer / die Lehrerin
-eUnidad2	nosotros / nosotras 	wir
-eUnidad2	¿Cuál es tu color favorito? 	Was ist deine Lieblingsfarbe?
+Unidad2	¿De qué color es…?	Welche Farbe hat…?
+Unidad2	El gato es de color negro	Die Katze ist schwarz
+Unidad2	Veo…	Ich sehe…
+Unidad2	veo un perro, es de color blanco	ich sehe einen Hund, er ist weiß
+Unidad2	¿Qué ves? 	Was siehst du?
+Unidad2	¿Qué es? 	Was ist das?
+Unidad2	la cosa (la cosita)	die (kleine) Sache
+Unidad2	No es correcto. 	Das ist nicht richtig.
+Unidad2	mi mejor amigo	mein bester Freund
+Unidad2	la mejor amiga	die beste Freundin
+Unidad2	la mascota 	das Haustier
+Unidad2	el lugar 	der Ort, der Platz
+Unidad2	la ciudad 	die Stadt
+Unidad2	favorito, favorita 	Lieblings-
+Unidad2	mi animal favorito es el perro	Mein Lieblingstier ist der Hund
+Unidad2	el padre 	der Vater
+Unidad2	la madre 	die Mutter
+Unidad2	el hermano	der Bruder
+Unidad2	la hermana	die Schwester
+Unidad2	mis padres	meine Eltern
+Unidad2	¿Cómo se llama…? 	Wie heißt…?
+Unidad2	¿Cómo se llama tu madre? 	Wie heißt deine Mutter?
+Unidad2	¿Cuál es el apellido de…?	Wie ist der Nachname von..?
+Unidad2	¿Tienes una mascota? 	Hast du ein Haustier?
+Unidad2	el nombre 	der Name
+Unidad2	la edad 	das Alter
+Unidad2	el color favorito 	die Lieblingsfarbe
+Unidad2	el año 	das Jahr
+Unidad2	el número de teléfono 	die Telefonnummer
+Unidad2	el móvil 	das Handy
+Unidad2	(ellos / ellas) son 	(sie) sind
+Unidad2	¿Cuál es tu número de móvil?	Wie lautet deine Handynummer?
+Unidad2	el teléfono 	das Telefon
+Unidad2	el hámster 	der Hamster
+Unidad2	¿Cuántos años tienes? 	Wie alt bist du?
+Unidad2	el profesor / la profesora 	der Lehrer / die Lehrerin
+Unidad2	nosotros / nosotras 	wir
+Unidad2	¿Cuál es tu color favorito? 	Was ist deine Lieblingsfarbe?
 Unidad2	yo soy de Alemania	ich bin aus Deutschland
 Unidad2	tu eres	du bist
 Unidad2	el es	er ist
