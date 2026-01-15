@@ -124,38 +124,44 @@ Idiomas	el alemán	Deutsch, die deutsche Sprache
 Idiomas	el inglés	Englisch, die englische Sprache
 Idiomas	el español	Spanisch, die spanische Sprache
 Idiomas	el idioma	die Sprache
+Idiomas	estudiar algo	etw. lernen
+Idiomas	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
+Idiomas	el francés	Französisch; die französische Sprache
+Idiomas	¿Hablas francés?	Sprichst du Französisch?
+Idiomas	el alemán	Deutsch; die deutsche Sprache
+Idiomas	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
 Idiomas	estudiar	lernen
 Idiomas	Se escribe...	Man schreibt ...
 Idiomas	¿Como se escribe?	Wie schreibt man das?
 Idiomas	con acento	mit Akzent
 Idiomas	con dos puntos	mit Umlaut
 Palabras	la palabra	das Wort
-xPalabras	entonces	dann
+Palabras	entonces	dann
 Palabras	también	auch
 Palabras	pero	aber
 Palabras	donde	wo
-xPalabras	cuándo	wann
+Palabras	cuándo	wann
 Palabras	quién	wer
-xPalabras	por qué	warum
+Palabras	por qué	warum
 Palabras	seguro	sicher
 Palabras	¡Claro!	Ja, natürlich!
 Palabras	pero	aber
-xPalabras	además	außerdem
+Palabras	además	außerdem
 Palabras	ahora	jetzt
-xPalabras	con	mit
-xPalabras	siempre	immer
+Palabras	con	mit
+Palabras	siempre	immer
 Palabras	¿Qué?	Was für ein? Was?
 Palabras	nada	nichts
 Palabras	¿Quién?	Wer?
-xPalabras	trabajar	arbeiten
-xPalabras	en	in, auf, an
-xPalabras	quizás	vielleicht
-xPalabras	escuchar algo	etw. hören
-xPalabras	tener	haben
-xPalabras	contestar	antworten
-xPalabras	preguntar	fragen
-xPalabras	el chico / la chica	der Junge / das Mädchen
-xPalabras	Adelante!	Herein!
+Palabras	trabajar	arbeiten
+Palabras	en	in, auf, an
+Palabras	quizás	vielleicht
+Palabras	escuchar algo	etw. hören
+Palabras	tener	haben
+Palabras	contestar	antworten
+Palabras	preguntar	fragen
+Palabras	el chico / la chica	der Junge / das Mädchen
+Palabras	Adelante!	Herein!
 Palabras	¿Qué pasa?	Was ist los?
 Palabras	el problema	das Problem
 Palabras	buscar algo	etw. suchen
@@ -165,24 +171,24 @@ Palabras	genial	großartig
 Palabras	diferente	anders
 Palabras	importante	wichtig
 Palabras	malo	schlecht
-xPalabras	divertido	lustig
-xPalabras	serio	ernst
-xPalabras	fuerte	stark
-xPalabras	fácil	einfach
-xPalabras	difícil	schwierig
-xPalabras	pobre	arm
-xPalabras	rico	reich
-xPalabras	lindo/linda	schön
-xPalabras	feo	hässlich
-xPalabras	alto	hoch
-xPalabras	pequeño/pequeña	klein
-xPalabras	grande	groß
-xPalabras	viejo	alt
-xPalabras	joven	jung
-xPalabras	amable	freundlich, nett
-xPalabras	divertido	lustig
-xPalabras	malo	böse, gemein
-xPalabras	simpático	sympathisch
+Palabras	divertido	lustig
+Palabras	serio	ernst
+Palabras	fuerte	stark
+Palabras	fácil	einfach
+Palabras	difícil	schwierig
+Palabras	pobre	arm
+Palabras	rico	reich
+Palabras	lindo/linda	schön
+Palabras	feo	hässlich
+Palabras	alto	hoch
+Palabras	pequeño/pequeña	klein
+Palabras	grande	groß
+Palabras	viejo	alt
+Palabras	joven	jung
+Palabras	amable	freundlich, nett
+Palabras	divertido	lustig
+Palabras	malo	böse, gemein
+Palabras	simpático	sympathisch
 Palabras	el secreto	das Geheimnis
 Palabras	la idea	die Idee
 Palabras	ni idea	keine Ahnung
@@ -190,7 +196,7 @@ Palabras	la sorpresa	die Überraschung
 Tiempo	ahora	jetzt
 Tiempo	hoy	heute
 Tiempo	mañana	morgen
-xTiempo	ayer	gestern
+Tiempo	ayer	gestern
 Tiempo	el segundo	die Sekunde
 Tiempo	el minuto	die Minute
 Tiempo	la hora	die Stunde, die Uhrzeit
@@ -198,31 +204,31 @@ Tiempo	el dia	der Tag
 Tiempo	la semana	die Woche
 Tiempo	el mes	der Monat
 Tiempo	el año	das Jahr
-xTiempo	temprano	früh
-xTiempo	tarde	spät
-xTiempo	lunes	Montag
-xTiempo	martes	Dienstag
-xTiempo	miércoles	Mittwoch
-xTiempo	jueves	Donnerstag
-xTiempo	viernes	Freitag
-xTiempo	sábado	Samstag
-xTiempo	domingo	Sonntag
-xTiempo	la primavera	der Frühling
-xTiempo	el verano	der Sommer
-xTiempo	el otoño	der Herbst
-xTiempo	el invierno	der Winter
-xTiempo	enero	Januar
-xTiempo	febrero	Februar
-xTiempo	marzo	März
-xTiempo	abril	April
-xTiempo	mayo	Mai
-xTiempo	junio	Juni
-xTiempo	julio	Juli
-xTiempo	agosto	August
-xTiempo	septiembre	September
-xTiempo	octubre	Oktober
-xTiempo	noviembre	November
-xTiempo	diciembre	Dezember
+Tiempo	temprano	früh
+Tiempo	tarde	spät
+Tiempo	lunes	Montag
+Tiempo	martes	Dienstag
+Tiempo	miércoles	Mittwoch
+Tiempo	jueves	Donnerstag
+Tiempo	viernes	Freitag
+Tiempo	sábado	Samstag
+Tiempo	domingo	Sonntag
+Tiempo	la primavera	der Frühling
+Tiempo	el verano	der Sommer
+Tiempo	el otoño	der Herbst
+Tiempo	el invierno	der Winter
+Tiempo	enero	Januar
+Tiempo	febrero	Februar
+Tiempo	marzo	März
+Tiempo	abril	April
+Tiempo	mayo	Mai
+Tiempo	junio	Juni
+Tiempo	julio	Juli
+Tiempo	agosto	August
+Tiempo	septiembre	September
+Tiempo	octubre	Oktober
+Tiempo	noviembre	November
+Tiempo	diciembre	Dezember
 Tiempo	el tiempo	die Zeit
 Tiempo	¿Qué hora es?	Wie spät ist es?
 Numeros	el número	die Nummer, die Zahl
@@ -405,3 +411,89 @@ Unidad3	derecha	rechts
 Unidad3	izquierda	links
 Unidad3	cerca de	in der Nähe von
 Unidad3	Mi casa está cerca del parque.	Mein Haus ist in der Nähe des Parks.
+Unidad3	Bloque B	Block B
+Unidad3	buscar algo	etw. suchen
+Unidad3	Busco un regalo para mi madre.	Ich suche ein Geschenk für meine Mutter.
+Unidad3	después	dann; danach
+Unidad3	el baño	das Bad; das Badezimmer; die Toilette
+Unidad3	la cocina	die Küche
+Unidad3	el pasillo	der Flur
+Unidad3	En el pasillo hay un gato.	Im Flur ist eine Katze.
+Unidad3	el salón	das Wohnzimmer
+Unidad3	Mis padres están en el salón.	Meine Eltern sind im Wohnzimmer.
+Unidad3	la habitación	das (Schlaf-)Zimmer
+Unidad3	Mi mochila está en mi habitación.	Mein Rucksack ist in meinem Zimmer.
+Unidad3	porque	weil
+Unidad3	No tengo tiempo porque estoy en el instituto.	Ich habe keine Zeit, weil ich in der Schule bin.
+Unidad3	la cosa	die Sache; das Ding
+Unidad3	la cosita	die (kleine) Sache
+Unidad3	el libro	das Buch
+Unidad3	Este es mi libro favorito.	Das ist mein Lieblingsbuch.
+Unidad3	la familia	die Familie
+Unidad3	el enfermero	der Krankenpfleger
+Unidad3	la enfermera	die Krankenpflegerin
+Unidad3	La enfermera trabaja en el hospital.	Die Krankenpflegerin arbeitet im Krankenhaus.
+Unidad3	trabajar	arbeiten
+Unidad3	Mi madre trabaja en un instituto.	Meine Mutter arbeitet an einem Gymnasium.
+Unidad3	el hospital	das Krankenhaus
+Unidad3	La enfermera trabaja en el hospital.	Die Krankenpflegerin arbeitet im Krankenhaus.
+Unidad3	hablar	sprechen; reden
+Unidad3	Hablo con mi hermano.	Ich spreche mit meinem Bruder.
+Unidad3	el inglés	Englisch; die englische Sprache
+Unidad3	Mi padre habla muy bien inglés.	Mein Vater spricht sehr gut Englisch.
+Unidad3	un poco	ein bisschen
+Unidad3	Sí, un poco.	Ja, ein bisschen.
+Unidad3	el aeropuerto	der Flughafen
+Unidad3	la pasión	die Leidenschaft
+Unidad3	Mi pasión son los animales, sobre todo los gatos.	Tiere sind meine Leidenschaft, vor allem Katzen.
+Unidad3	sobre todo	vor allem
+Unidad3	Mi pasión son los animales, sobre todo los gatos.	Tiere sind meine Leidenschaft, vor allem Katzen.
+Unidad3	el hobby	das Hobby
+Unidad3	¿Qué hobbies tienes?	Welche Hobbys hast du?
+Unidad3	la música	die Musik
+Unidad3	Escuchamos música.	Wir hören Musik.
+Unidad3	escuchar algo	etw. hören
+Unidad3	Escuchamos música.	Wir hören Musik.
+Unidad3	la canción	das Lied
+Unidad3	Escucho canciones en inglés.	Ich höre Lieder auf Englisch.
+Unidad3	el español	Spanisch; die spanische Sprache
+Unidad3	tocar algo	etw. spielen (Musikinstrument)
+Unidad3	María toca la guitarra muy bien.	María spielt sehr gut Gitarre.
+Unidad3	la guitarra	die Gitarre
+Unidad3	María toca la guitarra muy bien.	María spielt sehr gut Gitarre.
+Unidad3	el fútbol	der Fußball
+Unidad3	la moda	die Mode
+Unidad3	mirar algo	(etw.) anschauen
+Unidad3	¿Miramos fotos de tu mascota?	Schauen wir Fotos von deinem Haustier an?
+Unidad3	la página (web)	die (Web-)Seite
+Unidad3	(el/la) Internet	das Internet
+Unidad3	Miro vídeos en Internet.	Ich schaue Videos im Internet an.
+Unidad3	grabar algo	etw. filmen; etw. aufnehmen
+Unidad3	Grabo un vídeo para el instituto.	Ich drehe ein Video für die Schule.
+Unidad3	el vídeo	das Video
+Unidad3	Miro vídeos en Internet.	Ich schaue Videos im Internet an.
+Unidad3	siempre	immer
+Unidad3	Sara siempre trabaja en casa.	Sara arbeitet immer zu Hause.
+Unidad3	el desastre	die Katastrophe
+Unidad3	estudiar algo	etw. lernen
+Unidad3	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
+Unidad3	el francés	Französisch; die französische Sprache
+Unidad3	¿Hablas francés?	Sprichst du Französisch?
+Unidad3	horrible	schrecklich
+Unidad3	el alemán	Deutsch; die deutsche Sprache
+Unidad3	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
+Unidad3	¡Menos mal!	Gott sei Dank!
+Unidad3	¡Menos mal!	Gott sei Dank!
+Unidad3	el idioma	die Sprache
+Unidad3	¿Qué idiomas hablas?	Welche Sprachen sprichst du?
+Unidad3	el saludo	der Gruß
+Unidad3	el instrumento	das (Musik-)Instrument
+Unidad3	¿Qué instrumento tocas?	Welches Musikinstrument spielst du?
+Unidad3	montar a caballo	reiten
+Unidad3	practicar algo	etw. ausüben
+Unidad3	Practico deporte en el parque.	Ich mache im Park Sport.
+Unidad3	el deporte	der Sport
+Unidad3	Practico deporte en el parque.	Ich mache im Park Sport.
+Unidad3	quedar	sich verabreden; sich treffen
+Unidad3	Quedo con mi amiga en el cine.	Ich treffe mich mit meiner Freundin im Kino.
+
