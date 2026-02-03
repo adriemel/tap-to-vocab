@@ -435,7 +435,6 @@ Unidad3B	La enfermera trabaja en el hospital.	Die Krankenpflegerin arbeitet im K
 Unidad3B	trabajar	arbeiten
 Unidad3B	Mi madre trabaja en un instituto.	Meine Mutter arbeitet an einem Gymnasium.
 Unidad3B	el hospital	das Krankenhaus
-Unidad3B	La enfermera trabaja en el hospital.	Die Krankenpflegerin arbeitet im Krankenhaus.
 Unidad3B	hablar	sprechen; reden
 Unidad3B	Hablo con mi hermano.	Ich spreche mit meinem Bruder.
 Unidad3B	el inglés	Englisch; die englische Sprache
@@ -446,20 +445,17 @@ Unidad3B	el aeropuerto	der Flughafen
 Unidad3B	la pasión	die Leidenschaft
 Unidad3B	Mi pasión son los animales, sobre todo los gatos.	Tiere sind meine Leidenschaft, vor allem Katzen.
 Unidad3B	sobre todo	vor allem
-Unidad3B	Mi pasión son los animales, sobre todo los gatos.	Tiere sind meine Leidenschaft, vor allem Katzen.
 Unidad3B	el hobby	das Hobby
 Unidad3B	¿Qué hobbies tienes?	Welche Hobbys hast du?
 Unidad3B	la música	die Musik
 Unidad3B	Escuchamos música.	Wir hören Musik.
-Unidad3B	escuchar algo	etw. hören
-Unidad3B	Escuchamos música.	Wir hören Musik.
+Unidad3B	escuchar algo	etw. hören.
 Unidad3B	la canción	das Lied
 Unidad3B	Escucho canciones en inglés.	Ich höre Lieder auf Englisch.
 Unidad3B	el español	Spanisch; die spanische Sprache
 Unidad3B	tocar algo	etw. spielen (Musikinstrument)
 Unidad3B	María toca la guitarra muy bien.	María spielt sehr gut Gitarre.
 Unidad3B	la guitarra	die Gitarre
-Unidad3B	María toca la guitarra muy bien.	María spielt sehr gut Gitarre.
 Unidad3B	el fútbol	der Fußball
 Unidad3B	la moda	die Mode
 Unidad3B	mirar algo	(etw.) anschauen
@@ -470,7 +466,6 @@ Unidad3B	Miro vídeos en Internet.	Ich schaue Videos im Internet an.
 Unidad3B	grabar algo	etw. filmen; etw. aufnehmen
 Unidad3B	Grabo un vídeo para el instituto.	Ich drehe ein Video für die Schule.
 Unidad3B	el vídeo	das Video
-Unidad3B	Miro vídeos en Internet.	Ich schaue Videos im Internet an.
 Unidad3B	siempre	immer
 Unidad3B	Sara siempre trabaja en casa.	Sara arbeitet immer zu Hause.
 Unidad3B	el desastre	die Katastrophe
@@ -481,8 +476,7 @@ Unidad3B	¿Hablas francés?	Sprichst du Französisch?
 Unidad3B	horrible	schrecklich
 Unidad3B	el alemán	Deutsch; die deutsche Sprache
 Unidad3B	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
-Unidad3B	¡Menos mal!	Gott sei Dank!
-Unidad3B	¡Menos mal!	Gott sei Dank!
+Unidad3B	¡Menos mal!	Gott sei Dank!!
 Unidad3B	el idioma	die Sprache
 Unidad3B	¿Qué idiomas hablas?	Welche Sprachen sprichst du?
 Unidad3B	el saludo	der Gruß
@@ -492,4 +486,3 @@ Unidad3B	montar a caballo	reiten
 Unidad3B	practicar algo	etw. ausüben
 Unidad3B	Practico deporte en el parque.	Ich mache im Park Sport.
 Unidad3B	el deporte	der Sport
-Unidad3B	Practico deporte en el parque.	Ich mache im Park Sport.
