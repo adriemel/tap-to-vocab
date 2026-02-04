@@ -6,6 +6,9 @@
   --accent:#6ca8ff;
   --ok:#3ddc97;
   --warn:#ffcc66;
+
+  /* NEW – neutral for input-like background */
+  --slot-bg:#0f1540;
 }
 
 * { box-sizing: border-box; }
@@ -16,6 +19,8 @@ html,body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background:var(--bg);
   color:var(--ink);
+  /* NEW – prevent zoom glitch on iOS for inputs */
+  -webkit-text-size-adjust: 100%;
 }
 
 a { color: var(--accent); text-decoration: none; }
@@ -29,81 +34,166 @@ a { color: var(--accent); text-decoration: none; }
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
 }
 
-h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; }
+/* ---------- Headings and text ---------- */
+h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; text-align:center; }
 h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted); font-weight: 600; }
 
-.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
 
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 12px 16px; border-radius: 12px;
-  background: #1a2350; color: var(--ink); border: 1px solid #2a3a80;
-  cursor: pointer; font-weight: 600; user-select:none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #1a2350;
+  color: var(--ink);
+  border: 1px solid #2a3a80;
+  cursor: pointer;
+  font-weight: 600;
+  user-select:none;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
+
+.btn:hover { background:#22307a; }
 .btn:active { transform: translateY(1px); }
 .btn.secondary { background: transparent; border-color: #3a4b90; }
+.btn.ghost { background: transparent; border-color: transparent; }
 
-.controls { display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
-
-.word-card {
-  text-align: center; padding: 24px; border-radius: 16px;
-  background: #121a3a; border: 1px solid #23306b;
+.controls {
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+  margin-top: 12px;
+  justify-content:center;
 }
 
-.big { font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; letter-spacing: .5px; }
+/* ---------- Word Card ---------- */
+.word-card {
+  text-align: center;
+  padding: 20px 16px;
+  border-radius: 16px;
+  background: #121a3a;
+  border: 1px solid #23306b;
+  margin-bottom: 12px;
+}
 
-/* German translation – hidden by default, shown on click; slightly larger & yellow */
+.big {
+  font-size: clamp(1.8rem, 7vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+}
+
+/* German translation – shown on toggle */
 .sub.translation {
   display: none;
-  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+  font-size: clamp(1.1rem, 4.2vw, 1.4rem);
   color: #ffd54a;
-  margin-top: 6px;
   font-weight: 700;
+  transition: opacity 0.2s;
 }
-.sub.translation.shown { display: block; }
+.sub.translation.shown { display: block; opacity:1; }
 
 .badge {
-  display:inline-flex; align-items:center; gap:8px; padding: 6px 10px;
-  border-radius: 999px; background:#0f1a46; border:1px solid #243688;
-  color: var(--ink); font-size: .9rem;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background:#0f1a46;
+  border:1px solid #243688;
+  color: var(--ink);
+  font-size: .9rem;
 }
 
 hr { border: none; height: 1px; background: #24336d; margin: 16px 0; }
-input[type="checkbox"] { transform: scale(1.2); margin-right: 8px; }
 
-/* ---------- Build mode ---------- */
-.build-wrap { margin-top: 14px; display:block; } /* JS ensures it's on */
+input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
+
+/* ---------- Build Mode (improved for small screens) ---------- */
+.build-wrap {
+  margin-top: 8px;
+  display:block;
+  text-align:center;
+  width:100%;
+}
+
 .build-slots {
-  display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin-bottom:12px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+  margin-bottom:10px;
 }
+
 .slot {
-  min-width: 34px; min-height: 44px; padding: 8px 10px;
-  display:inline-flex; align-items:center; justify-content:center;
-  border-radius: 10px; border: 1px dashed #3a4b90; background:#0f1540;
-  font-weight: 800; font-size: 1.3rem;
+  min-width: 30px;
+  min-height: 38px;
+  padding: 8px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 8px;
+  border: 1px dashed #3a4b90;
+  background: var(--slot-bg);
+  font-weight: 700;
+  font-size: 1.15rem;
 }
 
-/* Letter bank */
-.build-bank { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+/* NEW – convert letter bank to grid for mobile */
+.build-bank {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 6px;
+  width:100%;
+  justify-items:center;
+}
 
-/* Each letter button */
+/* Each letter button (compact + tactile) */
 .letter {
-  padding:8px 10px; border-radius:10px; background:#1a2350; min-width: 40px; border:1px solid #2a3a80;
-  cursor:pointer; font-weight:800; font-size:1rem; user-select:none;
-  animation: pop 160ms ease-out;
+  padding:10px 0;
+  width:100%;
+  border-radius:8px;
+  background:#1a2350;
+  border:1px solid #2a3a80;
+  cursor:pointer;
+  font-weight:700;
+  font-size:1.1rem;
+  user-select:none;
+  transition:background 0.15s ease;
+}
+.letter:hover { background:#223070; }
+
+.letter.used {
+  opacity: 0.35;
+  pointer-events: none;
 }
 
-/* Keep used letters in place (no layout shift), just fade & disable */
-.letter.used { opacity: 0.28; pointer-events: none; }
-
-/* Tiny shake when a wrong letter is clicked */
-.letter.wrong { animation: tv-shake 180ms ease-in-out; }
+.letter.wrong {
+  animation: tv-shake 180ms ease-in-out;
+}
 
 /* Success feedback on the slots row */
-.success { animation: bounce 400ms ease-in-out; background:#0f1a46; border-color:#1dd45f; }
+.success {
+  animation: bounce 400ms ease-in-out;
+  background:#0f1a46;
+  border-color:#1dd45f;
+}
 
 /* Error/info box (if TSV missing, etc.) */
-.error { background:#2a1030; border:1px solid #6a2a70; padding:12px; border-radius:12px; }
+.error {
+  background:#2a1030;
+  border:1px solid #6a2a70;
+  padding:12px;
+  border-radius:12px;
+  margin-top:10px;
+  text-align:center;
+}
 
 /* ---------- Animations ---------- */
 @keyframes pop {
@@ -118,8 +208,25 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 8px; }
 }
 @keyframes tv-shake {
   0%   { transform: translateX(0); }
-  25%  { transform: translateX(-3px); }
-  50%  { transform: translateX(3px); }
-  75%  { transform: translateX(-2px); }
+  25%  { transform: translateX(-2px); }
+  50%  { transform: translateX(2px); }
+  75%  { transform: translateX(-1px); }
   100% { transform: translateX(0); }
+}
+
+/* ---------- Responsive tuning ---------- */
+@media (max-width: 600px) {
+  .controls {
+    gap:6px;
+  }
+  .btn {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+  .word-card {
+    padding: 16px 12px;
+  }
+  .big {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
 }
