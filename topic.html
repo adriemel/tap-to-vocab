@@ -21,16 +21,16 @@
       </div>
 
       <div class="controls">
-        <button class="btn" id="btn-hear">▶︎ Hear Spanish</button>
-        <button class="btn secondary" id="btn-prev">← Prev</button>
-        <button class="btn secondary" id="btn-next">Next →</button>
-        <button id="btn-home" class="btn ghost">🏠 Home</button>
+        <button class="btn" id="btn-hear">▶︎ Hear Spanish</button>
+        <button class="btn secondary" id="btn-prev">← Prev</button>
+        <button class="btn secondary" id="btn-next">Next →</button>
+        <button class="btn secondary" id="btn-show">Show</button>
+        <button class="btn secondary" id="btn-mark">⭐ Mark</button>
+        <button id="btn-home" class="btn ghost">🏠 Home</button>
         <label class="badge">
-          <input type="checkbox" id="auto-speak" checked />
-          Auto‑speak
+          <input type="checkbox" id="auto-speak" checked /> Auto‑speak
         </label>
-        <button class="btn secondary" id="btn-show" title="Show/Hide German">Show</button>
-        <button class="btn secondary" id="btn-clear" title="Clear built letters">Clear</button>
+        <button class="btn secondary" id="btn-clear" title="Clear built letters">Clear</button>
       </div>
 
       <div class="build-wrap">
@@ -44,7 +44,6 @@
 
   <script src="/assets/js/tapvocab.js"></script>
   <script>
-    // If URL is e.g. /topic.html?cat=Colores
     const params = new URLSearchParams(location.search);
     const cat = params.get("cat") || "";
     TapVocabTSV.initFromTSV({ category: cat });
