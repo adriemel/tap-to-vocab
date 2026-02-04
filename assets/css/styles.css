@@ -88,8 +88,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 8px; }
 
 /* Each letter button */
 .letter {
-  padding:10px 12px; border-radius:10px; background:#1a2350; border:1px solid #2a3a80;
-  cursor:pointer; font-weight:800; font-size:1.1rem; user-select:none;
+  padding:8px 10px; border-radius:10px; background:#1a2350; min-width: 40px; border:1px solid #2a3a80;
+  cursor:pointer; font-weight:800; font-size:1rem; user-select:none;
   animation: pop 160ms ease-out;
 }
 
