@@ -3,28 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tap-to-Vocab</title>
+  <title>Tap‑to‑Vocab</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script>
+    // Display ⭐ Practice count when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const list = JSON.parse(localStorage.getItem("practiceList") || "[]");
+        const count = list.length;
+        const el = document.getElementById("practice-btn");
+        if (el) {
+          el.textContent = count > 0 ? `⭐ Practice (${count})` : "⭐ Practice";
+        }
+      } catch (e) {
+        console.warn("Couldn't read practice list:", e);
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>Tap-to-Vocab</h1>
-      
-      <div class="grid" style="margin-top:14px;">
-        <a class="btn" href="/topic.html?cat=Colores">🎨 Colores</a>
-        <a class="btn" href="/topic.html?cat=Animales">🦊 Animales</a>
-        <a class="btn" href="/topic.html?cat=Numeros">🔢 Numeros</a>
-        <a class="btn" href="/topic.html?cat=Saludar">👋 Saludar</a>
-        <a class="btn" href="/topic.html?cat=Tiempo">⏰ Tiempo</a>
-        <a class="btn" href="/topic.html?cat=Palabras">🧩 Palabras</a>
-        <a class="btn" href="/topic.html?cat=Casa_Familia">🏠 Casa y Familia</a>
-        <a class="btn" href="/topic.html?cat=Unidad2">2️⃣ Unidad 2</a>
-        <a class="btn" href="/topic.html?cat=Unidad3">3️⃣ Unidad 3</a>
-        <a class="btn" href="/topic.html?cat=Unidad3B">3️⃣ Unidad 3B</a>
-        <a class="btn" href="/topic.html?cat=practice">⭐ Practice</a>
-      </div>
+      <h1>Tap‑to‑Vocab</h1>
 
+      <div class="grid" style="margin-top:14px;">
+        <a class="btn" href="/topic.html?cat=Colores">🎨 Colores</a>
+        <a class="btn" href="/topic.html?cat=Animales">🦊 Animales</a>
+        <a class="btn" href="/topic.html?cat=Numeros">🔢 Numeros</a>
+        <a class="btn" href="/topic.html?cat=Saludar">👋 Saludar</a>
+        <a class="btn" href="/topic.html?cat=Tiempo">⏰ Tiempo</a>
+        <a class="btn" href="/topic.html?cat=Palabras">🧩 Palabras</a>
+        <a class="btn" href="/topic.html?cat=Casa_Familia">🏠 Casa y Familia</a>
+        <a class="btn" href="/topic.html?cat=Unidad2">2️⃣ Unidad 2</a>
+        <a class="btn" href="/topic.html?cat=Unidad3">3️⃣ Unidad 3</a>
+        <a class="btn" href="/topic.html?cat=Unidad3B">3️⃣ Unidad 3B</a>
+
+        <!-- ⭐ Practice with dynamic count -->
+        <a id="practice-btn" class="btn" href="/topic.html?cat=practice">⭐ Practice</a>
+      </div>
     </div>
   </div>
 </body>
