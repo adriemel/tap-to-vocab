@@ -195,6 +195,16 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   text-align:center;
 }
 
+#btn-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+}
+
+
 /* ---------- Animations ---------- */
 @keyframes pop {
   from { transform: scale(.9); opacity:.0; }
