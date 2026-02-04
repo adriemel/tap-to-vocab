@@ -1,6 +1,6 @@
 /**
  * Tap‑to‑Vocab (with ⭐ Practice list)
- * - Loads /words.tsv
+ * - Loads /data/words.tsv
  * - Adds "Mark / Unmark" star button
  * - New category "practice" showing saved words
  */
@@ -43,7 +43,6 @@
         transform:translate(${Math.random() * 120 - 60}px,0) rotate(${Math.random() * 180}deg);
         animation: fall ${600 + Math.random() * 500}ms ease-out forwards;
       `;
-      piece.style.setProperty("--dy", `${80 + Math.random() * 80}px`);
       container.appendChild(piece);
       setTimeout(() => piece.remove(), 1200);
     }
@@ -221,9 +220,7 @@
         elDe.classList.remove("shown"); btnShow.textContent = "Show";
       } else { elDe.classList.add("shown"); btnShow.textContent = "Hide"; }
     };
-    markBtn.onclick = () => {
-      toggleMark(words[i]); updateMarkButton(words[i]);
-    };
+    markBtn.onclick = () => { toggleMark(words[i]); updateMarkButton(words[i]); };
     homeBtn.onclick = () => { location.href = "../"; };
 
     render();
@@ -232,7 +229,8 @@
   /* ---------- Main init ---------- */
   async function initFromTSV(opts) {
     const category = (opts && opts.category) || inferCategoryFromPath();
-    const tsvPath = (opts && opts.tsvPath) || "/words.tsv";
+    // 🔧 FIXED PATH
+    const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
     const titleEl = document.getElementById("title");
     const badgeEl = document.getElementById("cat-badge");
     const errorEl = document.getElementById("error");
