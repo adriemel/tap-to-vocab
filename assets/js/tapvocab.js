@@ -230,7 +230,7 @@
   async function initFromTSV(opts) {
     const category = (opts && opts.category) || inferCategoryFromPath();
     // 🔧 FIXED PATH
-    const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
+    const tsvPath = (opts && opts.tsvPath) || "../..//data/words.tsv";
     const titleEl = document.getElementById("title");
     const badgeEl = document.getElementById("cat-badge");
     const errorEl = document.getElementById("error");
