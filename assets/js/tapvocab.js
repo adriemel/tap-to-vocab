@@ -193,10 +193,8 @@
     const homeBtn = document.getElementById("btn-home");
     const markBtn = document.getElementById("btn-mark");
 
-    function updateMarkButton(w) {
-      markBtn.textContent = isMarked(w) ? "⭐ Marked" : "✩ Mark";
-    }
-
+    function updateMarkButton(w) {  markBtn.textContent = isMarked(w) ? "⭐" : "✩";  markBtn.setAttribute("aria-label", isMarked(w) ? "Unmark" : "Mark for practice");}
+    
     function render() {
       const w = words[i];
       elEs.textContent = w.es;
