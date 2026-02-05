@@ -90,6 +90,109 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   justify-content:center;
 }
 
+/* ---------- Quiz Complete Modal ---------- */
+.quiz-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 16, 32, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.quiz-modal-content {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 32px 24px;
+  max-width: 90%;
+  width: 440px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  border: 1px solid #2a3a80;
+  animation: slideUp 0.4s ease;
+}
+
+.quiz-modal-header h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--ink);
+  font-size: 1.8rem;
+}
+
+.quiz-modal-body {
+  margin: 24px 0;
+}
+
+.quiz-result {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.result-item {
+  background: #0f1540;
+  border: 1px solid #243688;
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+  min-width: 100px;
+  flex: 1;
+}
+
+.result-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.correct-color {
+  color: var(--ok);
+}
+
+.warn-color {
+  color: var(--warn);
+}
+
+.quiz-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quiz-modal-actions .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ---------- Mode Tabs (at bottom of page) ---------- */
 .mode-tabs {
   display: flex;
