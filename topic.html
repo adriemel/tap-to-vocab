@@ -76,6 +76,36 @@
         </div>
       </div>
 
+      <!-- Quiz Complete Modal -->
+      <div class="quiz-modal" id="quiz-modal" style="display:none;">
+        <div class="quiz-modal-content">
+          <div class="quiz-modal-header">
+            <h2>🎉 Quiz Complete!</h2>
+          </div>
+          <div class="quiz-modal-body">
+            <div class="quiz-result">
+              <div class="result-item">
+                <span class="result-label">Correct</span>
+                <span class="result-value correct-color" id="modal-correct">0</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Need Practice</span>
+                <span class="result-value warn-color" id="modal-wrong">0</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Score</span>
+                <span class="result-value" id="modal-score">0%</span>
+              </div>
+            </div>
+          </div>
+          <div class="quiz-modal-actions">
+            <button class="btn secondary" id="modal-restart">🔄 Restart Quiz</button>
+            <button class="btn" id="modal-practice">⭐ Practice</button>
+            <button class="btn ghost" id="modal-home">🏠 Home</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Mode Toggle Tabs - at bottom -->
       <div class="mode-tabs">
         <button class="mode-tab active" data-mode="browse">📖 Flashcards</button>
