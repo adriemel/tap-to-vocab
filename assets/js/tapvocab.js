@@ -113,12 +113,12 @@
   }
 
   /* ---------- Quiz Mode ---------- */
-  function setupQuizMode(words) {
+  function setupQuizMode(words, category) {
     const quizMode = document.getElementById("quiz-mode");
     const flipCard = document.getElementById("flip-card");
+    const cardFront = document.getElementById("card-front-clickable");
     const quizEs = document.getElementById("quiz-es");
     const quizDe = document.getElementById("quiz-de");
-    const btnFlip = document.getElementById("btn-flip");
     const btnCorrect = document.getElementById("btn-correct");
     const btnWrong = document.getElementById("btn-wrong");
     const btnRestart = document.getElementById("btn-restart-quiz");
@@ -133,6 +133,7 @@
     let currentQuizIndex = 0;
     let correctCount = 0;
     let wrongCount = 0;
+    const isPracticeCategory = category && category.toLowerCase() === "practice";
 
     function showQuizCard() {
       if (currentQuizIndex >= quizWords.length) {
@@ -158,20 +159,39 @@
       setTimeout(() => speakSpanish(word.es), 100);
     }
 
-    btnFlip.onclick = () => {
-      flipCard.classList.add("flipped");
-    };
+    // Make entire front card clickable
+    cardFront.addEventListener("click", () => {
+      if (!flipCard.classList.contains("flipped")) {
+        flipCard.classList.add("flipped");
+      }
+    });
 
     btnCorrect.onclick = () => {
       correctCount++;
-      currentQuizIndex++;
+      const word = quizWords[currentQuizIndex];
+      
+      // If in practice category, remove from practice list
+      if (isPracticeCategory && isMarked(word)) {
+        toggleMark(word); // This removes it
+        // Remove from current quiz words array too
+        quizWords = quizWords.filter((w, idx) => idx !== currentQuizIndex);
+        // Don't increment currentQuizIndex since we removed the current item
+        // If we've removed all words, quiz is complete
+        if (quizWords.length === 0) {
+          alert(`Excellent work! You've mastered all ${correctCount} words in your practice list!`);
+          return;
+        }
+      } else {
+        currentQuizIndex++;
+      }
+      
       showQuizCard();
     };
 
     btnWrong.onclick = () => {
       wrongCount++;
       const word = quizWords[currentQuizIndex];
-      // Auto-mark for practice
+      // Auto-mark for practice if not already marked
       if (!isMarked(word)) {
         toggleMark(word);
       }
@@ -251,7 +271,7 @@
   }
 
   /* ---------- Mode Switching ---------- */
-  function setupModeSwitching(words) {
+  function setupModeSwitching(words, category) {
     const modeTabs = document.querySelectorAll(".mode-tab");
     const browseMode = document.getElementById("browse-mode");
     const quizMode = document.getElementById("quiz-mode");
@@ -274,7 +294,7 @@
           quizMode.style.display = "block";
           // Only initialize quiz once
           if (!quizInitialized) {
-            setupQuizMode(words);
+            setupQuizMode(words, category);
             quizInitialized = true;
           }
         }
@@ -313,7 +333,7 @@
       initBrowseMode(words, category);
       
       // Setup mode switching
-      setupModeSwitching(words);
+      setupModeSwitching(words, category);
       
     } catch (e) {
       errorEl.textContent = "Could not load words.tsv: " + e.message;
