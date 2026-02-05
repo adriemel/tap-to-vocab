@@ -126,23 +126,44 @@
     const quizProgress = document.getElementById("quiz-progress");
     const quizCorrectStat = document.getElementById("quiz-correct");
     const quizWrongStat = document.getElementById("quiz-wrong");
+    
+    // Modal elements
+    const quizModal = document.getElementById("quiz-modal");
+    const modalCorrect = document.getElementById("modal-correct");
+    const modalWrong = document.getElementById("modal-wrong");
+    const modalScore = document.getElementById("modal-score");
+    const modalRestart = document.getElementById("modal-restart");
+    const modalPractice = document.getElementById("modal-practice");
+    const modalHome = document.getElementById("modal-home");
 
     if (!quizMode || !flipCard) return;
 
-    let quizWords = shuffleArray([...words]);
+    let quizWords = shuffleArray([...words]); // Shuffle on init
     let currentQuizIndex = 0;
     let correctCount = 0;
     let wrongCount = 0;
     const isPracticeCategory = category && category.toLowerCase() === "practice";
 
+    function showQuizCompleteModal() {
+      const totalCorrect = correctCount;
+      const totalWrong = wrongCount;
+      const total = totalCorrect + totalWrong;
+      const percentage = total > 0 ? Math.round((totalCorrect / total) * 100) : 0;
+      
+      modalCorrect.textContent = totalCorrect;
+      modalWrong.textContent = totalWrong;
+      modalScore.textContent = percentage + "%";
+      quizModal.style.display = "flex";
+    }
+
+    function hideQuizCompleteModal() {
+      quizModal.style.display = "none";
+    }
+
     function showQuizCard() {
       if (currentQuizIndex >= quizWords.length) {
-        // Quiz complete
-        const totalCorrect = correctCount;
-        const totalWrong = wrongCount;
-        const percentage = Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) || 0;
-        
-        alert(`Quiz Complete!\n\nCorrect: ${totalCorrect}\nNeed Practice: ${totalWrong}\nScore: ${percentage}%`);
+        // Quiz complete - show modal
+        showQuizCompleteModal();
         return;
       }
 
@@ -157,6 +178,15 @@
 
       // Speak the Spanish word
       setTimeout(() => speakSpanish(word.es), 100);
+    }
+
+    function restartQuiz() {
+      hideQuizCompleteModal();
+      quizWords = shuffleArray([...words]); // Re-shuffle on restart
+      currentQuizIndex = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      showQuizCard();
     }
 
     // Make entire front card clickable
@@ -178,7 +208,7 @@
         // Don't increment currentQuizIndex since we removed the current item
         // If we've removed all words, quiz is complete
         if (quizWords.length === 0) {
-          alert(`Excellent work! You've mastered all ${correctCount} words in your practice list!`);
+          showQuizCompleteModal();
           return;
         }
       } else {
@@ -199,15 +229,20 @@
       showQuizCard();
     };
 
-    btnRestart.onclick = () => {
-      quizWords = shuffleArray([...words]);
-      currentQuizIndex = 0;
-      correctCount = 0;
-      wrongCount = 0;
-      showQuizCard();
+    btnRestart.onclick = restartQuiz;
+    
+    btnHomeQuiz.onclick = () => {
+      location.href = "../";
     };
 
-    btnHomeQuiz.onclick = () => {
+    // Modal button handlers
+    modalRestart.onclick = restartQuiz;
+    
+    modalPractice.onclick = () => {
+      location.href = "/topic.html?cat=practice";
+    };
+    
+    modalHome.onclick = () => {
       location.href = "../";
     };
 
