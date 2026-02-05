@@ -255,6 +255,7 @@
     const modeTabs = document.querySelectorAll(".mode-tab");
     const browseMode = document.getElementById("browse-mode");
     const quizMode = document.getElementById("quiz-mode");
+    let quizInitialized = false;
 
     modeTabs.forEach(tab => {
       tab.addEventListener("click", () => {
@@ -271,7 +272,11 @@
         } else if (mode === "quiz") {
           browseMode.style.display = "none";
           quizMode.style.display = "block";
-          setupQuizMode(words);
+          // Only initialize quiz once
+          if (!quizInitialized) {
+            setupQuizMode(words);
+            quizInitialized = true;
+          }
         }
       });
     });
