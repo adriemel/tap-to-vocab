@@ -35,11 +35,17 @@ a { color: var(--accent); text-decoration: none; }
 h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; text-align:center; }
 h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted); font-weight: 600; }
 
-/* Two-column grid for home page */
+/* Two-column grid for home page - always 2 equal columns */
 .grid-two-col {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr; /* Force 2 equal columns */
+}
+
+.grid-two-col .btn {
+  width: 100%; /* Ensure buttons fill their grid cell */
+  text-align: center;
+  justify-content: center;
 }
 
 .grid-two-col .btn-practice {
@@ -84,11 +90,11 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   justify-content:center;
 }
 
-/* ---------- Mode Tabs ---------- */
+/* ---------- Mode Tabs (at bottom of page) ---------- */
 .mode-tabs {
   display: flex;
   gap: 8px;
-  margin: 16px 0;
+  margin-top: 20px;
   padding: 4px;
   background: #0f1540;
   border-radius: 12px;
@@ -96,13 +102,14 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 
 .mode-tab {
   flex: 1;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border: none;
   border-radius: 8px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
@@ -112,9 +119,9 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 }
 
 .mode-tab.active {
-  background: #1a2350;
-  color: var(--ink);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  background: var(--accent);
+  color: #0b1020;
+  box-shadow: 0 2px 8px rgba(108, 168, 255, 0.4);
 }
 
 /* ---------- Browse Mode (Word Card) ---------- */
@@ -353,10 +360,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
 /* ---------- Responsive tuning ---------- */
 @media (max-width: 600px) {
-  .grid-two-col {
-    grid-template-columns: 1fr;
-  }
-  
   .controls {
     gap:6px;
   }
