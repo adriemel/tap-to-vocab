@@ -6,9 +6,7 @@
   --accent:#6ca8ff;
   --ok:#3ddc97;
   --warn:#ffcc66;
-
-  /* NEW – neutral for input-like background */
-  --slot-bg:#0f1540;
+  --error:#ff6b9d;
 }
 
 * { box-sizing: border-box; }
@@ -19,7 +17,6 @@ html,body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background:var(--bg);
   color:var(--ink);
-  /* NEW – prevent zoom glitch on iOS for inputs */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -38,6 +35,21 @@ a { color: var(--accent); text-decoration: none; }
 h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; text-align:center; }
 h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted); font-weight: 600; }
 
+/* Two-column grid for home page */
+.grid-two-col {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-two-col .btn-practice {
+  grid-column: 1 / -1; /* Span both columns */
+  background: linear-gradient(135deg, #2a3a80 0%, #1a2350 100%);
+  border: 2px solid var(--warn);
+  font-weight: 700;
+}
+
+/* Original grid (fallback) */
 .grid {
   display: grid;
   gap: 12px;
@@ -72,7 +84,40 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   justify-content:center;
 }
 
-/* ---------- Word Card ---------- */
+/* ---------- Mode Tabs ---------- */
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 4px;
+  background: #0f1540;
+  border-radius: 12px;
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.mode-tab:hover {
+  color: var(--ink);
+  background: rgba(255,255,255,0.05);
+}
+
+.mode-tab.active {
+  background: #1a2350;
+  color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ---------- Browse Mode (Word Card) ---------- */
 .word-card {
   text-align: center;
   padding: 20px 16px;
@@ -89,7 +134,6 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   margin-bottom: 8px;
 }
 
-/* German translation – shown on toggle */
 .sub.translation {
   display: none;
   font-size: clamp(1.1rem, 4.2vw, 1.4rem);
@@ -99,6 +143,165 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 }
 .sub.translation.shown { display: block; opacity:1; }
 
+#btn-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+}
+
+/* ---------- Quiz Mode (Flip Cards) ---------- */
+.flip-card {
+  perspective: 1000px;
+  min-height: 320px;
+  margin-bottom: 20px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  min-height: 320px;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.flip-card-front {
+  background: linear-gradient(135deg, #1a2350 0%, #121a3a 100%);
+  border: 2px solid #2a3a80;
+}
+
+.flip-card-back {
+  background: linear-gradient(135deg, #2a1a50 0%, #1a1a3a 100%);
+  border: 2px solid #4a3a80;
+  transform: rotateY(180deg);
+}
+
+.quiz-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.quiz-word {
+  font-size: clamp(2rem, 8vw, 3.2rem);
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.btn-flip {
+  margin-top: 12px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b1020;
+  font-weight: 700;
+}
+
+.btn-flip:hover {
+  background: #5a98ef;
+}
+
+.quiz-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-wrong {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+  font-weight: 700;
+  flex: 1;
+  min-width: 140px;
+}
+
+.btn-wrong:hover {
+  background: #ff5585;
+}
+
+.btn-correct {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #0b1020;
+  font-weight: 700;
+  flex: 1;
+  min-width: 140px;
+}
+
+.btn-correct:hover {
+  background: #2ecc87;
+}
+
+/* Quiz Stats */
+.quiz-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: #0f1540;
+  border: 1px solid #243688;
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.stat-correct {
+  color: var(--ok);
+}
+
+.stat-wrong {
+  color: var(--warn);
+}
+
+/* ---------- Badges and misc ---------- */
 .badge {
   display:inline-flex;
   align-items:center;
@@ -115,77 +318,7 @@ hr { border: none; height: 1px; background: #24336d; margin: 16px 0; }
 
 input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
-/* ---------- Build Mode (improved for small screens) ---------- */
-.build-wrap {
-  margin-top: 8px;
-  display:block;
-  text-align:center;
-  width:100%;
-}
-
-.build-slots {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:6px;
-  margin-bottom:10px;
-}
-
-.slot {
-  min-width: 30px;
-  min-height: 38px;
-  padding: 8px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border-radius: 8px;
-  border: 1px dashed #3a4b90;
-  background: var(--slot-bg);
-  font-weight: 700;
-  font-size: 1.15rem;
-}
-
-/* NEW – convert letter bank to grid for mobile */
-.build-bank {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-  gap: 6px;
-  width:100%;
-  justify-items:center;
-}
-
-/* Each letter button (compact + tactile) */
-.letter {
-  padding:10px 0;
-  width:100%;
-  border-radius:8px;
-  background:#1a2350;
-  border:1px solid #2a3a80;
-  cursor:pointer;
-  font-weight:700;
-  font-size:1.1rem;
-  user-select:none;
-  transition:background 0.15s ease;
-}
-.letter:hover { background:#223070; }
-
-.letter.used {
-  opacity: 0.35;
-  pointer-events: none;
-}
-
-.letter.wrong {
-  animation: tv-shake 180ms ease-in-out;
-}
-
-/* Success feedback on the slots row */
-.success {
-  animation: bounce 400ms ease-in-out;
-  background:#0f1a46;
-  border-color:#1dd45f;
-}
-
-/* Error/info box (if TSV missing, etc.) */
+/* Error/info box */
 .error {
   background:#2a1030;
   border:1px solid #6a2a70;
@@ -195,48 +328,74 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   text-align:center;
 }
 
-#btn-mark {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 1.4rem;
-  line-height: 1;
-  padding: 0;
-}
-
-
 /* ---------- Animations ---------- */
 @keyframes pop {
   from { transform: scale(.9); opacity:.0; }
   to   { transform: scale(1);  opacity:1;  }
 }
+
 @keyframes bounce {
   0%   { transform: scale(1) }
   30%  { transform: scale(1.06) }
   60%  { transform: scale(.98) }
   100% { transform: scale(1) }
 }
-@keyframes tv-shake {
-  0%   { transform: translateX(0); }
-  25%  { transform: translateX(-2px); }
-  50%  { transform: translateX(2px); }
-  75%  { transform: translateX(-1px); }
-  100% { transform: translateX(0); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.flip-card-front,
+.flip-card-back {
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* ---------- Responsive tuning ---------- */
 @media (max-width: 600px) {
+  .grid-two-col {
+    grid-template-columns: 1fr;
+  }
+  
   .controls {
     gap:6px;
   }
+  
   .btn {
     font-size: 0.95rem;
     padding: 10px 12px;
   }
+  
   .word-card {
     padding: 16px 12px;
   }
+  
   .big {
     font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+  
+  .quiz-word {
+    font-size: clamp(1.6rem, 8vw, 2.6rem);
+  }
+  
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 280px;
+    padding: 24px 16px;
+  }
+  
+  .quiz-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .quiz-actions button {
+    width: 100%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .grid-two-col {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
