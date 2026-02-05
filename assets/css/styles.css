@@ -196,6 +196,24 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 .flip-card-front {
   background: linear-gradient(135deg, #1a2350 0%, #121a3a 100%);
   border: 2px solid #2a3a80;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.flip-card-front:hover {
+  background: linear-gradient(135deg, #1f2860 0%, #151d42 100%);
+}
+
+.flip-card-front:active {
+  transform: scale(0.98);
+}
+
+.tap-hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  opacity: 0.7;
+  font-style: italic;
+  margin-top: 8px;
 }
 
 .flip-card-back {
@@ -220,50 +238,41 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   color: var(--ink);
 }
 
-.btn-flip {
-  margin-top: 12px;
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #0b1020;
-  font-weight: 700;
-}
-
-.btn-flip:hover {
-  background: #5a98ef;
-}
-
 .quiz-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 16px;
-  flex-wrap: wrap;
   justify-content: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 .btn-wrong {
-  background: var(--error);
-  border-color: var(--error);
-  color: white;
-  font-weight: 700;
+  background: transparent;
+  border: 1px solid var(--error);
+  color: var(--error);
+  font-weight: 600;
   flex: 1;
-  min-width: 140px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
 }
 
 .btn-wrong:hover {
-  background: #ff5585;
+  background: rgba(255, 107, 157, 0.1);
 }
 
 .btn-correct {
-  background: var(--ok);
-  border-color: var(--ok);
-  color: #0b1020;
-  font-weight: 700;
+  background: transparent;
+  border: 1px solid var(--ok);
+  color: var(--ok);
+  font-weight: 600;
   flex: 1;
-  min-width: 140px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
 }
 
 .btn-correct:hover {
-  background: #2ecc87;
+  background: rgba(61, 220, 151, 0.1);
 }
 
 /* Quiz Stats */
@@ -388,12 +397,13 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
   
   .quiz-actions {
-    flex-direction: column;
-    width: 100%;
+    gap: 8px;
   }
   
-  .quiz-actions button {
-    width: 100%;
+  .btn-wrong,
+  .btn-correct {
+    font-size: 0.85rem;
+    padding: 10px 12px;
   }
 }
 
