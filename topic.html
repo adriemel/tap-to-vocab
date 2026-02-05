@@ -15,27 +15,71 @@
         <span class="badge" id="counter">0 / 0</span>
       </div>
 
-      <div class="word-card" id="word-card">
-        <div class="big" id="word-es">—</div>
-        <div class="sub translation" id="word-de">—</div>
+      <!-- Mode Toggle Tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="browse">📖 Browse</button>
+        <button class="mode-tab" data-mode="quiz">🎯 Quiz</button>
       </div>
 
-      <div class="controls">
-        <button class="btn" id="btn-hear">▶︎ Hear Spanish</button>
-        <button class="btn secondary" id="btn-prev">← Prev</button>
-        <button class="btn secondary" id="btn-next">Next →</button>
-        <button class="btn secondary" id="btn-show">Show</button>
-        <button class="btn secondary" id="btn-mark">⭐ Mark</button>
-        <button id="btn-home" class="btn ghost">🏠 Home</button>
-        <label class="badge">
-          <input type="checkbox" id="auto-speak" checked /> Auto‑speak
-        </label>
-        <button class="btn secondary" id="btn-clear" title="Clear built letters">Clear</button>
+      <!-- Browse Mode (default) -->
+      <div id="browse-mode">
+        <div class="word-card" id="word-card">
+          <div class="big" id="word-es">—</div>
+          <div class="sub translation" id="word-de">—</div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="btn-hear">▶︎ Hear</button>
+          <button class="btn secondary" id="btn-prev">← Prev</button>
+          <button class="btn secondary" id="btn-next">Next →</button>
+          <button class="btn secondary" id="btn-show">Show</button>
+          <button class="btn secondary" id="btn-mark" title="Mark for practice">✩</button>
+          <button id="btn-home" class="btn ghost">🏠 Home</button>
+          <label class="badge">
+            <input type="checkbox" id="auto-speak" checked /> Auto‑speak
+          </label>
+        </div>
       </div>
 
-      <div class="build-wrap">
-        <div class="build-slots"></div>
-        <div class="build-bank"></div>
+      <!-- Quiz Mode (flip cards) -->
+      <div id="quiz-mode" style="display:none;">
+        <div class="flip-card" id="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="quiz-label">Spanish</div>
+              <div class="quiz-word" id="quiz-es">—</div>
+              <button class="btn btn-flip" id="btn-flip">Flip to see German →</button>
+            </div>
+            <div class="flip-card-back">
+              <div class="quiz-label">German</div>
+              <div class="quiz-word" id="quiz-de">—</div>
+              <div class="quiz-actions">
+                <button class="btn btn-wrong" id="btn-wrong">😕 Need Practice</button>
+                <button class="btn btn-correct" id="btn-correct">✓ Got it!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-stats">
+          <div class="stat">
+            <span class="stat-label">Progress</span>
+            <span class="stat-value" id="quiz-progress">0 / 0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Correct</span>
+            <span class="stat-value stat-correct" id="quiz-correct">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Need Practice</span>
+            <span class="stat-value stat-wrong" id="quiz-wrong">0</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn secondary" id="btn-restart-quiz">🔄 Restart Quiz</button>
+          <button class="btn ghost" id="btn-home-quiz">🏠 Home</button>
+        </div>
       </div>
 
       <div class="error" id="error" style="display:none; margin-top:12px;"></div>
