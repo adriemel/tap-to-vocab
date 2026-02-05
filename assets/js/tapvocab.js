@@ -1,8 +1,9 @@
 /**
- * Tap‑to‑Vocab (with ⭐ Practice list)
+ * Tap‑to‑Vocab (with ⭐ Practice list + Quiz Mode)
  * - Loads /data/words.tsv
  * - Adds "Mark / Unmark" star button
  * - New category "practice" showing saved words
+ * - Quiz mode with flip cards for self-assessment
  */
 
 (function () {
@@ -16,6 +17,7 @@
     const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
     return preferred[0] || voices[0] || null;
   }
+  
   function speakSpanish(text) {
     try {
       const u = new SpeechSynthesisUtterance(text);
@@ -85,17 +87,21 @@
 
   /* ---------- Practice List storage ---------- */
   const STORAGE_KEY = "practiceList";
+  
   function getPracticeList() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
     catch { return []; }
   }
+  
   function savePracticeList(list) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   }
+  
   function isMarked(word) {
     const list = getPracticeList();
     return list.some(w => w.es === word.es && w.de === word.de);
   }
+  
   function toggleMark(word) {
     let list = getPracticeList();
     if (isMarked(word)) {
@@ -106,81 +112,90 @@
     savePracticeList(list);
   }
 
-  /* ---------- Build Mode ---------- */
-  function setupBuildMode(targetWord) {
-    const slotsEl = document.querySelector(".build-slots");
-    const bankEl = document.querySelector(".build-bank");
-    const clearBtn = document.getElementById("btn-clear");
-    if (!slotsEl || !bankEl || !clearBtn) return;
+  /* ---------- Quiz Mode ---------- */
+  function setupQuizMode(words) {
+    const quizMode = document.getElementById("quiz-mode");
+    const flipCard = document.getElementById("flip-card");
+    const quizEs = document.getElementById("quiz-es");
+    const quizDe = document.getElementById("quiz-de");
+    const btnFlip = document.getElementById("btn-flip");
+    const btnCorrect = document.getElementById("btn-correct");
+    const btnWrong = document.getElementById("btn-wrong");
+    const btnRestart = document.getElementById("btn-restart-quiz");
+    const btnHomeQuiz = document.getElementById("btn-home-quiz");
+    const quizProgress = document.getElementById("quiz-progress");
+    const quizCorrectStat = document.getElementById("quiz-correct");
+    const quizWrongStat = document.getElementById("quiz-wrong");
 
-    const word = targetWord.trim();
-    const chars = Array.from(word);
-    slotsEl.innerHTML = "";
-    bankEl.innerHTML = "";
+    if (!quizMode || !flipCard) return;
 
-    const slotMap = [];
-    chars.forEach(ch => {
-      const slot = document.createElement("div");
-      slot.className = "slot";
-      slot.textContent = ch === " " ? "⎵" : "";
-      if (ch === " ") {
-        slot.style.opacity = 0.4; slot.style.borderStyle = "dotted";
-        slotMap.push({ filled: true, char: " " });
-      } else {
-        slotMap.push({ filled: false, char: null, el: slot, expected: ch });
+    let quizWords = shuffleArray([...words]);
+    let currentQuizIndex = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    function showQuizCard() {
+      if (currentQuizIndex >= quizWords.length) {
+        // Quiz complete
+        const totalCorrect = correctCount;
+        const totalWrong = wrongCount;
+        const percentage = Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) || 0;
+        
+        alert(`Quiz Complete!\n\nCorrect: ${totalCorrect}\nNeed Practice: ${totalWrong}\nScore: ${percentage}%`);
+        return;
       }
-      slotsEl.appendChild(slot);
-    });
 
-    const bank = shuffleArray(chars.filter(c => c !== " "));
-    function nextEmptyIndex() {
-      return slotMap.findIndex(s => s.el && !s.filled);
+      const word = quizWords[currentQuizIndex];
+      quizEs.textContent = word.es;
+      quizDe.textContent = word.de;
+      flipCard.classList.remove("flipped");
+      
+      quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
+      quizCorrectStat.textContent = correctCount;
+      quizWrongStat.textContent = wrongCount;
+
+      // Speak the Spanish word
+      setTimeout(() => speakSpanish(word.es), 100);
     }
 
-    bank.forEach(ch => {
-      const b = document.createElement("button");
-      b.className = "letter btn";
-      b.textContent = ch;
-      b.addEventListener("click", () => {
-        const idx = nextEmptyIndex();
-        if (idx < 0) return;
-        const expected = slotMap[idx];
-        if (ch === expected.expected) {
-          expected.el.textContent = ch;
-          expected.filled = true;
-          b.classList.add("used"); b.disabled = true;
-          const done = slotMap.filter(s => s.el).every(s => s.filled);
-          if (done) {
-            const built = slotMap.map(s => s.el ? (s.el.textContent || "") : s.char).join("");
-            if (built === word) {
-              slotsEl.classList.add("success");
-              setTimeout(() => slotsEl.classList.remove("success"), 450);
-              speakSpanish(word);
-              confettiBurst(slotsEl);
-              // optional: auto‑unmark mastered word
-              let list = getPracticeList().filter(w => w.es !== word);
-              savePracticeList(list);
-            }
-          }
-        } else {
-          b.classList.add("wrong");
-          setTimeout(() => b.classList.remove("wrong"), 220);
-        }
-      });
-      bankEl.appendChild(b);
-    });
-
-    clearBtn.onclick = () => {
-      slotMap.forEach(s => { if (s.el) { s.el.textContent = ""; s.filled = false; } });
-      bankEl.querySelectorAll(".letter").forEach(l => {
-        l.classList.remove("used","wrong"); l.disabled = false;
-      });
-      slotsEl.classList.remove("success");
+    btnFlip.onclick = () => {
+      flipCard.classList.add("flipped");
     };
+
+    btnCorrect.onclick = () => {
+      correctCount++;
+      currentQuizIndex++;
+      showQuizCard();
+    };
+
+    btnWrong.onclick = () => {
+      wrongCount++;
+      const word = quizWords[currentQuizIndex];
+      // Auto-mark for practice
+      if (!isMarked(word)) {
+        toggleMark(word);
+      }
+      currentQuizIndex++;
+      showQuizCard();
+    };
+
+    btnRestart.onclick = () => {
+      quizWords = shuffleArray([...words]);
+      currentQuizIndex = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      showQuizCard();
+    };
+
+    btnHomeQuiz.onclick = () => {
+      location.href = "../";
+    };
+
+    showQuizCard();
   }
 
-  /* ---------- UI logic ---------- */
-  function initCategoryUI(words, category) {
+  /* ---------- Browse Mode UI logic ---------- */
+  function initBrowseMode(words, category) {
     let i = 0;
     const elEs = document.getElementById("word-es");
     const elDe = document.getElementById("word-de");
@@ -193,7 +208,10 @@
     const homeBtn = document.getElementById("btn-home");
     const markBtn = document.getElementById("btn-mark");
 
-    function updateMarkButton(w) {  markBtn.textContent = isMarked(w) ? "⭐" : "✩";  markBtn.setAttribute("aria-label", isMarked(w) ? "Unmark" : "Mark for practice");}
+    function updateMarkButton(w) {
+      markBtn.textContent = isMarked(w) ? "⭐" : "✩";
+      markBtn.setAttribute("aria-label", isMarked(w) ? "Unmark" : "Mark for practice");
+    }
     
     function render() {
       const w = words[i];
@@ -204,7 +222,6 @@
       btnShow.textContent = "Show";
       updateMarkButton(w);
       if (autoSpeakEl.checked) setTimeout(() => speakSpanish(w.es), 100);
-      setupBuildMode(w.es);
     }
 
     function next() { i = (i + 1) % words.length; render(); }
@@ -215,20 +232,55 @@
     prevBtn.onclick = prev;
     btnShow.onclick = () => {
       if (elDe.classList.contains("shown")) {
-        elDe.classList.remove("shown"); btnShow.textContent = "Show";
-      } else { elDe.classList.add("shown"); btnShow.textContent = "Hide"; }
+        elDe.classList.remove("shown");
+        btnShow.textContent = "Show";
+      } else {
+        elDe.classList.add("shown");
+        btnShow.textContent = "Hide";
+      }
     };
-    markBtn.onclick = () => { toggleMark(words[i]); updateMarkButton(words[i]); };
-    homeBtn.onclick = () => { location.href = "../"; };
+    markBtn.onclick = () => {
+      toggleMark(words[i]);
+      updateMarkButton(words[i]);
+    };
+    homeBtn.onclick = () => {
+      location.href = "../";
+    };
 
     render();
+  }
+
+  /* ---------- Mode Switching ---------- */
+  function setupModeSwitching(words) {
+    const modeTabs = document.querySelectorAll(".mode-tab");
+    const browseMode = document.getElementById("browse-mode");
+    const quizMode = document.getElementById("quiz-mode");
+
+    modeTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const mode = tab.getAttribute("data-mode");
+        
+        // Update active tab
+        modeTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        // Switch mode
+        if (mode === "browse") {
+          browseMode.style.display = "block";
+          quizMode.style.display = "none";
+        } else if (mode === "quiz") {
+          browseMode.style.display = "none";
+          quizMode.style.display = "block";
+          setupQuizMode(words);
+        }
+      });
+    });
   }
 
   /* ---------- Main init ---------- */
   async function initFromTSV(opts) {
     const category = (opts && opts.category) || inferCategoryFromPath();
-    // 🔧 FIXED PATH
-    const tsvPath = (opts && opts.tsvPath) || "../..//data/words.tsv";
+    const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
     const titleEl = document.getElementById("title");
     const badgeEl = document.getElementById("cat-badge");
     const errorEl = document.getElementById("error");
@@ -249,9 +301,15 @@
         return;
       }
 
-      titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
+      titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
       badgeEl.textContent = category;
-      initCategoryUI(words, category);
+      
+      // Initialize browse mode
+      initBrowseMode(words, category);
+      
+      // Setup mode switching
+      setupModeSwitching(words);
+      
     } catch (e) {
       errorEl.textContent = "Could not load words.tsv: " + e.message;
       errorEl.style.display = "block";
