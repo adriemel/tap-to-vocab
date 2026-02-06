@@ -127,6 +127,9 @@
     const quizCorrectStat = document.getElementById("quiz-correct");
     const quizWrongStat = document.getElementById("quiz-wrong");
     
+    // Main counter at top of page
+    const mainCounter = document.getElementById("counter");
+    
     // Modal elements
     const quizModal = document.getElementById("quiz-modal");
     const modalCorrect = document.getElementById("modal-correct");
@@ -168,16 +171,27 @@
       }
 
       const word = quizWords[currentQuizIndex];
-      quizEs.textContent = word.es;
-      quizDe.textContent = word.de;
+      
+      // CRITICAL: Remove flipped class FIRST, then update text to prevent flash
       flipCard.classList.remove("flipped");
+      
+      // Small delay to ensure flip animation completes before changing text
+      setTimeout(() => {
+        quizEs.textContent = word.es;
+        quizDe.textContent = word.de;
+      }, 50);
       
       quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       quizCorrectStat.textContent = correctCount;
       quizWrongStat.textContent = wrongCount;
+      
+      // Update main counter at top of page
+      if (mainCounter) {
+        mainCounter.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
+      }
 
       // Speak the Spanish word
-      setTimeout(() => speakSpanish(word.es), 100);
+      setTimeout(() => speakSpanish(word.es), 150);
     }
 
     function restartQuiz() {
