@@ -122,6 +122,7 @@
     const btnCorrect = document.getElementById("btn-correct");
     const btnWrong = document.getElementById("btn-wrong");
     const btnRestart = document.getElementById("btn-restart-quiz");
+    const btnQuizBack = document.getElementById("btn-quiz-back");
     const btnHomeQuiz = document.getElementById("btn-home-quiz");
     const quizProgress = document.getElementById("quiz-progress");
     const quizCorrectStat = document.getElementById("quiz-correct");
@@ -146,6 +147,9 @@
     let correctCount = 0;
     let wrongCount = 0;
     const isPracticeCategory = category && category.toLowerCase() === "practice";
+    
+    // History tracking for back button
+    let answerHistory = []; // Array of {index, wasCorrect, word}
 
     function showQuizCompleteModal() {
       const totalCorrect = correctCount;
@@ -200,6 +204,7 @@
       currentQuizIndex = 0;
       correctCount = 0;
       wrongCount = 0;
+      answerHistory = []; // Clear history
       showQuizCard();
     }
 
@@ -211,8 +216,16 @@
     });
 
     btnCorrect.onclick = () => {
-      correctCount++;
       const word = quizWords[currentQuizIndex];
+      
+      // Track this answer in history
+      answerHistory.push({
+        index: currentQuizIndex,
+        wasCorrect: true,
+        word: {...word}
+      });
+      
+      correctCount++;
       
       // If in practice category, remove from practice list
       if (isPracticeCategory && isMarked(word)) {
@@ -233,8 +246,17 @@
     };
 
     btnWrong.onclick = () => {
-      wrongCount++;
       const word = quizWords[currentQuizIndex];
+      
+      // Track this answer in history
+      answerHistory.push({
+        index: currentQuizIndex,
+        wasCorrect: false,
+        word: {...word}
+      });
+      
+      wrongCount++;
+      
       // Auto-mark for practice if not already marked
       if (!isMarked(word)) {
         toggleMark(word);
@@ -244,6 +266,27 @@
     };
 
     btnRestart.onclick = restartQuiz;
+    
+    btnQuizBack.onclick = () => {
+      // Only go back if we have history
+      if (answerHistory.length === 0) return;
+      
+      // Get the last answer
+      const lastAnswer = answerHistory.pop();
+      
+      // Undo the score
+      if (lastAnswer.wasCorrect) {
+        correctCount--;
+      } else {
+        wrongCount--;
+        // If they marked it wrong, we auto-added it to practice
+        // Optionally undo that (but let's keep it for now)
+      }
+      
+      // Go back to that card
+      currentQuizIndex = lastAnswer.index;
+      showQuizCard();
+    };
     
     btnHomeQuiz.onclick = () => {
       location.href = "../";
