@@ -101,7 +101,7 @@ Casa_Familia	el chico	der Junge
 Casa_Familia	la chica	das Mädchen
 Casa_Familia	la mascota	das Haustier
 Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
-Casa_Familia	tu	dein/deine
+Casa_Familia	tu	dein(e)
 Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
 Casa_Familia	la mochila	der Rucksack
 Casa_Familia	el zapato	der Schuh
@@ -160,7 +160,7 @@ Palabras	escuchar algo	etw. hören
 Palabras	tener	haben
 Palabras	contestar	antworten
 Palabras	preguntar	fragen
-Palabras	el chico / la chica	der Junge / das Mädchen
+Palabras	el chico 	der Junge
 Palabras	Adelante!	Herein!
 Palabras	¿Qué pasa?	Was ist los?
 Palabras	el problema	das Problem
@@ -178,10 +178,10 @@ Palabras	fácil	einfach
 Palabras	difícil	schwierig
 Palabras	pobre	arm
 Palabras	rico	reich
-Palabras	lindo/linda	schön
+Palabras	lindo, linda	schön
 Palabras	feo	hässlich
 Palabras	alto	hoch
-Palabras	pequeño/pequeña	klein
+Palabras	pequeño, pequeña	klein
 Palabras	grande	groß
 Palabras	viejo	alt
 Palabras	joven	jung
@@ -293,13 +293,12 @@ Unidad2	el color favorito 	die Lieblingsfarbe
 Unidad2	el año 	das Jahr
 Unidad2	el número de teléfono 	die Telefonnummer
 Unidad2	el móvil 	das Handy
-Unidad2	(ellos / ellas) son 	(sie) sind
 Unidad2	¿Cuál es tu número de móvil?	Wie lautet deine Handynummer?
 Unidad2	el teléfono 	das Telefon
 Unidad2	el hámster 	der Hamster
 Unidad2	¿Cuántos años tienes? 	Wie alt bist du?
-Unidad2	el profesor / la profesora 	der Lehrer / die Lehrerin
-Unidad2	nosotros / nosotras 	wir
+Unidad2	el profesor, la profesora 	der Lehrer, die Lehrerin
+Unidad2	nosotros, nosotras 	wir
 Unidad2	¿Cuál es tu color favorito? 	Was ist deine Lieblingsfarbe?
 Unidad2	yo soy de Alemania	ich bin aus Deutschland
 Unidad2	tu eres	du bist
@@ -307,7 +306,6 @@ Unidad2	el es	er ist
 Unidad2	ella es	sie ist
 Unidad2	nosotros somos	wir sind
 Unidad2	vosotros sois	ihr seid
-Unidad2	ellos son /ellas son	sie sind
 Unidad2	Mira.	Schau mal
 Unidad2	ahora	jetzt
 Unidad2	¿Verdad?	..nicht wahr?
@@ -333,8 +331,8 @@ Unidad2	¡Qué sorpresa!	Was für eine Überraschung!
 Unidad2	la sorpresa	die Überraschung
 Unidad2	Muchas gracias.	Vielen Dank.
 Unidad2	Por favor.	Bitte.
-Unidad2	¿Qué pasa?	Was ist los? / Was geht ab?
-Unidad2	la caja	die Kiste/Schachtel
+Unidad2	¿Qué pasa?	Was ist los? Was geht ab?
+Unidad2	la caja	die Kiste
 Unidad2	¿Qué tienes en la caja?	Was hast du in der Schachtel?
 Unidad2	nada	nichts
 Unidad2	el secreto	das Geheimnis
@@ -366,7 +364,7 @@ Unidad3	la tienda	der Laden; das Geschäft
 Unidad3	la ropa	die Kleidung
 Unidad3	Mis padres tienen una tienda de ropa.	Meine Eltern haben ein Bekleidungsgeschäft.
 Unidad3	el polideportivo	das Sportzentrum
-Unidad3	hay	es gibt; da ist / sind
+Unidad3	hay	es gibt; da ist, da sind
 Unidad3	En mi ciudad no hay metro.	In meiner Stadt gibt es keine U-Bahn.
 Unidad3	¿Dónde está...?	Wo ist..?
 Unidad3	¿Dónde está mi amiga?	Wo ist meine Freundin?
@@ -461,7 +459,7 @@ Unidad3B	la moda	die Mode
 Unidad3B	mirar algo	(etw.) anschauen
 Unidad3B	¿Miramos fotos de tu mascota?	Schauen wir Fotos von deinem Haustier an?
 Unidad3B	la página (web)	die (Web-)Seite
-Unidad3B	(el/la) Internet	das Internet
+Unidad3B	el Internet	das Internet
 Unidad3B	Miro vídeos en Internet.	Ich schaue Videos im Internet an.
 Unidad3B	grabar algo	etw. filmen; etw. aufnehmen
 Unidad3B	Grabo un vídeo para el instituto.	Ich drehe ein Video für die Schule.
