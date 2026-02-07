@@ -98,6 +98,30 @@
     }
   }
 
+  /* ---------- Error Sound ---------- */
+  function playErrorSound() {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Error buzz sound: low frequency with quick fade
+      oscillator.frequency.value = 150;
+      oscillator.type = 'sawtooth';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.15);
+    } catch (e) {
+      console.warn("Could not play error sound:", e);
+    }
+  }
+
   /* ---------- Sentence Manager ---------- */
   function openSentenceManager(allSentences, onSave) {
     const modal = document.getElementById("sentence-manager");
@@ -220,7 +244,26 @@
         btn.onclick = () => {
           if (btn.classList.contains("used")) return;
           
-          // Add to build area
+          // Check if this is the correct next word
+          const nextWordIndex = placedWords.length;
+          const correctNextWord = words[nextWordIndex];
+          
+          if (word !== correctNextWord) {
+            // Wrong word - show error animation and play error sound
+            btn.classList.add("wrong-word");
+            
+            // Play error sound
+            playErrorSound();
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+              btn.classList.remove("wrong-word");
+            }, 500);
+            
+            return; // Don't add the word
+          }
+          
+          // Correct word - add to build area
           placedWords.push(word);
           const slot = document.createElement("span");
           slot.className = "word-slot placed";
@@ -243,7 +286,7 @@
           buildAreaEl.appendChild(slot);
           btn.classList.add("used");
 
-          // Check if correct
+          // Check if complete and correct
           if (placedWords.length === words.length) {
             const builtSentence = placedWords.join(" ");
             if (builtSentence === sentence.es) {
