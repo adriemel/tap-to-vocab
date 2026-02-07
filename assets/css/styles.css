@@ -237,23 +237,28 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 /* ---------- Browse Mode (Word Card) ---------- */
 .word-card {
   text-align: center;
-  padding: 20px 16px;
+  padding: 40px 20px;
   border-radius: 16px;
   background: #121a3a;
   border: 1px solid #23306b;
   margin-bottom: 12px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 .big {
-  font-size: clamp(1.8rem, 7vw, 2.8rem);
+  font-size: clamp(2.2rem, 8vw, 3.4rem);
   font-weight: 800;
   letter-spacing: .5px;
-  margin-bottom: 8px;
 }
 
 .sub.translation {
   display: none;
-  font-size: clamp(1.1rem, 4.2vw, 1.4rem);
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
   color: #ffd54a;
   font-weight: 700;
   transition: opacity 0.2s;
@@ -264,9 +269,12 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   line-height: 1;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ---------- Quiz Mode (Flip Cards) ---------- */
@@ -496,11 +504,12 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
   
   .word-card {
-    padding: 16px 12px;
+    padding: 32px 16px;
+    min-height: 180px;
   }
   
   .big {
-    font-size: clamp(1.6rem, 8vw, 2.4rem);
+    font-size: clamp(2rem, 9vw, 3rem);
   }
   
   .quiz-word {
