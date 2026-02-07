@@ -642,10 +642,22 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   pointer-events: none;
 }
 
+.word-btn.wrong-word {
+  animation: wrongShake 0.5s ease;
+  border: 2px solid var(--error);
+  background: rgba(255, 107, 157, 0.2);
+}
+
 /* Success Animation */
 @keyframes successPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.02); }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
 @keyframes dance {
