@@ -177,13 +177,19 @@
       const word = quizWords[currentQuizIndex];
       
       // CRITICAL: Remove flipped class FIRST, then update text to prevent flash
+      const wasFlipped = flipCard.classList.contains("flipped");
       flipCard.classList.remove("flipped");
       
-      // Small delay to ensure flip animation completes before changing text
-      setTimeout(() => {
+      // Only delay if card was previously flipped, otherwise update immediately
+      if (wasFlipped) {
+        setTimeout(() => {
+          quizEs.textContent = word.es;
+          quizDe.textContent = word.de;
+        }, 50);
+      } else {
         quizEs.textContent = word.es;
         quizDe.textContent = word.de;
-      }, 50);
+      }
       
       quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       quizCorrectStat.textContent = correctCount;
@@ -195,7 +201,7 @@
       }
 
       // Speak the Spanish word
-      setTimeout(() => speakSpanish(word.es), 150);
+      setTimeout(() => speakSpanish(word.es), wasFlipped ? 150 : 100);
     }
 
     function restartQuiz() {
@@ -399,7 +405,6 @@
     const category = (opts && opts.category) || inferCategoryFromPath();
     const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
     const titleEl = document.getElementById("title");
-    const badgeEl = document.getElementById("cat-badge");
     const errorEl = document.getElementById("error");
 
     try {
@@ -419,7 +424,6 @@
       }
 
       titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
-      badgeEl.textContent = category;
       
       // Initialize browse mode
       initBrowseMode(words, category);
