@@ -263,12 +263,10 @@
       if (lastAnswer.wasCorrect) {
         correctCount--;
         if (isPracticeCategory) {
-          // Re-insert the word at the current position and show it
           quizWords.splice(currentQuizIndex, 0, lastAnswer.word);
           if (!isMarked(lastAnswer.word)) {
             toggleMark(lastAnswer.word);
           }
-          // currentQuizIndex now points to the re-inserted word
         } else {
           currentQuizIndex--;
         }
