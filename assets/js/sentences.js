@@ -99,9 +99,13 @@
   }
 
   /* ---------- Error Sound ---------- */
+  let _audioCtx = null;
   function playErrorSound() {
     try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (!_audioCtx) {
+        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const audioContext = _audioCtx;
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
       
@@ -214,6 +218,7 @@
 
     let currentIndex = 0;
     let placedWords = [];
+    let placedItems = []; // Track {word, slot, bankBtn} for proper undo
 
     function loadSentence() {
       if (currentIndex >= sentences.length) {
@@ -230,6 +235,7 @@
       
       targetEl.textContent = sentence.de;
       placedWords = [];
+      placedItems = [];
       buildAreaEl.innerHTML = "";
       buildAreaEl.classList.remove("correct");
       wordBankEl.innerHTML = "";
@@ -268,12 +274,19 @@
           const slot = document.createElement("span");
           slot.className = "word-slot placed";
           slot.textContent = word;
+          const item = {word, slot, bankBtn: btn};
+          placedItems.push(item);
           slot.onclick = () => {
-            // Remove from build area
-            placedWords = placedWords.filter(w => w !== word);
-            slot.remove();
-            btn.classList.remove("used");
-            
+            // Remove this word and all words placed after it (order matters)
+            const itemIndex = placedItems.indexOf(item);
+            if (itemIndex < 0) return;
+            const removed = placedItems.splice(itemIndex);
+            removed.forEach(r => {
+              r.slot.remove();
+              r.bankBtn.classList.remove("used");
+            });
+            placedWords = placedItems.map(r => r.word);
+
             // If build area is empty, show hint
             if (placedWords.length === 0) {
               buildAreaEl.innerHTML = '<span style="color: var(--muted); font-style: italic;">Tap words below to build the sentence</span>';
