@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fill in the Blank – Tap‑to‑Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h1>✏️ Fill in the Blank</h1>
+        <span class="badge" id="progress-badge">0 / 0</span>
+      </div>
+
+      <!-- German Sentence -->
+      <div class="sentence-target">
+        <div class="target-label">Translate to Spanish:</div>
+        <div class="target-sentence" id="german-sentence">—</div>
+      </div>
+
+      <!-- Spanish Sentence with Blank -->
+      <div class="fill-sentence" id="spanish-sentence">—</div>
+
+      <!-- Choice Buttons -->
+      <div class="choices" id="choices"></div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn secondary" id="btn-skip">⏭️ Skip</button>
+        <button class="btn secondary" id="btn-home">🏠 Home</button>
+      </div>
+
+      <div class="error" id="error" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/fill-blank.js"></script>
+  <script>
+    FillBlank.init();
+  </script>
+</body>
+</html>

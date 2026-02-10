@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verb Conjugation – Tap‑to‑Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h1>🔄 Verb Conjugation</h1>
+        <span class="badge" id="progress-badge">0 / 0</span>
+      </div>
+
+      <!-- Verb Header -->
+      <div class="sentence-target">
+        <div class="target-label">Conjugate this verb:</div>
+        <div class="target-sentence" id="verb-infinitive">—</div>
+        <div style="color: var(--warn); font-size: 1.1rem; margin-top: 8px;" id="verb-german">—</div>
+      </div>
+
+      <!-- Conjugation Table -->
+      <div class="conj-table" id="conj-table"></div>
+
+      <!-- Word Bank -->
+      <div class="word-bank" id="word-bank"></div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn secondary" id="btn-reset">🔄 Reset</button>
+        <button class="btn secondary" id="btn-skip">⏭️ Skip</button>
+        <button class="btn secondary" id="btn-home">🏠 Home</button>
+      </div>
+
+      <div class="error" id="error" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/conjugation.js"></script>
+  <script>
+    VerbConjugation.init();
+  </script>
+</body>
+</html>
