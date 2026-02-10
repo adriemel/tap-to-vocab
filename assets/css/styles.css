@@ -62,6 +62,20 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   font-weight: 700;
 }
 
+.grid-two-col .btn-verbs {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #2a4a30 0%, #1a3020 100%);
+  border: 2px solid var(--ok);
+  font-weight: 700;
+}
+
+.grid-two-col .btn-fill-blank {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #4a2a30 0%, #301a20 100%);
+  border: 2px solid var(--error);
+  font-weight: 700;
+}
+
 /* Original grid (fallback) */
 .grid {
   display: grid;
@@ -755,5 +769,154 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   justify-content: flex-end;
   padding-top: 16px;
   border-top: 1px solid #243688;
+}
+
+/* ---------- Verb Conjugation ---------- */
+.conj-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.conj-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #0f1540;
+  border: 1px solid #243688;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.conj-pronoun {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 140px;
+  font-size: 1rem;
+}
+
+.conj-slot {
+  flex: 1;
+  min-height: 38px;
+  border: 2px dashed #3a4b90;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.conj-slot.filled {
+  border-color: var(--ok);
+  background: rgba(61, 220, 151, 0.1);
+  color: var(--ok);
+  border-style: solid;
+}
+
+.conj-table.conj-complete {
+  animation: successPulse 0.5s ease;
+}
+
+/* ---------- Fill in the Blank ---------- */
+.fill-sentence {
+  background: #0f1540;
+  border: 1px solid #243688;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.blank-slot {
+  display: inline-block;
+  background: var(--accent);
+  color: #0b1020;
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.blank-slot.blank-filled {
+  background: var(--ok);
+  animation: successPulse 0.5s ease;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.choice-btn {
+  background: #1a2350;
+  border: 2px solid #2a3a80;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  min-width: 120px;
+}
+
+.choice-btn:hover {
+  background: #22307a;
+  transform: translateY(-2px);
+}
+
+.choice-btn:active {
+  transform: translateY(0);
+}
+
+.choice-btn.choice-correct {
+  background: rgba(61, 220, 151, 0.2);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.choice-btn.choice-wrong {
+  animation: wrongShake 0.5s ease;
+  background: rgba(255, 107, 157, 0.2);
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.choice-btn.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ---------- Responsive: Conjugation & Fill-in-Blank ---------- */
+@media (max-width: 600px) {
+  .conj-pronoun {
+    min-width: 100px;
+    font-size: 0.85rem;
+  }
+
+  .conj-row {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .choice-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-width: 100px;
+  }
 }
 
