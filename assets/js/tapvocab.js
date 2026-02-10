@@ -421,11 +421,27 @@
       }
 
       if (!words.length) {
+        titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
         errorEl.textContent = category.toLowerCase() === "practice"
           ? "Your practice list is empty. Mark words with ⭐ to add them."
           : "No words found for category: " + category;
         errorEl.style.display = "block";
-        document.getElementById("btn-home").onclick = () => { location.href = "/"; };
+
+        // Hide non-functional UI
+        document.getElementById("browse-mode").style.display = "none";
+        var mt = document.querySelector(".mode-tabs");
+        if (mt) mt.style.display = "none";
+
+        // Create a visible Home button below the error
+        var homeDiv = document.createElement("div");
+        homeDiv.className = "controls";
+        homeDiv.style.marginTop = "16px";
+        var hb = document.createElement("button");
+        hb.className = "btn secondary";
+        hb.textContent = "🏠 Home";
+        hb.onclick = function () { location.href = "/"; };
+        homeDiv.appendChild(hb);
+        errorEl.after(homeDiv);
         return;
       }
 
@@ -440,6 +456,8 @@
     } catch (e) {
       errorEl.textContent = "Could not load words.tsv: " + e.message;
       errorEl.style.display = "block";
+      var homeBtn = document.getElementById("btn-home");
+      if (homeBtn) homeBtn.onclick = function () { location.href = "/"; };
     }
   }
 
