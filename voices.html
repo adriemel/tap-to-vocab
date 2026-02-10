@@ -46,17 +46,23 @@ function render() {
   tbody.innerHTML = "";
   rows.forEach(v => {
     const tr = document.createElement("tr");
-    tr.innerHTML =
-      "<td>"+v.i+"</td><td>"+v.name+"</td><td>"+v.lang+"</td><td>"+(v.localService?"yes":"no")+"</td>"+
-      "<td><button data-name='"+v.name.replace(/'/g,"&#39;")+"'>Sprechen</button></td>"+
-      "<td><code>voice="+encodeURIComponent(v.name)+"</code></td>";
-    tbody.appendChild(tr);
-  });
-  tbody.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const name = btn.getAttribute("data-name");
-      speak(sample, name);
+    [String(v.i), v.name, v.lang, v.localService ? "yes" : "no"].forEach(text => {
+      const td = document.createElement("td");
+      td.textContent = text;
+      tr.appendChild(td);
     });
+    const testTd = document.createElement("td");
+    const testBtn = document.createElement("button");
+    testBtn.textContent = "Sprechen";
+    testBtn.addEventListener("click", () => speak(sample, v.name));
+    testTd.appendChild(testBtn);
+    tr.appendChild(testTd);
+    const codeTd = document.createElement("td");
+    const code = document.createElement("code");
+    code.textContent = "voice=" + encodeURIComponent(v.name);
+    codeTd.appendChild(code);
+    tr.appendChild(codeTd);
+    tbody.appendChild(tr);
   });
 }
 
