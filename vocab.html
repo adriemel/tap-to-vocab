@@ -146,4 +146,13 @@
 
   // Ensure voices loaded before first speak
   if (typeof speechSynthesis !== "undefined") {
-    speechSynthesis.onvo
+    speechSynthesis.onvoiceschanged = () => {
+      if (qs.get("mode") === "listen-spell-es" && direction === "de-es" && w) speak(w, lang);
+      if (qs.get("mode") === "listen-spell-de" && direction === "es-de" && de) speak(de, "de-DE");
+    };
+  }
+
+})();
+</script>
+</body>
+</html>
