@@ -17,7 +17,7 @@ colors	azul	blau
 
 - Columns must be: `category`, `es`, `de` (tab-separated).
 - Add rows for new categories (e.g., `food`, `school`).
-- Make a folder matching the category (e.g., `/food/`) and copy `index.html` from any category into it (or just create the folder; the provided `index.html` is generic).
+
 
 ## Adding a new category
 
@@ -26,8 +26,7 @@ colors	azul	blau
 food	manzana	Apfel
 food	pan	Brot
 ```
-2. Create a folder `/food/` and put an `index.html` (you can copy one from `/colors/`).
-3. Push to GitHub Pages. Then your NFC URL is `https://YOUR-DOMAIN/food/`.
+
 
 ## Notes
 
