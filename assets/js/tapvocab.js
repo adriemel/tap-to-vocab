@@ -38,12 +38,13 @@
     for (let i = 0; i < count; i++) {
       const piece = document.createElement("div");
       piece.style.cssText = `
-        position:absolute;width:8px;height:12px;opacity:.9;border-radius:2px;
+        position:fixed;width:8px;height:12px;opacity:.9;border-radius:2px;
         left:${rect.left + rect.width / 2 + (Math.random() * 40 - 20)}px;
         top:${rect.top + 10}px;
         background:hsl(${Math.random() * 360} 80% 60%);
         transform:translate(${Math.random() * 120 - 60}px,0) rotate(${Math.random() * 180}deg);
         animation: fall ${600 + Math.random() * 500}ms ease-out forwards;
+        pointer-events:none;z-index:9999;
       `;
       container.appendChild(piece);
       setTimeout(() => piece.remove(), 1200);
@@ -78,11 +79,12 @@
   }
 
   function shuffleArray(arr) {
-    for (let j = arr.length - 1; j > 0; j--) {
+    const copy = [...arr];
+    for (let j = copy.length - 1; j > 0; j--) {
       const k = Math.floor(Math.random() * (j + 1));
-      [arr[j], arr[k]] = [arr[k], arr[j]];
+      [copy[j], copy[k]] = [copy[k], copy[j]];
     }
-    return arr;
+    return copy;
   }
 
   /* ---------- Practice List storage ---------- */
@@ -142,7 +144,7 @@
 
     if (!quizMode || !flipCard) return;
 
-    let quizWords = shuffleArray([...words]); // Shuffle on init
+    let quizWords = shuffleArray(words); // Shuffle on init
     let currentQuizIndex = 0;
     let correctCount = 0;
     let wrongCount = 0;
@@ -206,7 +208,7 @@
 
     function restartQuiz() {
       hideQuizCompleteModal();
-      quizWords = shuffleArray([...words]); // Re-shuffle on restart
+      quizWords = shuffleArray(words); // Re-shuffle on restart
       currentQuizIndex = 0;
       correctCount = 0;
       wrongCount = 0;
@@ -274,28 +276,29 @@
     btnRestart.onclick = restartQuiz;
     
     btnQuizBack.onclick = () => {
-      // Only go back if we have history
       if (answerHistory.length === 0) return;
-      
-      // Get the last answer
+
       const lastAnswer = answerHistory.pop();
-      
-      // Undo the score
+
       if (lastAnswer.wasCorrect) {
         correctCount--;
+        // In practice mode, re-insert the word and restore practice list
+        if (isPracticeCategory) {
+          quizWords.splice(lastAnswer.index, 0, lastAnswer.word);
+          if (!isMarked(lastAnswer.word)) {
+            toggleMark(lastAnswer.word);
+          }
+        }
       } else {
         wrongCount--;
-        // If they marked it wrong, we auto-added it to practice
-        // Optionally undo that (but let's keep it for now)
       }
-      
-      // Go back to that card
+
       currentQuizIndex = lastAnswer.index;
       showQuizCard();
     };
     
     btnHomeQuiz.onclick = () => {
-      location.href = "../";
+      location.href = "/";
     };
 
     // Modal button handlers
@@ -306,7 +309,7 @@
     };
     
     modalHome.onclick = () => {
-      location.href = "../";
+      location.href = "/";
     };
 
     showQuizCard();
@@ -362,7 +365,7 @@
       updateMarkButton(words[i]);
     };
     homeBtn.onclick = () => {
-      location.href = "../";
+      location.href = "/";
     };
 
     render();
@@ -418,7 +421,7 @@
       }
 
       if (!words.length) {
-        errorEl.innerHTML = `No words found for category: <b>${category}</b>`;
+        errorEl.textContent = "No words found for category: " + category;
         errorEl.style.display = "block";
         return;
       }
