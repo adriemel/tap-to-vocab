@@ -31,12 +31,13 @@
     };
     return lines.slice(1).map(line => {
       const cols = line.split("\t");
+      const col = i => (i >= 0 ? (cols[i] || "") : "").trim();
       return {
-        category: (idx.category >= 0 ? cols[idx.category] : "").trim(),
-        de: (idx.de >= 0 ? cols[idx.de] : "").trim(),
-        es_with_blank: (idx.es_with_blank >= 0 ? cols[idx.es_with_blank] : "").trim(),
-        correct_answer: (idx.correct_answer >= 0 ? cols[idx.correct_answer] : "").trim(),
-        wrong_answers: (idx.wrong_answers >= 0 ? cols[idx.wrong_answers] : "").trim()
+        category: col(idx.category),
+        de: col(idx.de),
+        es_with_blank: col(idx.es_with_blank),
+        correct_answer: col(idx.correct_answer),
+        wrong_answers: col(idx.wrong_answers)
       };
     }).filter(r => r.de && r.es_with_blank && r.correct_answer);
   }
