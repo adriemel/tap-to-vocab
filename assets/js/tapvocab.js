@@ -421,8 +421,11 @@
       }
 
       if (!words.length) {
-        errorEl.textContent = "No words found for category: " + category;
+        errorEl.textContent = category.toLowerCase() === "practice"
+          ? "Your practice list is empty. Mark words with ⭐ to add them."
+          : "No words found for category: " + category;
         errorEl.style.display = "block";
+        document.getElementById("btn-home").onclick = () => { location.href = "/"; };
         return;
       }
 
