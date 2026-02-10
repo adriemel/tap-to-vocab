@@ -7,7 +7,7 @@ Saludar	¡Hola!	Hallo!
 Saludar	¿Qué tal?	Wie geht's?
 Saludar	¿Como estás? 	Wie geht's?
 Saludar	bien	gut
-Saludar	Estoy bien, gracias	Mie geht es gut, danke
+Saludar	Estoy bien, gracias	Mir geht es gut, danke
 Saludar	muy bien	sehr gut
 Saludar	mal	schlecht
 Saludar	fatal	(sehr) schlecht
@@ -66,7 +66,6 @@ xAnimales	la abeja	die Biene
 xAnimales	la tarantula	die Vogelspinne
 xAnimales	el mono	der Affe
 Animales	la rana	der Frosch
-Animales	el toro	der Stier
 Animales	la vaca	die Kuh
 Animales	la foca	die Robbe
 Animales	la oveja	das Schaf
@@ -128,7 +127,6 @@ Idiomas	estudiar algo	etw. lernen
 Idiomas	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
 Idiomas	el francés	Französisch; die französische Sprache
 Idiomas	¿Hablas francés?	Sprichst du Französisch?
-Idiomas	el alemán	Deutsch; die deutsche Sprache
 Idiomas	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
 Idiomas	estudiar	lernen
 Idiomas	Se escribe...	Man schreibt ...
@@ -145,7 +143,6 @@ Palabras	quién	wer
 Palabras	por qué	warum
 Palabras	seguro	sicher
 Palabras	¡Claro!	Ja, natürlich!
-Palabras	pero	aber
 Palabras	además	außerdem
 Palabras	ahora	jetzt
 Palabras	con	mit
@@ -186,7 +183,6 @@ Palabras	grande	groß
 Palabras	viejo	alt
 Palabras	joven	jung
 Palabras	amable	freundlich, nett
-Palabras	divertido	lustig
 Palabras	malo	böse, gemein
 Palabras	simpático	sympathisch
 Palabras	el secreto	das Geheimnis
