@@ -53,12 +53,9 @@
     localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap));
   }
 
-  /* ---------- Filter sentences (3+ words) ---------- */
+  /* ---------- Filter sentences (entries ending with . ? !) ---------- */
   function filterSentences(words) {
-    return words.filter(w => {
-      const wordCount = w.es.trim().split(/\s+/).length;
-      return wordCount >= 3;
-    });
+    return words.filter(w => /[.?!]$/.test(w.es.trim()));
   }
 
   /* ---------- Success Sound ---------- */
