@@ -8,10 +8,10 @@
   const PRONOUNS = [
     { key: "yo", label: "yo" },
     { key: "tu", label: "tú" },
-    { key: "él", label: "él/ella" },
+    { key: "él", label: "él/ella/usted" },
     { key: "nosotros", label: "nosotros/as" },
     { key: "vosotros", label: "vosotros/as" },
-    { key: "ellos", label: "ellos/ellas" }
+    { key: "ellos", label: "ellos/ellas/ustedes" }
   ];
 
   /* ---------- Utilities ---------- */
@@ -41,14 +41,43 @@
     }).filter(v => v.infinitive && v.de);
   }
 
+  /* ---------- Success Sound ---------- */
+  function playSuccessSound() {
+    try {
+      if (!_audioCtx) {
+        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const ctx = _audioCtx;
+      const now = ctx.currentTime;
+
+      const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        const start = now + i * 0.1;
+        gain.gain.setValueAtTime(0.25, start);
+        gain.gain.exponentialRampToValueAtTime(0.01, start + 0.3);
+        osc.start(start);
+        osc.stop(start + 0.3);
+      });
+    } catch (e) {
+      console.warn("Could not play success sound:", e);
+    }
+  }
+
   /* ---------- Success Animation ---------- */
   function showSuccessAnimation() {
-    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐"];
+    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐", "🥳", "👏", "💪"];
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     const el = document.createElement("div");
     el.className = "success-animation";
     el.textContent = emoji;
     document.body.appendChild(el);
+    playSuccessSound();
     setTimeout(() => el.remove(), 600);
   }
 
