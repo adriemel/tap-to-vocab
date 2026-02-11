@@ -1,9 +1,9 @@
 category	es	de
 Saludar	el día	der Tag
-Saludar	¡Buenos días!	Guten Morgen! Guten Tag!
-Saludar	¡Buenas tardes!	Guten Tag! Guten Abend!
-Saludar	¡Buenas noches!	Guten Abend! Gute Nacht!
-Saludar	¡Hola!	Hallo!
+Saludar	Buenos días	Guten Morgen! Guten Tag!
+Saludar	Buenas tardes	Guten Tag! Guten Abend!
+Saludar	Buenas noches	Guten Abend! Gute Nacht!
+Saludar	Hola	Hallo
 Saludar	¿Qué tal?	Wie geht's?
 Saludar	¿Como estás? 	Wie geht's?
 Saludar	bien	gut
@@ -19,25 +19,25 @@ Saludar	Yo tambien	ich auch (mir auch)
 Saludar	Yo	Ich
 Saludar	¿Como te llamas?	Wie heißt du?
 Saludar	Me llamo Pablo	Ich heiße Pablo
-Saludar	No, es una broma, me llamo Bjarne	Nein, das ist ein Witz, ich heiße Bjarne
+Saludar	No, es una broma, me llamo Bjarne.	Nein, das ist ein Witz, ich heiße Bjarne.
 Saludar	Yo soy Bjarne	Ich bin Bjarne
 Saludar	Soy Bjarne	Ich bin Bjarne
-Saludar	Mi nombre es Pablo	Mein Name ist Pablo
+Saludar	Mi nombre es Pablo.	Mein Name ist Pablo.
 Saludar	¿De donde eres?	Woher kommst du?
-Saludar	Soy de Alemania	Ich komme aus Deutschland
+Saludar	Soy de Alemania.	Ich komme aus Deutschland.
 Saludar	Soy de Madrid	Ich komme aus Madrid
 Saludar	¿Cuántos años tienes?	Wie alt bist du?
-Saludar	Tengo once años	Ich bin 11 Jahre alt
+Saludar	Tengo once años.	Ich bin 11 Jahre alt.
 Saludar	no es correcto	das ist nicht richtig
-Saludar	¡Adios!	Auf Wiedersehen!; Tschüs!
-Saludar	¡Hasta luego!	Bis später!
+Saludar	Adios	Auf Wiedersehen!; Tschüs!
+Saludar	Hasta luego	Bis später!
 Saludar	Perdón	Entschuldigung
 Saludar	se dice	man sagt..; es heißt...
 Saludar	¿Como se dice 'buenos días' en alemán?	Was heißt 'buenos días' auf deutsch?
-Saludar	En alemán 'buenos días' se dice 'Guten Tag'	'Buenos días' heißt 'Guten Tag' auf deutsch
+Saludar	En alemán 'buenos días' se dice 'Guten Tag'.	'Buenos días' heißt 'Guten Tag' auf deutsch.
 Saludar	¿Como es tu apellido?	Wie ist dein Nachname?
 Saludar	el apellido	der Nachname
-Saludar	Me llamo Bjarne y mi apellido es Driemel	Ich heiße Bjarne und mit Nachnamen Driemel
+Saludar	Me llamo Bjarne y mi apellido es Driemel.	Ich heiße Bjarne und mit Nachnamen Driemel.
 Saludar	de acuerdo	alles klar
 Colores	negro	schwarz
 Colores	blanco	weiß
@@ -51,7 +51,7 @@ Colores	amarillo	gelb
 Colores	rojo	rot
 Colores	morado	violett
 Colores	¿De qué color es la tortuga?	Welche Farbe hat die Schildkröte?
-Colores	La tortuga es de color verde	Die Schildkröte ist grün
+Colores	La tortuga es de color verde.	Die Schildkröte ist grün.
 Animales	el animal	das Tier
 Animales	el perro	der Hund
 Animales	el gato	die Katze
@@ -92,14 +92,14 @@ Casa_Familia	la hermana	die Schwester
 Casa_Familia	los hermanos	die Geschwister
 Casa_Familia	el amigo	der Freund
 Casa_Familia	mi amigo	mein Freund
-Casa_Familia	mi amigo se llama Ben	mein Freund heisst Ben
+Casa_Familia	Mi amigo se llama Ben.	Mein Freund heisst Ben.
 Casa_Familia	la amiga	die Freundin
 xCasa_Familia	el primo	der Cousin
 xCasa_Familia	la prima	die Cousine
 Casa_Familia	el chico	der Junge
 Casa_Familia	la chica	das Mädchen
 Casa_Familia	la mascota	das Haustier
-Casa_Familia	mi mascota se llama Tigo	mein Haustier heisst Tigo
+Casa_Familia	Mi mascota se llama Tigo.	Mein Haustier heisst Tigo.
 Casa_Familia	tu	dein(e)
 Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
 Casa_Familia	la mochila	der Rucksack
@@ -129,7 +129,7 @@ Idiomas	el francés	Französisch; die französische Sprache
 Idiomas	¿Hablas francés?	Sprichst du Französisch?
 Idiomas	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
 Idiomas	estudiar	lernen
-Idiomas	Se escribe...	Man schreibt ...
+Idiomas	Se escribe	Man schreibt..
 Idiomas	¿Como se escribe?	Wie schreibt man das?
 Idiomas	con acento	mit Akzent
 Idiomas	con dos puntos	mit Umlaut
@@ -142,14 +142,14 @@ Palabras	cuándo	wann
 Palabras	quién	wer
 Palabras	por qué	warum
 Palabras	seguro	sicher
-Palabras	¡Claro!	Ja, natürlich!
+Palabras	Claro	Ja, natürlich!
 Palabras	además	außerdem
 Palabras	ahora	jetzt
 Palabras	con	mit
 Palabras	siempre	immer
-Palabras	¿Qué?	Was für ein? Was?
+Palabras	Qué	Was für ein? Was?
 Palabras	nada	nichts
-Palabras	¿Quién?	Wer?
+Palabras	Quién	Wer?
 Palabras	trabajar	arbeiten
 Palabras	en	in, auf, an
 Palabras	quizás	vielleicht
@@ -260,9 +260,9 @@ Numeros	doscientos	zweihundert
 Numeros	mil	tausend
 Numeros	millón	Million
 Unidad2	¿De qué color es…?	Welche Farbe hat…?
-Unidad2	El gato es de color negro	Die Katze ist schwarz
+Unidad2	El gato es de color negro.	Die Katze ist schwarz.
 Unidad2	Veo…	Ich sehe…
-Unidad2	veo un perro, es de color blanco	ich sehe einen Hund, er ist weiß
+Unidad2	Veo un perro, es de color blanco.	Ich sehe einen Hund, er ist weiß.
 Unidad2	¿Qué ves? 	Was siehst du?
 Unidad2	¿Qué es? 	Was ist das?
 Unidad2	la cosa (la cosita)	die (kleine) Sache
@@ -273,7 +273,7 @@ Unidad2	la mascota 	das Haustier
 Unidad2	el lugar 	der Ort, der Platz
 Unidad2	la ciudad 	die Stadt
 Unidad2	favorito, favorita 	Lieblings-
-Unidad2	mi animal favorito es el perro	Mein Lieblingstier ist der Hund
+Unidad2	Mi animal favorito es el perro.	Mein Lieblingstier ist der Hund.
 Unidad2	el padre 	der Vater
 Unidad2	la madre 	die Mutter
 Unidad2	el hermano	der Bruder
@@ -296,7 +296,7 @@ Unidad2	¿Cuántos años tienes? 	Wie alt bist du?
 Unidad2	el profesor, la profesora 	der Lehrer, die Lehrerin
 Unidad2	nosotros, nosotras 	wir
 Unidad2	¿Cuál es tu color favorito? 	Was ist deine Lieblingsfarbe?
-Unidad2	yo soy de Alemania	ich bin aus Deutschland
+Unidad2	Yo soy de Alemania.	Ich bin aus Deutschland.
 Unidad2	tu eres	du bist
 Unidad2	el es	er ist
 Unidad2	ella es	sie ist
@@ -305,17 +305,17 @@ Unidad2	vosotros sois	ihr seid
 Unidad2	Mira.	Schau mal
 Unidad2	ahora	jetzt
 Unidad2	¿Verdad?	..nicht wahr?
-Unidad2	el regalo es para ti	Das Geschenk ist für Dich
+Unidad2	El regalo es para ti.	Das Geschenk ist für Dich.
 Unidad2	Pasa, pasa	Komm rein!
 Unidad2	tener algo	etwas haben
 Unidad2	Tengo un perro	Ich habe einen Hund
 Unidad2	¿Tienes un hermano?	Hast Du einen Bruder?
-Unidad2	Basti tiene un gato	Basti hat eine Katze
+Unidad2	Basti tiene un gato.	Basti hat eine Katze.
 Unidad2	Tenemos una casa	Wir haben ein Haus
 Unidad2	¿Tenéis mascotas?	Habt ihr Haustiere?
-Unidad2	Max y Moritz no tienen mascotas	Max und Moritz haben keine Haustiere
+Unidad2	Max y Moritz no tienen mascotas.	Max und Moritz haben keine Haustiere.
 Unidad2	para	für
-Unidad2	Tengo un regalo para mi amiga	Ich habe ein Geschenk für meine Freundin
+Unidad2	Tengo un regalo para mi amiga.	Ich habe ein Geschenk für meine Freundin.
 Unidad2	Vale.	Einverstanden, OK
 Unidad2	el chico	der Junge
 Unidad2	la chica	das Mädchen
@@ -323,10 +323,10 @@ Unidad2	Bueno...	Nun (gut).., Also...
 Unidad2	el momento	der Moment
 Unidad2	Entiendo	Ich verstehe.
 Unidad2	Tu eres de Berlin, ¿verdad?	Du bist aus Berlin, nicht wahr?
-Unidad2	¡Qué sorpresa!	Was für eine Überraschung!
+Unidad2	Qué sorpresa	Was für eine Überraschung
 Unidad2	la sorpresa	die Überraschung
-Unidad2	Muchas gracias.	Vielen Dank.
-Unidad2	Por favor.	Bitte.
+Unidad2	Muchas gracias	Vielen Dank
+Unidad2	Por favor	Bitte
 Unidad2	¿Qué pasa?	Was ist los? Was geht ab?
 Unidad2	la caja	die Kiste
 Unidad2	¿Qué tienes en la caja?	Was hast du in der Schachtel?
@@ -362,7 +362,6 @@ Unidad3	Mis padres tienen una tienda de ropa.	Meine Eltern haben ein Bekleidungs
 Unidad3	el polideportivo	das Sportzentrum
 Unidad3	hay	es gibt; da ist, da sind
 Unidad3	En mi ciudad no hay metro.	In meiner Stadt gibt es keine U-Bahn.
-Unidad3	¿Dónde está...?	Wo ist..?
 Unidad3	¿Dónde está mi amiga?	Wo ist meine Freundin?
 Unidad3	estar	sein (sich befinden)
 Unidad3	Mis amigos están en el parque.	Meine Freunde sind im Park.
@@ -378,7 +377,7 @@ Unidad3	ahí	da
 Unidad3	¿Dónde está la panadería?	Wo ist die Bäckerei?
 Unidad3	en casa	zu Hause
 Unidad3	Mis padres no están en casa.	Meine Eltern sind nicht zu Hause.
-Unidad3	Lo siento.	Es tut mir leid.
+Unidad3	Lo siento	Es tut mir leid
 Unidad3	Lo siento, no hay tomates.	Tut mir leid, es gibt keine Tomaten.
 Unidad3	aquí	hier
 Unidad3	Tu perro está aquí.	Dein Hund ist hier.
@@ -388,8 +387,8 @@ Unidad3	el tiempo	die Zeit
 Unidad3	Lo siento, pero no tengo tiempo.	Tut mir leid, aber ich habe keine Zeit.
 Unidad3	además	außerdem
 Unidad3	genial	genial
-Unidad3	De nada.	Bitte (gern geschehen)
-Unidad3	Muchas gracias. - De nada.	Vielen Dank. -Gern geschehen
+Unidad3	De nada	Bitte (gern geschehen)
+Unidad3	Muchas gracias - De nada.	Vielen Dank -Gern geschehen
 Unidad3	el balcón	der Balkon
 Unidad3	¿Tiene la casa un balcón?	Hat die Wohnung einen Balkon?
 Unidad3	allí	dort
@@ -434,7 +433,7 @@ Unidad3B	Hablo con mi hermano.	Ich spreche mit meinem Bruder.
 Unidad3B	el inglés	Englisch; die englische Sprache
 Unidad3B	Mi padre habla muy bien inglés.	Mein Vater spricht sehr gut Englisch.
 Unidad3B	un poco	ein bisschen
-Unidad3B	Sí, un poco.	Ja, ein bisschen.
+Unidad3B	Sí, un poco	Ja, ein bisschen
 Unidad3B	el aeropuerto	der Flughafen
 Unidad3B	la pasión	die Leidenschaft
 Unidad3B	Mi pasión son los animales, sobre todo los gatos.	Tiere sind meine Leidenschaft, vor allem Katzen.
@@ -442,8 +441,8 @@ Unidad3B	sobre todo	vor allem
 Unidad3B	el hobby	das Hobby
 Unidad3B	¿Qué hobbies tienes?	Welche Hobbys hast du?
 Unidad3B	la música	die Musik
-Unidad3B	Escuchamos música.	Wir hören Musik.
-Unidad3B	escuchar algo	etw. hören.
+Unidad3B	Escuchamos música	Wir hören Musik
+Unidad3B	escuchar algo	etw. hören
 Unidad3B	la canción	das Lied
 Unidad3B	Escucho canciones en inglés.	Ich höre Lieder auf Englisch.
 Unidad3B	el español	Spanisch; die spanische Sprache
@@ -470,7 +469,7 @@ Unidad3B	¿Hablas francés?	Sprichst du Französisch?
 Unidad3B	horrible	schrecklich
 Unidad3B	el alemán	Deutsch; die deutsche Sprache
 Unidad3B	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
-Unidad3B	¡Menos mal!	Gott sei Dank!!
+Unidad3B	Menos mal	Gott sei Dank!
 Unidad3B	el idioma	die Sprache
 Unidad3B	¿Qué idiomas hablas?	Welche Sprachen sprichst du?
 Unidad3B	el saludo	der Gruß
