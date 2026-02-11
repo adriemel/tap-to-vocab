@@ -42,14 +42,43 @@
     }).filter(r => r.de && r.es_with_blank && r.correct_answer);
   }
 
+  /* ---------- Success Sound ---------- */
+  function playSuccessSound() {
+    try {
+      if (!_audioCtx) {
+        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const ctx = _audioCtx;
+      const now = ctx.currentTime;
+
+      const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        const start = now + i * 0.1;
+        gain.gain.setValueAtTime(0.25, start);
+        gain.gain.exponentialRampToValueAtTime(0.01, start + 0.3);
+        osc.start(start);
+        osc.stop(start + 0.3);
+      });
+    } catch (e) {
+      console.warn("Could not play success sound:", e);
+    }
+  }
+
   /* ---------- Success Animation ---------- */
   function showSuccessAnimation() {
-    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐"];
+    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐", "🥳", "👏", "💪"];
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     const el = document.createElement("div");
     el.className = "success-animation";
     el.textContent = emoji;
     document.body.appendChild(el);
+    playSuccessSound();
     setTimeout(() => el.remove(), 600);
   }
 
@@ -101,6 +130,7 @@
     const choicesEl = document.getElementById("choices");
     const progressEl = document.getElementById("progress-badge");
     const btnSkip = document.getElementById("btn-skip");
+    const btnBack = document.getElementById("btn-back");
     const btnHome = document.getElementById("btn-home");
     const errorEl = document.getElementById("error");
 
@@ -111,6 +141,7 @@
     }
 
     let currentIndex = 0;
+    let history = [];
 
     function loadSentence() {
       if (currentIndex >= sentences.length) {
@@ -166,7 +197,9 @@
             showSuccessAnimation();
             confettiBurst(30);
             setTimeout(() => {
+              history.push(currentIndex);
               currentIndex++;
+              updateBackButton();
               loadSentence();
             }, 1500);
           } else {
@@ -180,9 +213,29 @@
       });
     }
 
-    btnSkip.onclick = () => { currentIndex++; loadSentence(); };
+    function updateBackButton() {
+      if (btnBack) btnBack.disabled = history.length === 0;
+    }
+
+    btnSkip.onclick = () => {
+      history.push(currentIndex);
+      currentIndex++;
+      updateBackButton();
+      loadSentence();
+    };
+
+    if (btnBack) {
+      btnBack.onclick = () => {
+        if (history.length === 0) return;
+        currentIndex = history.pop();
+        updateBackButton();
+        loadSentence();
+      };
+    }
+
     btnHome.onclick = () => { location.href = "/"; };
 
+    updateBackButton();
     loadSentence();
   }
 
