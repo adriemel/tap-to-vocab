@@ -775,7 +775,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 .sentence-item label {
   cursor: pointer;
   flex: 1;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--ink);
 }
 
@@ -813,7 +813,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   font-weight: 700;
   color: var(--accent);
   min-width: 140px;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .conj-slot {
@@ -825,7 +825,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   align-items: center;
   justify-content: center;
   color: var(--muted);
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   transition: all 0.3s ease;
 }
