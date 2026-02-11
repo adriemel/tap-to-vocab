@@ -50,7 +50,8 @@
   }
 
   function saveEnabledSentences(enabledMap) {
-    localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap));
+    try { localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap)); }
+    catch (e) { console.warn("Could not save enabled sentences:", e); }
   }
 
   /* ---------- Filter sentences (entries ending with . ? !) ---------- */
@@ -58,7 +59,9 @@
     return words.filter(w => /[.?!]$/.test(w.es.trim()));
   }
 
-  /* ---------- Success Sound ---------- */
+  /* ---------- Audio ---------- */
+  let _audioCtx = null;
+
   function playSuccessSound() {
     try {
       if (!_audioCtx) {
@@ -98,7 +101,7 @@
     document.body.appendChild(el);
 
     playSuccessSound();
-    setTimeout(() => el.remove(), 600);
+    setTimeout(() => el.remove(), 800);
   }
 
   /* ---------- Confetti ---------- */
@@ -125,8 +128,6 @@
     }
   }
 
-  /* ---------- Error Sound ---------- */
-  let _audioCtx = null;
   function playErrorSound() {
     try {
       if (!_audioCtx) {
@@ -174,20 +175,20 @@
 
     // Render list
     listEl.innerHTML = "";
-    allSentences.forEach(sentence => {
+    allSentences.forEach((sentence, idx) => {
       const item = document.createElement("div");
       item.className = "sentence-item";
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.id = `sent-${sentence.de}`;
+      checkbox.id = `sent-${idx}`;
       checkbox.checked = enabledMap[sentence.de] !== false;
       checkbox.addEventListener("change", () => {
         enabledMap[sentence.de] = checkbox.checked;
       });
 
       const label = document.createElement("label");
-      label.htmlFor = `sent-${sentence.de}`;
+      label.htmlFor = `sent-${idx}`;
       label.textContent = sentence.de;
 
       item.appendChild(checkbox);
