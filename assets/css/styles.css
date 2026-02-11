@@ -251,7 +251,7 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 /* Quiz tab gets a distinct orange/yellow color */
 .mode-tab[data-mode="quiz"] {
   color: var(--warn);
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 204, 102, 0.45);
 }
 
 .mode-tab[data-mode="quiz"]:hover {
@@ -311,7 +311,7 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 .flip-card {
   perspective: 1000px;
   min-height: 320px;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
 }
 
 .flip-card-inner {
@@ -925,11 +925,11 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 @media (max-width: 600px) {
   .conj-pronoun {
     min-width: 90px;
-    font-size: 0.82rem;
+    font-size: 0.9rem;
   }
 
   .conj-row {
-    padding: 7px 10px;
+    padding: 8px 10px;
     gap: 6px;
   }
 
@@ -939,8 +939,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 
   .conj-slot {
-    min-height: 32px;
-    font-size: 0.95rem;
+    min-height: 34px;
+    font-size: 1rem;
   }
 
   .choice-btn {
@@ -961,8 +961,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 
   .word-btn {
-    padding: 8px 12px;
-    font-size: 0.95rem;
+    padding: 10px 14px;
+    font-size: 1.05rem;
   }
 }
 
@@ -1003,8 +1003,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 
   .word-btn {
-    padding: 6px 10px;
-    font-size: 0.88rem;
+    padding: 8px 12px;
+    font-size: 0.95rem;
   }
 
   .container {
