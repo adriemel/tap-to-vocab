@@ -30,27 +30,6 @@
     } catch (e) { console.warn("Speech synthesis failed:", e); }
   }
 
-  /* ---------- Confetti ---------- */
-  function confettiBurst(targetEl, count = 24) {
-    if (!targetEl) return;
-    const rect = targetEl.getBoundingClientRect();
-    const container = document.body;
-    for (let i = 0; i < count; i++) {
-      const piece = document.createElement("div");
-      piece.style.cssText = `
-        position:fixed;width:8px;height:12px;opacity:.9;border-radius:2px;
-        left:${rect.left + rect.width / 2 + (Math.random() * 40 - 20)}px;
-        top:${rect.top + 10}px;
-        background:hsl(${Math.random() * 360} 80% 60%);
-        transform:translate(${Math.random() * 120 - 60}px,0) rotate(${Math.random() * 180}deg);
-        animation: fall ${600 + Math.random() * 500}ms ease-out forwards;
-        pointer-events:none;z-index:9999;
-      `;
-      container.appendChild(piece);
-      setTimeout(() => piece.remove(), 1200);
-    }
-  }
-
   /* ---------- TSV loader ---------- */
   async function loadWords(tsvPath) {
     const res = await fetch(tsvPath, { cache: "no-store" });
@@ -75,7 +54,9 @@
 
   function inferCategoryFromPath() {
     const segs = location.pathname.split("/").filter(Boolean);
-    return segs[segs.length - 1] || "";
+    const last = segs[segs.length - 1] || "";
+    // Strip .html extension so we don't return "topic.html" as a category
+    return last.replace(/\.html?$/i, "");
   }
 
   function shuffleArray(arr) {
@@ -96,7 +77,8 @@
   }
   
   function savePracticeList(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+    catch (e) { console.warn("Could not save practice list:", e); }
   }
   
   function isMarked(word) {
@@ -275,22 +257,26 @@
     btnQuizBack.onclick = () => {
       if (answerHistory.length === 0) return;
 
+      hideQuizCompleteModal();
       const lastAnswer = answerHistory.pop();
 
       if (lastAnswer.wasCorrect) {
         correctCount--;
-        // In practice mode, re-insert the word and restore practice list
         if (isPracticeCategory) {
-          quizWords.splice(lastAnswer.index, 0, lastAnswer.word);
+          // Re-insert the word at the current position and show it
+          quizWords.splice(currentQuizIndex, 0, lastAnswer.word);
           if (!isMarked(lastAnswer.word)) {
             toggleMark(lastAnswer.word);
           }
+          // currentQuizIndex now points to the re-inserted word
+        } else {
+          currentQuizIndex--;
         }
       } else {
         wrongCount--;
+        currentQuizIndex--;
       }
 
-      currentQuizIndex = lastAnswer.index;
       showQuizCard();
     };
     
@@ -387,6 +373,7 @@
         if (mode === "browse") {
           browseMode.style.display = "block";
           quizMode.style.display = "none";
+          quizInitialized = false; // Re-init quiz on next switch to pick up changes
         } else if (mode === "quiz") {
           browseMode.style.display = "none";
           quizMode.style.display = "block";
