@@ -775,7 +775,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 .sentence-item label {
   cursor: pointer;
   flex: 1;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--ink);
 }
 
