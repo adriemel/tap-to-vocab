@@ -177,33 +177,30 @@
       }
 
       const word = quizWords[currentQuizIndex];
-      
-      // CRITICAL: Remove flipped class FIRST, then update text to prevent flash
-      const wasFlipped = flipCard.classList.contains("flipped");
+      const inner = flipCard.querySelector(".flip-card-inner");
+
+      // Instantly reset to front (no animation) then update content
+      inner.style.transition = "none";
       flipCard.classList.remove("flipped");
-      
-      // Only delay if card was previously flipped, otherwise update immediately
-      if (wasFlipped) {
-        setTimeout(() => {
-          quizEs.textContent = word.es;
-          quizDe.textContent = word.de;
-        }, 50);
-      } else {
-        quizEs.textContent = word.es;
-        quizDe.textContent = word.de;
-      }
-      
+      // Force reflow so the instant reset takes effect
+      void inner.offsetHeight;
+      // Restore transition for user-triggered flips
+      inner.style.transition = "";
+
+      quizEs.textContent = word.es;
+      quizDe.textContent = word.de;
+
       quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       quizCorrectStat.textContent = correctCount;
       quizWrongStat.textContent = wrongCount;
-      
+
       // Update main counter at top of page
       if (mainCounter) {
         mainCounter.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       }
 
       // Speak the Spanish word
-      setTimeout(() => speakSpanish(word.es), wasFlipped ? 150 : 100);
+      setTimeout(() => speakSpanish(word.es), 100);
     }
 
     function restartQuiz() {
