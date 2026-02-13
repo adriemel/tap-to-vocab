@@ -107,10 +107,12 @@
     const btnWrong = document.getElementById("btn-wrong");
     const btnRestart = document.getElementById("btn-restart-quiz");
     const btnQuizBack = document.getElementById("btn-quiz-back");
+    const btnQuizNext = document.getElementById("btn-quiz-next");
     const btnHomeQuiz = document.getElementById("btn-home-quiz");
     const quizProgress = document.getElementById("quiz-progress");
     const quizCorrectStat = document.getElementById("quiz-correct");
     const quizWrongStat = document.getElementById("quiz-wrong");
+    const quizSkippedStat = document.getElementById("quiz-skipped");
     
     // Main counter at top of page
     const mainCounter = document.getElementById("counter");
@@ -119,6 +121,7 @@
     const quizModal = document.getElementById("quiz-modal");
     const modalCorrect = document.getElementById("modal-correct");
     const modalWrong = document.getElementById("modal-wrong");
+    const modalSkipped = document.getElementById("modal-skipped");
     const modalScore = document.getElementById("modal-score");
     const modalRestart = document.getElementById("modal-restart");
     const modalPractice = document.getElementById("modal-practice");
@@ -130,19 +133,19 @@
     let currentQuizIndex = 0;
     let correctCount = 0;
     let wrongCount = 0;
+    let skippedCount = 0;
     const isPracticeCategory = category && category.toLowerCase() === "practice";
     
     // History tracking for back button
     let answerHistory = []; // Array of {index, wasCorrect, word}
 
     function showQuizCompleteModal() {
-      const totalCorrect = correctCount;
-      const totalWrong = wrongCount;
-      const total = totalCorrect + totalWrong;
-      const percentage = total > 0 ? Math.round((totalCorrect / total) * 100) : 0;
-      
-      modalCorrect.textContent = totalCorrect;
-      modalWrong.textContent = totalWrong;
+      const total = correctCount + wrongCount + skippedCount;
+      const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+      modalCorrect.textContent = correctCount;
+      modalWrong.textContent = wrongCount;
+      modalSkipped.textContent = skippedCount;
       modalScore.textContent = percentage + "%";
       quizModal.style.display = "flex";
     }
@@ -175,6 +178,7 @@
       quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       quizCorrectStat.textContent = correctCount;
       quizWrongStat.textContent = wrongCount;
+      quizSkippedStat.textContent = skippedCount;
 
       // Update main counter at top of page
       if (mainCounter) {
@@ -191,6 +195,7 @@
       currentQuizIndex = 0;
       correctCount = 0;
       wrongCount = 0;
+      skippedCount = 0;
       answerHistory = []; // Clear history
       showQuizCard();
     }
@@ -253,14 +258,28 @@
     };
 
     btnRestart.onclick = restartQuiz;
-    
+
+    btnQuizNext.onclick = () => {
+      answerHistory.push({
+        index: currentQuizIndex,
+        wasSkipped: true,
+        word: {...quizWords[currentQuizIndex]}
+      });
+      skippedCount++;
+      currentQuizIndex++;
+      showQuizCard();
+    };
+
     btnQuizBack.onclick = () => {
       if (answerHistory.length === 0) return;
 
       hideQuizCompleteModal();
       const lastAnswer = answerHistory.pop();
 
-      if (lastAnswer.wasCorrect) {
+      if (lastAnswer.wasSkipped) {
+        skippedCount--;
+        currentQuizIndex--;
+      } else if (lastAnswer.wasCorrect) {
         correctCount--;
         if (isPracticeCategory) {
           quizWords.splice(currentQuizIndex, 0, lastAnswer.word);
@@ -411,14 +430,14 @@
 
         // Hide non-functional UI
         document.getElementById("browse-mode").style.display = "none";
-        var mt = document.querySelector(".mode-tabs");
+        const mt = document.querySelector(".mode-tabs");
         if (mt) mt.style.display = "none";
 
         // Create a visible Home button below the error
-        var homeDiv = document.createElement("div");
+        const homeDiv = document.createElement("div");
         homeDiv.className = "controls";
         homeDiv.style.marginTop = "16px";
-        var hb = document.createElement("button");
+        const hb = document.createElement("button");
         hb.className = "btn secondary";
         hb.textContent = "🏠 Home";
         hb.onclick = function () { location.href = "/"; };
@@ -438,7 +457,7 @@
     } catch (e) {
       errorEl.textContent = "Could not load words.tsv: " + e.message;
       errorEl.style.display = "block";
-      var homeBtn = document.getElementById("btn-home");
+      const homeBtn = document.getElementById("btn-home");
       if (homeBtn) homeBtn.onclick = function () { location.href = "/"; };
     }
   }

@@ -5,13 +5,30 @@
 
 (function () {
 
+  const STORAGE_KEY_ENABLED = "enabledVerbs";
+
+  /* ---------- Storage for enabled verbs ---------- */
+  function getEnabledVerbs() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_ENABLED);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveEnabledVerbs(enabledMap) {
+    try { localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap)); }
+    catch (e) { console.warn("Could not save enabled verbs:", e); }
+  }
+
   const PRONOUNS = [
     { key: "yo", label: "yo" },
     { key: "tu", label: "tú" },
-    { key: "él", label: "él/ella" },
+    { key: "él", label: "él/ella/usted" },
     { key: "nosotros", label: "nosotros/as" },
     { key: "vosotros", label: "vosotros/as" },
-    { key: "ellos", label: "ellos/ellas" }
+    { key: "ellos", label: "ellos/ellas/ustedes" }
   ];
 
   /* ---------- Utilities ---------- */
@@ -41,7 +58,10 @@
     }).filter(v => v.infinitive && v.de);
   }
 
-  /* ---------- Success Sound ---------- */
+  /* ---------- Audio ---------- */
+  let _audioCtx = null;
+
+
   function playSuccessSound() {
     try {
       if (!_audioCtx) {
@@ -78,7 +98,7 @@
     el.textContent = emoji;
     document.body.appendChild(el);
     playSuccessSound();
-    setTimeout(() => el.remove(), 600);
+    setTimeout(() => el.remove(), 800);
   }
 
   /* ---------- Confetti ---------- */
@@ -100,7 +120,6 @@
   }
 
   /* ---------- Error Sound ---------- */
-  let _audioCtx = null;
   function playErrorSound() {
     try {
       if (!_audioCtx) {
@@ -122,6 +141,66 @@
     }
   }
 
+  /* ---------- Verb Manager ---------- */
+  function openVerbManager(allVerbs, onSave) {
+    const modal = document.getElementById("verb-manager");
+    const listEl = document.getElementById("verb-list");
+    const btnClose = document.getElementById("btn-close-manager");
+    const btnSave = document.getElementById("btn-save-selection");
+    const btnSelectAll = document.getElementById("btn-select-all");
+    const btnDeselectAll = document.getElementById("btn-deselect-all");
+
+    let enabledMap = getEnabledVerbs();
+    if (!enabledMap) {
+      enabledMap = {};
+      allVerbs.forEach(v => { enabledMap[v.infinitive] = true; });
+    }
+
+    listEl.innerHTML = "";
+    allVerbs.forEach((verb, idx) => {
+      const item = document.createElement("div");
+      item.className = "sentence-item";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `verb-${idx}`;
+      checkbox.checked = enabledMap[verb.infinitive] !== false;
+      checkbox.addEventListener("change", () => {
+        enabledMap[verb.infinitive] = checkbox.checked;
+      });
+
+      const label = document.createElement("label");
+      label.htmlFor = `verb-${idx}`;
+      label.textContent = `${verb.infinitive} — ${verb.de}`;
+
+      item.appendChild(checkbox);
+      item.appendChild(label);
+      listEl.appendChild(item);
+    });
+
+    btnSelectAll.onclick = () => {
+      allVerbs.forEach(v => { enabledMap[v.infinitive] = true; });
+      listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+    };
+
+    btnDeselectAll.onclick = () => {
+      allVerbs.forEach(v => { enabledMap[v.infinitive] = false; });
+      listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
+    };
+
+    const closeModal = () => { modal.style.display = "none"; };
+    btnClose.onclick = closeModal;
+
+    btnSave.onclick = () => {
+      saveEnabledVerbs(enabledMap);
+      closeModal();
+      if (onSave) onSave(enabledMap);
+    };
+
+    modal.style.display = "flex";
+  }
+
+
   /* ---------- Conjugation Game ---------- */
   function initConjugationGame(verbs) {
     const infinitiveEl = document.getElementById("verb-infinitive");
@@ -131,17 +210,19 @@
     const progressEl = document.getElementById("progress-badge");
     const btnReset = document.getElementById("btn-reset");
     const btnSkip = document.getElementById("btn-skip");
+    const btnBack = document.getElementById("btn-back");
     const btnHome = document.getElementById("btn-home");
     const errorEl = document.getElementById("error");
 
     if (verbs.length === 0) {
-      errorEl.textContent = "No verbs available.";
+      errorEl.textContent = "No verbs available. Please enable some verbs in Select Verbs.";
       errorEl.style.display = "block";
       return;
     }
 
     let currentIndex = 0;
     let filledCount = 0;
+    let history = [];
 
     function loadVerb() {
       if (currentIndex >= verbs.length) {
@@ -217,7 +298,9 @@
             showSuccessAnimation();
             confettiBurst(30);
             setTimeout(() => {
+              history.push(currentIndex);
               currentIndex++;
+              updateBackButton();
               loadVerb();
             }, 1500);
           }
@@ -226,25 +309,68 @@
       });
     }
 
+    function updateBackButton() {
+      if (btnBack) btnBack.disabled = history.length === 0;
+    }
+
     btnReset.onclick = () => loadVerb();
-    btnSkip.onclick = () => { currentIndex++; loadVerb(); };
+    btnSkip.onclick = () => {
+      history.push(currentIndex);
+      currentIndex++;
+      updateBackButton();
+      loadVerb();
+    };
+
+    if (btnBack) {
+      btnBack.onclick = () => {
+        if (history.length === 0) return;
+        currentIndex = history.pop();
+        updateBackButton();
+        loadVerb();
+      };
+    }
+
     btnHome.onclick = () => { location.href = "/"; };
 
+    updateBackButton();
     loadVerb();
   }
 
   /* ---------- Main Init ---------- */
   async function init() {
     const errorEl = document.getElementById("error");
+    const btnManage = document.getElementById("btn-manage");
+
     try {
-      const verbs = await loadVerbs("/data/verbs.tsv");
-      if (verbs.length === 0) {
+      const allVerbs = await loadVerbs("/data/verbs.tsv");
+      if (allVerbs.length === 0) {
         errorEl.textContent = "No verbs found in data file.";
         errorEl.style.display = "block";
         return;
       }
-      const shuffled = shuffleArray(verbs);
-      initConjugationGame(shuffled);
+
+      let enabledMap = getEnabledVerbs();
+      if (!enabledMap) {
+        enabledMap = {};
+        allVerbs.forEach(v => { enabledMap[v.infinitive] = true; });
+        saveEnabledVerbs(enabledMap);
+      }
+
+      function getActiveVerbs() {
+        const active = allVerbs.filter(v => enabledMap[v.infinitive] !== false);
+        return shuffleArray(active);
+      }
+
+      btnManage.onclick = () => {
+        openVerbManager(allVerbs, (newEnabledMap) => {
+          enabledMap = newEnabledMap;
+          const activeVerbs = getActiveVerbs();
+          initConjugationGame(activeVerbs);
+        });
+      };
+
+      const activeVerbs = getActiveVerbs();
+      initConjugationGame(activeVerbs);
     } catch (e) {
       errorEl.textContent = "Could not load verbs: " + e.message;
       errorEl.style.display = "block";

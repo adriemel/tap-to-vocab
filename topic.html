@@ -55,7 +55,8 @@
         </div>
 
         <div class="controls" style="justify-content: center; margin-top: 0; margin-bottom: 8px;">
-          <button class="btn secondary" id="btn-quiz-back">← Back</button>
+          <button class="btn secondary" id="btn-quiz-back">← Prev</button>
+          <button class="btn secondary" id="btn-quiz-next">Next →</button>
         </div>
 
         <div class="quiz-stats">
@@ -70,6 +71,10 @@
           <div class="stat">
             <span class="stat-label">Need Practice</span>
             <span class="stat-value stat-wrong" id="quiz-wrong">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Skipped</span>
+            <span class="stat-value stat-skipped" id="quiz-skipped">0</span>
           </div>
         </div>
 
@@ -94,6 +99,10 @@
               <div class="result-item">
                 <span class="result-label">Need Practice</span>
                 <span class="result-value warn-color" id="modal-wrong">0</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Skipped</span>
+                <span class="result-value accent-color" id="modal-skipped">0</span>
               </div>
               <div class="result-item">
                 <span class="result-label">Score</span>

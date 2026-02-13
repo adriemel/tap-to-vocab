@@ -264,6 +264,13 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   box-shadow: 0 2px 8px rgba(255, 204, 102, 0.5);
 }
 
+/* When quiz tab is active, give browse tab a blue outline */
+.mode-tabs:has(.mode-tab[data-mode="quiz"].active) .mode-tab[data-mode="browse"] {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+
 /* ---------- Browse Mode (Word Card) ---------- */
 .word-card {
   text-align: center;
@@ -465,6 +472,14 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   color: var(--warn);
 }
 
+.stat-skipped {
+  color: var(--accent);
+}
+
+.accent-color {
+  color: var(--accent);
+}
+
 /* ---------- Badges and misc ---------- */
 .badge {
   display:inline-flex;
@@ -660,7 +675,12 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
 .word-btn:hover {
   background: #22307a;
-  transform: translateY(-2px);
+}
+
+@media (hover: hover) {
+  .word-btn:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .word-btn:active {

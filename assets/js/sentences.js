@@ -56,7 +56,10 @@
 
   /* ---------- Filter sentences (entries ending with . ? !) ---------- */
   function filterSentences(words) {
-    return words.filter(w => /[.?!]$/.test(w.es.trim()));
+    return words.filter(w => {
+      const s = w.es.trim();
+      return /[.?!]$/.test(s) && !s.endsWith('..');
+    });
   }
 
   /* ---------- Audio ---------- */
