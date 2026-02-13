@@ -25,10 +25,10 @@
   const PRONOUNS = [
     { key: "yo", label: "yo" },
     { key: "tu", label: "tú" },
-    { key: "él", label: "él/ella/usted" },
+    { key: "él", label: "él/ella" },
     { key: "nosotros", label: "nosotros/as" },
     { key: "vosotros", label: "vosotros/as" },
-    { key: "ellos", label: "ellos/ellas/ustedes" }
+    { key: "ellos", label: "ellos/ellas" }
   ];
 
   /* ---------- Utilities ---------- */

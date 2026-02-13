@@ -833,7 +833,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   font-weight: 700;
   color: var(--accent);
   min-width: 140px;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .conj-slot {
@@ -945,7 +945,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 @media (max-width: 600px) {
   .conj-pronoun {
     min-width: 100px;
-    font-size: 1rem;
+    font-size: 1.15rem;
   }
 
   .conj-row {
@@ -1003,7 +1003,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
   .conj-pronoun {
     min-width: 80px;
-    font-size: 0.78rem;
+    font-size: 0.9rem;
   }
 
   .conj-slot {
