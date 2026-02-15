@@ -10,7 +10,10 @@
   <div class="container">
     <div class="card">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-        <h1>🔄 Verb Conjugation</h1>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn ghost" id="btn-manage" style="padding:6px 8px; font-size:1.3rem;" title="Select Verbs">⚙️</button>
+          <h1 style="margin:0;">🔄 Verb Conjugation</h1>
+        </div>
         <span class="badge" id="progress-badge">0 / 0</span>
       </div>
 
@@ -28,12 +31,24 @@
       <div class="word-bank" id="word-bank"></div>
 
       <!-- Controls -->
-      <div class="controls">
+      <div class="controls" id="practice-controls">
         <button class="btn secondary" id="btn-back" disabled>← Prev</button>
         <button class="btn secondary" id="btn-reset">🔄 Reset</button>
         <button class="btn secondary" id="btn-skip">Next →</button>
-        <button class="btn secondary" id="btn-manage">⚙️ Select Verbs</button>
         <button class="btn secondary" id="btn-home">🏠 Home</button>
+      </div>
+
+      <!-- Show mode controls -->
+      <div class="controls" id="show-controls" style="display:none;">
+        <button class="btn secondary" id="btn-show-prev">← Prev</button>
+        <button class="btn secondary" id="btn-show-next">Next →</button>
+        <button class="btn secondary" id="btn-home-show">🏠 Home</button>
+      </div>
+
+      <!-- Mode Toggle Tabs -->
+      <div class="mode-tabs" style="margin-top:12px;">
+        <button class="mode-tab active" data-mode="practice" id="tab-practice">🎯 Practice</button>
+        <button class="mode-tab" data-mode="show" id="tab-show">👀 Show</button>
       </div>
 
       <div class="error" id="error" style="display:none; margin-top:12px;"></div>

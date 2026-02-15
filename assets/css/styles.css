@@ -264,8 +264,25 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   box-shadow: 0 2px 8px rgba(255, 204, 102, 0.5);
 }
 
-/* When quiz tab is active, give browse tab a blue outline */
-.mode-tabs:has(.mode-tab[data-mode="quiz"].active) .mode-tab[data-mode="browse"] {
+/* DE→ES quiz tab gets a distinct green color */
+.mode-tab[data-mode="quiz-de"] {
+  color: var(--ok);
+  border: 1px solid rgba(61, 220, 151, 0.45);
+}
+
+.mode-tab[data-mode="quiz-de"]:hover {
+  background: rgba(61, 220, 151, 0.1);
+}
+
+.mode-tab[data-mode="quiz-de"].active {
+  background: var(--ok);
+  color: #0b1020;
+  box-shadow: 0 2px 8px rgba(61, 220, 151, 0.5);
+}
+
+/* When any quiz tab is active, give browse tab a blue outline */
+.mode-tabs:has(.mode-tab[data-mode="quiz"].active) .mode-tab[data-mode="browse"],
+.mode-tabs:has(.mode-tab[data-mode="quiz-de"].active) .mode-tab[data-mode="browse"] {
   border: 1px solid var(--accent);
   color: var(--accent);
 }

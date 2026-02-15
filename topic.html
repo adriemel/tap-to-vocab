@@ -39,12 +39,12 @@
         <div class="flip-card" id="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front" id="card-front-clickable">
-              <div class="quiz-label">Spanish</div>
+              <div class="quiz-label" id="quiz-front-label">Spanish</div>
               <div class="quiz-word" id="quiz-es">—</div>
               <div class="tap-hint">Tap anywhere to reveal</div>
             </div>
             <div class="flip-card-back">
-              <div class="quiz-label">German</div>
+              <div class="quiz-label" id="quiz-back-label">German</div>
               <div class="quiz-word" id="quiz-de">—</div>
               <div class="quiz-actions">
                 <button class="btn btn-wrong" id="btn-wrong">😕 Need Practice</button>
@@ -120,8 +120,9 @@
 
       <!-- Mode Toggle Tabs - at bottom -->
       <div class="mode-tabs">
-        <button class="mode-tab active" data-mode="browse">📖 Flashcards</button>
-        <button class="mode-tab" data-mode="quiz">🎯 Quiz Mode</button>
+        <button class="mode-tab active" data-mode="browse">📖 Browse</button>
+        <button class="mode-tab" data-mode="quiz">🇪🇸→🇩🇪</button>
+        <button class="mode-tab" data-mode="quiz-de">🇩🇪→🇪🇸</button>
       </div>
 
       <div class="error" id="error" style="display:none; margin-top:12px;"></div>

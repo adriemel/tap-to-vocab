@@ -336,6 +336,67 @@
     loadVerb();
   }
 
+  /* ---------- Show Mode (view all conjugations) ---------- */
+  function initShowMode(verbs) {
+    const infinitiveEl = document.getElementById("verb-infinitive");
+    const germanEl = document.getElementById("verb-german");
+    const tableEl = document.getElementById("conj-table");
+    const wordBankEl = document.getElementById("word-bank");
+    const progressEl = document.getElementById("progress-badge");
+    const btnShowPrev = document.getElementById("btn-show-prev");
+    const btnShowNext = document.getElementById("btn-show-next");
+    const btnHomeShow = document.getElementById("btn-home-show");
+    const errorEl = document.getElementById("error");
+
+    if (verbs.length === 0) {
+      errorEl.textContent = "No verbs available. Please enable some verbs.";
+      errorEl.style.display = "block";
+      return;
+    }
+
+    let currentIndex = 0;
+
+    function showVerb() {
+      const verb = verbs[currentIndex];
+      infinitiveEl.textContent = verb.infinitive;
+      germanEl.textContent = verb.de;
+      progressEl.textContent = `${currentIndex + 1} / ${verbs.length}`;
+
+      tableEl.innerHTML = "";
+      tableEl.classList.remove("conj-complete");
+      wordBankEl.innerHTML = "";
+
+      PRONOUNS.forEach(p => {
+        const row = document.createElement("div");
+        row.className = "conj-row";
+
+        const label = document.createElement("span");
+        label.className = "conj-pronoun";
+        label.textContent = p.label;
+
+        const slot = document.createElement("span");
+        slot.className = "conj-slot filled";
+        slot.textContent = verb[p.key];
+
+        row.appendChild(label);
+        row.appendChild(slot);
+        tableEl.appendChild(row);
+      });
+    }
+
+    btnShowPrev.onclick = () => {
+      currentIndex = (currentIndex - 1 + verbs.length) % verbs.length;
+      showVerb();
+    };
+    btnShowNext.onclick = () => {
+      currentIndex = (currentIndex + 1) % verbs.length;
+      showVerb();
+    };
+    btnHomeShow.onclick = () => { location.href = "/"; };
+
+    showVerb();
+  }
+
   /* ---------- Main Init ---------- */
   async function init() {
     const errorEl = document.getElementById("error");
@@ -361,16 +422,50 @@
         return shuffleArray(active);
       }
 
+      function getActiveVerbsOrdered() {
+        return allVerbs.filter(v => enabledMap[v.infinitive] !== false);
+      }
+
+      let currentMode = "practice";
+
       btnManage.onclick = () => {
         openVerbManager(allVerbs, (newEnabledMap) => {
           enabledMap = newEnabledMap;
-          const activeVerbs = getActiveVerbs();
-          initConjugationGame(activeVerbs);
+          if (currentMode === "practice") {
+            initConjugationGame(getActiveVerbs());
+          } else {
+            initShowMode(getActiveVerbsOrdered());
+          }
         });
       };
 
-      const activeVerbs = getActiveVerbs();
-      initConjugationGame(activeVerbs);
+      // Mode switching
+      const tabPractice = document.getElementById("tab-practice");
+      const tabShow = document.getElementById("tab-show");
+      const practiceControls = document.getElementById("practice-controls");
+      const showControls = document.getElementById("show-controls");
+
+      function switchMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll(".mode-tab").forEach(t => t.classList.remove("active"));
+        if (mode === "practice") {
+          tabPractice.classList.add("active");
+          practiceControls.style.display = "";
+          showControls.style.display = "none";
+          initConjugationGame(getActiveVerbs());
+        } else {
+          tabShow.classList.add("active");
+          practiceControls.style.display = "none";
+          showControls.style.display = "";
+          initShowMode(getActiveVerbsOrdered());
+        }
+      }
+
+      tabPractice.addEventListener("click", () => switchMode("practice"));
+      tabShow.addEventListener("click", () => switchMode("show"));
+
+      // Start with practice mode
+      initConjugationGame(getActiveVerbs());
     } catch (e) {
       errorEl.textContent = "Could not load verbs: " + e.message;
       errorEl.style.display = "block";

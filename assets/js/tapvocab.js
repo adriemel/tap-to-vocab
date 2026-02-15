@@ -97,12 +97,16 @@
   }
 
   /* ---------- Quiz Mode ---------- */
-  function setupQuizMode(words, category) {
+  function setupQuizMode(words, category, direction) {
+    // direction: "es-de" (default) or "de-es"
+    direction = direction || "es-de";
     const quizMode = document.getElementById("quiz-mode");
     const flipCard = document.getElementById("flip-card");
     const cardFront = document.getElementById("card-front-clickable");
-    const quizEs = document.getElementById("quiz-es");
-    const quizDe = document.getElementById("quiz-de");
+    const quizFrontWord = document.getElementById("quiz-es");
+    const quizBackWord = document.getElementById("quiz-de");
+    const frontLabel = document.getElementById("quiz-front-label");
+    const backLabel = document.getElementById("quiz-back-label");
     const btnCorrect = document.getElementById("btn-correct");
     const btnWrong = document.getElementById("btn-wrong");
     const btnRestart = document.getElementById("btn-restart-quiz");
@@ -138,6 +142,8 @@
     
     // History tracking for back button
     let answerHistory = []; // Array of {index, wasCorrect, word}
+    let canReveal = false; // 2-second delay before allowing reveal
+    let revealTimer = null;
 
     function showQuizCompleteModal() {
       const total = correctCount + wrongCount + skippedCount;
@@ -172,8 +178,17 @@
       // Restore transition for user-triggered flips
       inner.style.transition = "";
 
-      quizEs.textContent = word.es;
-      quizDe.textContent = word.de;
+      if (direction === "de-es") {
+        if (frontLabel) frontLabel.textContent = "German";
+        if (backLabel) backLabel.textContent = "Spanish";
+        quizFrontWord.textContent = word.de;
+        quizBackWord.textContent = word.es;
+      } else {
+        if (frontLabel) frontLabel.textContent = "Spanish";
+        if (backLabel) backLabel.textContent = "German";
+        quizFrontWord.textContent = word.es;
+        quizBackWord.textContent = word.de;
+      }
 
       quizProgress.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       quizCorrectStat.textContent = correctCount;
@@ -185,8 +200,26 @@
         mainCounter.textContent = `${currentQuizIndex + 1} / ${quizWords.length}`;
       }
 
-      // Speak the Spanish word
-      setTimeout(() => speakSpanish(word.es), 100);
+      // 2-second delay before allowing reveal
+      canReveal = false;
+      if (revealTimer) clearTimeout(revealTimer);
+      const tapHint = flipCard.querySelector(".tap-hint");
+      if (tapHint) {
+        tapHint.textContent = "Wait...";
+        tapHint.style.opacity = "0.4";
+      }
+      revealTimer = setTimeout(() => {
+        canReveal = true;
+        if (tapHint) {
+          tapHint.textContent = "Tap anywhere to reveal";
+          tapHint.style.opacity = "0.7";
+        }
+      }, 2000);
+
+      // Speak Spanish: on show for es-de, on reveal for de-es
+      if (direction === "es-de") {
+        setTimeout(() => speakSpanish(word.es), 100);
+      }
     }
 
     function restartQuiz() {
@@ -200,12 +233,18 @@
       showQuizCard();
     }
 
-    // Make entire front card clickable
-    cardFront.addEventListener("click", () => {
+    // Make entire front card clickable (with 2-second delay)
+    // Use onclick to avoid stacking listeners on mode switch
+    cardFront.onclick = () => {
+      if (!canReveal) return;
       if (!flipCard.classList.contains("flipped")) {
         flipCard.classList.add("flipped");
+        // For de-es mode, speak Spanish on reveal
+        if (direction === "de-es" && currentQuizIndex < quizWords.length) {
+          setTimeout(() => speakSpanish(quizWords[currentQuizIndex].es), 300);
+        }
       }
-    });
+    };
 
     btnCorrect.onclick = () => {
       const word = quizWords[currentQuizIndex];
@@ -376,12 +415,12 @@
     const modeTabs = document.querySelectorAll(".mode-tab");
     const browseMode = document.getElementById("browse-mode");
     const quizMode = document.getElementById("quiz-mode");
-    let quizInitialized = false;
+    let lastQuizDirection = null;
 
     modeTabs.forEach(tab => {
       tab.addEventListener("click", () => {
         const mode = tab.getAttribute("data-mode");
-        
+
         // Update active tab
         modeTabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
@@ -390,14 +429,14 @@
         if (mode === "browse") {
           browseMode.style.display = "block";
           quizMode.style.display = "none";
-          quizInitialized = false; // Re-init quiz on next switch to pick up changes
-        } else if (mode === "quiz") {
+          lastQuizDirection = null;
+        } else if (mode === "quiz" || mode === "quiz-de") {
+          const direction = mode === "quiz-de" ? "de-es" : "es-de";
           browseMode.style.display = "none";
           quizMode.style.display = "block";
-          // Only initialize quiz once
-          if (!quizInitialized) {
-            setupQuizMode(words, category);
-            quizInitialized = true;
+          if (lastQuizDirection !== direction) {
+            setupQuizMode(words, category, direction);
+            lastQuizDirection = direction;
           }
         }
       });
