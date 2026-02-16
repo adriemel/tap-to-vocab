@@ -967,7 +967,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
   .conj-row {
     padding: 10px 12px;
-    gap: 14px;
+    gap: 20px;
   }
 
   .conj-table {
@@ -1010,7 +1010,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 @media (max-height: 700px) and (max-width: 600px) {
   .conj-row {
     padding: 5px 8px;
-    gap: 8px;
+    gap: 12px;
   }
 
   .conj-table {
