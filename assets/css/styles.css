@@ -76,6 +76,10 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   font-weight: 700;
 }
 
+.grid-two-col .btn-games {
+  grid-column: 1 / -1;
+}
+
 /* Original grid (fallback) */
 .grid {
   display: grid;
@@ -1065,46 +1069,33 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
-/* ---------- Play Games Button ---------- */
-.btn-play-games {
+/* ---------- Coin Badge ---------- */
+.coin-badge {
+  background: #2a1f00;
+  border-color: #a07010;
+  color: var(--warn);
+  font-weight: 700;
+  font-size: .95rem;
+}
+
+/* ---------- Games Button (homepage) ---------- */
+.btn-games {
   background: linear-gradient(135deg, #f5a623 0%, #f7d046 50%, #f5a623 100%);
   color: #1a1200;
   border: none;
   font-weight: 800;
   font-size: 1rem;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-radius: 12px;
   cursor: pointer;
   animation: pulseGlow 2s ease-in-out infinite;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: transform 0.15s ease, background 0.15s ease;
-  user-select: none;
-  flex: 1;
-  min-width: 120px;
+  width: 100%;
+  grid-column: 1 / -1;
+  transition: transform 0.15s ease;
 }
 
-.btn-play-games:hover {
-  transform: translateY(-1px);
-}
-
-.btn-play-games:active {
-  transform: translateY(1px);
-}
-
-/* Floating version used in conjugation/fill-blank/sentences */
-.play-games-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-}
-
-.play-games-wrap .btn-play-games {
-  flex: none;
-}
+.btn-games:hover { transform: translateY(-1px); }
+.btn-games:active { transform: translateY(1px); }
 
 @keyframes pulseGlow {
   0%, 100% { box-shadow: 0 0 8px rgba(245, 166, 35, 0.4); }

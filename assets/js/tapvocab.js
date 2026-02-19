@@ -30,27 +30,8 @@
     } catch (e) { console.warn("Speech synthesis failed:", e); }
   }
 
-  /* ---------- TSV loader ---------- */
-  async function loadWords(tsvPath) {
-    const res = await fetch(tsvPath, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load " + tsvPath);
-    const text = await res.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const header = lines[0].split("\t").map(h => h.trim());
-    const idx = {
-      category: header.indexOf("category"),
-      es: header.indexOf("es"),
-      de: header.indexOf("de")
-    };
-    return lines.slice(1).map(line => {
-      const cols = line.split("\t");
-      return {
-        category: (idx.category >= 0 ? cols[idx.category] : "").trim(),
-        es: (idx.es >= 0 ? cols[idx.es] : "").trim(),
-        de: (idx.de >= 0 ? cols[idx.de] : "").trim()
-      };
-    }).filter(r => r.category && r.es && r.de);
-  }
+  /* ---------- TSV loader (from shared-utils) ---------- */
+  var loadWords = SharedUtils.loadWords;
 
   function inferCategoryFromPath() {
     const segs = location.pathname.split("/").filter(Boolean);
@@ -59,14 +40,7 @@
     return last.replace(/\.html?$/i, "");
   }
 
-  function shuffleArray(arr) {
-    const copy = [...arr];
-    for (let j = copy.length - 1; j > 0; j--) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [copy[j], copy[k]] = [copy[k], copy[j]];
-    }
-    return copy;
-  }
+  var shuffleArray = SharedUtils.shuffleArray;
 
   /* ---------- Practice List storage ---------- */
   const STORAGE_KEY = "practiceList";
@@ -153,12 +127,6 @@
       modalWrong.textContent = wrongCount;
       modalSkipped.textContent = skippedCount;
       modalScore.textContent = percentage + "%";
-
-      // Show Play Games button if reward unlocked
-      const btnPlayGames = document.getElementById("btn-play-games");
-      if (btnPlayGames && window.RewardTracker && RewardTracker.isUnlocked()) {
-        btnPlayGames.style.display = "";
-      }
 
       quizModal.style.display = "flex";
     }
@@ -264,7 +232,7 @@
       });
 
       correctCount++;
-      if (window.RewardTracker) RewardTracker.addCorrect("quiz");
+      if (window.CoinTracker) CoinTracker.addCoin();
       
       // If in practice category, remove from practice list
       if (isPracticeCategory && isMarked(word)) {
@@ -295,7 +263,6 @@
       });
 
       wrongCount++;
-      if (window.RewardTracker) RewardTracker.addWrong("quiz");
       
       // Auto-mark for practice if not already marked
       if (!isMarked(word)) {

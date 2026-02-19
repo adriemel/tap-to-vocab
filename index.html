@@ -5,27 +5,38 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tap‑to‑Vocab</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script src="/assets/js/coins.js"></script>
   <script>
-    // Display ⭐ Practice count when the page loads
     document.addEventListener("DOMContentLoaded", () => {
+      // Practice count
       try {
         const list = JSON.parse(localStorage.getItem("practiceList") || "[]");
-        const count = list.length;
         const el = document.getElementById("practice-btn");
-        if (el) {
-          el.textContent = count > 0 ? `⭐ Practice (${count})` : "⭐ Practice";
+        if (el) el.textContent = list.length > 0 ? `⭐ Practice (${list.length})` : "⭐ Practice";
+      } catch (e) {}
+
+      // Games button coin check
+      document.getElementById("btn-games").addEventListener("click", () => {
+        if (CoinTracker.spendCoins(10)) {
+          location.href = "/games.html";
+        } else {
+          const msg = document.getElementById("coins-msg");
+          msg.textContent = "Need 10 🪙 to play — keep answering correctly!";
+          msg.style.display = "block";
+          setTimeout(() => { msg.style.display = "none"; }, 2500);
         }
-      } catch (e) {
-        console.warn("Couldn't read practice list:", e);
-      }
+      });
     });
   </script>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>Tap‑to‑Vocab</h1>
-      <p style="text-align:center; color:var(--muted); margin-top:-8px; margin-bottom:20px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+        <h1 style="margin:0;">Tap‑to‑Vocab</h1>
+        <span class="badge coin-badge" id="coin-counter">🪙 0</span>
+      </div>
+      <p style="text-align:center; color:var(--muted); margin-top:8px; margin-bottom:20px;">
         Learn Spanish vocabulary interactively
       </p>
 
@@ -52,7 +63,11 @@
 
         <!-- ✏️ Fill in - spans both columns -->
         <a class="btn btn-fill-blank" href="/fill-blank.html">✏️ Fill in</a>
+
+        <!-- 🎮 Games - spans both columns, always visible -->
+        <button class="btn btn-games" id="btn-games">🎮 Play Games (10 🪙)</button>
       </div>
+      <div id="coins-msg" style="display:none; text-align:center; color:var(--warn); margin-top:10px; font-size:.95rem;"></div>
     </div>
   </div>
 </body>

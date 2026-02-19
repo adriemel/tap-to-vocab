@@ -14,7 +14,10 @@
           <button class="btn ghost" id="btn-manage" style="padding:6px 8px; font-size:1.3rem;" title="Select Verbs">⚙️</button>
           <h1 style="margin:0;">🔄 Verb Conjugation</h1>
         </div>
-        <span class="badge" id="progress-badge">0 / 0</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge coin-badge" id="coin-counter">🪙 0</span>
+          <span class="badge" id="progress-badge">0 / 0</span>
+        </div>
       </div>
 
       <!-- Verb Header -->
@@ -77,7 +80,8 @@
   </div>
 
 
-  <script src="/assets/js/reward.js"></script>
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
   <script src="/assets/js/conjugation.js"></script>
   <script>
     VerbConjugation.init();

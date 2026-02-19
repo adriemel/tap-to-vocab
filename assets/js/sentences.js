@@ -7,37 +7,9 @@
   
   const STORAGE_KEY_ENABLED = "enabledSentences";
 
-  /* ---------- Utilities ---------- */
-  function shuffleArray(arr) {
-    const copy = [...arr];
-    for (let j = copy.length - 1; j > 0; j--) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [copy[j], copy[k]] = [copy[k], copy[j]];
-    }
-    return copy;
-  }
-
-  /* ---------- TSV Loader ---------- */
-  async function loadWords(tsvPath) {
-    const res = await fetch(tsvPath, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load " + tsvPath);
-    const text = await res.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const header = lines[0].split("\t").map(h => h.trim());
-    const idx = {
-      category: header.indexOf("category"),
-      es: header.indexOf("es"),
-      de: header.indexOf("de")
-    };
-    return lines.slice(1).map(line => {
-      const cols = line.split("\t");
-      return {
-        category: (idx.category >= 0 ? cols[idx.category] : "").trim(),
-        es: (idx.es >= 0 ? cols[idx.es] : "").trim(),
-        de: (idx.de >= 0 ? cols[idx.de] : "").trim()
-      };
-    }).filter(r => r.category && r.es && r.de);
-  }
+  /* ---------- Utilities (from shared-utils) ---------- */
+  var shuffleArray = SharedUtils.shuffleArray;
+  var loadWords = SharedUtils.loadWords;
 
   /* ---------- Storage for enabled sentences ---------- */
   function getEnabledSentences() {
@@ -62,100 +34,11 @@
     });
   }
 
-  /* ---------- Audio ---------- */
-  let _audioCtx = null;
-
-  function playSuccessSound() {
-    try {
-      if (!_audioCtx) {
-        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const ctx = _audioCtx;
-      const now = ctx.currentTime;
-
-      // Cheerful ascending three-note chime
-      const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
-      notes.forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = "sine";
-        osc.frequency.value = freq;
-        const start = now + i * 0.1;
-        gain.gain.setValueAtTime(0.25, start);
-        gain.gain.exponentialRampToValueAtTime(0.01, start + 0.3);
-        osc.start(start);
-        osc.stop(start + 0.3);
-      });
-    } catch (e) {
-      console.warn("Could not play success sound:", e);
-    }
-  }
-
-  /* ---------- Success Animation ---------- */
-  function showSuccessAnimation() {
-    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐", "🥳", "👏", "💪"];
-    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-
-    const el = document.createElement("div");
-    el.className = "success-animation";
-    el.textContent = emoji;
-    document.body.appendChild(el);
-
-    playSuccessSound();
-    setTimeout(() => el.remove(), 800);
-  }
-
-  /* ---------- Confetti ---------- */
-  function confettiBurst(count = 30) {
-    const container = document.body;
-    for (let i = 0; i < count; i++) {
-      const piece = document.createElement("div");
-      piece.style.cssText = `
-        position:fixed;
-        width:10px;
-        height:10px;
-        opacity:.9;
-        border-radius:50%;
-        left:${50 + (Math.random() * 20 - 10)}%;
-        top:${30}%;
-        background:hsl(${Math.random() * 360} 80% 60%);
-        transform:translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(${Math.random() * 360}deg);
-        animation: fall ${800 + Math.random() * 400}ms ease-out forwards;
-        pointer-events: none;
-        z-index: 9999;
-      `;
-      container.appendChild(piece);
-      setTimeout(() => piece.remove(), 1500);
-    }
-  }
-
-  function playErrorSound() {
-    try {
-      if (!_audioCtx) {
-        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const audioContext = _audioCtx;
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      // Error buzz sound: low frequency with quick fade
-      oscillator.frequency.value = 150;
-      oscillator.type = 'sawtooth';
-      
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.15);
-    } catch (e) {
-      console.warn("Could not play error sound:", e);
-    }
-  }
+  /* ---------- Audio & Animations (from shared-utils) ---------- */
+  var playSuccessSound = SharedUtils.playSuccessSound;
+  var showSuccessAnimation = SharedUtils.showSuccessAnimation;
+  var confettiBurst = SharedUtils.confettiBurst;
+  var playErrorSound = SharedUtils.playErrorSound;
 
   /* ---------- Sentence Manager ---------- */
   function openSentenceManager(allSentences, onSave) {
@@ -228,22 +111,6 @@
     };
 
     modal.style.display = "flex";
-  }
-
-  /* ---------- Play Games Button ---------- */
-  function showPlayGamesButton() {
-    if (!window.RewardTracker || !RewardTracker.isUnlocked()) return;
-    if (document.getElementById("btn-play-games-float")) return;
-    var wrap = document.createElement("div");
-    wrap.className = "play-games-wrap";
-    var btn = document.createElement("a");
-    btn.id = "btn-play-games-float";
-    btn.href = "/games.html";
-    btn.className = "btn-play-games";
-    btn.textContent = "\uD83C\uDFAE Play Games!";
-    wrap.appendChild(btn);
-    var controls = document.querySelector(".controls");
-    if (controls) controls.parentNode.insertBefore(wrap, controls.nextSibling);
   }
 
   /* ---------- Sentence Builder Game ---------- */
@@ -356,10 +223,7 @@
               buildAreaEl.classList.add("correct");
               showSuccessAnimation();
               confettiBurst(30);
-              if (window.RewardTracker) {
-                RewardTracker.addCorrect("sentences");
-                showPlayGamesButton();
-              }
+              if (window.CoinTracker) CoinTracker.addCoin();
               setTimeout(() => {
                 history.push(currentIndex);
                 currentIndex++;

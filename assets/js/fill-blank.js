@@ -5,16 +5,6 @@
 
 (function () {
 
-  /* ---------- Utilities ---------- */
-  function shuffleArray(arr) {
-    const copy = [...arr];
-    for (let j = copy.length - 1; j > 0; j--) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [copy[j], copy[k]] = [copy[k], copy[j]];
-    }
-    return copy;
-  }
-
   /* ---------- TSV Loader ---------- */
   async function loadSentences(tsvPath) {
     const res = await fetch(tsvPath, { cache: "no-store" });
@@ -42,103 +32,6 @@
     }).filter(r => r.de && r.es_with_blank && r.correct_answer);
   }
 
-  /* ---------- Success Sound ---------- */
-  function playSuccessSound() {
-    try {
-      if (!_audioCtx) {
-        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const ctx = _audioCtx;
-      const now = ctx.currentTime;
-
-      const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
-      notes.forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = "sine";
-        osc.frequency.value = freq;
-        const start = now + i * 0.1;
-        gain.gain.setValueAtTime(0.25, start);
-        gain.gain.exponentialRampToValueAtTime(0.01, start + 0.3);
-        osc.start(start);
-        osc.stop(start + 0.3);
-      });
-    } catch (e) {
-      console.warn("Could not play success sound:", e);
-    }
-  }
-
-  /* ---------- Success Animation ---------- */
-  function showSuccessAnimation() {
-    const emojis = ["🎉", "✨", "🎊", "💃", "🕺", "🎈", "🌟", "⭐", "🥳", "👏", "💪"];
-    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-    const el = document.createElement("div");
-    el.className = "success-animation";
-    el.textContent = emoji;
-    document.body.appendChild(el);
-    playSuccessSound();
-    setTimeout(() => el.remove(), 600);
-  }
-
-  /* ---------- Confetti ---------- */
-  function confettiBurst(count = 30) {
-    for (let i = 0; i < count; i++) {
-      const piece = document.createElement("div");
-      piece.style.cssText = `
-        position:fixed;
-        width:10px;height:10px;opacity:.9;border-radius:50%;
-        left:${50 + (Math.random() * 20 - 10)}%;top:30%;
-        background:hsl(${Math.random() * 360} 80% 60%);
-        transform:translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(${Math.random() * 360}deg);
-        animation:fall ${800 + Math.random() * 400}ms ease-out forwards;
-        pointer-events:none;z-index:9999;
-      `;
-      document.body.appendChild(piece);
-      setTimeout(() => piece.remove(), 1500);
-    }
-  }
-
-  /* ---------- Error Sound ---------- */
-  let _audioCtx = null;
-  function playErrorSound() {
-    try {
-      if (!_audioCtx) {
-        _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const ctx = _audioCtx;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = 150;
-      osc.type = "sawtooth";
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.15);
-    } catch (e) {
-      console.warn("Could not play error sound:", e);
-    }
-  }
-
-  /* ---------- Play Games Button ---------- */
-  function showPlayGamesButton() {
-    if (!window.RewardTracker || !RewardTracker.isUnlocked()) return;
-    if (document.getElementById("btn-play-games-float")) return;
-    var wrap = document.createElement("div");
-    wrap.className = "play-games-wrap";
-    var btn = document.createElement("a");
-    btn.id = "btn-play-games-float";
-    btn.href = "/games.html";
-    btn.className = "btn-play-games";
-    btn.textContent = "\uD83C\uDFAE Play Games!";
-    wrap.appendChild(btn);
-    var controls = document.querySelector(".controls");
-    if (controls) controls.parentNode.insertBefore(wrap, controls.nextSibling);
-  }
-
   /* ---------- Fill-in-Blank Game ---------- */
   function initGame(sentences) {
     const germanEl = document.getElementById("german-sentence");
@@ -164,7 +57,7 @@
         germanEl.textContent = "🎉 All sentences completed!";
         spanishEl.innerHTML = '<span style="color: var(--ok); font-weight: 700;">Great job!</span>';
         choicesEl.innerHTML = "";
-        confettiBurst(50);
+        SharedUtils.confettiBurst(50);
         return;
       }
 
@@ -191,7 +84,7 @@
       // Build choice buttons
       choicesEl.innerHTML = "";
       const wrongList = sentence.wrong_answers.split(",").map(w => w.trim()).filter(Boolean);
-      const allChoices = shuffleArray([sentence.correct_answer, ...wrongList]);
+      const allChoices = SharedUtils.shuffleArray([sentence.correct_answer, ...wrongList]);
 
       allChoices.forEach(choice => {
         const btn = document.createElement("button");
@@ -210,12 +103,9 @@
             }
             // Disable all buttons
             choicesEl.querySelectorAll(".choice-btn").forEach(b => b.classList.add("disabled"));
-            showSuccessAnimation();
-            confettiBurst(30);
-            if (window.RewardTracker) {
-              RewardTracker.addCorrect("fill-blank");
-              showPlayGamesButton();
-            }
+            SharedUtils.showSuccessAnimation();
+            SharedUtils.confettiBurst(30);
+            if (window.CoinTracker) CoinTracker.addCoin();
             setTimeout(() => {
               history.push(currentIndex);
               currentIndex++;
@@ -225,9 +115,8 @@
           } else {
             // Wrong
             btn.classList.add("choice-wrong");
-            playErrorSound();
+            SharedUtils.playErrorSound();
             btn.classList.add("disabled");
-            if (window.RewardTracker) RewardTracker.addWrong("fill-blank");
           }
         };
         choicesEl.appendChild(btn);
@@ -270,7 +159,7 @@
         errorEl.style.display = "block";
         return;
       }
-      const shuffled = shuffleArray(sentences);
+      const shuffled = SharedUtils.shuffleArray(sentences);
       initGame(shuffled);
     } catch (e) {
       errorEl.textContent = "Could not load sentences: " + e.message;
