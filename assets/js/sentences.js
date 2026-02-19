@@ -234,14 +234,16 @@
   function showPlayGamesButton() {
     if (!window.RewardTracker || !RewardTracker.isUnlocked()) return;
     if (document.getElementById("btn-play-games-float")) return;
+    var wrap = document.createElement("div");
+    wrap.className = "play-games-wrap";
     var btn = document.createElement("a");
     btn.id = "btn-play-games-float";
     btn.href = "/games.html";
     btn.className = "btn-play-games";
     btn.textContent = "\uD83C\uDFAE Play Games!";
-    btn.style.marginTop = "12px";
+    wrap.appendChild(btn);
     var controls = document.querySelector(".controls");
-    if (controls) controls.parentNode.insertBefore(btn, controls.nextSibling);
+    if (controls) controls.parentNode.insertBefore(wrap, controls.nextSibling);
   }
 
   /* ---------- Sentence Builder Game ---------- */

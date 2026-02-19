@@ -16,7 +16,7 @@
       display: block;
       border-radius: 12px;
       border: 2px solid #2a3a80;
-      background: #0a0e1a;
+      background: #080c18;
       max-width: 100%;
       touch-action: none;
     }
@@ -128,38 +128,126 @@
     }
     updatePlaysDisplay();
 
-    // Game state
-    var blocks = [];
-    var currentBlock = null;
+    // ========== 3D Isometric Projection ==========
+    // Blocks are stored as {x, z, w, d} in world coords (x=left-right, z=depth)
+    // y (height) is implied by block index
+    var BLOCK_H = 22;       // visual height of each block
+    var BLOCK_DEPTH = 80;   // depth of blocks in world units
+    var ISO_X = 0.7;        // isometric x scale
+    var ISO_Z = 0.4;        // isometric z scale (depth → screen offset)
+
+    // Project world (wx, wy, wz) to screen (sx, sy)
+    // wy = stack height (0 = ground)
+    function project(wx, wy, wz) {
+      var sx = W / 2 + (wx * ISO_X) + (wz * ISO_Z * 0.5);
+      var sy = H * 0.75 - wy + (wz * ISO_Z * 0.35);
+      return { x: sx, y: sy };
+    }
+
+    // ========== Game State ==========
+    var blocks = [];         // {x, z, w, d} in world space
+    var currentBlock = null; // moving block
+    var fallingPiece = null; // overhang that falls off
     var score = 0;
     var gameRunning = false;
     var animFrame = null;
-    var cameraY = 0;
-    var BLOCK_HEIGHT = 28;
-    var BASE_SPEED = 2.5;
+    var cameraY = 0;         // current camera offset
+    var targetCameraY = 0;   // target camera offset
+    var BASE_SPEED = 1.8;
     var speed = BASE_SPEED;
     var direction = 1;
+    var moveAxis = "x";      // alternates x/z each block
+    var perfectCount = 0;    // consecutive perfect placements
 
     function blockColor(index) {
-      var hue = (index * 25) % 360;
-      return "hsl(" + hue + ", 70%, 55%)";
+      var hue = (index * 22 + 10) % 360;
+      return { h: hue, s: 65, l: 52 };
     }
 
-    function blockHighlight(index) {
-      var hue = (index * 25) % 360;
-      return "hsl(" + hue + ", 80%, 70%)";
+    function hsl(h, s, l) {
+      return "hsl(" + h + "," + s + "%," + l + "%)";
     }
 
+    // ========== Draw a 3D isometric box ==========
+    function drawBlock(wx, wz, ww, wd, wy, colorIdx, alpha) {
+      var c = blockColor(colorIdx);
+      var a = alpha !== undefined ? alpha : 1;
+
+      // 4 corners of the top face in world space
+      var tl = project(wx, wy, wz);
+      var tr = project(wx + ww, wy, wz);
+      var br = project(wx + ww, wy, wz + wd);
+      var bl = project(wx, wy, wz + wd);
+
+      // 4 corners of the bottom face
+      var btl = project(wx, wy - BLOCK_H, wz);
+      var btr = project(wx + ww, wy - BLOCK_H, wz);
+      var bbr = project(wx + ww, wy - BLOCK_H, wz + wd);
+      var bbl = project(wx, wy - BLOCK_H, wz + wd);
+
+      ctx.globalAlpha = a;
+
+      // Right face (darker)
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 15);
+      ctx.beginPath();
+      ctx.moveTo(tr.x, tr.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bbr.x, bbr.y);
+      ctx.lineTo(btr.x, btr.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Front face (medium)
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 8);
+      ctx.beginPath();
+      ctx.moveTo(bl.x, bl.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bbr.x, bbr.y);
+      ctx.lineTo(bbl.x, bbl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Top face (bright)
+      ctx.fillStyle = hsl(c.h, c.s, c.l + 8);
+      ctx.beginPath();
+      ctx.moveTo(tl.x, tl.y);
+      ctx.lineTo(tr.x, tr.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bl.x, bl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Edge outlines
+      ctx.strokeStyle = hsl(c.h, c.s, c.l + 18);
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = a * 0.5;
+      // Top face outline
+      ctx.beginPath();
+      ctx.moveTo(tl.x, tl.y);
+      ctx.lineTo(tr.x, tr.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bl.x, bl.y);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.globalAlpha = 1;
+    }
+
+    // ========== Init / Spawn ==========
     function initGame() {
       blocks = [];
       score = 0;
       cameraY = 0;
+      targetCameraY = 0;
       speed = BASE_SPEED;
       direction = 1;
+      moveAxis = "x";
+      perfectCount = 0;
+      fallingPiece = null;
       scoreDisplay.textContent = "Score: 0";
 
-      // Base block
-      blocks.push({ x: W / 2 - 80, y: H - BLOCK_HEIGHT - 20, w: 160 });
+      // Base block centered at origin
+      blocks.push({ x: -60, z: -40, w: 120, d: BLOCK_DEPTH });
 
       spawnBlock();
       gameRunning = true;
@@ -168,108 +256,210 @@
 
     function spawnBlock() {
       var last = blocks[blocks.length - 1];
-      var y = last.y - BLOCK_HEIGHT;
-      currentBlock = { x: 0, y: y, w: last.w };
+      if (moveAxis === "x") {
+        currentBlock = { x: -180, z: last.z, w: last.w, d: last.d };
+      } else {
+        currentBlock = { x: last.x, z: -160, w: last.w, d: last.d };
+      }
     }
 
+    // ========== Drop Logic ==========
     function dropBlock() {
       if (!currentBlock || !gameRunning) return;
       var last = blocks[blocks.length - 1];
       var cur = currentBlock;
 
-      // Calculate overlap
-      var overlapLeft = Math.max(cur.x, last.x);
-      var overlapRight = Math.min(cur.x + cur.w, last.x + last.w);
-      var overlapW = overlapRight - overlapLeft;
+      var overlapX1 = Math.max(cur.x, last.x);
+      var overlapX2 = Math.min(cur.x + cur.w, last.x + last.w);
+      var overlapZ1 = Math.max(cur.z, last.z);
+      var overlapZ2 = Math.min(cur.z + cur.d, last.z + last.d);
+      var ow = overlapX2 - overlapX1;
+      var od = overlapZ2 - overlapZ1;
 
-      if (overlapW <= 0) {
-        // Miss - game over
+      if (ow <= 0 || od <= 0) {
+        // Complete miss — animate falling block
+        fallingPiece = {
+          x: cur.x, z: cur.z, w: cur.w, d: cur.d,
+          wy: blocks.length * BLOCK_H,
+          vy: 0, alpha: 1, colorIdx: blocks.length
+        };
+        currentBlock = null;
         gameOver();
         return;
       }
 
-      // Perfect or partial
-      var placed = { x: overlapLeft, y: cur.y, w: overlapW };
-      blocks.push(placed);
+      // Check for perfect placement (within 3 units tolerance)
+      var isPerfect = false;
+      if (moveAxis === "x") {
+        isPerfect = Math.abs(cur.x - last.x) < 3;
+      } else {
+        isPerfect = Math.abs(cur.z - last.z) < 3;
+      }
+
+      if (isPerfect) {
+        // Snap perfectly
+        perfectCount++;
+        blocks.push({ x: last.x, z: last.z, w: last.w, d: last.d });
+      } else {
+        perfectCount = 0;
+        // Create overhang falling piece
+        if (moveAxis === "x") {
+          var cutSide = cur.x < last.x ? "left" : "right";
+          if (cutSide === "left") {
+            fallingPiece = {
+              x: cur.x, z: overlapZ1, w: overlapX1 - cur.x, d: od,
+              wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length
+            };
+          } else {
+            fallingPiece = {
+              x: overlapX2, z: overlapZ1, w: (cur.x + cur.w) - overlapX2, d: od,
+              wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length
+            };
+          }
+        } else {
+          var cutSideZ = cur.z < last.z ? "back" : "front";
+          if (cutSideZ === "back") {
+            fallingPiece = {
+              x: overlapX1, z: cur.z, w: ow, d: overlapZ1 - cur.z,
+              wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length
+            };
+          } else {
+            fallingPiece = {
+              x: overlapX1, z: overlapZ2, w: ow, d: (cur.z + cur.d) - overlapZ2,
+              wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length
+            };
+          }
+        }
+        blocks.push({ x: overlapX1, z: overlapZ1, w: ow, d: od });
+      }
+
       score++;
       scoreDisplay.textContent = "Score: " + score;
 
       // Increase speed every 5 blocks
       if (score % 5 === 0) {
-        speed += 0.5;
+        speed += 0.4;
       }
 
-      // Camera adjustment
-      var targetCamY = Math.max(0, (H - BLOCK_HEIGHT - 20) - placed.y - H * 0.4);
-      cameraY = targetCamY;
+      // Smooth camera: raise target so top of tower stays centered
+      targetCameraY = Math.max(0, blocks.length * BLOCK_H - H * 0.35);
 
+      // Alternate axis
+      moveAxis = moveAxis === "x" ? "z" : "x";
       spawnBlock();
     }
 
     function gameOver() {
       gameRunning = false;
-      if (animFrame) cancelAnimationFrame(animFrame);
+      // Let the final draw/camera finish before showing overlay
+      setTimeout(function () {
+        if (animFrame) cancelAnimationFrame(animFrame);
 
-      playsRemaining--;
-      sessionStorage.setItem(playsKey, String(playsRemaining));
-      updatePlaysDisplay();
+        playsRemaining--;
+        sessionStorage.setItem(playsKey, String(playsRemaining));
+        updatePlaysDisplay();
 
-      finalScoreEl.textContent = score;
-      if (playsRemaining > 0) {
-        btnAgain.style.display = "";
-        endMessage.textContent = playsRemaining + " play" + (playsRemaining !== 1 ? "s" : "") + " remaining";
-      } else {
-        btnAgain.style.display = "none";
-        endMessage.textContent = "No plays remaining. Great job!";
-      }
-      overlayEnd.style.display = "flex";
+        finalScoreEl.textContent = score;
+        if (playsRemaining > 0) {
+          btnAgain.style.display = "";
+          endMessage.textContent = playsRemaining + " play" + (playsRemaining !== 1 ? "s" : "") + " remaining";
+        } else {
+          btnAgain.style.display = "none";
+          endMessage.textContent = "No plays remaining. Great job!";
+        }
+        overlayEnd.style.display = "flex";
+      }, 600);
     }
 
+    // ========== Rendering ==========
     function draw() {
       ctx.clearRect(0, 0, W, H);
 
-      // Draw stacked blocks
+      // Starfield background
+      ctx.fillStyle = "#080c18";
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.translate(0, cameraY);
+
+      // Draw ground shadow
+      var g1 = project(-100, 0, -60);
+      var g2 = project(100, 0, -60);
+      var g3 = project(100, 0, 100);
+      var g4 = project(-100, 0, 100);
+      ctx.fillStyle = "rgba(30, 40, 80, 0.3)";
+      ctx.beginPath();
+      ctx.moveTo(g1.x, g1.y);
+      ctx.lineTo(g2.x, g2.y);
+      ctx.lineTo(g3.x, g3.y);
+      ctx.lineTo(g4.x, g4.y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw stacked blocks from bottom to top
       for (var i = 0; i < blocks.length; i++) {
         var b = blocks[i];
-        var drawY = b.y + cameraY;
-        ctx.fillStyle = blockColor(i);
-        ctx.fillRect(b.x, drawY, b.w, BLOCK_HEIGHT - 2);
-        // Highlight top edge
-        ctx.fillStyle = blockHighlight(i);
-        ctx.fillRect(b.x, drawY, b.w, 3);
+        var wy = (i + 1) * BLOCK_H;
+        drawBlock(b.x, b.z, b.w, b.d, wy, i);
+      }
+
+      // Draw falling overhang piece
+      if (fallingPiece) {
+        drawBlock(
+          fallingPiece.x, fallingPiece.z,
+          fallingPiece.w, fallingPiece.d,
+          fallingPiece.wy,
+          fallingPiece.colorIdx,
+          fallingPiece.alpha
+        );
       }
 
       // Draw current moving block
       if (currentBlock) {
         var c = currentBlock;
-        var dy = c.y + cameraY;
-        ctx.fillStyle = blockColor(blocks.length);
-        ctx.fillRect(c.x, dy, c.w, BLOCK_HEIGHT - 2);
-        ctx.fillStyle = blockHighlight(blocks.length);
-        ctx.fillRect(c.x, dy, c.w, 3);
+        var wy = (blocks.length + 1) * BLOCK_H;
+        drawBlock(c.x, c.z, c.w, c.d, wy, blocks.length);
       }
 
-      // Ground line
-      var groundY = H - 20 + cameraY;
-      if (groundY < H) {
-        ctx.fillStyle = "#2a3a80";
-        ctx.fillRect(0, groundY, W, 2);
-      }
+      ctx.restore();
     }
 
     function loop() {
-      if (!gameRunning) return;
+      // Smooth camera lerp
+      cameraY += (targetCameraY - cameraY) * 0.08;
 
       // Move current block
-      if (currentBlock) {
-        currentBlock.x += speed * direction;
-        if (currentBlock.x + currentBlock.w > W) {
-          currentBlock.x = W - currentBlock.w;
-          direction = -1;
+      if (currentBlock && gameRunning) {
+        if (moveAxis === "x") {
+          currentBlock.x += speed * direction;
+          if (currentBlock.x + currentBlock.w > 160) {
+            currentBlock.x = 160 - currentBlock.w;
+            direction = -1;
+          }
+          if (currentBlock.x < -160) {
+            currentBlock.x = -160;
+            direction = 1;
+          }
+        } else {
+          currentBlock.z += speed * direction;
+          if (currentBlock.z + currentBlock.d > 140) {
+            currentBlock.z = 140 - currentBlock.d;
+            direction = -1;
+          }
+          if (currentBlock.z < -140) {
+            currentBlock.z = -140;
+            direction = 1;
+          }
         }
-        if (currentBlock.x < 0) {
-          currentBlock.x = 0;
-          direction = 1;
+      }
+
+      // Animate falling piece
+      if (fallingPiece) {
+        fallingPiece.vy += 0.8;
+        fallingPiece.wy -= fallingPiece.vy;
+        fallingPiece.alpha -= 0.02;
+        if (fallingPiece.alpha <= 0) {
+          fallingPiece = null;
         }
       }
 
@@ -277,7 +467,7 @@
       animFrame = requestAnimationFrame(loop);
     }
 
-    // Controls
+    // ========== Controls ==========
     btnStart.onclick = function () {
       if (playsRemaining <= 0) {
         location.href = "/";
@@ -298,10 +488,8 @@
     };
 
     btnCancel.onclick = function () {
-      if (gameRunning) {
-        gameRunning = false;
-        if (animFrame) cancelAnimationFrame(animFrame);
-      }
+      gameRunning = false;
+      if (animFrame) cancelAnimationFrame(animFrame);
       location.href = "/";
     };
 
