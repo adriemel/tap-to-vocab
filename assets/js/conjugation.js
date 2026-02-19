@@ -201,6 +201,20 @@
   }
 
 
+  /* ---------- Play Games Button ---------- */
+  function showPlayGamesButton() {
+    if (!window.RewardTracker || !RewardTracker.isUnlocked()) return;
+    if (document.getElementById("btn-play-games-float")) return;
+    var btn = document.createElement("a");
+    btn.id = "btn-play-games-float";
+    btn.href = "/games.html";
+    btn.className = "btn-play-games";
+    btn.textContent = "\uD83C\uDFAE Play Games!";
+    btn.style.marginTop = "12px";
+    var controls = document.querySelector(".controls");
+    if (controls) controls.parentNode.insertBefore(btn, controls.nextSibling);
+  }
+
   /* ---------- Conjugation Game ---------- */
   function initConjugationGame(verbs) {
     const infinitiveEl = document.getElementById("verb-infinitive");
@@ -282,6 +296,7 @@
           if (form !== expectedForm) {
             btn.classList.add("wrong-word");
             playErrorSound();
+            if (window.RewardTracker) RewardTracker.addWrong("conjugation");
             setTimeout(() => btn.classList.remove("wrong-word"), 500);
             return;
           }
@@ -297,6 +312,10 @@
             tableEl.classList.add("conj-complete");
             showSuccessAnimation();
             confettiBurst(30);
+            if (window.RewardTracker) {
+              RewardTracker.addCorrect("conjugation");
+              showPlayGamesButton();
+            }
             setTimeout(() => {
               history.push(currentIndex);
               currentIndex++;

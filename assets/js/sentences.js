@@ -230,6 +230,20 @@
     modal.style.display = "flex";
   }
 
+  /* ---------- Play Games Button ---------- */
+  function showPlayGamesButton() {
+    if (!window.RewardTracker || !RewardTracker.isUnlocked()) return;
+    if (document.getElementById("btn-play-games-float")) return;
+    var btn = document.createElement("a");
+    btn.id = "btn-play-games-float";
+    btn.href = "/games.html";
+    btn.className = "btn-play-games";
+    btn.textContent = "\uD83C\uDFAE Play Games!";
+    btn.style.marginTop = "12px";
+    var controls = document.querySelector(".controls");
+    if (controls) controls.parentNode.insertBefore(btn, controls.nextSibling);
+  }
+
   /* ---------- Sentence Builder Game ---------- */
   function initSentenceBuilder(sentences) {
     const targetEl = document.getElementById("target-sentence");
@@ -340,6 +354,10 @@
               buildAreaEl.classList.add("correct");
               showSuccessAnimation();
               confettiBurst(30);
+              if (window.RewardTracker) {
+                RewardTracker.addCorrect("sentences");
+                showPlayGamesButton();
+              }
               setTimeout(() => {
                 history.push(currentIndex);
                 currentIndex++;

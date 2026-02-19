@@ -1065,3 +1065,82 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
+/* ---------- Play Games Button ---------- */
+.btn-play-games {
+  background: linear-gradient(135deg, #f5a623 0%, #f7d046 50%, #f5a623 100%);
+  color: #1a1200;
+  border: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 14px 28px;
+  border-radius: 14px;
+  cursor: pointer;
+  animation: pulseGlow 2s ease-in-out infinite;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease;
+}
+
+.btn-play-games:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.btn-play-games:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(245, 166, 35, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(245, 166, 35, 0.7), 0 0 40px rgba(247, 208, 70, 0.3); }
+}
+
+/* ---------- Game Hub ---------- */
+.game-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  background: linear-gradient(135deg, #1a2350 0%, #121a3a 100%);
+  border: 2px solid #2a3a80;
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(108, 168, 255, 0.25);
+  border-color: var(--accent);
+}
+
+.game-card:active {
+  transform: translateY(0);
+}
+
+.game-card-icon {
+  font-size: 3rem;
+}
+
+.game-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.game-card-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+

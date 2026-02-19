@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game Zone – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Game Zone</h1>
+      <p style="text-align:center; color:var(--muted); margin-top:-8px; margin-bottom:20px;">
+        You earned it! Pick a game to play.
+      </p>
+
+      <div id="game-grid" class="game-grid"></div>
+
+      <div class="controls" style="margin-top:24px;">
+        <a class="btn secondary" href="/">Back to Learning</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var GAMES = [
+      { id: "tower-stack", title: "Tower Stack", icon: "\u{1F3D7}\uFE0F", desc: "Stack blocks as high as you can!", url: "/games/tower-stack.html" }
+    ];
+
+    var grid = document.getElementById("game-grid");
+    GAMES.forEach(function (g) {
+      var card = document.createElement("a");
+      card.href = g.url;
+      card.className = "game-card";
+      card.innerHTML =
+        '<span class="game-card-icon">' + g.icon + '</span>' +
+        '<span class="game-card-title">' + g.title + '</span>' +
+        '<span class="game-card-desc">' + g.desc + '</span>';
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>

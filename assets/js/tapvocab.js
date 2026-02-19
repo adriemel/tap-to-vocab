@@ -153,6 +153,13 @@
       modalWrong.textContent = wrongCount;
       modalSkipped.textContent = skippedCount;
       modalScore.textContent = percentage + "%";
+
+      // Show Play Games button if reward unlocked
+      const btnPlayGames = document.getElementById("btn-play-games");
+      if (btnPlayGames && window.RewardTracker && RewardTracker.isUnlocked()) {
+        btnPlayGames.style.display = "";
+      }
+
       quizModal.style.display = "flex";
     }
 
@@ -248,15 +255,16 @@
 
     btnCorrect.onclick = () => {
       const word = quizWords[currentQuizIndex];
-      
+
       // Track this answer in history
       answerHistory.push({
         index: currentQuizIndex,
         wasCorrect: true,
         word: {...word}
       });
-      
+
       correctCount++;
+      if (window.RewardTracker) RewardTracker.addCorrect("quiz");
       
       // If in practice category, remove from practice list
       if (isPracticeCategory && isMarked(word)) {
@@ -278,15 +286,16 @@
 
     btnWrong.onclick = () => {
       const word = quizWords[currentQuizIndex];
-      
+
       // Track this answer in history
       answerHistory.push({
         index: currentQuizIndex,
         wasCorrect: false,
         word: {...word}
       });
-      
+
       wrongCount++;
+      if (window.RewardTracker) RewardTracker.addWrong("quiz");
       
       // Auto-mark for practice if not already marked
       if (!isMarked(word)) {

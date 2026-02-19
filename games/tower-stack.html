@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tower Stack – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    canvas {
+      display: block;
+      border-radius: 12px;
+      border: 2px solid #2a3a80;
+      background: #0a0e1a;
+      max-width: 100%;
+      touch-action: none;
+    }
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      align-items: center;
+    }
+    .game-score {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--warn);
+    }
+    .game-plays {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .game-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(11,16,32,0.88);
+      border-radius: 12px;
+      gap: 16px;
+      z-index: 10;
+    }
+    .game-overlay h2 {
+      color: var(--ink);
+      font-size: 1.8rem;
+      margin: 0;
+    }
+    .game-overlay .final-score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--warn);
+    }
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Tower Stack</h1>
+      <div class="game-wrapper">
+        <div class="game-hud">
+          <span class="game-score" id="score-display">Score: 0</span>
+          <span class="game-plays" id="plays-display"></span>
+        </div>
+        <div class="canvas-container" id="canvas-container">
+          <canvas id="game-canvas" width="400" height="600"></canvas>
+          <div class="game-overlay" id="overlay-start">
+            <h2>Tower Stack</h2>
+            <p style="color:var(--muted);text-align:center;margin:0;">Tap or click to drop blocks.<br>Stack them as high as you can!</p>
+            <button class="btn" id="btn-start">Start Game</button>
+          </div>
+          <div class="game-overlay" id="overlay-end" style="display:none;">
+            <h2>Game Over</h2>
+            <div class="final-score" id="final-score">0</div>
+            <p style="color:var(--muted);margin:0;" id="end-message"></p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+              <button class="btn" id="btn-again" style="display:none;">Play Again</button>
+              <button class="btn secondary" id="btn-done">Done</button>
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn secondary" id="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var canvas = document.getElementById("game-canvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width;
+    var H = canvas.height;
+
+    // Session play tracking
+    var MAX_PLAYS = 4;
+    var playsKey = "game_plays_remaining";
+    if (sessionStorage.getItem(playsKey) === null) {
+      sessionStorage.setItem(playsKey, String(MAX_PLAYS));
+    }
+    var playsRemaining = parseInt(sessionStorage.getItem(playsKey), 10);
+
+    var scoreDisplay = document.getElementById("score-display");
+    var playsDisplay = document.getElementById("plays-display");
+    var overlayStart = document.getElementById("overlay-start");
+    var overlayEnd = document.getElementById("overlay-end");
+    var finalScoreEl = document.getElementById("final-score");
+    var endMessage = document.getElementById("end-message");
+    var btnStart = document.getElementById("btn-start");
+    var btnAgain = document.getElementById("btn-again");
+    var btnDone = document.getElementById("btn-done");
+    var btnCancel = document.getElementById("btn-cancel");
+
+    function updatePlaysDisplay() {
+      playsDisplay.textContent = "Plays left: " + playsRemaining;
+    }
+    updatePlaysDisplay();
+
+    // Game state
+    var blocks = [];
+    var currentBlock = null;
+    var score = 0;
+    var gameRunning = false;
+    var animFrame = null;
+    var cameraY = 0;
+    var BLOCK_HEIGHT = 28;
+    var BASE_SPEED = 2.5;
+    var speed = BASE_SPEED;
+    var direction = 1;
+
+    function blockColor(index) {
+      var hue = (index * 25) % 360;
+      return "hsl(" + hue + ", 70%, 55%)";
+    }
+
+    function blockHighlight(index) {
+      var hue = (index * 25) % 360;
+      return "hsl(" + hue + ", 80%, 70%)";
+    }
+
+    function initGame() {
+      blocks = [];
+      score = 0;
+      cameraY = 0;
+      speed = BASE_SPEED;
+      direction = 1;
+      scoreDisplay.textContent = "Score: 0";
+
+      // Base block
+      blocks.push({ x: W / 2 - 80, y: H - BLOCK_HEIGHT - 20, w: 160 });
+
+      spawnBlock();
+      gameRunning = true;
+      loop();
+    }
+
+    function spawnBlock() {
+      var last = blocks[blocks.length - 1];
+      var y = last.y - BLOCK_HEIGHT;
+      currentBlock = { x: 0, y: y, w: last.w };
+    }
+
+    function dropBlock() {
+      if (!currentBlock || !gameRunning) return;
+      var last = blocks[blocks.length - 1];
+      var cur = currentBlock;
+
+      // Calculate overlap
+      var overlapLeft = Math.max(cur.x, last.x);
+      var overlapRight = Math.min(cur.x + cur.w, last.x + last.w);
+      var overlapW = overlapRight - overlapLeft;
+
+      if (overlapW <= 0) {
+        // Miss - game over
+        gameOver();
+        return;
+      }
+
+      // Perfect or partial
+      var placed = { x: overlapLeft, y: cur.y, w: overlapW };
+      blocks.push(placed);
+      score++;
+      scoreDisplay.textContent = "Score: " + score;
+
+      // Increase speed every 5 blocks
+      if (score % 5 === 0) {
+        speed += 0.5;
+      }
+
+      // Camera adjustment
+      var targetCamY = Math.max(0, (H - BLOCK_HEIGHT - 20) - placed.y - H * 0.4);
+      cameraY = targetCamY;
+
+      spawnBlock();
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      if (animFrame) cancelAnimationFrame(animFrame);
+
+      playsRemaining--;
+      sessionStorage.setItem(playsKey, String(playsRemaining));
+      updatePlaysDisplay();
+
+      finalScoreEl.textContent = score;
+      if (playsRemaining > 0) {
+        btnAgain.style.display = "";
+        endMessage.textContent = playsRemaining + " play" + (playsRemaining !== 1 ? "s" : "") + " remaining";
+      } else {
+        btnAgain.style.display = "none";
+        endMessage.textContent = "No plays remaining. Great job!";
+      }
+      overlayEnd.style.display = "flex";
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw stacked blocks
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+        var drawY = b.y + cameraY;
+        ctx.fillStyle = blockColor(i);
+        ctx.fillRect(b.x, drawY, b.w, BLOCK_HEIGHT - 2);
+        // Highlight top edge
+        ctx.fillStyle = blockHighlight(i);
+        ctx.fillRect(b.x, drawY, b.w, 3);
+      }
+
+      // Draw current moving block
+      if (currentBlock) {
+        var c = currentBlock;
+        var dy = c.y + cameraY;
+        ctx.fillStyle = blockColor(blocks.length);
+        ctx.fillRect(c.x, dy, c.w, BLOCK_HEIGHT - 2);
+        ctx.fillStyle = blockHighlight(blocks.length);
+        ctx.fillRect(c.x, dy, c.w, 3);
+      }
+
+      // Ground line
+      var groundY = H - 20 + cameraY;
+      if (groundY < H) {
+        ctx.fillStyle = "#2a3a80";
+        ctx.fillRect(0, groundY, W, 2);
+      }
+    }
+
+    function loop() {
+      if (!gameRunning) return;
+
+      // Move current block
+      if (currentBlock) {
+        currentBlock.x += speed * direction;
+        if (currentBlock.x + currentBlock.w > W) {
+          currentBlock.x = W - currentBlock.w;
+          direction = -1;
+        }
+        if (currentBlock.x < 0) {
+          currentBlock.x = 0;
+          direction = 1;
+        }
+      }
+
+      draw();
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    // Controls
+    btnStart.onclick = function () {
+      if (playsRemaining <= 0) {
+        location.href = "/";
+        return;
+      }
+      overlayStart.style.display = "none";
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    btnAgain.onclick = function () {
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    btnDone.onclick = function () {
+      location.href = "/";
+    };
+
+    btnCancel.onclick = function () {
+      if (gameRunning) {
+        gameRunning = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+      }
+      location.href = "/";
+    };
+
+    // Tap/click to drop
+    canvas.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
+      if (gameRunning) dropBlock();
+    });
+
+    // Keyboard
+    document.addEventListener("keydown", function (e) {
+      if (e.code === "Space" || e.key === " ") {
+        e.preventDefault();
+        if (gameRunning) dropBlock();
+      }
+    });
+
+    // Responsive canvas sizing
+    function resizeCanvas() {
+      var container = document.getElementById("canvas-container");
+      var maxW = Math.min(400, container.parentElement.clientWidth);
+      canvas.style.width = maxW + "px";
+      canvas.style.height = (maxW * 1.5) + "px";
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // Initial draw
+    draw();
+  })();
+  </script>
+</body>
+</html>
