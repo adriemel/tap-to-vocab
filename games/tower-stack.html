@@ -349,7 +349,7 @@
 
       score++;
       scoreDisplay.textContent = score;
-      if (score % 5 === 0) speed += 0.35;
+      if (score % 5 === 0) speed += 0.15;
       targetCameraY = Math.max(0, blocks.length * BLOCK_H - H * 0.35);
       moveAxis = moveAxis === "x" ? "z" : "x";
       spawnBlock();
