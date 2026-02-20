@@ -30,7 +30,7 @@
   /* Auto-update any #coin-counter element on the page */
   function updateDisplay() {
     var el = document.getElementById("coin-counter");
-    if (el) el.textContent = "\uD83E\uDE99 " + getCoins();
+    if (el) el.innerHTML = '<span class="coin-icon"></span> ' + getCoins();
   }
 
   document.addEventListener("DOMContentLoaded", updateDisplay);

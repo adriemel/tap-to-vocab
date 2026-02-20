@@ -31,14 +31,6 @@
       color: var(--warn);
       letter-spacing: -1px;
     }
-    .game-plays {
-      font-size: 0.9rem;
-      color: var(--muted);
-      background: rgba(255,255,255,0.05);
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
     .game-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -83,7 +75,6 @@
       <div class="game-wrapper">
         <div class="game-hud">
           <span class="game-score" id="score-display">0</span>
-          <span class="game-plays" id="plays-display"></span>
         </div>
 
         <div class="canvas-container" id="canvas-container">
@@ -123,26 +114,13 @@
     var W = canvas.width;
     var H = canvas.height;
 
-    var playsKey = "game_plays_remaining";
-    var MAX_PLAYS = 4;
-    if (sessionStorage.getItem(playsKey) === null) {
-      sessionStorage.setItem(playsKey, String(MAX_PLAYS));
-    }
-    var playsRemaining = parseInt(sessionStorage.getItem(playsKey), 10);
-
     var scoreDisplay  = document.getElementById("score-display");
-    var playsDisplay  = document.getElementById("plays-display");
     var overlayStart  = document.getElementById("overlay-start");
     var overlayEnd    = document.getElementById("overlay-end");
     var finalScoreEl  = document.getElementById("final-score");
     var endMessage    = document.getElementById("end-message");
     var btnStart      = document.getElementById("btn-start");
     var btnAgain      = document.getElementById("btn-again");
-
-    function updatePlaysDisplay() {
-      playsDisplay.textContent = playsRemaining + " play" + (playsRemaining !== 1 ? "s" : "") + " left";
-    }
-    updatePlaysDisplay();
 
     /* ── Projection ── */
     var BLOCK_H    = 24;
@@ -381,18 +359,9 @@
       gameRunning = false;
       setTimeout(function () {
         if (animFrame) cancelAnimationFrame(animFrame);
-        playsRemaining = Math.max(0, playsRemaining - 1);
-        sessionStorage.setItem(playsKey, String(playsRemaining));
-        updatePlaysDisplay();
-
         finalScoreEl.textContent = score;
-        if (playsRemaining > 0) {
-          btnAgain.style.display = "";
-          endMessage.textContent = playsRemaining + " play" + (playsRemaining !== 1 ? "s" : "") + " remaining";
-        } else {
-          btnAgain.style.display = "none";
-          endMessage.textContent = "No plays remaining — great job!";
-        }
+        btnAgain.style.display = "";
+        endMessage.textContent = "";
         overlayEnd.style.display = "flex";
       }, 700);
     }
@@ -466,7 +435,6 @@
 
     /* ── Controls ── */
     btnStart.onclick = function () {
-      if (playsRemaining <= 0) { location.href = "/"; return; }
       overlayStart.style.display = "none";
       overlayEnd.style.display = "none";
       initGame();

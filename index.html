@@ -21,7 +21,7 @@
           location.href = "/games.html";
         } else {
           const msg = document.getElementById("coins-msg");
-          msg.textContent = "Need 10 🪙 to play — keep answering correctly!";
+          msg.textContent = "Need 10 coins to play \u2014 keep answering correctly!";
           msg.style.display = "block";
           setTimeout(() => { msg.style.display = "none"; }, 2500);
         }
@@ -34,7 +34,7 @@
     <div class="card">
       <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
         <h1 style="margin:0;">Tap‑to‑Vocab</h1>
-        <span class="badge coin-badge" id="coin-counter">🪙 0</span>
+        <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
       </div>
       <p style="text-align:center; color:var(--muted); margin-top:8px; margin-bottom:20px;">
         Learn Spanish vocabulary interactively
@@ -65,7 +65,7 @@
         <a class="btn btn-fill-blank" href="/fill-blank.html">✏️ Fill in</a>
 
         <!-- 🎮 Games - spans both columns, always visible -->
-        <button class="btn btn-games" id="btn-games">🎮 Play Games (10 🪙)</button>
+        <button class="btn btn-games" id="btn-games">🎮 Play Games (10 <span class="coin-icon"></span>)</button>
       </div>
       <div id="coins-msg" style="display:none; text-align:center; color:var(--warn); margin-top:10px; font-size:.95rem;"></div>
     </div>
