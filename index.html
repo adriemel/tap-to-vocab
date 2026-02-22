@@ -18,7 +18,8 @@
       // Games button coin check
       document.getElementById("btn-games").addEventListener("click", () => {
         if (CoinTracker.spendCoins(10)) {
-          location.href = "/games.html";
+          sessionStorage.setItem("game_lives", "3");
+          location.assign("/games.html");
         } else {
           const msg = document.getElementById("coins-msg");
           msg.textContent = "Need 10 coins to play \u2014 keep answering correctly!";

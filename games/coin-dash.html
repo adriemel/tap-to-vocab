@@ -106,15 +106,16 @@
             <h2>Game Over</h2>
             <div class="final-score" id="final-score">0</div>
             <div class="score-label">coins collected</div>
+            <div class="score-label" id="best-score" style="color:var(--accent);margin-top:2px;"></div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
               <button class="btn" id="btn-again" style="min-width:130px;">▶ Play Again</button>
-              <a class="btn secondary" href="/games.html" style="min-width:130px;text-align:center;">✓ Done</a>
+              <button class="btn secondary" onclick="location.replace('/games.html')" style="min-width:130px;text-align:center;">✓ Done</button>
             </div>
           </div>
         </div>
 
         <div class="controls">
-          <a class="btn secondary" href="/games.html">← Back</a>
+          <button class="btn secondary" onclick="location.replace('/games.html')">← Back</button>
         </div>
       </div>
     </div>
@@ -152,7 +153,7 @@
 
     /* ── Game state ── */
     var lane = 1, targetX = 0, playerX = 0;
-    var score = 0, gameRunning = false, animFrame = null;
+    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
     var speed = BASE_SPEED, spawnTimer = 0, spawnInterval = SPAWN_BASE;
     var frameCount = 0;
     var obstacles = [], coins = [], particles = [];
@@ -795,8 +796,27 @@
         if (deathFrames < 50) {
           requestAnimationFrame(deathLoop);
         } else {
+          if (score > bestScore) bestScore = score;
           finalScoreEl.textContent = score;
+          var bestScoreEl = document.getElementById("best-score");
+          if (bestScore > 0) {
+            bestScoreEl.textContent = score >= bestScore && score > 0 ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+          } else {
+            bestScoreEl.textContent = "";
+          }
           overlayEnd.style.display = "flex";
+
+          // Decrement game lives
+          var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+          if (lives > 0) {
+            lives--;
+            sessionStorage.setItem("game_lives", String(lives));
+          }
+          if (lives <= 0) {
+            btnAgain.style.display = "none";
+          } else {
+            btnAgain.style.display = "";
+          }
         }
       }
       deathLoop();

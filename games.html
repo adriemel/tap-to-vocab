@@ -23,9 +23,16 @@
   </div>
 
   <script>
+    // Check game lives — redirect home if none left
+    var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+    if (lives <= 0) {
+      location.replace("/");
+    }
+
     var GAMES = [
       { id: "tower-stack", title: "Tower Stack", icon: "\u{1F3D7}\uFE0F", desc: "Stack blocks as high as you can!", url: "/games/tower-stack.html" },
-      { id: "coin-dash", title: "Coin Dash", icon: "\u{1FA99}", desc: "Dodge obstacles and collect coins!", url: "/games/coin-dash.html" }
+      { id: "coin-dash", title: "Coin Dash", icon: "\u{1FA99}", desc: "Dodge obstacles and collect coins!", url: "/games/coin-dash.html" },
+      { id: "jungle-run", title: "Jungle Run", icon: "\u{1F412}", desc: "Jump over gaps and collect bananas!", url: "/games/jungle-run.html" }
     ];
 
     var grid = document.getElementById("game-grid");
@@ -33,12 +40,22 @@
       var card = document.createElement("a");
       card.href = g.url;
       card.className = "game-card";
+      card.onclick = function (e) {
+        e.preventDefault();
+        location.replace(g.url);
+      };
       card.innerHTML =
         '<span class="game-card-icon">' + g.icon + '</span>' +
         '<span class="game-card-title">' + g.title + '</span>' +
         '<span class="game-card-desc">' + g.desc + '</span>';
       grid.appendChild(card);
     });
+
+    // Show remaining lives
+    var livesEl = document.createElement("p");
+    livesEl.style.cssText = "text-align:center;color:var(--muted);font-size:.9rem;margin-top:8px;";
+    livesEl.textContent = lives + (lives === 1 ? " game" : " games") + " remaining";
+    grid.parentNode.insertBefore(livesEl, grid.nextSibling);
   </script>
 </body>
 </html>

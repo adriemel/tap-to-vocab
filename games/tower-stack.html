@@ -103,16 +103,17 @@
             <h2>Game Over</h2>
             <div class="final-score" id="final-score">0</div>
             <div class="score-label">blocks stacked</div>
+            <div class="score-label" id="best-score" style="color:var(--accent);margin-top:2px;"></div>
             <p style="color:var(--muted);margin:4px 0 0;font-size:.9rem;" id="end-message"></p>
             <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
               <button class="btn" id="btn-again" style="display:none;min-width:130px;">▶ Play Again</button>
-              <a class="btn secondary" href="/" style="min-width:130px;text-align:center;">✓ Done</a>
+              <button class="btn secondary" onclick="location.replace('/games.html')" style="min-width:130px;text-align:center;">✓ Done</button>
             </div>
           </div>
         </div>
 
         <div class="controls">
-          <a class="btn secondary" href="/">← Back</a>
+          <button class="btn secondary" onclick="location.replace('/games.html')">← Back</button>
         </div>
       </div>
     </div>
@@ -137,18 +138,18 @@
     var BLOCK_H    = 24;
     var BLOCK_DEPTH = 80;
     var ISO_X = 0.7;
-    var ISO_Z = 0.4;
+    var ISO_Z = 0.5;
 
     function project(wx, wy, wz) {
       return {
-        x: W / 2 + wx * ISO_X + wz * ISO_Z * 0.5,
-        y: H * 0.75 - wy + wz * ISO_Z * 0.35
+        x: W / 2 + wx * ISO_X - wz * ISO_Z * 0.5,
+        y: H * 0.75 - wy + wz * ISO_Z * 0.55
       };
     }
 
     /* ── Game state ── */
     var blocks = [], currentBlock = null, fallingPiece = null;
-    var score = 0, gameRunning = false, animFrame = null;
+    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
     var cameraY = 0, targetCameraY = 0;
     var BASE_SPEED = 1.8, speed = BASE_SPEED, direction = 1;
     var moveAxis = "x", perfectCount = 0;
@@ -341,28 +342,18 @@
 
       ctx.globalAlpha = a;
 
-      /* 1 — Back face (z = min) — darkest */
+      /* 1 — Front face (z = max) — hidden behind, draw first */
       ctx.fillStyle = hsl(c.h, c.s, c.l - 22);
       ctx.beginPath();
-      ctx.moveTo(tl.x,  tl.y);
-      ctx.lineTo(tr.x,  tr.y);
-      ctx.lineTo(btr.x, btr.y);
-      ctx.lineTo(btl.x, btl.y);
-      ctx.closePath();
-      ctx.fill();
-
-      /* 2 — Left face (x = min) — dark */
-      ctx.fillStyle = hsl(c.h, c.s, c.l - 16);
-      ctx.beginPath();
-      ctx.moveTo(tl.x,  tl.y);
-      ctx.lineTo(bl.x,  bl.y);
+      ctx.moveTo(bl.x,  bl.y);
+      ctx.lineTo(br.x,  br.y);
+      ctx.lineTo(bbr.x, bbr.y);
       ctx.lineTo(bbl.x, bbl.y);
-      ctx.lineTo(btl.x, btl.y);
       ctx.closePath();
       ctx.fill();
 
-      /* 3 — Right face (x = max) — medium */
-      ctx.fillStyle = hsl(c.h, c.s, c.l - 10);
+      /* 2 — Right face (x = max) — far side, dark */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 18);
       ctx.beginPath();
       ctx.moveTo(tr.x,  tr.y);
       ctx.lineTo(br.x,  br.y);
@@ -371,13 +362,23 @@
       ctx.closePath();
       ctx.fill();
 
-      /* 4 — Front face (z = max) — medium-bright */
-      ctx.fillStyle = hsl(c.h, c.s, c.l - 6);
+      /* 3 — Back face (z = min) — now visible, medium */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 10);
       ctx.beginPath();
-      ctx.moveTo(bl.x,  bl.y);
-      ctx.lineTo(br.x,  br.y);
-      ctx.lineTo(bbr.x, bbr.y);
+      ctx.moveTo(tl.x,  tl.y);
+      ctx.lineTo(tr.x,  tr.y);
+      ctx.lineTo(btr.x, btr.y);
+      ctx.lineTo(btl.x, btl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* 4 — Left face (x = min) — near side, bright */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 4);
+      ctx.beginPath();
+      ctx.moveTo(tl.x,  tl.y);
+      ctx.lineTo(bl.x,  bl.y);
       ctx.lineTo(bbl.x, bbl.y);
+      ctx.lineTo(btl.x, btl.y);
       ctx.closePath();
       ctx.fill();
 
@@ -517,10 +518,28 @@
       stopMusic();
       setTimeout(function () {
         if (animFrame) cancelAnimationFrame(animFrame);
+        if (score > bestScore) bestScore = score;
         finalScoreEl.textContent = score;
-        btnAgain.style.display = "";
+        var bestScoreEl = document.getElementById("best-score");
+        if (bestScore > 0) {
+          bestScoreEl.textContent = score >= bestScore && score > 0 ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+        } else {
+          bestScoreEl.textContent = "";
+        }
         endMessage.textContent = "";
         overlayEnd.style.display = "flex";
+
+        // Decrement game lives
+        var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+        if (lives > 0) {
+          lives--;
+          sessionStorage.setItem("game_lives", String(lives));
+        }
+        if (lives <= 0) {
+          btnAgain.style.display = "none";
+        } else {
+          btnAgain.style.display = "";
+        }
       }, 700);
     }
 
