@@ -168,6 +168,18 @@
       return audioCtx;
     }
 
+    /* Unlock AudioContext on iOS — must be called from a direct user gesture */
+    function unlockAudio() {
+      var ac = getAudioCtx();
+      if (ac.state === "running") return;
+      var buf = ac.createBuffer(1, 1, ac.sampleRate);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      src.connect(ac.destination);
+      src.start(0);
+      ac.resume();
+    }
+
     function playPlaceSound() {
       if (isMuted) return;
       var ac = getAudioCtx();
@@ -230,6 +242,9 @@
     var tsBass   = [98,98,110,110,131,131,110,110,   98,98,131,131,110,110,98,98];
     var tsMusicStep = 0;
 
+    var SCHEDULE_AHEAD = 0.15;
+    var musicNextTime = 0;
+
     function startMusic() {
       if (isMuted) return;
       var ac = getAudioCtx();
@@ -238,38 +253,46 @@
       musicGain.connect(ac.destination);
       musicPlaying = true;
       tsMusicStep = 0;
-      function tick() {
-        if (!musicPlaying || !musicGain) return;
-        var ac2 = getAudioCtx();
-        var now = ac2.currentTime;
+      musicNextTime = ac.currentTime;
+      scheduleMusic();
+    }
+
+    function scheduleMusic() {
+      if (!musicPlaying || !musicGain) return;
+      var ac = getAudioCtx();
+      while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD) {
         var dur = TS_BEAT * 0.75;
-        var o1 = ac2.createOscillator();
-        var g1 = ac2.createGain();
+        var o1 = ac.createOscillator();
+        var g1 = ac.createGain();
         o1.type = "square";
         o1.frequency.value = tsMelody[tsMusicStep % tsMelody.length];
-        g1.gain.setValueAtTime(0.06, now);
-        g1.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        g1.gain.setValueAtTime(0.06, musicNextTime);
+        g1.gain.exponentialRampToValueAtTime(0.001, musicNextTime + dur);
         o1.connect(g1); g1.connect(musicGain);
-        o1.start(now); o1.stop(now + dur);
-        var o2 = ac2.createOscillator();
-        var g2 = ac2.createGain();
+        o1.start(musicNextTime); o1.stop(musicNextTime + dur);
+        var o2 = ac.createOscillator();
+        var g2 = ac.createGain();
         o2.type = "triangle";
         o2.frequency.value = tsBass[tsMusicStep % tsBass.length];
-        g2.gain.setValueAtTime(0.1, now);
-        g2.gain.exponentialRampToValueAtTime(0.001, now + TS_BEAT * 0.9);
+        g2.gain.setValueAtTime(0.1, musicNextTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, musicNextTime + TS_BEAT * 0.9);
         o2.connect(g2); g2.connect(musicGain);
-        o2.start(now); o2.stop(now + TS_BEAT);
+        o2.start(musicNextTime); o2.stop(musicNextTime + TS_BEAT);
         tsMusicStep++;
+        musicNextTime += TS_BEAT;
       }
-      tick();
-      musicInterval = setInterval(tick, TS_BEAT * 1000);
+      if (musicPlaying) musicInterval = setTimeout(scheduleMusic, 100);
     }
 
     function stopMusic() {
       musicPlaying = false;
-      if (musicInterval) { clearInterval(musicInterval); musicInterval = null; }
+      if (musicInterval) { clearTimeout(musicInterval); musicInterval = null; }
       if (musicGain && audioCtx) {
-        try { musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3); } catch(e) {}
+        try {
+          musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+          musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+          musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+        } catch(e) {}
         setTimeout(function() { musicGain = null; }, 400);
       }
     }
@@ -537,6 +560,7 @@
 
     /* ── Loop ── */
     function loop() {
+      if (musicPlaying) scheduleMusic(); // keep music fed on iOS
       cameraY += (targetCameraY - cameraY) * 0.08;
 
       if (currentBlock && gameRunning) {
@@ -570,12 +594,14 @@
 
     /* ── Controls ── */
     btnStart.onclick = function () {
+      unlockAudio();
       overlayStart.style.display = "none";
       overlayEnd.style.display = "none";
       initGame();
     };
 
     btnAgain.onclick = function () {
+      unlockAudio();
       overlayEnd.style.display = "none";
       initGame();
     };
