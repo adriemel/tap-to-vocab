@@ -152,7 +152,7 @@
     var BANANA_C    = "#ffe135";
 
     /* ── Game state ── */
-    var monkeyY = 0, velY = 0, onGround = true;
+    var monkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2;
     var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
     var speed = BASE_SPEED, frameCount = 0;
     var segments = [], bananas = [], particles = [];
@@ -568,6 +568,7 @@
       monkeyY = MONKEY_REST;
       velY = 0;
       onGround = true;
+      jumpsLeft = 2;
       score = 0;
       speed = BASE_SPEED;
       frameCount = 0;
@@ -691,6 +692,7 @@
           monkeyY = MONKEY_REST;
           velY = 0;
           onGround = true;
+          jumpsLeft = 2;
         }
       } else {
         // Check if still on ground
@@ -739,9 +741,10 @@
     /* ── Jump action ── */
     function jump() {
       if (!gameRunning) return;
-      if (onGround) {
-        velY = JUMP_VEL;
+      if (jumpsLeft > 0) {
+        velY = jumpsLeft < 2 ? JUMP_VEL * 0.85 : JUMP_VEL;
         onGround = false;
+        jumpsLeft--;
         playJumpSound();
       }
     }

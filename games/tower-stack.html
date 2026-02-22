@@ -342,17 +342,17 @@
 
       ctx.globalAlpha = a;
 
-      /* 1 — Front face (z = max) — hidden behind, draw first */
+      /* 1 — Back face (z = min) — faces away, draw first */
       ctx.fillStyle = hsl(c.h, c.s, c.l - 22);
       ctx.beginPath();
-      ctx.moveTo(bl.x,  bl.y);
-      ctx.lineTo(br.x,  br.y);
-      ctx.lineTo(bbr.x, bbr.y);
-      ctx.lineTo(bbl.x, bbl.y);
+      ctx.moveTo(tl.x,  tl.y);
+      ctx.lineTo(tr.x,  tr.y);
+      ctx.lineTo(btr.x, btr.y);
+      ctx.lineTo(btl.x, btl.y);
       ctx.closePath();
       ctx.fill();
 
-      /* 2 — Right face (x = max) — far side, dark */
+      /* 2 — Right face (x = max) — faces away, draw second */
       ctx.fillStyle = hsl(c.h, c.s, c.l - 18);
       ctx.beginPath();
       ctx.moveTo(tr.x,  tr.y);
@@ -362,17 +362,17 @@
       ctx.closePath();
       ctx.fill();
 
-      /* 3 — Back face (z = min) — now visible, medium */
+      /* 3 — Front face (z = max) — faces viewer, draw on top */
       ctx.fillStyle = hsl(c.h, c.s, c.l - 10);
       ctx.beginPath();
-      ctx.moveTo(tl.x,  tl.y);
-      ctx.lineTo(tr.x,  tr.y);
-      ctx.lineTo(btr.x, btr.y);
-      ctx.lineTo(btl.x, btl.y);
+      ctx.moveTo(bl.x,  bl.y);
+      ctx.lineTo(br.x,  br.y);
+      ctx.lineTo(bbr.x, bbr.y);
+      ctx.lineTo(bbl.x, bbl.y);
       ctx.closePath();
       ctx.fill();
 
-      /* 4 — Left face (x = min) — near side, bright */
+      /* 4 — Left face (x = min) — faces viewer, draw on top */
       ctx.fillStyle = hsl(c.h, c.s, c.l - 4);
       ctx.beginPath();
       ctx.moveTo(tl.x,  tl.y);
