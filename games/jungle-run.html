@@ -153,6 +153,8 @@
 
     /* ── Game state ── */
     var monkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2;
+    var coyoteTimer = 0, jumpBuffer = 0;  // grace frames
+    var COYOTE_FRAMES = 8, BUFFER_FRAMES = 8;
     var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
     var speed = BASE_SPEED, frameCount = 0;
     var segments = [], bananas = [], particles = [];
@@ -304,13 +306,15 @@
     // Each segment: { x, w } — a solid ground piece. Gaps are the spaces between segments.
     function generateInitialSegments() {
       segments = [];
-      // Start with solid ground under monkey
-      segments.push({ x: -100, w: 350 });
-      var nextX = 250;
+      // Start with generous runway
+      segments.push({ x: -100, w: 550 });
+      var nextX = 450;
       for (var i = 0; i < 20; i++) {
-        var gapW = 40 + Math.random() * 30;
-        var segW = 100 + Math.random() * 150;
-        segments.push({ x: nextX + gapW, w: segW });
+        // Early gaps are small and platforms are wide; ramps gently
+        var difficulty = Math.min(i / 12, 1);
+        var gapW = 30 + difficulty * 20 + Math.random() * (20 + difficulty * 15);
+        var segW = 140 + Math.random() * 140 - difficulty * 40;
+        segments.push({ x: nextX + gapW, w: Math.max(segW, 100) });
         nextX = nextX + gapW + segW;
       }
     }
@@ -558,7 +562,7 @@
     function isOverGround(mx) {
       for (var i = 0; i < segments.length; i++) {
         var s = segments[i];
-        if (mx >= s.x + 6 && mx <= s.x + s.w - 6) return true;
+        if (mx >= s.x + 2 && mx <= s.x + s.w - 2) return true;
       }
       return false;
     }
@@ -569,6 +573,8 @@
       velY = 0;
       onGround = true;
       jumpsLeft = 2;
+      coyoteTimer = 0;
+      jumpBuffer = 0;
       score = 0;
       speed = BASE_SPEED;
       frameCount = 0;
@@ -651,9 +657,9 @@
       frameCount++;
       runPhase += 0.2;
 
-      // Difficulty ramp
-      if (frameCount % 400 === 0) {
-        speed += 0.2;
+      // Difficulty ramp (gentler)
+      if (frameCount % 600 === 0) {
+        speed += 0.15;
       }
 
       // Scroll everything left
@@ -671,8 +677,9 @@
       // Ensure enough segments ahead
       var last = segments[segments.length - 1];
       while (last.x + last.w < W + 500) {
-        var gapW = 45 + Math.random() * (25 + Math.min(frameCount * 0.01, 30));
-        var segW = 80 + Math.random() * 140;
+        var ramp = Math.min(frameCount * 0.005, 25);
+        var gapW = 35 + Math.random() * (20 + ramp);
+        var segW = 120 + Math.random() * 140;
         var newSeg = { x: last.x + last.w + gapW, w: segW };
         segments.push(newSeg);
         spawnBananasOnSegment(newSeg);
@@ -684,6 +691,10 @@
         if (bananas[i].x < -30) bananas.splice(i, 1);
       }
 
+      // Tick grace timers
+      if (coyoteTimer > 0) coyoteTimer--;
+      if (jumpBuffer > 0) jumpBuffer--;
+
       // Jump physics
       if (!onGround) {
         velY += GRAVITY;
@@ -693,12 +704,18 @@
           velY = 0;
           onGround = true;
           jumpsLeft = 2;
+          coyoteTimer = 0;
+          // Execute buffered jump immediately on landing
+          if (jumpBuffer > 0) {
+            jumpBuffer = 0;
+            jump();
+          }
         }
       } else {
         // Check if still on ground
         if (!isOverGround(MONKEY_X)) {
           onGround = false;
-          // Monkey walks off edge — starts falling
+          coyoteTimer = COYOTE_FRAMES; // grace period to still jump
         }
       }
 
@@ -741,11 +758,22 @@
     /* ── Jump action ── */
     function jump() {
       if (!gameRunning) return;
-      if (jumpsLeft > 0) {
-        velY = jumpsLeft < 2 ? JUMP_VEL * 0.85 : JUMP_VEL;
+      // Coyote time: if just walked off edge, treat as ground jump
+      var grounded = onGround || coyoteTimer > 0;
+      if (grounded) {
+        velY = JUMP_VEL;
         onGround = false;
+        coyoteTimer = 0;
+        jumpsLeft = 1; // spent the ground jump, one air jump remains
+        playJumpSound();
+      } else if (jumpsLeft > 0) {
+        // Double-jump (mid-air)
+        velY = JUMP_VEL * 0.85;
         jumpsLeft--;
         playJumpSound();
+      } else {
+        // No jumps left — buffer the input for landing
+        jumpBuffer = BUFFER_FRAMES;
       }
     }
 
