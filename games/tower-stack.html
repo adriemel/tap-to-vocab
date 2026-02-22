@@ -66,6 +66,16 @@
       overflow: hidden;
       box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,168,255,0.15);
     }
+    .mute-btn {
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -75,6 +85,7 @@
       <div class="game-wrapper">
         <div class="game-hud">
           <span class="game-score" id="score-display">0</span>
+          <button id="btn-mute" class="mute-btn" title="Mute">🔊</button>
         </div>
 
         <div class="canvas-container" id="canvas-container">
@@ -143,6 +154,125 @@
     var moveAxis = "x", perfectCount = 0;
     var perfectFlash = null;  // { alpha, y }
     var stars = [];
+
+    /* ── Audio ── */
+    var audioCtx = null;
+    var isMuted = localStorage.getItem("tapvocab_mute") === "1";
+    var musicGain = null;
+    var musicInterval = null;
+    var musicPlaying = false;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playPlaceSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var bufSize = Math.floor(ac.sampleRate * 0.06);
+      var buf = ac.createBuffer(1, bufSize, ac.sampleRate);
+      var d = buf.getChannelData(0);
+      for (var i = 0; i < bufSize; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      var g = ac.createGain();
+      g.gain.setValueAtTime(0.18, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+      src.connect(g); g.connect(ac.destination);
+      src.start(ac.currentTime); src.stop(ac.currentTime + 0.08);
+      var osc = ac.createOscillator();
+      var g2 = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 120;
+      g2.gain.setValueAtTime(0.12, ac.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+      osc.connect(g2); g2.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.1);
+    }
+
+    function playPerfectSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var notes = [784, 988, 1175]; // G5, B5, D6 arpeggio
+      for (var i = 0; i < notes.length; i++) {
+        var osc = ac.createOscillator();
+        var g = ac.createGain();
+        osc.type = "sine";
+        osc.frequency.value = notes[i];
+        var t = ac.currentTime + i * 0.06;
+        g.gain.setValueAtTime(0.12, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+        osc.connect(g); g.connect(ac.destination);
+        osc.start(t); osc.stop(t + 0.18);
+      }
+    }
+
+    function playFallSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var g = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(500, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, ac.currentTime + 0.3);
+      g.gain.setValueAtTime(0.15, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.3);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.35);
+    }
+
+    /* ── Music (chiptune loop – chill G major) ── */
+    var TS_BPM = 120;
+    var TS_BEAT = 60 / TS_BPM;
+    var tsMelody = [392,440,494,587,523,494,440,392, 494,523,587,659,587,523,494,440];
+    var tsBass   = [98,98,110,110,131,131,110,110,   98,98,131,131,110,110,98,98];
+    var tsMusicStep = 0;
+
+    function startMusic() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      musicGain = ac.createGain();
+      musicGain.gain.setValueAtTime(0.12, ac.currentTime);
+      musicGain.connect(ac.destination);
+      musicPlaying = true;
+      tsMusicStep = 0;
+      function tick() {
+        if (!musicPlaying || !musicGain) return;
+        var ac2 = getAudioCtx();
+        var now = ac2.currentTime;
+        var dur = TS_BEAT * 0.75;
+        var o1 = ac2.createOscillator();
+        var g1 = ac2.createGain();
+        o1.type = "square";
+        o1.frequency.value = tsMelody[tsMusicStep % tsMelody.length];
+        g1.gain.setValueAtTime(0.06, now);
+        g1.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        o1.connect(g1); g1.connect(musicGain);
+        o1.start(now); o1.stop(now + dur);
+        var o2 = ac2.createOscillator();
+        var g2 = ac2.createGain();
+        o2.type = "triangle";
+        o2.frequency.value = tsBass[tsMusicStep % tsBass.length];
+        g2.gain.setValueAtTime(0.1, now);
+        g2.gain.exponentialRampToValueAtTime(0.001, now + TS_BEAT * 0.9);
+        o2.connect(g2); g2.connect(musicGain);
+        o2.start(now); o2.stop(now + TS_BEAT);
+        tsMusicStep++;
+      }
+      tick();
+      musicInterval = setInterval(tick, TS_BEAT * 1000);
+    }
+
+    function stopMusic() {
+      musicPlaying = false;
+      if (musicInterval) { clearInterval(musicInterval); musicInterval = null; }
+      if (musicGain && audioCtx) {
+        try { musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3); } catch(e) {}
+        setTimeout(function() { musicGain = null; }, 400);
+      }
+    }
 
     /* ── Stars (generated once) ── */
     (function genStars() {
@@ -293,6 +423,7 @@
       blocks.push({ x: -60, z: -40, w: 120, d: BLOCK_DEPTH });
       spawnBlock();
       gameRunning = true;
+      startMusic();
       loop();
     }
 
@@ -316,6 +447,7 @@
       var ow = ox2 - ox1, od = oz2 - oz1;
 
       if (ow <= 0 || od <= 0) {
+        playFallSound();
         fallingPiece = { x: cur.x, z: cur.z, w: cur.w, d: cur.d,
                          wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
         currentBlock = null;
@@ -327,9 +459,11 @@
                                        : Math.abs(cur.z - last.z) < 3;
       if (isPerfect) {
         perfectCount++;
+        playPerfectSound();
         blocks.push({ x: last.x, z: last.z, w: last.w, d: last.d });
         perfectFlash = { alpha: 1, y: H * 0.38 };
       } else {
+        playPlaceSound();
         perfectCount = 0;
         if (moveAxis === "x") {
           if (cur.x < last.x) {
@@ -357,6 +491,7 @@
 
     function gameOver() {
       gameRunning = false;
+      stopMusic();
       setTimeout(function () {
         if (animFrame) cancelAnimationFrame(animFrame);
         finalScoreEl.textContent = score;
@@ -456,6 +591,17 @@
         if (gameRunning) dropBlock();
       }
     });
+
+    /* ── Mute button ── */
+    var btnMute = document.getElementById("btn-mute");
+    btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+    btnMute.onclick = function () {
+      isMuted = !isMuted;
+      localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
+      btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+      if (isMuted) stopMusic();
+      else if (gameRunning) startMusic();
+    };
 
     function resizeCanvas() {
       var maxW = Math.min(400, document.getElementById("canvas-container").parentElement.clientWidth - 4);

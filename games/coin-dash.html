@@ -69,6 +69,16 @@
       color: var(--muted);
       margin-top: -8px;
     }
+    .mute-btn {
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -78,6 +88,7 @@
       <div class="game-wrapper">
         <div class="game-hud">
           <span class="game-score" id="score-display">0</span>
+          <button id="btn-mute" class="mute-btn" title="Mute">🔊</button>
         </div>
 
         <div class="canvas-container" id="canvas-container">
@@ -147,6 +158,115 @@
     var obstacles = [], coins = [], particles = [];
     var runBob = 0; // running animation phase
     var explosion = null; // { x, y, frame, maxFrames }
+
+    /* ── Audio ── */
+    var audioCtx = null;
+    var isMuted = localStorage.getItem("tapvocab_mute") === "1";
+    var musicGain = null;
+    var musicInterval = null;
+    var musicPlaying = false;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playCoinSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(800, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(1200, ac.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.15, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + 0.15);
+    }
+
+    function playExplosionSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(80, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(30, ac.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.2, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + 0.35);
+      var bufferSize = Math.floor(ac.sampleRate * 0.2);
+      var buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
+      var data = buffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      var noise = ac.createBufferSource();
+      noise.buffer = buffer;
+      var noiseGain = ac.createGain();
+      noiseGain.gain.setValueAtTime(0.15, ac.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.2);
+      noise.connect(noiseGain);
+      noiseGain.connect(ac.destination);
+      noise.start(ac.currentTime);
+      noise.stop(ac.currentTime + 0.25);
+    }
+
+    /* ── Music (chiptune loop – energetic C major) ── */
+    var MUSIC_BPM = 130;
+    var BEAT_SEC = 60 / MUSIC_BPM;
+    var cdMelody = [523,587,659,698,784,659,698,523, 784,698,659,587,523,587,659,784];
+    var cdBass   = [131,131,165,165,175,175,196,196, 131,131,165,165,175,175,196,131];
+    var musicStep = 0;
+
+    function startMusic() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      musicGain = ac.createGain();
+      musicGain.gain.setValueAtTime(0.12, ac.currentTime);
+      musicGain.connect(ac.destination);
+      musicPlaying = true;
+      musicStep = 0;
+      function tick() {
+        if (!musicPlaying || !musicGain) return;
+        var ac2 = getAudioCtx();
+        var now = ac2.currentTime;
+        var dur = BEAT_SEC * 0.8;
+        var o1 = ac2.createOscillator();
+        var g1 = ac2.createGain();
+        o1.type = "square";
+        o1.frequency.value = cdMelody[musicStep % cdMelody.length];
+        g1.gain.setValueAtTime(0.08, now);
+        g1.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        o1.connect(g1); g1.connect(musicGain);
+        o1.start(now); o1.stop(now + dur);
+        var o2 = ac2.createOscillator();
+        var g2 = ac2.createGain();
+        o2.type = "triangle";
+        o2.frequency.value = cdBass[musicStep % cdBass.length];
+        g2.gain.setValueAtTime(0.1, now);
+        g2.gain.exponentialRampToValueAtTime(0.001, now + BEAT_SEC * 0.9);
+        o2.connect(g2); g2.connect(musicGain);
+        o2.start(now); o2.stop(now + BEAT_SEC);
+        musicStep++;
+      }
+      tick();
+      musicInterval = setInterval(tick, BEAT_SEC * 1000);
+    }
+
+    function stopMusic() {
+      musicPlaying = false;
+      if (musicInterval) { clearInterval(musicInterval); musicInterval = null; }
+      if (musicGain && audioCtx) {
+        try { musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3); } catch(e) {}
+        setTimeout(function() { musicGain = null; }, 400);
+      }
+    }
 
     /* ── Helpers ── */
     function laneX(l) { return l * LANE_W + LANE_W / 2; }
@@ -377,59 +497,77 @@
       ctx.shadowBlur = 0;
     }
 
-    /* ── Draw obstacle (TNT crate) ── */
+    /* ── Draw obstacle (Minecraft TNT block) ── */
     function drawObstacle(o) {
       var x = o.x;
       var y = o.y;
-      var w = o.w;
-      var h = o.h;
+      var s = o.w; // square block
+      var half = s / 2;
 
       /* Drop shadow */
       ctx.fillStyle = "rgba(0,0,0,0.35)";
-      roundRect(x - w / 2 + 4, y - h / 2 + 6, w, h, 8);
-      ctx.fill();
+      ctx.fillRect(x - half + 4, y - half + 6, s, s);
 
-      /* Main body */
-      var g = ctx.createLinearGradient(x, y - h / 2, x, y + h / 2);
-      g.addColorStop(0, "#ff7a9e");
-      g.addColorStop(0.5, OBS_BODY);
-      g.addColorStop(1, OBS_DARK);
-      ctx.fillStyle = g;
-      ctx.shadowColor = OBS_BODY;
+      /* Glow */
+      ctx.shadowColor = "#ff4400";
       ctx.shadowBlur = 12;
-      roundRect(x - w / 2, y - h / 2, w, h, 8);
-      ctx.fill();
+
+      /* Main body — dark brown/red */
+      ctx.fillStyle = "#8B4513";
+      ctx.fillRect(x - half, y - half, s, s);
       ctx.shadowBlur = 0;
 
-      /* Wooden plank lines */
-      ctx.strokeStyle = "rgba(0,0,0,0.15)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(x - w / 2 + 8, y - h / 2);
-      ctx.lineTo(x - w / 2 + 8, y + h / 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x + w / 2 - 8, y - h / 2);
-      ctx.lineTo(x + w / 2 - 8, y + h / 2);
-      ctx.stroke();
+      /* Center red band */
+      ctx.fillStyle = "#C0392B";
+      var bandTop = y - half + s * 0.18;
+      ctx.fillRect(x - half, bandTop, s, s * 0.64);
 
-      /* TNT label background */
-      var labelW = w * 0.55, labelH = h * 0.45;
-      ctx.fillStyle = "rgba(0,0,0,0.25)";
-      roundRect(x - labelW / 2, y - labelH / 2, labelW, labelH, 4);
-      ctx.fill();
+      /* Top brown plank band */
+      ctx.fillStyle = "#6B3410";
+      ctx.fillRect(x - half, y - half, s, s * 0.18);
 
-      /* TNT text */
-      ctx.fillStyle = "#fff";
-      ctx.font = "bold " + Math.round(h * 0.32) + "px system-ui";
+      /* Bottom brown plank band */
+      ctx.fillStyle = "#6B3410";
+      ctx.fillRect(x - half, y + half - s * 0.18, s, s * 0.18);
+
+      /* Darker plank edge lines */
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillRect(x - half, y - half + s * 0.17, s, 2);
+      ctx.fillRect(x - half, y + half - s * 0.18, s, 2);
+
+      /* White label band */
+      var labelH = s * 0.3;
+      var labelW = s * 0.68;
+      ctx.fillStyle = "#EEEEEE";
+      ctx.fillRect(x - labelW / 2, y - labelH / 2, labelW, labelH);
+
+      /* TNT text in red */
+      ctx.fillStyle = "#CC0000";
+      ctx.font = "bold " + Math.round(s * 0.22) + "px monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("TNT", x, y + 1);
 
+      /* Pixel grid overlay for blocky Minecraft feel */
+      ctx.strokeStyle = "rgba(0,0,0,0.1)";
+      ctx.lineWidth = 1;
+      var gridSize = s / 8;
+      for (var gx = x - half; gx <= x + half; gx += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(Math.round(gx) + 0.5, y - half);
+        ctx.lineTo(Math.round(gx) + 0.5, y + half);
+        ctx.stroke();
+      }
+      for (var gy = y - half; gy <= y + half; gy += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x - half, Math.round(gy) + 0.5);
+        ctx.lineTo(x + half, Math.round(gy) + 0.5);
+        ctx.stroke();
+      }
+
       /* Top highlight */
-      ctx.fillStyle = "rgba(255,255,255,0.2)";
-      roundRect(x - w / 2 + 3, y - h / 2 + 2, w - 6, h * 0.22, 5);
-      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.12)";
+      ctx.fillRect(x - half, y - half, s, s * 0.07);
     }
 
     /* ── Particles ── */
@@ -471,6 +609,7 @@
 
     /* ── Explosion effect ── */
     function spawnExplosion(px, py) {
+      playExplosionSound();
       /* Big burst of fire/smoke particles */
       var colors = ["#ff6b9d","#ff9944","#ffcc66","#ffe8a0","#fff","#ff4466","#cc3366"];
       for (var i = 0; i < 28; i++) {
@@ -540,12 +679,13 @@
           phase: Math.random() * Math.PI * 2
         });
       } else {
+        var tntSize = LANE_W - LANE_PAD * 2;
         obstacles.push({
           lane: spawnLane,
           x: laneX(spawnLane),
           y: -50,
-          w: LANE_W - LANE_PAD * 2,
-          h: 42
+          w: tntSize,
+          h: tntSize
         });
       }
 
@@ -571,6 +711,7 @@
         var c = coins[i];
         if (Math.abs(px - c.x) < 28 && Math.abs(py - c.y) < 28) {
           spawnCoinParticles(c.x, c.y);
+          playCoinSound();
           coins.splice(i, 1);
           score++;
           scoreDisplay.textContent = score;
@@ -607,11 +748,13 @@
       explosion = null;
       scoreDisplay.textContent = "0";
       gameRunning = true;
+      startMusic();
       loop();
     }
 
     function gameOver() {
       gameRunning = false;
+      stopMusic();
       /* Play explosion animation then show overlay */
       var deathFrames = 0;
       function deathLoop() {
@@ -746,6 +889,17 @@
     btnAgain.onclick = function () {
       overlayEnd.style.display = "none";
       initGame();
+    };
+
+    /* ── Mute button ── */
+    var btnMute = document.getElementById("btn-mute");
+    btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+    btnMute.onclick = function () {
+      isMuted = !isMuted;
+      localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
+      btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+      if (isMuted) stopMusic();
+      else if (gameRunning) startMusic();
     };
 
     /* ── Responsive sizing ── */
