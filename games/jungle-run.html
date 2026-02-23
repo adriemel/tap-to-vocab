@@ -2,122 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>Jungle Run – Tap-to-Vocab</title>
-  <link rel="stylesheet" href="/assets/css/styles.css" />
   <style>
-    .game-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-    .game-hud {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 400px;
-      align-items: center;
-    }
-    .game-score {
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--warn);
-      letter-spacing: -1px;
-    }
-    .canvas-container {
-      position: relative;
-      display: inline-block;
-      border-radius: 16px;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,168,255,0.15);
+      background: #0b1a2e;
       touch-action: none;
       user-select: none;
       -webkit-user-select: none;
     }
     canvas {
       display: block;
-      border-radius: 16px;
-      max-width: 100%;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       touch-action: none;
     }
     .game-overlay {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(6,10,22,0.9);
-      border-radius: 16px;
+      background: rgba(6,10,22,0.88);
       gap: 16px;
       z-index: 10;
+      font-family: system-ui, -apple-system, sans-serif;
     }
     .game-overlay h2 {
-      color: var(--ink);
+      color: #e8e0d6;
       font-size: 2rem;
       margin: 0;
     }
     .game-overlay .final-score {
       font-size: 5rem;
       font-weight: 900;
-      color: var(--warn);
+      color: #f0a030;
       line-height: 1;
     }
     .game-overlay .score-label {
       font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: -8px;
+      color: #888;
     }
-    .mute-btn {
-      background: none;
-      border: 1px solid var(--muted);
-      color: var(--muted);
+    .game-overlay p {
+      color: #999;
+      text-align: center;
+      margin: 0;
+      max-width: 280px;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: #f0a030;
+      color: #1a1a2e;
+      min-width: 140px;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #ccc;
+      border: 1px solid #555;
+    }
+    .hud-mute {
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
       border-radius: 8px;
       padding: 4px 8px;
       font-size: 1.2rem;
       cursor: pointer;
       line-height: 1;
     }
+    .hud-back {
+      position: fixed;
+      top: 12px; left: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      text-decoration: none;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>🐒 Jungle Run</h1>
-      <div class="game-wrapper">
-        <div class="game-hud">
-          <span class="game-score" id="score-display">0</span>
-          <button id="btn-mute" class="mute-btn" title="Mute">🔊</button>
-        </div>
+  <canvas id="game-canvas" width="600" height="400"></canvas>
+  <a class="hud-back" href="/games.html">← Back</a>
+  <button id="btn-mute" class="hud-mute" title="Mute">🔊</button>
 
-        <div class="canvas-container" id="canvas-container">
-          <canvas id="game-canvas" width="400" height="300"></canvas>
+  <div class="game-overlay" id="overlay-start">
+    <h2>🐒 Jungle Run</h2>
+    <p>Tap or press Space to jump over gaps, dodge parrots, and collect bananas!</p>
+    <button class="btn" id="btn-start">▶ Start</button>
+  </div>
 
-          <div class="game-overlay" id="overlay-start">
-            <h2>🐒 Jungle Run</h2>
-            <p style="color:var(--muted);text-align:center;margin:0;max-width:260px;line-height:1.7;">
-              Tap or press Space to jump over gaps and collect bananas!
-            </p>
-            <button class="btn" id="btn-start" style="min-width:140px;font-size:1.1rem;">▶ Start</button>
-          </div>
-
-          <div class="game-overlay" id="overlay-end" style="display:none;">
-            <h2>Game Over</h2>
-            <div class="final-score" id="final-score">0</div>
-            <div class="score-label">bananas collected</div>
-            <div class="score-label" id="best-score" style="color:var(--accent);margin-top:2px;"></div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
-              <button class="btn" id="btn-again" style="min-width:130px;">▶ Play Again</button>
-              <button class="btn secondary" onclick="location.replace('/games.html')" style="min-width:130px;text-align:center;">✓ Done</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="controls">
-          <button class="btn secondary" onclick="location.replace('/games.html')">← Back</button>
-        </div>
-      </div>
+  <div class="game-overlay" id="overlay-end" style="display:none;">
+    <h2>Game Over</h2>
+    <div class="final-score" id="final-score">0</div>
+    <div class="score-label">bananas collected</div>
+    <div class="score-label" id="best-score" style="color:#68b5ff;margin-top:2px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+      <button class="btn" id="btn-again">▶ Play Again</button>
+      <button class="btn secondary" id="btn-done">✓ Done</button>
     </div>
   </div>
 
@@ -125,23 +131,24 @@
   (function () {
     var canvas = document.getElementById("game-canvas");
     var ctx = canvas.getContext("2d");
-    var W = canvas.width;
-    var H = canvas.height;
+    var W = canvas.width;   // 600
+    var H = canvas.height;  // 400
 
-    var scoreDisplay = document.getElementById("score-display");
     var overlayStart = document.getElementById("overlay-start");
     var overlayEnd   = document.getElementById("overlay-end");
     var finalScoreEl = document.getElementById("final-score");
     var bestScoreEl  = document.getElementById("best-score");
     var btnStart     = document.getElementById("btn-start");
     var btnAgain     = document.getElementById("btn-again");
+    var btnDone      = document.getElementById("btn-done");
+
+    btnDone.onclick = function () { location.replace("/games.html"); };
 
     /* ── Constants ── */
-    var GROUND_Y    = H - 50;
-    var MONKEY_REST = GROUND_Y - 18; // monkey feet touch ground
-    var MONKEY_X    = 80;
-    var GRAVITY     = 0.65;
-    var JUMP_VEL    = -11;
+    var BASE_GROUND_Y = H - 60;
+    var MONKEY_X    = 100;
+    var GRAVITY     = 0.75;
+    var JUMP_VEL    = -11.5;
     var BASE_SPEED  = 3.5;
 
     /* ── Colors ── */
@@ -153,21 +160,22 @@
 
     /* ── Game state ── */
     var monkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2;
-    var coyoteTimer = 0, jumpBuffer = 0;  // grace frames
-    var COYOTE_FRAMES = 8, BUFFER_FRAMES = 8;
+    var coyoteTimer = 0, jumpBuffer = 0;
+    var COYOTE_FRAMES = 5, BUFFER_FRAMES = 8;
     var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
     var speed = BASE_SPEED, frameCount = 0;
-    var segments = [], bananas = [], particles = [];
+    var segments = [], bananas = [], particles = [], parrots = [];
     var runPhase = 0;
-    var fallAnim = null; // { y, vy, rot, alpha }
+    var fallAnim = null;
+    var currentGroundY = BASE_GROUND_Y; // monkey's current landing Y
 
     /* ── Parallax layers ── */
     var bgTrees = [], fgBushes = [];
     (function genBG() {
-      for (var i = 0; i < 12; i++) {
-        bgTrees.push({ x: Math.random() * W * 1.5, h: 40 + Math.random() * 60, w: 20 + Math.random() * 15 });
+      for (var i = 0; i < 16; i++) {
+        bgTrees.push({ x: Math.random() * W * 1.5, h: 40 + Math.random() * 70, w: 20 + Math.random() * 15 });
       }
-      for (var j = 0; j < 8; j++) {
+      for (var j = 0; j < 10; j++) {
         fgBushes.push({ x: Math.random() * W * 1.5, w: 25 + Math.random() * 20, h: 15 + Math.random() * 10 });
       }
     })();
@@ -238,7 +246,25 @@
       osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.4);
     }
 
-    /* ── Music (chiptune jungle – D major, 140 BPM) ── */
+    function playSquawkSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      // Harsh squawk: two detuned sawtooth oscillators
+      for (var i = 0; i < 2; i++) {
+        var osc = ac.createOscillator();
+        var gain = ac.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(600 + i * 80, ac.currentTime);
+        osc.frequency.linearRampToValueAtTime(900 + i * 120, ac.currentTime + 0.06);
+        osc.frequency.linearRampToValueAtTime(300, ac.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.1, ac.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.25);
+        osc.connect(gain); gain.connect(ac.destination);
+        osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.25);
+      }
+    }
+
+    /* ── Music ── */
     var MUSIC_BPM = 140;
     var BEAT_SEC = 60 / MUSIC_BPM;
     var jrMelody = [587,659,740,587,880,740,659,587, 740,880,988,880,740,659,587,659];
@@ -301,32 +327,70 @@
 
     /* ── Helpers ── */
     function rand(lo, hi) { return Math.random() * (hi - lo) + lo; }
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
 
     /* ── Ground segments ── */
-    // Each segment: { x, w } — a solid ground piece. Gaps are the spaces between segments.
+    // Each segment: { x, w, groundY } — groundY varies per segment
     function generateInitialSegments() {
       segments = [];
-      // Start with generous runway
-      segments.push({ x: -100, w: 550 });
-      var nextX = 450;
-      for (var i = 0; i < 20; i++) {
-        // Early gaps are small and platforms are wide; ramps gently
+      var gy = BASE_GROUND_Y;
+      segments.push({ x: -100, w: 600, groundY: gy });
+      var nextX = 500;
+      for (var i = 0; i < 25; i++) {
         var difficulty = Math.min(i / 12, 1);
-        var gapW = 30 + difficulty * 20 + Math.random() * (20 + difficulty * 15);
+        var gapW = 55 + difficulty * 30 + Math.random() * (25 + difficulty * 20);
         var segW = 140 + Math.random() * 140 - difficulty * 40;
-        segments.push({ x: nextX + gapW, w: Math.max(segW, 100) });
+        // Smooth ground height variation: ±15px from base, smooth transitions
+        gy = clamp(gy + rand(-12, 12), BASE_GROUND_Y - 15, BASE_GROUND_Y + 15);
+        segments.push({ x: nextX + gapW, w: Math.max(segW, 100), groundY: gy });
         nextX = nextX + gapW + segW;
       }
     }
 
     function spawnBananasOnSegment(seg) {
-      // Place 0-3 bananas on a segment
       var count = Math.floor(Math.random() * 3);
       for (var i = 0; i < count; i++) {
         var bx = seg.x + 20 + Math.random() * (seg.w - 40);
-        var by = GROUND_Y - 30 - Math.random() * 40;
-        bananas.push({ x: bx, y: by, phase: Math.random() * Math.PI * 2, collected: false });
+        var isHigh = Math.random() < 0.3;
+        var by;
+        if (isHigh) {
+          by = seg.groundY - 90 - Math.random() * 40; // 90–130px above ground
+        } else {
+          by = seg.groundY - 30 - Math.random() * 40;  // 30–70px above ground
+        }
+        bananas.push({ x: bx, y: by, phase: Math.random() * Math.PI * 2, collected: false, high: isHigh });
       }
+    }
+
+    /* ── Parrot spawning ── */
+    var nextParrotFrame = 200; // first parrot after ~3.5sec
+
+    function spawnParrot() {
+      var lowFlight = Math.random() < 0.5;
+      var py;
+      if (lowFlight) {
+        py = BASE_GROUND_Y - 20 - rand(0, 15); // near ground, must jump over
+      } else {
+        py = BASE_GROUND_Y - 70 - rand(0, 40); // mid-air, at jump apex
+      }
+      var pSpeed = speed * rand(1.5, 2.5);
+      var colorIdx = Math.floor(Math.random() * 3);
+      var colors = [
+        { body: "#e03030", wing: "#30a030", tail: "#2060d0" }, // red parrot
+        { body: "#30b040", wing: "#e0d020", tail: "#d04020" }, // green parrot
+        { body: "#3060e0", wing: "#e0a020", tail: "#e03030" }, // blue parrot
+      ];
+      parrots.push({
+        x: W + 30,
+        y: py,
+        speed: pSpeed,
+        wingPhase: Math.random() * Math.PI * 2,
+        colors: colors[colorIdx],
+        low: lowFlight
+      });
+      // Next parrot: difficulty ramps frequency
+      var ramp = Math.min(frameCount / 3000, 1); // 0→1 over ~50sec
+      nextParrotFrame = frameCount + Math.floor(rand(180 - ramp * 80, 300 - ramp * 100));
     }
 
     /* ── Draw background ── */
@@ -338,44 +402,42 @@
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
 
-      // Background trees (parallax slow)
       ctx.fillStyle = "#1a3a20";
       for (var i = 0; i < bgTrees.length; i++) {
         var t = bgTrees[i];
         var tx = ((t.x - frameCount * speed * 0.2) % (W * 1.5) + W * 1.5) % (W * 1.5) - W * 0.25;
-        // Trunk
         ctx.fillStyle = "#3a2a18";
-        ctx.fillRect(tx + t.w / 2 - 3, GROUND_Y - t.h, 6, t.h);
-        // Canopy
+        ctx.fillRect(tx + t.w / 2 - 3, BASE_GROUND_Y - t.h, 6, t.h);
         ctx.fillStyle = "#1a4a24";
         ctx.beginPath();
-        ctx.arc(tx + t.w / 2, GROUND_Y - t.h - 5, t.w / 2, 0, Math.PI * 2);
+        ctx.arc(tx + t.w / 2, BASE_GROUND_Y - t.h - 5, t.w / 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "#2a5a30";
         ctx.beginPath();
-        ctx.arc(tx + t.w / 2 - 5, GROUND_Y - t.h, t.w / 2 - 4, 0, Math.PI * 2);
+        ctx.arc(tx + t.w / 2 - 5, BASE_GROUND_Y - t.h, t.w / 2 - 4, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    /* ── Draw ground segments ── */
+    /* ── Draw ground segments (varying height) ── */
     function drawGround() {
       for (var i = 0; i < segments.length; i++) {
         var s = segments[i];
+        var gy = s.groundY;
         // Grass top
         ctx.fillStyle = GROUND_TOP;
-        ctx.fillRect(s.x, GROUND_Y, s.w, 6);
+        ctx.fillRect(s.x, gy, s.w, 6);
         // Dirt body
         ctx.fillStyle = GROUND_C;
-        ctx.fillRect(s.x, GROUND_Y + 6, s.w, H - GROUND_Y - 6);
+        ctx.fillRect(s.x, gy + 6, s.w, H - gy - 6);
         // Darker dirt line
         ctx.fillStyle = "#2a1a0a";
-        ctx.fillRect(s.x, GROUND_Y + 14, s.w, 2);
+        ctx.fillRect(s.x, gy + 14, s.w, 2);
         // Left edge
         ctx.fillStyle = "#2a1a0a";
-        ctx.fillRect(s.x, GROUND_Y, 2, H - GROUND_Y);
+        ctx.fillRect(s.x, gy, 2, H - gy);
         // Right edge
-        ctx.fillRect(s.x + s.w - 2, GROUND_Y, 2, H - GROUND_Y);
+        ctx.fillRect(s.x + s.w - 2, gy, 2, H - gy);
       }
     }
 
@@ -400,9 +462,7 @@
       // Legs
       var legW = 5, legH = 10;
       ctx.fillStyle = "#8B5E3C";
-      // Left leg
       ctx.fillRect(-7, 8 + bob + legPhase * 3, legW, legH);
-      // Right leg
       ctx.fillRect(2, 8 + bob - legPhase * 3, legW, legH);
 
       // Feet
@@ -450,38 +510,21 @@
 
       // Ears
       ctx.fillStyle = "#D4A76A";
-      ctx.beginPath();
-      ctx.arc(-10, headY - 2, 4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(10, headY - 2, 4, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-10, headY - 2, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(10, headY - 2, 4, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = "#C4976A";
-      ctx.beginPath();
-      ctx.arc(-10, headY - 2, 2.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(10, headY - 2, 2.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-10, headY - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(10, headY - 2, 2.5, 0, Math.PI * 2); ctx.fill();
 
       // Eyes
       ctx.fillStyle = "#2a1a0a";
-      ctx.beginPath();
-      ctx.arc(-4, headY - 1, 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(4, headY - 1, 2, 0, Math.PI * 2);
-      ctx.fill();
-      // Eye shine
+      ctx.beginPath(); ctx.arc(-4, headY - 1, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(4, headY - 1, 2, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = "#fff";
-      ctx.beginPath();
-      ctx.arc(-3.3, headY - 2, 0.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(4.7, headY - 2, 0.8, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(-3.3, headY - 2, 0.8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(4.7, headY - 2, 0.8, 0, Math.PI * 2); ctx.fill();
 
-      // Mouth / smile
+      // Mouth
       ctx.strokeStyle = "#6B4423";
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -495,11 +538,26 @@
     function drawBanana(b) {
       var by = b.y + Math.sin(frameCount * 0.06 + b.phase) * 4;
 
+      // High bananas get a sparkle glow
+      if (b.high) {
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 8 + Math.sin(frameCount * 0.1 + b.phase) * 4;
+        // Sparkle dots
+        ctx.fillStyle = "rgba(255,255,255," + (0.4 + Math.sin(frameCount * 0.15 + b.phase) * 0.3) + ")";
+        var sparkAngle = frameCount * 0.05 + b.phase;
+        for (var s = 0; s < 3; s++) {
+          var sa = sparkAngle + s * (Math.PI * 2 / 3);
+          ctx.beginPath();
+          ctx.arc(b.x + Math.cos(sa) * 16, by + Math.sin(sa) * 12, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
       // Glow
       ctx.shadowColor = BANANA_C;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = b.high ? 14 : 10;
 
-      // Banana shape (crescent)
+      // Banana shape
       ctx.fillStyle = BANANA_C;
       ctx.beginPath();
       ctx.arc(b.x, by, 10, 0.3, Math.PI - 0.3);
@@ -507,7 +565,6 @@
       ctx.closePath();
       ctx.fill();
 
-      // Darker edge
       ctx.strokeStyle = "#c4a020";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -519,6 +576,85 @@
       ctx.fillRect(b.x + 6, by - 9, 3, 5);
 
       ctx.shadowBlur = 0;
+    }
+
+    /* ── Draw parrot ── */
+    function drawParrot(p) {
+      var wingFlap = Math.sin(frameCount * 0.3 + p.wingPhase) * 12;
+      var c = p.colors;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+
+      // Tail feathers
+      ctx.fillStyle = c.tail;
+      ctx.beginPath();
+      ctx.moveTo(14, 0);
+      ctx.lineTo(24, -4);
+      ctx.lineTo(22, 2);
+      ctx.lineTo(24, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Body
+      ctx.fillStyle = c.body;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Wing (animated)
+      ctx.fillStyle = c.wing;
+      ctx.beginPath();
+      ctx.moveTo(-2, -3);
+      ctx.lineTo(6, -8 + wingFlap * -0.5);
+      ctx.lineTo(10, -4 + wingFlap * -0.3);
+      ctx.lineTo(4, 0);
+      ctx.closePath();
+      ctx.fill();
+      // Upper wing
+      ctx.fillStyle = c.wing;
+      ctx.beginPath();
+      ctx.moveTo(0, -5);
+      ctx.quadraticCurveTo(3, -14 + wingFlap * -1, 10, -10 + wingFlap * -0.6);
+      ctx.lineTo(6, -4);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = c.body;
+      ctx.beginPath();
+      ctx.arc(-10, -2, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye ring (white)
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(-12, -3, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Eye
+      ctx.fillStyle = "#111";
+      ctx.beginPath();
+      ctx.arc(-12, -3, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Beak
+      ctx.fillStyle = "#333";
+      ctx.beginPath();
+      ctx.moveTo(-16, -2);
+      ctx.lineTo(-21, 0);
+      ctx.lineTo(-16, 2);
+      ctx.closePath();
+      ctx.fill();
+      // Upper beak curve
+      ctx.fillStyle = "#555";
+      ctx.beginPath();
+      ctx.moveTo(-16, -2);
+      ctx.quadraticCurveTo(-20, -3, -21, 0);
+      ctx.lineTo(-16, -1);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
     }
 
     /* ── Particles ── */
@@ -558,18 +694,32 @@
       ctx.globalAlpha = 1;
     }
 
-    /* ── Check if monkey is over ground ── */
-    function isOverGround(mx) {
+    /* ── Draw HUD (score on canvas) ── */
+    function drawHUD() {
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      ctx.beginPath();
+      ctx.roundRect(W / 2 - 40, 8, 80, 32, 10);
+      ctx.fill();
+      ctx.fillStyle = "#ffe135";
+      ctx.font = "bold 20px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("🍌 " + score, W / 2, 24);
+    }
+
+    /* ── Check if monkey is over ground, return groundY ── */
+    function getGroundAt(mx) {
       for (var i = 0; i < segments.length; i++) {
         var s = segments[i];
-        if (mx >= s.x + 2 && mx <= s.x + s.w - 2) return true;
+        if (mx >= s.x + 2 && mx <= s.x + s.w - 2) return s.groundY;
       }
-      return false;
+      return null; // over a gap
     }
 
     /* ── Init ── */
     function initGame() {
-      monkeyY = MONKEY_REST;
+      currentGroundY = BASE_GROUND_Y;
+      monkeyY = currentGroundY - 18;
       velY = 0;
       onGround = true;
       jumpsLeft = 2;
@@ -581,13 +731,13 @@
       runPhase = 0;
       particles = [];
       bananas = [];
+      parrots = [];
       fallAnim = null;
+      nextParrotFrame = 200;
       generateInitialSegments();
-      // Spawn initial bananas
       for (var i = 1; i < segments.length; i++) {
         spawnBananasOnSegment(segments[i]);
       }
-      scoreDisplay.textContent = "0";
       gameRunning = true;
       startMusic();
       loop();
@@ -598,7 +748,6 @@
       stopMusic();
       playFallSound();
 
-      // Fall animation
       fallAnim = { y: monkeyY, vy: -3, rot: 0, alpha: 1 };
       var deathFrames = 0;
 
@@ -615,9 +764,12 @@
         for (var i = 0; i < bananas.length; i++) {
           if (!bananas[i].collected) drawBanana(bananas[i]);
         }
+        for (var i = 0; i < parrots.length; i++) {
+          drawParrot(parrots[i]);
+        }
         drawParticles();
+        drawHUD();
 
-        // Draw falling monkey
         ctx.globalAlpha = fallAnim.alpha;
         drawMonkey(MONKEY_X, fallAnim.y, fallAnim.rot);
         ctx.globalAlpha = 1;
@@ -634,7 +786,6 @@
           }
           overlayEnd.style.display = "flex";
 
-          // Decrement game lives
           var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
           if (lives > 0) {
             lives--;
@@ -657,30 +808,27 @@
       frameCount++;
       runPhase += 0.2;
 
-      // Difficulty ramp (gentler)
+      // Difficulty ramp
       if (frameCount % 600 === 0) {
         speed += 0.15;
       }
 
-      // Scroll everything left
-      for (var i = 0; i < segments.length; i++) {
-        segments[i].x -= speed;
-      }
-      for (var i = 0; i < bananas.length; i++) {
-        bananas[i].x -= speed;
-      }
+      // Scroll segments and bananas
+      for (var i = 0; i < segments.length; i++) segments[i].x -= speed;
+      for (var i = 0; i < bananas.length; i++) bananas[i].x -= speed;
 
-      // Remove off-screen segments and spawn new ones
+      // Remove off-screen segments, spawn new ones
       if (segments.length > 0 && segments[0].x + segments[0].w < -50) {
         segments.shift();
       }
-      // Ensure enough segments ahead
       var last = segments[segments.length - 1];
       while (last.x + last.w < W + 500) {
-        var ramp = Math.min(frameCount * 0.005, 25);
-        var gapW = 35 + Math.random() * (20 + ramp);
+        var ramp = Math.min(frameCount * 0.006, 30);
+        var gapW = 55 + Math.random() * (30 + ramp);
         var segW = 120 + Math.random() * 140;
-        var newSeg = { x: last.x + last.w + gapW, w: segW };
+        var prevGY = last.groundY;
+        var newGY = clamp(prevGY + rand(-12, 12), BASE_GROUND_Y - 15, BASE_GROUND_Y + 15);
+        var newSeg = { x: last.x + last.w + gapW, w: segW, groundY: newGY };
         segments.push(newSeg);
         spawnBananasOnSegment(newSeg);
         last = newSeg;
@@ -691,31 +839,50 @@
         if (bananas[i].x < -30) bananas.splice(i, 1);
       }
 
-      // Tick grace timers
+      // Spawn parrots
+      if (frameCount >= nextParrotFrame) {
+        spawnParrot();
+      }
+
+      // Update parrots
+      for (var i = parrots.length - 1; i >= 0; i--) {
+        parrots[i].x -= parrots[i].speed;
+        if (parrots[i].x < -40) parrots.splice(i, 1);
+      }
+
+      // Grace timers
       if (coyoteTimer > 0) coyoteTimer--;
       if (jumpBuffer > 0) jumpBuffer--;
 
-      // Jump physics
+      // Physics
+      var groundAt = getGroundAt(MONKEY_X);
+
       if (!onGround) {
         velY += GRAVITY;
         monkeyY += velY;
-        if (monkeyY >= MONKEY_REST && isOverGround(MONKEY_X)) {
-          monkeyY = MONKEY_REST;
-          velY = 0;
-          onGround = true;
-          jumpsLeft = 2;
-          coyoteTimer = 0;
-          // Execute buffered jump immediately on landing
-          if (jumpBuffer > 0) {
-            jumpBuffer = 0;
-            jump();
+        if (groundAt !== null) {
+          var landY = groundAt - 18;
+          if (monkeyY >= landY) {
+            monkeyY = landY;
+            currentGroundY = groundAt;
+            velY = 0;
+            onGround = true;
+            jumpsLeft = 2;
+            coyoteTimer = 0;
+            if (jumpBuffer > 0) {
+              jumpBuffer = 0;
+              jump();
+            }
           }
         }
       } else {
-        // Check if still on ground
-        if (!isOverGround(MONKEY_X)) {
+        if (groundAt === null) {
           onGround = false;
-          coyoteTimer = COYOTE_FRAMES; // grace period to still jump
+          coyoteTimer = COYOTE_FRAMES;
+        } else {
+          // Smoothly follow ground height changes
+          currentGroundY = groundAt;
+          monkeyY = groundAt - 18;
         }
       }
 
@@ -723,6 +890,19 @@
       if (monkeyY > H + 30) {
         gameOver();
         return;
+      }
+
+      // Parrot collision (circular hitbox ~14px radius)
+      for (var i = 0; i < parrots.length; i++) {
+        var pp = parrots[i];
+        var dx = MONKEY_X - pp.x;
+        var dy = (monkeyY - 5) - pp.y;
+        if (dx * dx + dy * dy < 24 * 24) {
+          playSquawkSound();
+          spawnParticles(pp.x, pp.y, pp.colors.body);
+          gameOver();
+          return;
+        }
       }
 
       // Banana collection
@@ -734,7 +914,6 @@
         if (Math.abs(dx) < 20 && Math.abs(dy) < 25) {
           b.collected = true;
           score++;
-          scoreDisplay.textContent = score;
           spawnParticles(b.x, b.y, BANANA_C);
           playBananaSound();
           bananas.splice(i, 1);
@@ -749,8 +928,12 @@
       for (var i = 0; i < bananas.length; i++) {
         if (!bananas[i].collected) drawBanana(bananas[i]);
       }
+      for (var i = 0; i < parrots.length; i++) {
+        drawParrot(parrots[i]);
+      }
       drawParticles();
       drawMonkey(MONKEY_X, monkeyY, 0);
+      drawHUD();
 
       animFrame = requestAnimationFrame(loop);
     }
@@ -758,27 +941,26 @@
     /* ── Jump action ── */
     function jump() {
       if (!gameRunning) return;
-      // Coyote time: if just walked off edge, treat as ground jump
       var grounded = onGround || coyoteTimer > 0;
       if (grounded) {
         velY = JUMP_VEL;
         onGround = false;
         coyoteTimer = 0;
-        jumpsLeft = 1; // spent the ground jump, one air jump remains
+        jumpsLeft = 1;
         playJumpSound();
       } else if (jumpsLeft > 0) {
-        // Double-jump (mid-air)
         velY = JUMP_VEL * 0.85;
         jumpsLeft--;
         playJumpSound();
       } else {
-        // No jumps left — buffer the input for landing
         jumpBuffer = BUFFER_FRAMES;
       }
     }
 
-    /* ── Controls ── */
-    canvas.addEventListener("pointerdown", function (e) {
+    /* ── Controls: tap ANYWHERE on the page ── */
+    document.body.addEventListener("pointerdown", function (e) {
+      // Don't hijack clicks on buttons/overlays
+      if (e.target.closest(".game-overlay") || e.target.closest(".hud-mute") || e.target.closest(".hud-back")) return;
       e.preventDefault();
       jump();
     });
@@ -815,21 +997,48 @@
       else if (gameRunning) startMusic();
     };
 
-    /* ── Responsive sizing ── */
+    /* ── Responsive canvas sizing ── */
     function resizeCanvas() {
-      var maxW = Math.min(400, document.getElementById("canvas-container").parentElement.clientWidth - 4);
-      canvas.style.width = maxW + "px";
-      canvas.style.height = (maxW * (300 / 400)) + "px";
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var aspect = W / H; // 600/400 = 1.5
+      var cw, ch;
+      if (vw / vh > aspect) {
+        ch = vh;
+        cw = ch * aspect;
+      } else {
+        cw = vw;
+        ch = cw / aspect;
+      }
+      canvas.style.width = Math.floor(cw) + "px";
+      canvas.style.height = Math.floor(ch) + "px";
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
+    /* ── roundRect polyfill for older browsers ── */
+    if (!ctx.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+        if (typeof r === "number") r = [r, r, r, r];
+        this.moveTo(x + r[0], y);
+        this.lineTo(x + w - r[1], y);
+        this.arcTo(x + w, y, x + w, y + r[1], r[1]);
+        this.lineTo(x + w, y + h - r[2]);
+        this.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+        this.lineTo(x + r[3], y + h);
+        this.arcTo(x, y + h, x, y + h - r[3], r[3]);
+        this.lineTo(x, y + r[0]);
+        this.arcTo(x, y, x + r[0], y, r[0]);
+        this.closePath();
+      };
+    }
+
     /* Initial idle draw */
     drawBG();
     ctx.fillStyle = GROUND_TOP;
-    ctx.fillRect(0, GROUND_Y, W, 6);
+    ctx.fillRect(0, BASE_GROUND_Y, W, 6);
     ctx.fillStyle = GROUND_C;
-    ctx.fillRect(0, GROUND_Y + 6, W, H - GROUND_Y - 6);
+    ctx.fillRect(0, BASE_GROUND_Y + 6, W, H - BASE_GROUND_Y - 6);
   })();
   </script>
 </body>
