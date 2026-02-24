@@ -129,6 +129,7 @@
     let currentIndex = 0;
     let filledCount = 0;
     let history = [];
+    let advanceTimer = null;
 
     function loadVerb() {
       if (currentIndex >= verbs.length) {
@@ -204,7 +205,8 @@
             SharedUtils.showSuccessAnimation();
             SharedUtils.confettiBurst(30);
             if (window.CoinTracker) CoinTracker.addCoin();
-            setTimeout(() => {
+            advanceTimer = setTimeout(() => {
+              advanceTimer = null;
               history.push(currentIndex);
               currentIndex++;
               updateBackButton();
@@ -220,8 +222,12 @@
       if (btnBack) btnBack.disabled = history.length === 0;
     }
 
-    btnReset.onclick = () => loadVerb();
+    btnReset.onclick = () => {
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+      loadVerb();
+    };
     btnSkip.onclick = () => {
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
       history.push(currentIndex);
       currentIndex++;
       updateBackButton();
@@ -231,6 +237,7 @@
     if (btnBack) {
       btnBack.onclick = () => {
         if (history.length === 0) return;
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
         currentIndex = history.pop();
         updateBackButton();
         loadVerb();

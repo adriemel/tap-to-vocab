@@ -135,6 +135,7 @@
     let placedWords = [];
     let placedItems = []; // Track {word, slot, bankBtn} for proper undo
     let history = []; // Track completed sentence indices for back button
+    let advanceTimer = null; // Auto-advance timer (cleared on skip/reset/back)
 
     function loadSentence() {
       if (currentIndex >= sentences.length) {
@@ -224,7 +225,8 @@
               showSuccessAnimation();
               confettiBurst(30);
               if (window.CoinTracker) CoinTracker.addCoin();
-              setTimeout(() => {
+              advanceTimer = setTimeout(() => {
+                advanceTimer = null;
                 history.push(currentIndex);
                 currentIndex++;
                 updateBackButton();
@@ -242,10 +244,12 @@
     }
 
     btnReset.onclick = () => {
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
       loadSentence();
     };
 
     btnSkip.onclick = () => {
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
       history.push(currentIndex);
       currentIndex++;
       updateBackButton();
@@ -255,6 +259,7 @@
     if (btnBack) {
       btnBack.onclick = () => {
         if (history.length === 0) return;
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
         currentIndex = history.pop();
         updateBackButton();
         loadSentence();

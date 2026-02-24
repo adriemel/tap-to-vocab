@@ -695,6 +695,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   border-color: var(--ok);
   background: rgba(61, 220, 151, 0.1);
   animation: successPulse 0.5s ease;
+  pointer-events: none;
 }
 
 .word-slot {

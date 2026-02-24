@@ -12,8 +12,9 @@
   }
 
   function setCoins(n) {
-    localStorage.setItem(KEY, String(Math.max(0, n)));
-    window.dispatchEvent(new CustomEvent("coinschanged", { detail: { coins: n } }));
+    var clamped = Math.max(0, n);
+    localStorage.setItem(KEY, String(clamped));
+    window.dispatchEvent(new CustomEvent("coinschanged", { detail: { coins: clamped } }));
   }
 
   function addCoin() {

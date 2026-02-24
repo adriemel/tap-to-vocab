@@ -216,12 +216,14 @@
         flipCard.classList.add("flipped");
         // For de-es mode, speak Spanish on reveal
         if (direction === "de-es" && currentQuizIndex < quizWords.length) {
-          setTimeout(() => speakSpanish(quizWords[currentQuizIndex].es), 300);
+          const esText = quizWords[currentQuizIndex].es;
+          setTimeout(() => speakSpanish(esText), 300);
         }
       }
     };
 
     btnCorrect.onclick = () => {
+      if (currentQuizIndex >= quizWords.length) return;
       const word = quizWords[currentQuizIndex];
 
       // Track this answer in history
@@ -253,6 +255,7 @@
     };
 
     btnWrong.onclick = () => {
+      if (currentQuizIndex >= quizWords.length) return;
       const word = quizWords[currentQuizIndex];
 
       // Track this answer in history
@@ -275,6 +278,7 @@
     btnRestart.onclick = restartQuiz;
 
     btnQuizNext.onclick = () => {
+      if (currentQuizIndex >= quizWords.length) return;
       answerHistory.push({
         index: currentQuizIndex,
         wasSkipped: true,

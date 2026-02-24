@@ -121,6 +121,9 @@
 
   <script>
   (function () {
+    // Guard: require valid game lives (prevent direct URL bypass)
+    if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) { location.replace("/"); return; }
+
     var canvas = document.getElementById("game-canvas");
     var ctx = canvas.getContext("2d");
     var W = canvas.width;
@@ -518,11 +521,12 @@
       stopMusic();
       setTimeout(function () {
         if (animFrame) cancelAnimationFrame(animFrame);
-        if (score > bestScore) bestScore = score;
+        var isNewBest = score > bestScore;
+        if (isNewBest) bestScore = score;
         finalScoreEl.textContent = score;
         var bestScoreEl = document.getElementById("best-score");
         if (bestScore > 0) {
-          bestScoreEl.textContent = score >= bestScore && score > 0 ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+          bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
         } else {
           bestScoreEl.textContent = "";
         }

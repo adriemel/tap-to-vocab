@@ -129,6 +129,9 @@
 
   <script>
   (function () {
+    // Guard: require valid game lives (prevent direct URL bypass)
+    if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) { location.replace("/"); return; }
+
     var canvas = document.getElementById("game-canvas");
     var ctx = canvas.getContext("2d");
     var W = canvas.width;   // 600
@@ -148,7 +151,7 @@
     var BASE_GROUND_Y = H - 60;
     var MONKEY_X    = 100;
     var GRAVITY     = 0.75;
-    var JUMP_VEL    = -11.5;
+    var JUMP_VEL    = -14;
     var BASE_SPEED  = 3.5;
 
     /* ── Colors ── */
@@ -777,10 +780,11 @@
         if (deathFrames < 60) {
           requestAnimationFrame(deathLoop);
         } else {
-          if (score > bestScore) bestScore = score;
+          var isNewBest = score > bestScore;
+          if (isNewBest) bestScore = score;
           finalScoreEl.textContent = score;
           if (bestScore > 0) {
-            bestScoreEl.textContent = score >= bestScore && score > 0 ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
           } else {
             bestScoreEl.textContent = "";
           }
@@ -949,7 +953,7 @@
         jumpsLeft = 1;
         playJumpSound();
       } else if (jumpsLeft > 0) {
-        velY = JUMP_VEL * 0.85;
+        velY = JUMP_VEL * 0.9;
         jumpsLeft--;
         playJumpSound();
       } else {

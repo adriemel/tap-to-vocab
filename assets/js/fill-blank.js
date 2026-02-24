@@ -51,6 +51,7 @@
 
     let currentIndex = 0;
     let history = [];
+    let advanceTimer = null;
 
     function loadSentence() {
       if (currentIndex >= sentences.length) {
@@ -106,7 +107,8 @@
             SharedUtils.showSuccessAnimation();
             SharedUtils.confettiBurst(30);
             if (window.CoinTracker) CoinTracker.addCoin();
-            setTimeout(() => {
+            advanceTimer = setTimeout(() => {
+              advanceTimer = null;
               history.push(currentIndex);
               currentIndex++;
               updateBackButton();
@@ -128,6 +130,7 @@
     }
 
     btnSkip.onclick = () => {
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
       history.push(currentIndex);
       currentIndex++;
       updateBackButton();
@@ -137,6 +140,7 @@
     if (btnBack) {
       btnBack.onclick = () => {
         if (history.length === 0) return;
+        if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
         currentIndex = history.pop();
         updateBackButton();
         loadSentence();
