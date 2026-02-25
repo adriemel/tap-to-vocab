@@ -291,6 +291,12 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   color: var(--accent);
 }
 
+/* JS-driven fallback for browsers without :has() support */
+.mode-tabs.quiz-active .mode-tab[data-mode="browse"] {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
 
 /* ---------- Browse Mode (Word Card) ---------- */
 .word-card {

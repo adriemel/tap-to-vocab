@@ -103,7 +103,29 @@
   }
 
   /* ---------- Confetti ---------- */
+  // Ensure @keyframes fall exists (pages without styles.css)
+  var _fallKeyframeInjected = false;
+  function ensureFallKeyframe() {
+    if (_fallKeyframeInjected) return;
+    _fallKeyframeInjected = true;
+    try {
+      // Check if @keyframes fall already exists in any stylesheet
+      for (var s = 0; s < document.styleSheets.length; s++) {
+        try {
+          var rules = document.styleSheets[s].cssRules;
+          for (var r = 0; r < rules.length; r++) {
+            if (rules[r].type === CSSRule.KEYFRAMES_RULE && rules[r].name === "fall") return;
+          }
+        } catch (e) { /* cross-origin stylesheet, skip */ }
+      }
+      var style = document.createElement("style");
+      style.textContent = "@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}";
+      document.head.appendChild(style);
+    } catch (e) { /* ignore */ }
+  }
+
   function confettiBurst(count) {
+    ensureFallKeyframe();
     count = count || 30;
     for (let i = 0; i < count; i++) {
       const piece = document.createElement("div");

@@ -341,14 +341,21 @@
       }
 
       let currentMode = "practice";
+      let practiceInitialized = false;
+      let showInitialized = false;
 
       btnManage.onclick = () => {
         openVerbManager(allVerbs, (newEnabledMap) => {
           enabledMap = newEnabledMap;
+          // Verb selection changed — force re-init of current mode
+          practiceInitialized = false;
+          showInitialized = false;
           if (currentMode === "practice") {
             initConjugationGame(getActiveVerbs());
+            practiceInitialized = true;
           } else {
             initShowMode(getActiveVerbsOrdered());
+            showInitialized = true;
           }
         });
       };
@@ -360,18 +367,25 @@
       const showControls = document.getElementById("show-controls");
 
       function switchMode(mode) {
+        if (mode === currentMode) return;
         currentMode = mode;
         document.querySelectorAll(".mode-tab").forEach(t => t.classList.remove("active"));
         if (mode === "practice") {
           tabPractice.classList.add("active");
           practiceControls.style.display = "";
           showControls.style.display = "none";
-          initConjugationGame(getActiveVerbs());
+          if (!practiceInitialized) {
+            initConjugationGame(getActiveVerbs());
+            practiceInitialized = true;
+          }
         } else {
           tabShow.classList.add("active");
           practiceControls.style.display = "none";
           showControls.style.display = "";
-          initShowMode(getActiveVerbsOrdered());
+          if (!showInitialized) {
+            initShowMode(getActiveVerbsOrdered());
+            showInitialized = true;
+          }
         }
       }
 

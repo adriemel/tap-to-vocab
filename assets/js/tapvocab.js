@@ -9,13 +9,26 @@
 (function () {
 
   /* ---------- Speech ---------- */
+  let _cachedSpanishVoice = null;
+  let _voicesLoaded = false;
+
   function getSpanishVoice() {
     const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
     const normalize = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     const monica = voices.find(v => normalize(v.name).includes("monica") && v.lang.toLowerCase().startsWith("es"));
-    if (monica) return monica;
+    if (monica) { _cachedSpanishVoice = monica; return monica; }
     const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-    return preferred[0] || voices[0] || null;
+    _cachedSpanishVoice = preferred[0] || voices[0] || null;
+    return _cachedSpanishVoice;
+  }
+
+  // Pre-load voices when they become available
+  if (typeof speechSynthesis !== "undefined" && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.addEventListener("voiceschanged", function () {
+      _voicesLoaded = true;
+      getSpanishVoice(); // cache the voice
+    });
   }
   
   function speakSpanish(text) {
@@ -183,7 +196,7 @@
         tapHint.textContent = "Wait...";
         tapHint.style.opacity = "0.4";
       }
-      revealTimer = setTimeout(() => {
+      revealTimer = _activeRevealTimer = setTimeout(() => {
         canReveal = true;
         if (tapHint) {
           tapHint.textContent = "Tap anywhere to reveal";
@@ -391,6 +404,9 @@
   }
 
   /* ---------- Mode Switching ---------- */
+  // Shared reference so mode-switch can clear the quiz reveal timer
+  let _activeRevealTimer = null;
+
   function setupModeSwitching(words, category) {
     const modeTabs = document.querySelectorAll(".mode-tab");
     const browseMode = document.getElementById("browse-mode");
@@ -407,6 +423,8 @@
 
         // Switch mode
         if (mode === "browse") {
+          // Clear any pending quiz reveal timer (issue #10)
+          if (_activeRevealTimer) { clearTimeout(_activeRevealTimer); _activeRevealTimer = null; }
           browseMode.style.display = "block";
           quizMode.style.display = "none";
           lastQuizDirection = null;

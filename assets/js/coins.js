@@ -37,6 +37,10 @@
   document.addEventListener("DOMContentLoaded", updateDisplay);
   window.addEventListener("coinschanged", updateDisplay);
 
-  window.CoinTracker = { addCoin: addCoin, getCoins: getCoins, spendCoins: spendCoins };
+  function resetCoins() {
+    setCoins(0);
+  }
+
+  window.CoinTracker = { addCoin: addCoin, getCoins: getCoins, spendCoins: spendCoins, resetCoins: resetCoins };
 
 })();

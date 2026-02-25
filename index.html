@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tap‑to‑Vocab</title>
+  <meta name="description" content="Learn Spanish vocabulary interactively with flashcards, quizzes, sentence building, and verb conjugation practice." />
+  <meta property="og:title" content="Tap‑to‑Vocab" />
+  <meta property="og:description" content="Learn Spanish vocabulary interactively with flashcards, quizzes, and games." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tapvocab.fun/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script src="/assets/js/coins.js"></script>
   <script>
@@ -49,9 +54,11 @@
         <a class="btn" href="/topic.html?cat=Tiempo">⏰ Tiempo</a>
         <a class="btn" href="/topic.html?cat=Palabras">🧩 Palabras</a>
         <a class="btn" href="/topic.html?cat=Casa_Familia">🏠 Casa y Familia</a>
+        <a class="btn" href="/topic.html?cat=Idiomas">🗣️ Idiomas</a>
         <a class="btn" href="/topic.html?cat=Unidad2">2️⃣ Unidad 2</a>
         <a class="btn" href="/topic.html?cat=Unidad3">3️⃣ Unidad 3A</a>
         <a class="btn" href="/topic.html?cat=Unidad3B">3️⃣ Unidad 3B</a>
+        <a class="btn" href="/topic.html?cat=Unidad4">4️⃣ Unidad 4</a>
         
         <!-- ⭐ Practice with dynamic count - spans both columns -->
         <a id="practice-btn" class="btn btn-practice" href="/topic.html?cat=practice">⭐ Practice</a>
@@ -71,5 +78,15 @@
       <div id="coins-msg" style="display:none; text-align:center; color:var(--warn); margin-top:10px; font-size:.95rem;"></div>
     </div>
   </div>
+
+  <button id="btn-reset-coins" style="position:fixed; bottom:16px; right:16px; background:rgba(30,20,50,0.85); border:1px solid #3a2a50; color:var(--muted); font-size:.8rem; padding:8px 12px; border-radius:10px; cursor:pointer; z-index:100; backdrop-filter:blur(4px);" title="Reset coins to 0">Reset Coins</button>
+
+  <script>
+    document.getElementById("btn-reset-coins").addEventListener("click", function () {
+      if (confirm("Are you sure you want to reset your coins to 0?")) {
+        CoinTracker.resetCoins();
+      }
+    });
+  </script>
 </body>
 </html>
