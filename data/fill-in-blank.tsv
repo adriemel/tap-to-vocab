@@ -21,5 +21,67 @@ hay_vs_estar	Dein Hund ist hier.	Tu perro ___ aquí.	está	hay
 hay_vs_estar	Wir haben keine Eisdiele im Viertel.	No ___ heladería en el barrio.	hay	está
 hay_vs_estar	Meine Eltern sind im Wohnzimmer.	Mis padres ___ en el salón.	están	hay
 hay_vs_estar	Mein Rucksack ist in meinem Zimmer.	Mi mochila ___ en mi habitación.	está	hay
-
-
+verb_conjugation	Nein, das ist ein Witz, ich heiße Bjarne.	No, ___ una broma, me llamo Bjarne.	es	soy, eres, somos
+verb_conjugation	Mein Name ist Pablo.	Mi nombre ___ Pablo.	es	soy, eres, somos
+verb_conjugation	Ich komme aus Deutschland.	___ de Alemania.	soy	eres, es, somos
+verb_conjugation	Ich bin 11 Jahre alt.	___ once años.	tengo	tienes, tiene, tenemos
+verb_conjugation	Wie ist dein Nachname?	¿Como ___ tu apellido?	es	soy, eres, somos
+verb_conjugation	Ich heiße Bjarne und mit Nachnamen Driemel.	Me llamo Bjarne y mi apellido ___ Driemel.	es	soy, eres, somos
+verb_conjugation	Welche Farbe hat die Schildkröte?	¿De qué color ___ la tortuga?	es	soy, eres, somos
+verb_conjugation	Die Schildkröte ist grün.	La tortuga ___ de color verde.	es	soy, eres, somos
+verb_conjugation	Ich lerne Spanisch in der Schule.	Yo ___ español en el instituto.	estudio	estudias, estudia, estudiamos
+verb_conjugation	Ich spreche sehr gut Deutsch.	___ muy bien alemán.	hablo	hablas, habla, hablamos
+verb_conjugation	Die Katze ist schwarz.	El gato ___ de color negro.	es	soy, eres, somos
+verb_conjugation	Ich sehe einen Hund, er ist weiß.	Veo un perro, ___ de color blanco.	es	soy, eres, somos
+verb_conjugation	Das ist nicht richtig.	No ___ correcto.	es	soy, eres, somos
+verb_conjugation	Mein Lieblingstier ist der Hund.	Mi animal favorito ___ el perro.	es	soy, eres, somos
+verb_conjugation	Wie ist der Nachname von..?	¿Cuál ___ el apellido de…?	es	soy, eres, somos
+verb_conjugation	Wie lautet deine Handynummer?	¿Cuál ___ tu número de móvil?	es	soy, eres, somos
+verb_conjugation	Was ist deine Lieblingsfarbe?	¿Cuál ___ tu color favorito?	es	soy, eres, somos
+verb_conjugation	Ich bin aus Deutschland.	Yo ___ de Alemania.	soy	eres, es, somos
+verb_conjugation	Das Geschenk ist für Dich.	El regalo ___ para ti.	es	soy, eres, somos
+verb_conjugation	Basti hat eine Katze.	Basti ___ un gato.	tiene	tengo, tienes, tenemos
+verb_conjugation	Max und Moritz haben keine Haustiere.	Max y Moritz no ___ mascotas.	tienen	tengo, tienes, tiene
+verb_conjugation	Ich habe ein Geschenk für meine Freundin.	___ un regalo para mi amiga.	tengo	tienes, tiene, tenemos
+verb_conjugation	Du bist aus Berlin, nicht wahr?	Tu ___ de Berlin, ¿verdad?	eres	soy, es, somos
+verb_conjugation	Was hast du in der Schachtel?	¿Qué ___ en la caja?	tienes	tengo, tiene, tenemos
+verb_conjugation	Wir haben keine Eisdiele im Viertel.	No ___ heladería en el barrio.	tenemos	tengo, tienes, tiene
+verb_conjugation	Meine Eltern haben ein Bekleidungsgeschäft.	Mis padres ___ una tienda de ropa.	tienen	tengo, tienes, tiene
+verb_conjugation	Wo ist meine Freundin?	¿Dónde ___ mi amiga?	está	estoy, estás, estamos
+verb_conjugation	Meine Freunde sind im Park.	Mis amigos ___ en el parque.	están	estoy, estás, está
+verb_conjugation	Ich habe ein Problem in der Schule.	___ un problema en el instituto.	tengo	tienes, tiene, tenemos
+verb_conjugation	Ich bin mit meinen Eltern in der Eisdiele.	___ con mis padres en la heladería.	estoy	estás, está, estamos
+verb_conjugation	Wo ist die Bäckerei?	¿Dónde ___ la panadería?	está	estoy, estás, estamos
+verb_conjugation	Meine Eltern sind nicht zu Hause.	Mis padres no ___ en casa.	están	estoy, estás, está
+verb_conjugation	Dein Hund ist hier.	Tu perro ___ aquí.	está	estoy, estás, estamos
+verb_conjugation	Mein Hund ist sehr wichtig für mich.	Mi perro ___ muy importante para mí.	es	soy, eres, somos
+verb_conjugation	Tut mir leid, aber ich habe keine Zeit.	Lo siento, pero no ___ tiempo.	tengo	tienes, tiene, tenemos
+verb_conjugation	Hier ist die Bibliothek und dort ist eine Apotheke.	Aquí ___ la biblioteca y allí hay una farmacia.	está	estoy, estás, estamos
+verb_conjugation	Das Sportzentrum ist hinter dem Einkaufszentrum.	El polideportivo ___ detrás del centro comercial.	está	estoy, estás, estamos
+verb_conjugation	Mein Haus ist in der Nähe des Parks.	Mi casa ___ cerca del parque.	está	estoy, estás, estamos
+verb_conjugation	Ich suche ein Geschenk für meine Mutter.	___ un regalo para mi madre.	busco	buscas, busca, buscamos
+verb_conjugation	Meine Eltern sind im Wohnzimmer.	Mis padres ___ en el salón.	están	estoy, estás, está
+verb_conjugation	Mein Rucksack ist in meinem Zimmer.	Mi mochila ___ en mi habitación.	está	estoy, estás, estamos
+verb_conjugation	Ich habe keine Zeit, weil ich in der Schule bin.	No ___ tiempo porque estoy en el instituto.	tengo	tienes, tiene, tenemos
+verb_conjugation	Das ist mein Lieblingsbuch.	Este ___ mi libro favorito.	es	soy, eres, somos
+verb_conjugation	Die Krankenpflegerin arbeitet im Krankenhaus.	La enfermera ___ en el hospital.	trabaja	trabajo, trabajas, trabajamos
+verb_conjugation	Meine Mutter arbeitet an einem Gymnasium.	Mi madre ___ en un instituto.	trabaja	trabajo, trabajas, trabajamos
+verb_conjugation	Ich spreche mit meinem Bruder.	___ con mi hermano.	hablo	hablas, habla, hablamos
+verb_conjugation	Mein Vater spricht sehr gut Englisch.	Mi padre ___ muy bien inglés.	habla	hablo, hablas, hablamos
+verb_conjugation	Tiere sind meine Leidenschaft, vor allem Katzen.	Mi pasión ___ los animales, sobre todo los gatos.	son	soy, eres, es
+verb_conjugation	Ich höre Lieder auf Englisch.	___ canciones en inglés.	escucho	escuchas, escucha, escuchamos
+verb_conjugation	María spielt sehr gut Gitarre.	María ___ la guitarra muy bien.	toca	toco, tocas, tocamos
+verb_conjugation	Ich schaue Videos im Internet an.	___ vídeos en Internet.	miro	miras, mira, miramos
+verb_conjugation	Ich drehe ein Video für die Schule.	___ un vídeo para el instituto.	grabo	grabas, graba, grabamos
+verb_conjugation	Sara arbeitet immer zu Hause.	Sara siempre ___ en casa.	trabaja	trabajo, trabajas, trabajamos
+verb_conjugation	Ich lerne Spanisch in der Schule.	Yo ___ español en el instituto.	estudio	estudias, estudia, estudiamos
+verb_conjugation	Ich spreche sehr gut Deutsch.	___ muy bien alemán.	hablo	hablas, habla, hablamos
+verb_conjugation	Ich mache im Park Sport.	___ deporte en el parque.	practico	practicas, practica, practicamos
+verb_conjugation	Mein Onkel hat keine Kinder.	Mi tío no ___ hijos.	tiene	tengo, tienes, tenemos
+verb_conjugation	Die Bücher sind im Regal.	Los libros ___ en la estantería.	están	estoy, estás, está
+verb_conjugation	An der Wand habe ich ein Poster mit meinen Lieblingstieren.	En la pared ___ un póster de mis animales favoritos.	tengo	tienes, tiene, tenemos
+verb_conjugation	Die Bücher liegen auf dem Tisch.	Los libros ___ en la mesa.	están	estoy, estás, está
+verb_conjugation	Die Kleidung ist im Schrank.	La ropa ___ en el armario.	está	estoy, estás, estamos
+verb_conjugation	Die Katze ist auf dem Stuhl.	El gato ___ en la silla.	está	estoy, estás, estamos
+verb_conjugation	Ich habe keine Zeit mehr.	Ya no ___ tiempo.	tengo	tienes, tiene, tenemos
+verb_conjugation	Das stimmt (nicht).	(No) ___ cierto.	es	soy, eres, somos
