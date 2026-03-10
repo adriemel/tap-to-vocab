@@ -23,11 +23,13 @@
   </div>
 
   <script>
-    // Check game lives — redirect home if none left
+    // Check game lives — show error if none left
     var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
     if (lives <= 0) {
-      location.replace("/");
-    }
+      document.querySelector(".card").innerHTML =
+        '<p style="color:var(--error);text-align:center;margin:24px 0;">No games remaining.<br>Earn coins on the learning pages to unlock more!</p>' +
+        '<div style="text-align:center;margin-top:16px;"><a class="btn secondary" href="/">← Home</a></div>';
+    } else {
 
     var GAMES = [
       { id: "tower-stack", title: "Tower Stack", icon: "\u{1F3D7}\uFE0F", desc: "Stack blocks as high as you can!", url: "/games/tower-stack.html" },
@@ -56,6 +58,7 @@
     livesEl.style.cssText = "text-align:center;color:var(--muted);font-size:.9rem;margin-top:8px;";
     livesEl.textContent = lives + (lives === 1 ? " game" : " games") + " remaining";
     grid.parentNode.insertBefore(livesEl, grid.nextSibling);
+    } // end else (lives > 0)
   </script>
 </body>
 </html>
