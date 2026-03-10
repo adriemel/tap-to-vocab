@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: planning
+stopped_at: Completed 01-audit-01-01-PLAN.md — learning pages audit
+last_updated: "2026-03-10T14:35:24.784Z"
+last_activity: 2026-03-10 — Roadmap created, phases derived from requirements
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 33
+---
+
 # Project State
 
 ## Project Reference
@@ -14,7 +30,7 @@ Plan: 0 of TBD in current phase
 Status: Ready to plan
 Last activity: 2026-03-10 — Roadmap created, phases derived from requirements
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -34,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-audit P01 | 15 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -45,6 +62,8 @@ Recent decisions affecting current work:
 - Audit before fixing: Don't assume scope — find all issues systematically before fixing anything
 - Keep IIFE pattern: Migration to ESM not worth the cost for this project size
 - Consolidate TSV loaders: Reduces duplication, single place to fix future TSV changes
+- [Phase 01-audit]: All 5 learning pages audited using 9-point checklist; all pre-existing bugs confirmed present; 2 previously-fixed bugs confirmed resolved
+- [Phase 01-audit]: fill-blank.js confirmed has no category filter UI — all hay_vs_estar and verb_conjugation exercises mixed into single pool (new finding)
 
 ### Pending Todos
 
@@ -58,6 +77,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10
-Stopped at: Roadmap written — ready to plan Phase 1
+Last session: 2026-03-10T14:35:24.782Z
+Stopped at: Completed 01-audit-01-01-PLAN.md — learning pages audit
 Resume file: None
