@@ -398,3 +398,112 @@ File: `tap-to-vocab/fill-blank.html:3-12`
 `spanishEl.innerHTML = ""` clears the element (safe). The blank slot is built via `document.createElement` and `document.createTextNode` (safe). The completion message uses `innerHTML` with a hardcoded string (not user data). No XSS risk for this static site.
 
 File: `tap-to-vocab/assets/js/fill-blank.js:73-83, 59`
+
+---
+
+## Audit — Standalone Pages
+*(Phase 1 audit — 2026-03-10)*
+
+### vocab.html
+
+#### vocab.html Is Orphaned — Not Linked From Any App Page
+**Severity: Medium**
+
+No other HTML file in the app links to `vocab.html`. A full search of all `.html` files and all `.js` files under `tap-to-vocab/tap-to-vocab/` returned zero matches for `vocab.html`. The page can only be reached by typing its URL directly (e.g., `tapvocab.fun/vocab.html`). Users navigating the app normally have no way to discover or reach this page. According to `CLAUDE.md`, it is intended to serve as a standalone spelling practice card receiving words via URL query parameters (`?w=...&de=...`), presumably linked from `topic.html` — but no such link exists.
+
+File: All `.html` files checked: `index.html`, `topic.html`, `sentences.html`, `conjugation.html`, `fill-blank.html`, `games.html`
+
+#### vocab.html Has No Navigation — User Is Stranded
+**Severity: Medium**
+
+`vocab.html` contains no back button, no home link, and no navigation of any kind. The only interactive elements are: a direction dropdown, a Speak button, a Show/Hide button, a spelling form with Submit + Hint buttons. There is no way to return to the main app other than the browser's own back button or editing the URL. If the page were ever linked from `topic.html`, users completing a word card would have no in-app path forward.
+
+File: `tap-to-vocab/vocab.html` (entire file — no navigation elements present)
+
+#### vocab.html Does Not Use CoinTracker — Correct Answers Give No Coins
+**Severity: Low**
+
+`vocab.html` does not load `coins.js` and does not reference `CoinTracker` anywhere. When a user types the correct spelling and submits (line 119–125), feedback is shown and speech is triggered, but no coin is awarded. This is inconsistent with all other game pages (`topic.html`, `sentences.html`, `conjugation.html`, `fill-blank.html`) which all call `CoinTracker.addCoin()` on correct answers.
+
+File: `tap-to-vocab/vocab.html:1-17` (no `<script src>` for coins.js), `tap-to-vocab/vocab.html:119-125` (correct answer handler with no coin call)
+
+#### vocab.html Does Not Use SharedUtils — Duplicates Speech Logic
+**Severity: Low**
+
+`vocab.html` does not load `shared-utils.js`. It implements its own `speak()` function (lines 89–103) and its own `findVoiceByName()` helper (lines 84–87). These duplicate functionality already available in `SharedUtils`. The `playSuccessSound`, `playErrorSound`, `showSuccessAnimation`, and `confettiBurst` utilities from SharedUtils are also absent — there is no success animation or audio chime on correct answers.
+
+File: `tap-to-vocab/vocab.html:84-103` (standalone speak/voice implementations)
+
+#### vocab.html Uses Inline Styles — Inconsistent With Main App CSS Variable System
+**Severity: Low**
+
+`vocab.html` uses an entirely inline `<style>` block (lines 7–16) with a light theme (white background, `#ddd` borders, `#555` hint text, raw system-ui font). The rest of the app uses `assets/css/styles.css` with CSS custom properties (`--bg`, `--card`, `--ink`, `--muted`, `--accent`, `--ok`, `--warn`, `--error`) and a dark theme. `vocab.html` does not load `styles.css` at all. If the page were ever integrated into the app navigation flow, it would appear visually disconnected.
+
+File: `tap-to-vocab/vocab.html:7-16` (inline style block — no link to styles.css)
+
+#### vocab.html: No TSV Fetch — Word Must Come Via URL Parameters
+**Severity: Low — By Design, But Fragile**
+
+`vocab.html` does not fetch any TSV file. All content (Spanish word, German word, example sentence, voice preference) must be passed via URL query parameters (`?w=`, `?de=`, `?lang=`, `?voice=`, `?sent=`). If any parameter is missing or malformed, the page renders with placeholder text ("Hinweis (Deutsch)", "Palabra (Español)") with no error message. A direct navigation to `vocab.html` with no query string shows an entirely empty practice card — no indication of what parameters are expected.
+
+File: `tap-to-vocab/vocab.html:47-55` (URL parameter extraction with fallback to empty strings)
+
+#### vocab.html: Button Tap Targets May Be Below 44px
+**Severity: Low**
+
+The inline CSS sets `button { font-size: 1rem; padding: 0.6rem 1rem; }` (line 13). At `font-size: 18px` body, `1rem = 18px`. Vertical height = `18px line-height × 1.4 + 2 × (0.6 × 18px) = 25.2 + 21.6 = 46.8px`. The Submit and Hint buttons likely meet the 44px guideline. However, the "Anhören" and "Anzeigen" buttons share the same styling and appear on the same `<p>` tag with `margin: 0.3rem 0.3rem` — on a narrow viewport the reduced horizontal spacing may compress rendered height if font scaling differs.
+
+File: `tap-to-vocab/vocab.html:13` (button CSS rule)
+
+#### vocab.html: speechSynthesis Used Without Availability Guard in listVoices Call
+**Severity: Low**
+
+`findVoiceByName()` calls `speechSynthesis.getVoices()` directly (line 85) with a `|| []` fallback. The outer `speak()` function guards with `if (!("speechSynthesis" in window)) return;` (line 90). However, `speechSynthesis.onvoiceschanged` is set unconditionally at line 149 without checking `typeof speechSynthesis !== "undefined"` first. The guard at line 148 (`if (typeof speechSynthesis !== "undefined")`) does exist, so this is correctly guarded. No crash risk — this is N/A.
+
+File: `tap-to-vocab/vocab.html:148-153` (guard is present and correct)
+
+---
+
+### voices.html
+
+#### voices.html Is Orphaned — Not Linked From Any App Page
+**Severity: Low**
+
+No other HTML file in the app links to `voices.html`. A full search of all `.html` and `.js` files under `tap-to-vocab/tap-to-vocab/` returned zero matches for `voices.html`. The page is intentionally a developer-only debug utility (title: "Web Speech Voice Inspector", instructions in German explaining iOS voice loading). It is not intended to be user-facing. Reachable only via direct URL.
+
+File: All `.html` and `.js` files checked — no references found.
+
+#### voices.html Has No Navigation — Intentional for Debug Utility
+**Severity: Low**
+
+`voices.html` contains no back button or home link. Given its purpose as a developer-only voice debug tool, this is appropriate. The page does not need in-app navigation since it is not part of the user-facing flow. A developer using it navigates with browser controls. No fix recommended — removing this page or leaving it navigation-free are both acceptable.
+
+File: `tap-to-vocab/voices.html` (entire file — no navigation elements, intentional)
+
+#### voices.html: No Styling From Main App — Intentional for Debug Page
+**Severity: Low**
+
+`voices.html` uses its own inline `<style>` block (lines 7–15) with a clean, neutral light theme (white, `#ddd` borders, `#f7f7f7` table header). It does not load `styles.css` or `coins.js` or `shared-utils.js`. This is appropriate for a debug utility — applying the app's dark theme to an internal tool is unnecessary.
+
+File: `tap-to-vocab/voices.html:7-15` (standalone styles — intentional)
+
+#### voices.html: speechSynthesis Access Without Null Check at Top-Level Call
+**Severity: Medium**
+
+`listVoices()` at line 37 calls `window.speechSynthesis.getVoices()` directly. If the browser does not support `speechSynthesis` (e.g., certain Android WebViews, some desktop browsers without the API), this will throw `TypeError: Cannot read properties of undefined (reading 'getVoices')`. The `speak()` function at line 70 has a guard (`if (!('speechSynthesis' in window)) return;`), but `listVoices()` and `render()` do not. Calling `render()` at line 78 (top-level, runs on page load) would crash the page in unsupported browsers.
+
+File: `tap-to-vocab/voices.html:37, 78` (unguarded speechSynthesis access)
+
+#### voices.html: Table Overflows on Narrow Viewports (Mobile Layout)
+**Severity: Low**
+
+The `<table>` at line 10 is set to `width: 100%` with 6 columns (#, Name, Lang, Local, Test, URL-Parameter). On a 375px viewport, the table will compress or overflow horizontally because the columns (especially the "URL-Parameter" column containing `voice=<url-encoded-name>` values) cannot reasonably fit in ~350px. No `overflow-x: auto` wrapper is present on the containing element. While `voices.html` is a developer tool unlikely to be used on mobile, the table layout will be broken.
+
+File: `tap-to-vocab/voices.html:9-12` (table CSS, no overflow wrapper)
+
+#### voices.html: voiceschanged Listener Registered But render() Also Called Immediately
+**Severity: Low — Minor Redundancy**
+
+`render()` is called at line 78 (immediately, before voices may have loaded), and `speechSynthesis.onvoiceschanged = render` is set at line 80 (to re-render after voices load). This is the standard pattern for handling async voice loading and is correct. The initial `render()` call at line 78 will produce an empty table if voices haven't loaded yet, then the `onvoiceschanged` event will re-populate it. This is expected behavior — not a bug, but users may see a brief empty table.
+
+File: `tap-to-vocab/voices.html:78-81` (render timing — expected behavior)
