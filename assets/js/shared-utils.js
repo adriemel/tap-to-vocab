@@ -37,6 +37,23 @@
     }).filter(r => r.category && r.es && r.de);
   }
 
+  /* ---------- Generic TSV Loader ---------- */
+  async function loadTSV(tsvPath) {
+    const res = await fetch(tsvPath, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load " + tsvPath);
+    const text = await res.text();
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    const header = lines[0].split("\t").map(h => h.trim());
+    return lines.slice(1).map(line => {
+      const cols = line.split("\t");
+      const obj = {};
+      header.forEach((h, i) => {
+        obj[h] = (cols[i] || "").trim();
+      });
+      return obj;
+    });
+  }
+
   /* ---------- Audio ---------- */
   let _audioCtx = null;
 
@@ -147,6 +164,7 @@
   window.SharedUtils = {
     shuffleArray: shuffleArray,
     loadWords: loadWords,
+    loadTSV: loadTSV,
     playSuccessSound: playSuccessSound,
     playErrorSound: playErrorSound,
     showSuccessAnimation: showSuccessAnimation,
