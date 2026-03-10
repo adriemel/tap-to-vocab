@@ -11,11 +11,11 @@
 
 ### Bugs
 
-- [ ] **BUG-01**: Quiz back button refunds coins when undoing a previously-marked correct answer
-- [ ] **BUG-02**: Web Speech API voice loading works on iOS/Safari — falls back gracefully to any available Spanish voice without silent failure
+- [x] **BUG-01**: Quiz back button refunds coins when undoing a previously-marked correct answer
+- [x] **BUG-02**: Web Speech API voice loading works on iOS/Safari — falls back gracefully to any available Spanish voice without silent failure
 - [ ] **BUG-03**: Game lives are properly initialized when a user navigates directly to a game URL (not just via sessionStorage from index.html)
 - [ ] **BUG-04**: Favicon present on all pages — no 404 on every page load
-- [ ] **BUG-05**: localStorage quota exceeded shows visible user feedback instead of silently failing
+- [x] **BUG-05**: localStorage quota exceeded shows visible user feedback instead of silently failing
 - [ ] **BUG-06**: Any additional broken functionality discovered during audit is fixed
 
 ### Structure
@@ -64,11 +64,11 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | AUDT-01 | Phase 1 — Audit | Complete |
-| BUG-01 | Phase 2 — Bug Fixes | Pending |
-| BUG-02 | Phase 2 — Bug Fixes | Pending |
+| BUG-01 | Phase 2 — Bug Fixes | Complete |
+| BUG-02 | Phase 2 — Bug Fixes | Complete |
 | BUG-03 | Phase 2 — Bug Fixes | Pending |
 | BUG-04 | Phase 2 — Bug Fixes | Pending |
-| BUG-05 | Phase 2 — Bug Fixes | Pending |
+| BUG-05 | Phase 2 — Bug Fixes | Complete |
 | BUG-06 | Phase 2 — Bug Fixes | Pending |
 | STRCT-01 | Phase 3 — Code Cleanup | Pending |
 | STRCT-02 | Phase 3 — Code Cleanup | Pending |

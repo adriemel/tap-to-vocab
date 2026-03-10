@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-audit-01-03-PLAN.md — games cluster audit
-last_updated: "2026-03-10T14:46:17.797Z"
+stopped_at: Completed 02-01-PLAN.md — JS bug fixes (BUG-01, BUG-02, BUG-05)
+last_updated: "2026-03-10T19:10:38.236Z"
 last_activity: 2026-03-10 — Roadmap created, phases derived from requirements
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
   percent: 33
 ---
 
@@ -53,6 +53,7 @@ Progress: [███░░░░░░░] 33%
 | Phase 01-audit P01 | 15 | 2 tasks | 1 files |
 | Phase 01-audit P02 | 10 | 2 tasks | 1 files |
 | Phase 01-audit P03 | 10 | 2 tasks | 1 files |
+| Phase 02-bug-fixes P01 | 2 | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,9 @@ Recent decisions affecting current work:
 - [Phase 01-audit]: scheduleMusic() in loop() is correct iOS keepalive, not a per-frame scheduling bug — existing CONCERNS.md entry needs correction
 - [Phase 01-audit]: Games cluster: in-game scores siloed from CoinTracker on all 3 game files (coin-dash, jungle-run, tower-stack)
 - [Phase 01-audit]: sessionStorage silent-redirect UX gap confirmed as High severity on all 3 game pages — Phase 2 fix target
+- [Phase 02-bug-fixes]: BUG-01: spendCoins not guarded on return value — back navigation always proceeds regardless of coin balance
+- [Phase 02-bug-fixes]: BUG-02: synchronous getVoices() before voiceschanged listener — handles both Chrome (sync) and iOS/Safari (async early-fire)
+- [Phase 02-bug-fixes]: BUG-05: .textContent used for error message (not .innerHTML) to prevent injection risk
 
 ### Pending Todos
 
@@ -85,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T14:43:13.552Z
-Stopped at: Completed 01-audit-01-03-PLAN.md — games cluster audit
+Last session: 2026-03-10T19:10:38.233Z
+Stopped at: Completed 02-01-PLAN.md — JS bug fixes (BUG-01, BUG-02, BUG-05)
 Resume file: None
