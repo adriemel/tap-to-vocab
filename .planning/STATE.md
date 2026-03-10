@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 03-02-PLAN.md — home page JS extraction to home.js
-last_updated: "2026-03-10T19:35:19.074Z"
+stopped_at: Completed 03-01-PLAN.md — TSV loader consolidation (STRCT-01)
+last_updated: "2026-03-10T19:36:16.440Z"
 last_activity: 2026-03-10 — Roadmap created, phases derived from requirements
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 9
-  completed_plans: 6
+  completed_plans: 8
   percent: 33
 ---
 
@@ -55,6 +55,8 @@ Progress: [███░░░░░░░] 33%
 | Phase 01-audit P03 | 10 | 2 tasks | 1 files |
 | Phase 02-bug-fixes P01 | 2 | 3 tasks | 3 files |
 | Phase 03-code-cleanup P02 | 2 | 2 tasks | 2 files |
+| Phase 03-code-cleanup P03 | 10 | 2 tasks | 4 files |
+| Phase 03-code-cleanup P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -78,6 +80,10 @@ Recent decisions affecting current work:
 - [Phase 02-bug-fixes]: BUG-02: synchronous getVoices() before voiceschanged listener — handles both Chrome (sync) and iOS/Safari (async early-fire)
 - [Phase 02-bug-fixes]: BUG-05: .textContent used for error message (not .innerHTML) to prevent injection risk
 - [Phase 03-code-cleanup]: home.js: merged both inline script blocks into one DOMContentLoaded listener — reset-coins was outside DOMContentLoaded originally but consolidating is safe and cleaner
+- [Phase 03-code-cleanup]: requireLives returns false/true — callers responsible for early return within IIFE scope
+- [Phase 03-code-cleanup]: GameInit module pattern established for shared game initialization helpers
+- [Phase 03-code-cleanup]: loadTSV returns unfiltered rows — callers own domain filtering (fill-blank and conjugation filter inline at call site)
+- [Phase 03-code-cleanup]: loadWords() kept unchanged — specialized convenience wrapper with different return shape, no benefit to replacing with loadTSV
 
 ### Pending Todos
 
@@ -91,6 +97,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T19:35:19.070Z
-Stopped at: Completed 03-02-PLAN.md — home page JS extraction to home.js
+Last session: 2026-03-10T19:36:16.434Z
+Stopped at: Completed 03-01-PLAN.md — TSV loader consolidation (STRCT-01)
 Resume file: None
