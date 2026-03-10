@@ -91,5 +91,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Audit | 3/3 | Complete   | 2026-03-10 |
 | 2. Bug Fixes | 1/2 | In Progress|  |
-| 3. Code Cleanup | 0/4 | Not started | - |
+| 3. Code Cleanup | 2/4 | In Progress|  |
 | 4. UI & Mobile Polish | 0/TBD | Not started | - |

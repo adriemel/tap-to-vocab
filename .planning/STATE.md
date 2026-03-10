@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-01-PLAN.md — JS bug fixes (BUG-01, BUG-02, BUG-05)
-last_updated: "2026-03-10T19:21:22.770Z"
+stopped_at: Completed 03-02-PLAN.md — home page JS extraction to home.js
+last_updated: "2026-03-10T19:35:19.074Z"
 last_activity: 2026-03-10 — Roadmap created, phases derived from requirements
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 9
+  completed_plans: 6
   percent: 33
 ---
 
@@ -54,6 +54,7 @@ Progress: [███░░░░░░░] 33%
 | Phase 01-audit P02 | 10 | 2 tasks | 1 files |
 | Phase 01-audit P03 | 10 | 2 tasks | 1 files |
 | Phase 02-bug-fixes P01 | 2 | 3 tasks | 3 files |
+| Phase 03-code-cleanup P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,7 @@ Recent decisions affecting current work:
 - [Phase 02-bug-fixes]: BUG-01: spendCoins not guarded on return value — back navigation always proceeds regardless of coin balance
 - [Phase 02-bug-fixes]: BUG-02: synchronous getVoices() before voiceschanged listener — handles both Chrome (sync) and iOS/Safari (async early-fire)
 - [Phase 02-bug-fixes]: BUG-05: .textContent used for error message (not .innerHTML) to prevent injection risk
+- [Phase 03-code-cleanup]: home.js: merged both inline script blocks into one DOMContentLoaded listener — reset-coins was outside DOMContentLoaded originally but consolidating is safe and cleaner
 
 ### Pending Todos
 
@@ -89,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T19:10:38.233Z
-Stopped at: Completed 02-01-PLAN.md — JS bug fixes (BUG-01, BUG-02, BUG-05)
+Last session: 2026-03-10T19:35:19.070Z
+Stopped at: Completed 03-02-PLAN.md — home page JS extraction to home.js
 Resume file: None
