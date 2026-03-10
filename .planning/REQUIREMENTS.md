@@ -23,7 +23,7 @@
 - [x] **STRCT-01**: Duplicated TSV loaders in fill-blank.js (loadSentences) and conjugation.js (loadVerbs) consolidated — no copy-paste TSV parsing outside SharedUtils
 - [x] **STRCT-02**: Inline `<script>` blocks in index.html extracted to a dedicated JS module
 - [x] **STRCT-03**: Game lives logic deduplicated across coin-dash.html, jungle-run.html, tower-stack.html
-- [ ] **STRCT-04**: CLAUDE.md files updated to accurately reflect current architecture (SharedUtils, CoinTracker, current script load order)
+- [x] **STRCT-04**: CLAUDE.md files updated to accurately reflect current architecture (SharedUtils, CoinTracker, current script load order)
 
 ### UI Consistency
 
@@ -73,7 +73,7 @@
 | STRCT-01 | Phase 3 — Code Cleanup | Complete |
 | STRCT-02 | Phase 3 — Code Cleanup | Complete |
 | STRCT-03 | Phase 3 — Code Cleanup | Complete |
-| STRCT-04 | Phase 3 — Code Cleanup | Pending |
+| STRCT-04 | Phase 3 — Code Cleanup | Complete |
 | UI-01 | Phase 4 — UI & Mobile Polish | Pending |
 | UI-02 | Phase 4 — UI & Mobile Polish | Pending |
 | UI-03 | Phase 4 — UI & Mobile Polish | Pending |
