@@ -5,33 +5,6 @@
 
 (function () {
 
-  /* ---------- TSV Loader ---------- */
-  async function loadSentences(tsvPath) {
-    const res = await fetch(tsvPath, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load " + tsvPath);
-    const text = await res.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const header = lines[0].split("\t").map(h => h.trim());
-    const idx = {
-      category: header.indexOf("category"),
-      de: header.indexOf("de"),
-      es_with_blank: header.indexOf("es_with_blank"),
-      correct_answer: header.indexOf("correct_answer"),
-      wrong_answers: header.indexOf("wrong_answers")
-    };
-    return lines.slice(1).map(line => {
-      const cols = line.split("\t");
-      const col = i => (i >= 0 ? (cols[i] || "") : "").trim();
-      return {
-        category: col(idx.category),
-        de: col(idx.de),
-        es_with_blank: col(idx.es_with_blank),
-        correct_answer: col(idx.correct_answer),
-        wrong_answers: col(idx.wrong_answers)
-      };
-    }).filter(r => r.de && r.es_with_blank && r.correct_answer);
-  }
-
   /* ---------- Fill-in-Blank Game ---------- */
   function initGame(sentences) {
     const germanEl = document.getElementById("german-sentence");
@@ -157,7 +130,8 @@
   async function init() {
     const errorEl = document.getElementById("error");
     try {
-      const sentences = await loadSentences("/data/fill-in-blank.tsv");
+      const rawRows = await SharedUtils.loadTSV("/data/fill-in-blank.tsv");
+      const sentences = rawRows.filter(r => r.de && r.es_with_blank && r.correct_answer);
       if (sentences.length === 0) {
         errorEl.textContent = "No sentences found in data file.";
         errorEl.style.display = "block";

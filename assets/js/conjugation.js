@@ -35,23 +35,6 @@
     { key: "ellos", label: "ellos/ellas" }
   ];
 
-  /* ---------- TSV Loader ---------- */
-  async function loadVerbs(tsvPath) {
-    const res = await fetch(tsvPath, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load " + tsvPath);
-    const text = await res.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const header = lines[0].split("\t").map(h => h.trim());
-    return lines.slice(1).map(line => {
-      const cols = line.split("\t");
-      const obj = {};
-      header.forEach((h, i) => {
-        obj[h] = (cols[i] || "").trim();
-      });
-      return obj;
-    }).filter(v => v.infinitive && v.de);
-  }
-
   /* ---------- Verb Manager ---------- */
   function openVerbManager(allVerbs, onSave) {
     const modal = document.getElementById("verb-manager");
@@ -321,7 +304,7 @@
     const btnManage = document.getElementById("btn-manage");
 
     try {
-      const allVerbs = await loadVerbs("/data/verbs.tsv");
+      const allVerbs = (await SharedUtils.loadTSV("/data/verbs.tsv")).filter(v => v.infinitive && v.de);
       if (allVerbs.length === 0) {
         errorEl.textContent = "No verbs found in data file.";
         errorEl.style.display = "block";
