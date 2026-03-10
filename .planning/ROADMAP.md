@@ -46,7 +46,11 @@ Plans:
   4. No favicon 404 appears in the browser console on any page
   5. If localStorage quota is exceeded, the user sees a visible error message rather than a silent no-op
   6. All additional broken behaviors discovered during audit are resolved
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Fix JS logic bugs: coin refund on back (BUG-01), iOS voice loading (BUG-02), localStorage error feedback (BUG-05)
+- [ ] 02-02-PLAN.md — Fix structural bugs: game lives silent redirect (BUG-03), favicon on all pages (BUG-04), voices.html crash guard + CONCERNS.md correction (BUG-06)
 
 ### Phase 3: Code Cleanup
 **Goal**: Duplicated TSV parsing and inline scripts are consolidated — the codebase has one place for each shared concern
@@ -80,6 +84,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Audit | 3/3 | Complete   | 2026-03-10 |
-| 2. Bug Fixes | 0/TBD | Not started | - |
+| 2. Bug Fixes | 0/2 | Not started | - |
 | 3. Code Cleanup | 0/TBD | Not started | - |
 | 4. UI & Mobile Polish | 0/TBD | Not started | - |
