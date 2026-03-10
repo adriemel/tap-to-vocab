@@ -63,23 +63,23 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDT-01 | Phase 1 | Pending |
-| BUG-01 | Phase 2 | Pending |
-| BUG-02 | Phase 2 | Pending |
-| BUG-03 | Phase 2 | Pending |
-| BUG-04 | Phase 2 | Pending |
-| BUG-05 | Phase 2 | Pending |
-| BUG-06 | Phase 2 | Pending |
-| STRCT-01 | Phase 3 | Pending |
-| STRCT-02 | Phase 3 | Pending |
-| STRCT-03 | Phase 3 | Pending |
-| STRCT-04 | Phase 3 | Pending |
-| UI-01 | Phase 4 | Pending |
-| UI-02 | Phase 4 | Pending |
-| UI-03 | Phase 4 | Pending |
-| MOB-01 | Phase 4 | Pending |
-| MOB-02 | Phase 4 | Pending |
-| MOB-03 | Phase 4 | Pending |
+| AUDT-01 | Phase 1 — Audit | Pending |
+| BUG-01 | Phase 2 — Bug Fixes | Pending |
+| BUG-02 | Phase 2 — Bug Fixes | Pending |
+| BUG-03 | Phase 2 — Bug Fixes | Pending |
+| BUG-04 | Phase 2 — Bug Fixes | Pending |
+| BUG-05 | Phase 2 — Bug Fixes | Pending |
+| BUG-06 | Phase 2 — Bug Fixes | Pending |
+| STRCT-01 | Phase 3 — Code Cleanup | Pending |
+| STRCT-02 | Phase 3 — Code Cleanup | Pending |
+| STRCT-03 | Phase 3 — Code Cleanup | Pending |
+| STRCT-04 | Phase 3 — Code Cleanup | Pending |
+| UI-01 | Phase 4 — UI & Mobile Polish | Pending |
+| UI-02 | Phase 4 — UI & Mobile Polish | Pending |
+| UI-03 | Phase 4 — UI & Mobile Polish | Pending |
+| MOB-01 | Phase 4 — UI & Mobile Polish | Pending |
+| MOB-02 | Phase 4 — UI & Mobile Polish | Pending |
+| MOB-03 | Phase 4 — UI & Mobile Polish | Pending |
 
 **Coverage:**
 - v1 requirements: 17 total
@@ -88,4 +88,4 @@
 
 ---
 *Requirements defined: 2026-03-10*
-*Last updated: 2026-03-10 after initial definition*
+*Last updated: 2026-03-10 after roadmap creation*
