@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
   <title>Web Speech Voice Inspector</title>
   <style>
     body { font: 16px/1.5 system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
@@ -34,6 +35,7 @@
 
 <script>
 function listVoices() {
+  if (!('speechSynthesis' in window)) return [];
   const voices = window.speechSynthesis.getVoices() || [];
   return voices.map((v, i) => ({i, name: v.name, lang: v.lang, localService: v.localService, default: v.default}));
 }
