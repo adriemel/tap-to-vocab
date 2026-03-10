@@ -112,9 +112,9 @@ File: `assets/js/tapvocab.js`
 Practice list, enabled sentences, and enabled verbs are all stored in localStorage keyed by Spanish/German text content. If vocabulary entries are edited in the TSV files, stored user state silently orphans — the old key remains in localStorage pointing to a word that no longer exists.
 
 ### `scheduleMusic()` Called Every Animation Frame
-**Severity: Low — Performance**
+**Severity: Resolved (Not a Bug)**
 
-In game files, music scheduling may be called on each animation frame tick. Should be called once and use `AudioContext` scheduling for timing accuracy.
+Phase 1 audit confirmed: scheduleMusic() uses a correct Web Audio lookahead scheduling pattern, not per-frame execution. This entry is inaccurate and should not be treated as a defect. The per-frame call in `loop()` is an iOS keepalive — `scheduleMusic()` uses a `while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD)` guard and a `setTimeout(scheduleMusic, 100)` self-rescheduler, so the per-frame call is a no-op unless the setTimeout rescheduler fails.
 
 ### Stale CLAUDE.md
 **Severity: Low**
