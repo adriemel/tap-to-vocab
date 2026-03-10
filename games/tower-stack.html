@@ -120,15 +120,10 @@
     </div>
   </div>
 
+  <script src="/assets/js/game-init.js"></script>
   <script>
   (function () {
-    // Guard: require valid game lives (prevent direct URL bypass)
-    if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) {
-      document.querySelector(".card h1").insertAdjacentHTML("afterend",
-        '<p style="color:var(--error);text-align:center;padding:16px 0;">No games remaining. <a href="/" style="color:var(--accent);">Earn more coins \u2192</a></p>'
-      );
-      return;
-    }
+    if (!GameInit.requireLives(".card h1")) return;
 
     var canvas = document.getElementById("game-canvas");
     var ctx = canvas.getContext("2d");
