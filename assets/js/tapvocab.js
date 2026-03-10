@@ -23,12 +23,21 @@
     return _cachedSpanishVoice;
   }
 
-  // Pre-load voices when they become available
-  if (typeof speechSynthesis !== "undefined" && speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.addEventListener("voiceschanged", function () {
+  // BUG-02: check synchronously first (Chrome/Firefox have voices immediately),
+  // then listen for async load (required on iOS/Safari where voiceschanged may
+  // fire before this script runs or not at all).
+  if (typeof speechSynthesis !== "undefined") {
+    var _initialVoices = speechSynthesis.getVoices();
+    if (_initialVoices.length) {
       _voicesLoaded = true;
-      getSpanishVoice(); // cache the voice
-    });
+      getSpanishVoice();
+    }
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.addEventListener("voiceschanged", function () {
+        _voicesLoaded = true;
+        getSpanishVoice();
+      });
+    }
   }
   
   function speakSpanish(text) {
@@ -65,7 +74,11 @@
   
   function savePracticeList(list) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
-    catch (e) { console.warn("Could not save practice list:", e); }
+    catch (e) {
+      console.warn("Could not save practice list:", e);
+      var el = document.getElementById("error");
+      if (el) { el.textContent = "Storage full — changes could not be saved."; el.style.display = "block"; }
+    }
   }
   
   function isMarked(word) {
@@ -313,6 +326,7 @@
         currentQuizIndex--;
       } else if (lastAnswer.wasCorrect) {
         correctCount--;
+        if (window.CoinTracker) CoinTracker.spendCoins(1); // BUG-01: refund coin on back
         if (isPracticeCategory) {
           quizWords.splice(currentQuizIndex, 0, lastAnswer.word);
           if (!isMarked(lastAnswer.word)) {

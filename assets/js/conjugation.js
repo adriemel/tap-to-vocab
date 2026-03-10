@@ -19,7 +19,11 @@
 
   function saveEnabledVerbs(enabledMap) {
     try { localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap)); }
-    catch (e) { console.warn("Could not save enabled verbs:", e); }
+    catch (e) {
+      console.warn("Could not save enabled verbs:", e);
+      var el = document.getElementById("error");
+      if (el) { el.textContent = "Storage full — changes could not be saved."; el.style.display = "block"; }
+    }
   }
 
   const PRONOUNS = [
