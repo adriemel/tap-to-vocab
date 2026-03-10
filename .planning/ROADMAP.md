@@ -28,7 +28,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Each issue has a severity rating and a clear description of the broken behavior
   3. No page has been skipped — vocab, quiz, sentences, conjugation, fill-blank, games hub, and all three mini-games are covered
   4. CONCERNS.md is updated with any issues found beyond what was already documented
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Audit learning pages: index.html, topic.html, sentences.html, conjugation.html, fill-blank.html
+- [ ] 01-02-PLAN.md — Audit standalone pages: vocab.html, voices.html
+- [ ] 01-03-PLAN.md — Audit games cluster: games.html, coin-dash.html, jungle-run.html, tower-stack.html
 
 ### Phase 2: Bug Fixes
 **Goal**: All identified broken functionality is fixed — coins, voice, game navigation, favicon, and storage errors all behave correctly
@@ -74,7 +79,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Audit | 0/TBD | Not started | - |
+| 1. Audit | 0/3 | Not started | - |
 | 2. Bug Fixes | 0/TBD | Not started | - |
 | 3. Code Cleanup | 0/TBD | Not started | - |
 | 4. UI & Mobile Polish | 0/TBD | Not started | - |
