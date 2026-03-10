@@ -90,4 +90,311 @@ File: `tap-to-vocab/tap-to-vocab/CLAUDE.md`
 
 ## Scope Creep Risk
 
-The coin/games system adds complexity (gating games behind coins) that could conflict with the primary learning goal. The `sessionStorage.game_lives` pattern for passing lives to games is fragile — if a user navigates directly to a game URL, lives won't be set.
+The coin/games system adds complexity (gating games behind coins) that could conflict with the primary learning goal. The `sessionStorage.game_lives` pattern for passing lives to games is fragile — if a user navigates directly to a game URL, lives won't be set. Game lives decrement logic is duplicated across all 3 game files.
+
+## Additional Issues
+
+### No Favicon
+**Severity: Low**
+
+No `favicon.ico` or `<link rel="icon">` in any page — causes a 404 request on every page load.
+
+### Quiz Back Button Doesn't Refund Coins
+**Severity: Low**
+
+When undoing a "Correct" answer with the back button in quiz mode, the coin awarded for that answer is not refunded. `CoinTracker.addCoin()` is called in `btnCorrect.onclick` but `btnQuizBack.onclick` only decrements `correctCount`.
+
+File: `assets/js/tapvocab.js`
+
+### User State Keyed by Text Strings
+**Severity: Medium — Fragile**
+
+Practice list, enabled sentences, and enabled verbs are all stored in localStorage keyed by Spanish/German text content. If vocabulary entries are edited in the TSV files, stored user state silently orphans — the old key remains in localStorage pointing to a word that no longer exists.
+
+### `scheduleMusic()` Called Every Animation Frame
+**Severity: Low — Performance**
+
+In game files, music scheduling may be called on each animation frame tick. Should be called once and use `AudioContext` scheduling for timing accuracy.
+
+### Stale CLAUDE.md
+**Severity: Low**
+
+`tap-to-vocab/CLAUDE.md` describes pre-`shared-utils.js` architecture ("both JS files contain their own copy of `loadWords()`"). Now inaccurate since the shared-utils refactor.
+
+File: `tap-to-vocab/CLAUDE.md`
+
+---
+
+## Audit — Learning Pages
+*(Phase 1 audit — 2026-03-10)*
+
+### index.html
+
+#### No Favicon Link
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+No `<link rel="icon">` in `<head>`. Confirmed: the full `<head>` block contains charset, viewport, title, description, og tags, stylesheet, and one inline `<script>` — no favicon link. Every page load triggers a 404 request for favicon.ico.
+
+File: `tap-to-vocab/index.html:3-13`
+
+#### Inline Script Blocks
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+Two inline `<script>` blocks confirmed: (1) DOMContentLoaded block (lines 14–36) that reads practiceList from localStorage and wires up the Games button coin gate + sessionStorage write; (2) Reset Coins button handler (lines 84–90). Both use `CoinTracker` directly without guarding for its availability beyond script load order.
+
+File: `tap-to-vocab/index.html:14-36, 84-90`
+
+#### grid-two-col Forces Narrow Buttons at 375px
+**Severity: Low**
+
+The `.grid-two-col` uses `grid-template-columns: 1fr 1fr` with no breakpoint override. At 375px viewport width (iPhone SE), each column is approximately 155px wide (accounting for container padding). Category buttons with long labels like "🏠 Casa y Familia" will wrap text within the button. This is functional but produces cramped, two-line buttons. No horizontal overflow occurs because the grid fills the container correctly, but tap ergonomics are degraded.
+
+File: `tap-to-vocab/assets/css/styles.css:39-43`
+
+#### practice-btn Count Updated Only on DOMContentLoaded
+**Severity: Low**
+
+The inline script reads `practiceList` from localStorage and updates the `#practice-btn` text once on DOMContentLoaded. If a user adds words to their practice list in another tab or session, the count on the home page will be stale until reload. This is cosmetic and expected for a client-only app, but worth noting.
+
+File: `tap-to-vocab/index.html:15-22`
+
+#### Script Load Order: coins.js Only, No shared-utils.js
+**Severity: Low**
+
+`index.html` loads `coins.js` in `<head>` (correct for inline script reliance on `CoinTracker`), but does NOT load `shared-utils.js` at all — which is correct since no shared-utils functions are used on the home page. Load order is appropriate for this page's actual dependencies.
+
+File: `tap-to-vocab/index.html:13`
+
+---
+
+### topic.html (tapvocab.js)
+
+#### Quiz Back Button Does Not Refund Coin
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+Confirmed at `tapvocab.js` lines 305–330: `btnQuizBack.onclick` decrements `correctCount` when `lastAnswer.wasCorrect` is true, but does not call `CoinTracker.spendCoins(1)` or any equivalent. The coin awarded in `btnCorrect.onclick` (line 250: `CoinTracker.addCoin()`) is never reversed. A user can "earn" coins by repeatedly pressing Correct then Back.
+
+File: `tap-to-vocab/assets/js/tapvocab.js:305-330`
+
+#### savePracticeList Silent localStorage Failure
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`savePracticeList` at line 67–69 catches localStorage errors with `console.warn` only. No user-visible feedback if storage is full.
+
+File: `tap-to-vocab/assets/js/tapvocab.js:66-69`
+
+#### Web Speech API iOS/Safari Voice Timing
+**Severity: Medium**
+
+(Confirmed present — see pre-existing entry above)
+
+`speechSynthesis.onvoiceschanged` is used to cache the Spanish voice (lines 27–32). On iOS/Safari this event fires differently (often before the script runs, or not at all). The fallback in `speakSpanish` calls `getSpanishVoice()` each time, but `speechSynthesis.getVoices()` may return empty on iOS until after user interaction. Result: first pronunciation attempt may use a non-Spanish voice or fail silently.
+
+File: `tap-to-vocab/assets/js/tapvocab.js:15-44`
+
+#### Quiz Flip Card Animation Reset: Fix Intact
+**Severity: N/A — Previously Fixed**
+
+The `inner.style.transition = "none"` / force-reflow / restore-transition pattern is confirmed present and correct at `showQuizCard()` lines 162–167. The previously-fixed quiz flip animation bug is resolved.
+
+File: `tap-to-vocab/assets/js/tapvocab.js:162-167`
+
+#### topic.html Missing Script Tags in Head
+**Severity: Low**
+
+`topic.html` loads `coins.js`, `shared-utils.js`, and `tapvocab.js` at the bottom of `<body>` (lines 137–139), which is correct practice for non-deferred scripts. Load order is coins → shared-utils → tapvocab, which is correct. No issue with the order itself, but `<head>` has no script tags — coin counter will show "0" for the brief period before DOMContentLoaded fires (same as other pages).
+
+File: `tap-to-vocab/topic.html:137-139`
+
+#### Browse Mode and Quiz Mode Both Have Home Navigation
+**Severity: N/A — Functioning Correctly**
+
+Browse mode has `#btn-home` (line 38 of topic.html). Quiz mode has `#btn-home-quiz` (line 88). The quiz complete modal has `#modal-home`. All three correctly set `location.href = "/"`. Navigation is complete in all UI states.
+
+#### topic.html Has No Favicon
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`<head>` at lines 3–13 has no `<link rel="icon">`. Same issue as index.html.
+
+File: `tap-to-vocab/topic.html:3-13`
+
+#### tapvocab.js: Raw Hex Colors in CSS (Not a JS Issue)
+**Severity: Low**
+
+`tapvocab.js` does not inject any raw hex colors. Visual consistency concern is at the CSS level (styles.css has numerous raw hex values for borders and backgrounds beyond the CSS variables). This is a CSS technical debt issue, not a JS issue.
+
+File: `tap-to-vocab/assets/css/styles.css` (multiple lines)
+
+---
+
+### sentences.html (sentences.js)
+
+#### saveEnabledSentences Silent localStorage Failure
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`saveEnabledSentences` at line 25–27 of sentences.js uses the same `console.warn`-only catch pattern. Silent failure with no user feedback.
+
+File: `tap-to-vocab/assets/js/sentences.js:24-27`
+
+#### Back Button History: Re-renders Without Re-fetching TSV
+**Severity: N/A — Functioning Correctly**
+
+The back button in sentences.js pops from the `history` array (line 263: `currentIndex = history.pop()`) and calls `loadSentence()` (line 265). `loadSentence()` renders from the in-memory `sentences` array using `currentIndex`. No TSV re-fetch occurs. The full sentence list is loaded once at init and held in memory. Back navigation is correct and does not incur additional network requests.
+
+File: `tap-to-vocab/assets/js/sentences.js:259-267`
+
+#### sentences.html Script Load Order Correct
+**Severity: N/A — Functioning Correctly**
+
+Load order: coins.js → shared-utils.js → sentences.js (lines 75–77 of sentences.html). Correct.
+
+#### User State Keyed by German Text (Enabled Sentences)
+**Severity: Medium**
+
+(Confirmed present — see pre-existing entry above)
+
+`saveEnabledSentences` stores enabled state keyed by `sentence.de` (the German text, lines 56–59 and 72–73). If a sentence's German translation is edited in words.tsv, the stored localStorage key orphans and the sentence resets to enabled on next load. Same fragility pattern as practice list.
+
+File: `tap-to-vocab/assets/js/sentences.js:56-59, 72-73`
+
+#### sentences.html: No Favicon
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+No `<link rel="icon">` in `<head>`.
+
+File: `tap-to-vocab/sentences.html:3-12`
+
+#### sentences.html: innerHTML Usage
+**Severity: Low — Acceptable for static site**
+
+`buildAreaEl.innerHTML = ""` and `wordBankEl.innerHTML = ""` are used for clearing (safe). `buildAreaEl.innerHTML = '<span style="...">Tap words below...</span>'` injects a hardcoded string (not user data). No user-controlled content is inserted via innerHTML. Acceptable for this static site.
+
+File: `tap-to-vocab/assets/js/sentences.js:144, 156, 209`
+
+---
+
+### conjugation.html (conjugation.js)
+
+#### conjugation.js Has Its Own loadVerbs TSV Loader
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`loadVerbs` function exists at lines 35–49 of conjugation.js and is NOT delegating to `SharedUtils.loadWords`. It implements its own fetch + TSV parse. This mirrors SharedUtils.loadWords but uses a `header.forEach` pattern to build dynamic column objects (suited to verbs.tsv multi-column format) rather than the fixed `{category, es, de}` structure. Confirmed duplicated logic.
+
+File: `tap-to-vocab/assets/js/conjugation.js:35-49`
+
+#### saveEnabledVerbs Silent localStorage Failure
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`saveEnabledVerbs` at lines 21–23 of conjugation.js uses the same `console.warn`-only catch pattern. Silent failure with no user feedback.
+
+File: `tap-to-vocab/assets/js/conjugation.js:20-23`
+
+#### User State Keyed by Infinitive Text (Enabled Verbs)
+**Severity: Medium**
+
+(Confirmed present — see pre-existing entry above)
+
+Enabled verbs stored keyed by `verb.infinitive` text. If a verb's infinitive is corrected in verbs.tsv, stored enabled state orphans.
+
+File: `tap-to-vocab/assets/js/conjugation.js:63-64`
+
+#### max-height: 700px and max-width: 600px Media Query Present
+**Severity: N/A — Functioning Correctly**
+
+The extra-small screen media query for iPhone SE fit is confirmed at styles.css line 1068. It reduces `.conj-row` padding, `.conj-table` gap, `.conj-pronoun` min-width and font-size, and `.conj-slot` min-height. This is a correctly implemented responsive override.
+
+File: `tap-to-vocab/assets/css/styles.css:1068-1097`
+
+#### conjugation.html: Script Load Order Correct
+**Severity: N/A — Functioning Correctly**
+
+Load order: coins.js → shared-utils.js → conjugation.js (lines 88–90 of conjugation.html). Correct.
+
+#### conjugation.html: No Favicon
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+No `<link rel="icon">` in `<head>`.
+
+File: `tap-to-vocab/conjugation.html:3-12`
+
+#### conjugation.js: Word Bank Buttons Below 44px When Many Forms Present
+**Severity: Low**
+
+The `.word-btn` class is used for verb form buttons in the word bank. With 6 forms displayed, on a 375px viewport the word bank buttons will be sized by padding only (no explicit min-height). Depending on text length and wrapping, some buttons may fall below the 44px tap-target guideline if the CSS `padding` alone is insufficient.
+
+File: `tap-to-vocab/assets/css/styles.css` (word-btn definition)
+
+---
+
+### fill-blank.html (fill-blank.js)
+
+#### fill-blank.js Has Its Own loadSentences TSV Loader
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`loadSentences` function at lines 9–33 of fill-blank.js implements its own fetch + TSV parse. Confirmed not delegating to SharedUtils.loadWords. The function uses dynamic header index lookup (same approach as SharedUtils) and reads 5 columns: `category`, `de`, `es_with_blank`, `correct_answer`, `wrong_answers`.
+
+File: `tap-to-vocab/assets/js/fill-blank.js:9-33`
+
+#### Incomplete TSV Row Guard Present
+**Severity: N/A — Previously Fixed**
+
+The `(cols[i] || "").trim()` guard is confirmed present via the `col` helper at line 24: `const col = i => (i >= 0 ? (cols[i] || "") : "").trim()`. The previously-fixed incomplete-row crash is resolved. The `.filter(r => r.de && r.es_with_blank && r.correct_answer)` at line 32 also correctly discards incomplete rows.
+
+File: `tap-to-vocab/assets/js/fill-blank.js:24, 32`
+
+#### Both TSV Categories Loaded — No UI Category Filter
+**Severity: Low**
+
+Both `hay_vs_estar` and `verb_conjugation` categories in fill-in-blank.tsv are loaded together (no category filter in code). All exercises from both categories are shuffled into a single pool. There is no UI to select or filter by category. Users cannot choose to practice only grammar exercises or only conjugation exercises. This is functional but limits the learning experience.
+
+File: `tap-to-vocab/assets/js/fill-blank.js:157-172`
+
+#### fill-blank.html: Back Button Does Not Restore Answer State
+**Severity: Low**
+
+The back button pops `history` and decrements `currentIndex`, then calls `loadSentence()`. `loadSentence()` re-renders the question with fresh shuffled choice buttons. The previously-selected correct answer is not remembered — the question is presented as if it has not been answered. This is minor and expected for a simple back navigation, but users may be confused about why a "completed" question reappears.
+
+File: `tap-to-vocab/assets/js/fill-blank.js:140-147`
+
+#### fill-blank.html: Script Load Order Correct
+**Severity: N/A — Functioning Correctly**
+
+Load order: coins.js → shared-utils.js → fill-blank.js (lines 48–50 of fill-blank.html). Correct.
+
+#### fill-blank.html: No Favicon
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+No `<link rel="icon">` in `<head>`.
+
+File: `tap-to-vocab/fill-blank.html:3-12`
+
+#### fill-blank.html: innerHTML Usage for Spanish Sentence Rendering
+**Severity: Low — Acceptable for static site**
+
+`spanishEl.innerHTML = ""` clears the element (safe). The blank slot is built via `document.createElement` and `document.createTextNode` (safe). The completion message uses `innerHTML` with a hardcoded string (not user data). No XSS risk for this static site.
+
+File: `tap-to-vocab/assets/js/fill-blank.js:73-83, 59`
