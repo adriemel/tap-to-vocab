@@ -61,7 +61,13 @@ Plans:
   2. index.html contains no inline script blocks — coin display and reset button logic live in a dedicated JS file
   3. All three mini-games share a single game-lives initialization function — the sessionStorage fallback logic is not copy-pasted across files
   4. CLAUDE.md files accurately describe the current architecture (SharedUtils, CoinTracker, script load order) with no references to old patterns
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Add SharedUtils.loadTSV() and remove standalone TSV loaders from fill-blank.js and conjugation.js (STRCT-01)
+- [ ] 03-02-PLAN.md — Extract index.html inline scripts to home.js (STRCT-02)
+- [ ] 03-03-PLAN.md — Extract game lives guard to game-init.js and update all three game files (STRCT-03)
+- [ ] 03-04-PLAN.md — Update CLAUDE.md to accurately reflect current architecture (STRCT-04)
 
 ### Phase 4: UI & Mobile Polish
 **Goal**: Every page looks consistent and is fully usable on a 375px mobile screen with no overflow or misalignment
@@ -85,5 +91,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Audit | 3/3 | Complete   | 2026-03-10 |
 | 2. Bug Fixes | 1/2 | In Progress|  |
-| 3. Code Cleanup | 0/TBD | Not started | - |
+| 3. Code Cleanup | 0/4 | Not started | - |
 | 4. UI & Mobile Polish | 0/TBD | Not started | - |
