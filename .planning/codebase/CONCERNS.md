@@ -507,3 +507,198 @@ File: `tap-to-vocab/voices.html:9-12` (table CSS, no overflow wrapper)
 `render()` is called at line 78 (immediately, before voices may have loaded), and `speechSynthesis.onvoiceschanged = render` is set at line 80 (to re-render after voices load). This is the standard pattern for handling async voice loading and is correct. The initial `render()` call at line 78 will produce an empty table if voices haven't loaded yet, then the `onvoiceschanged` event will re-populate it. This is expected behavior — not a bug, but users may see a brief empty table.
 
 File: `tap-to-vocab/voices.html:78-81` (render timing — expected behavior)
+
+---
+
+## Audit — Games Cluster
+*(Phase 1 audit — 2026-03-10)*
+
+### games.html
+
+#### sessionStorage Guard: Silent Redirect With No User Feedback
+**Severity: High**
+
+`games.html` reads `sessionStorage.game_lives` on load (line 27–30). If lives ≤ 0 or the key is absent (e.g., user navigates directly to `/games.html` by typing the URL, or bookmarks the page), `location.replace("/")` fires immediately with zero user feedback. The user sees a brief blank page and is sent to the home screen without any explanation. This is the common path for returning users who type or bookmark game URLs.
+
+File: `tap-to-vocab/games.html:27-30`
+
+#### games.html: No Favicon
+**Severity: Low**
+
+(Confirmed present — see pre-existing entry above)
+
+`<head>` block has charset, viewport, title, and stylesheet — no `<link rel="icon">`.
+
+File: `tap-to-vocab/games.html:3-8`
+
+#### games.html: Game Cards Rendered via innerHTML With Hardcoded Data
+**Severity: Low — No XSS Risk**
+
+Game card titles, icons, and descriptions are injected into `<a>` elements via `innerHTML` (lines 47–50) from a hardcoded `GAMES` array. Content is developer-controlled and not user-supplied. No XSS risk. Noted for completeness as a potential future concern if the `GAMES` array were ever dynamically sourced.
+
+File: `tap-to-vocab/games.html:47-50`
+
+#### games.html: Does Not Load coins.js or shared-utils.js
+**Severity: N/A — Functioning Correctly**
+
+`games.html` is a pure navigation page that reads `sessionStorage.game_lives` to display a count and route to individual games. It correctly does not load `coins.js` or `shared-utils.js` since it uses neither CoinTracker nor any SharedUtils functions. The script is a small inline block. Load order is appropriate.
+
+File: `tap-to-vocab/games.html:25-59`
+
+---
+
+### games/coin-dash.html
+
+#### sessionStorage Guard: Silent Redirect With No User Feedback
+**Severity: High**
+
+Identical guard pattern to games.html. Line 127: `if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) { location.replace("/"); return; }`. A user who bookmarks `tapvocab.fun/games/coin-dash.html` and later visits it directly is silently redirected to `/` with no explanation. All three game files share this exact code.
+
+File: `tap-to-vocab/games/coin-dash.html:127`
+
+#### coin-dash.html: In-Game Score Not Sent to CoinTracker
+**Severity: Medium**
+
+`coin-dash.html` does not load `coins.js` and does not reference `CoinTracker` anywhere. The in-game coin collection (lines 742–744: `score++; scoreDisplay.textContent = score;`) only updates the in-game score counter — no coins are added to the persistent CoinTracker economy. Collecting coins in Coin Dash does not give the player coins they can spend in the main app. This is inconsistent with all learning pages, which all call `CoinTracker.addCoin()` on correct answers.
+
+File: `tap-to-vocab/games/coin-dash.html` (no `<script src>` for coins.js; `score++` at line 743 with no CoinTracker call)
+
+#### coin-dash.html: scheduleMusic() Called in Loop — But Pattern Is Correct
+**Severity: N/A — Not the Bug Previously Suspected**
+
+`scheduleMusic()` is called inside `loop()` at line 841: `if (musicPlaying) scheduleMusic();`. However, this is the correct Web Audio lookahead scheduling pattern. `scheduleMusic()` uses a `while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD)` loop and a `setTimeout(scheduleMusic, 100)` self-rescheduler, NOT `requestAnimationFrame`. The per-frame call in `loop()` is a secondary iOS keepalive (`// keep music fed on iOS`). The `scheduleMusic` function correctly checks `musicNextTime` before scheduling notes, so calling it every frame does not create duplicate notes — it simply returns early when no new notes need scheduling. The pre-existing `CONCERNS.md` entry "`scheduleMusic()` Called Every Animation Frame" does not apply to this implementation. The music system is correctly implemented.
+
+File: `tap-to-vocab/games/coin-dash.html:841, 258-282`
+
+#### coin-dash.html: Lives Decrement Pattern
+**Severity: Low — Code Duplication (Phase 3)**
+
+Lives decrement in `gameOver()` at lines 814–823. Pattern:
+```
+var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+if (lives > 0) { lives--; sessionStorage.setItem("game_lives", String(lives)); }
+if (lives <= 0) { btnAgain.style.display = "none"; } else { btnAgain.style.display = ""; }
+```
+This exact pattern is duplicated in jungle-run.html (lines 793–802) and tower-stack.html (lines 537–546). Three copies of identical lives management code — any bug fix or behavior change must be applied to all three files.
+
+File: `tap-to-vocab/games/coin-dash.html:814-823` (and jungle-run.html:793-802, tower-stack.html:537-546)
+
+#### coin-dash.html: Game-Over Screen Navigation Correct
+**Severity: N/A — Functioning Correctly**
+
+Game-over overlay has "Play Again" (`btn-again`) and "Done" (`onclick="location.replace('/games.html')"`) buttons. "Done" navigates back to the game selection page. "Play Again" restarts the game. There is also a visible "← Back" button at line 118 that links to `/games.html` via `location.replace`. Navigation is complete for all states.
+
+File: `tap-to-vocab/games/coin-dash.html:111-119`
+
+#### coin-dash.html: Canvas Fixed at 390×600 Logical Pixels, CSS-Scaled on Mobile
+**Severity: Low**
+
+The canvas element is 390×600 logical pixels (line 95). `resizeCanvas()` at lines 956–962 scales it via CSS `style.width/height` to fit the container (capped at 390px). At 375px viewport, the canvas renders at ~371px wide, maintaining the correct aspect ratio. No content is cut off. Mobile layout is acceptable.
+
+File: `tap-to-vocab/games/coin-dash.html:95, 956-962`
+
+---
+
+### games/jungle-run.html
+
+#### sessionStorage Guard: Silent Redirect With No User Feedback
+**Severity: High**
+
+Identical guard pattern. Line 133: `if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) { location.replace("/"); return; }`. Same UX gap as games.html and coin-dash.html — direct URL navigation silently redirects with no feedback.
+
+File: `tap-to-vocab/games/jungle-run.html:133`
+
+#### jungle-run.html: In-Game Bananas Not Sent to CoinTracker
+**Severity: Medium**
+
+`jungle-run.html` does not load `coins.js` and does not reference `CoinTracker`. Banana collection at line 920 (`score++`) only updates the in-game score. No coins are added to the persistent CoinTracker economy. Same inconsistency as coin-dash.html.
+
+File: `tap-to-vocab/games/jungle-run.html` (no `<script src>` for coins.js; `score++` at line 920 with no CoinTracker call)
+
+#### jungle-run.html: scheduleMusic() Called in Loop — Same Correct Pattern as coin-dash
+**Severity: N/A — Not a Bug**
+
+`scheduleMusic()` called at line 811 inside `loop()`: `if (musicPlaying) scheduleMusic();`. Identical pattern and identical implementation to coin-dash.html. Uses `setTimeout(scheduleMusic, 100)` lookahead scheduling with `while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD)` guard. The per-frame call is an iOS keepalive that is effectively a no-op unless the setTimeout rescheduler fails. Not a bug.
+
+File: `tap-to-vocab/games/jungle-run.html:811, 291-315`
+
+#### jungle-run.html: Lives Decrement Duplicated
+**Severity: Low — Code Duplication (Phase 3)**
+
+Lives decrement at lines 793–802. Exact same pattern as coin-dash.html (lines 814–823) and tower-stack.html (lines 537–546). All three game files have identical copy-pasted lives management code.
+
+File: `tap-to-vocab/games/jungle-run.html:793-802`
+
+#### jungle-run.html: Full-Screen Layout — Does Not Use App CSS Variables
+**Severity: Low**
+
+jungle-run.html uses a full-screen canvas layout (`html, body { width: 100%; height: 100%; overflow: hidden; }`) and its own inline `<style>` block. It does not load `styles.css` and does not use CSS custom properties (`--bg`, `--card`, `--ink`, etc.). The `.btn` and `.btn.secondary` classes are re-implemented from scratch in the inline styles. Visual inconsistency with the rest of the app, though intentional for a full-screen game. The HUD mute and back buttons are fixed-position overlays.
+
+File: `tap-to-vocab/games/jungle-run.html:7-106` (standalone styles — no link to styles.css)
+
+#### jungle-run.html: Back Button Visible During Play
+**Severity: N/A — Functioning Correctly**
+
+A `.hud-back` anchor (`← Back`) is present at line 110 as a fixed-position element (top-left overlay). This links to `/games.html` and is visible at all times during play. Game-over overlay also has "Play Again" and "Done" buttons. Navigation is complete.
+
+File: `tap-to-vocab/games/jungle-run.html:110`
+
+#### jungle-run.html: Canvas Resizes Responsively to Viewport
+**Severity: N/A — Functioning Correctly**
+
+`resizeCanvas()` at lines 1005–1021 scales the canvas to fill the full viewport while preserving the 600×400 (3:2) aspect ratio. On a 375px-wide phone in portrait orientation, the canvas renders at 375×250px — visually the game occupies the center of the screen with black bars above/below. Content is not cut off.
+
+File: `tap-to-vocab/games/jungle-run.html:1005-1021`
+
+---
+
+### games/tower-stack.html
+
+#### sessionStorage Guard: Silent Redirect With No User Feedback
+**Severity: High**
+
+Identical guard pattern. Line 125: `if (parseInt(sessionStorage.getItem("game_lives") || "0", 10) <= 0) { location.replace("/"); return; }`. All three game files share this exact copied code. Same UX gap.
+
+File: `tap-to-vocab/games/tower-stack.html:125`
+
+#### tower-stack.html: In-Game Score Not Sent to CoinTracker
+**Severity: Medium**
+
+`tower-stack.html` does not load `coins.js` and does not reference `CoinTracker`. Blocks stacked (`score++` at line 511) only updates the in-game HUD. No coins are added to the persistent CoinTracker economy. Same inconsistency as coin-dash.html and jungle-run.html.
+
+File: `tap-to-vocab/games/tower-stack.html` (no `<script src>` for coins.js; `score++` at line 511 with no CoinTracker call)
+
+#### tower-stack.html: scheduleMusic() Called in Loop — Same Correct Pattern
+**Severity: N/A — Not a Bug**
+
+`scheduleMusic()` called at line 586 inside `loop()`: `if (musicPlaying) scheduleMusic();`. Identical pattern to coin-dash and jungle-run. Not a bug.
+
+File: `tap-to-vocab/games/tower-stack.html:586`
+
+#### tower-stack.html: Lives Decrement Duplicated
+**Severity: Low — Code Duplication (Phase 3)**
+
+Lives decrement at lines 537–546. Exact same pattern as coin-dash.html and jungle-run.html. All three game files: identical copy-pasted lives management code confirmed.
+
+File: `tap-to-vocab/games/tower-stack.html:537-546`
+
+#### tower-stack.html: Game Mechanic — Isometric Block Stacking
+**Severity: N/A — Informational**
+
+tower-stack.html is a canvas-based isometric block-stacking game. The player taps/clicks to drop a sliding block onto the stack, with a "perfect" bonus for precise alignment. Blocks shrink on imperfect alignment. Game ends when a block misses entirely. The game mechanic is distinct from coin-dash (dodge/collect) and jungle-run (platformer jumping). The isometric 3D projection is implemented via a custom `project()` function (lines 146–151).
+
+File: `tap-to-vocab/games/tower-stack.html:146-151, 467-517`
+
+#### tower-stack.html: Play Again Button Hidden by Default
+**Severity: Low — Minor UX Inconsistency**
+
+`btnAgain` is set to `style="display:none"` in the HTML (line 109). On game-over, the `gameOver()` function checks lives and sets `btnAgain.style.display = ""` only if lives > 0 (lines 542–545). This means when lives reach 0, the Play Again button is never shown and the only exit is "Done → games.html". This is the intended behavior, but differs from coin-dash.html where the button starts visible and is only hidden post-game-over if lives are exhausted. Minor inconsistency in initial state.
+
+File: `tap-to-vocab/games/tower-stack.html:109, 537-546`
+
+#### tower-stack.html: Canvas Fixed at 400×600, CSS-Scaled on Mobile
+**Severity: Low**
+
+The canvas is 400×600 logical pixels. `resizeCanvas()` at lines 655–661 scales it to fit the parent container (capped at 400px wide). At 375px viewport, the canvas renders at ~371px wide. No content is cut off. Mobile layout is acceptable.
+
+File: `tap-to-vocab/games/tower-stack.html:92, 655-661`
