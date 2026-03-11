@@ -9,30 +9,38 @@
   <script src="/assets/js/coins.js"></script>
 </head>
 <body>
-  <div class="card">
-    <h1 id="title">Tap-to-Vocab (Deutsch ↔ Español)</h1>
-    <div class="controls">
-      <label>Richtung:
-        <select id="direction">
-          <option value="de-es">Deutsch → Spanisch</option>
-          <option value="es-de">Spanisch → Deutsch</option>
-        </select>
-      </label>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h1 id="title" style="margin:0;">Tap-to-Vocab (Deutsch ↔ Español)</h1>
+        <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+      </div>
+      <div class="controls">
+        <label>Richtung:
+          <select id="direction">
+            <option value="de-es">Deutsch → Spanisch</option>
+            <option value="es-de">Spanisch → Deutsch</option>
+          </select>
+        </label>
+      </div>
+      <div id="prompt" class="big"></div>
+      <div id="translation" style="color:var(--muted);"></div>
+      <p>
+        <button id="speak">🔊 Anhören</button>
+        <button id="reveal">👀 Anzeigen/Verbergen</button>
+      </p>
+      <p><strong>Schreibweise üben:</strong></p>
+      <form id="spell-form">
+        <input id="spell" autocomplete="off" placeholder="Schreibe das Wort…" />
+        <p id="feedback"></p>
+        <button type="submit">Prüfen</button>
+        <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
+      </form>
+      <p id="sentence"></p>
+      <div class="controls" style="margin-top:16px;">
+        <a class="btn secondary" href="/">🏠 Home</a>
+      </div>
     </div>
-    <div id="prompt" class="big"></div>
-    <div id="translation" class="hint"></div>
-    <p>
-      <button id="speak">🔊 Anhören</button>
-      <button id="reveal">👀 Anzeigen/Verbergen</button>
-    </p>
-    <p><strong>Schreibweise üben:</strong></p>
-    <form id="spell-form">
-      <input id="spell" autocomplete="off" placeholder="Schreibe das Wort…" />
-      <p id="feedback"></p>
-      <button type="submit">Prüfen</button>
-      <button type="button" id="showLetter">Tipp: nächsten Buchstaben</button>
-    </form>
-    <p id="sentence"></p>
   </div>
 
 <script>
