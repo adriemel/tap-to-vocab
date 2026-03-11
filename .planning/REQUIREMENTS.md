@@ -3,6 +3,14 @@
 **Defined:** 2026-03-11
 **Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 
+## v1.2 Requirements
+
+Requirements for milestone v1.2 — Browse Mode Layout Fix.
+
+### UI — Browse Mode
+
+- [ ] **BRWS-01**: User sees all browse mode controls in two rows on topic.html at 375px — row 1 has Prev/Next/Show/Star, row 2 has Home/Hear — with no overflow or clipping
+
 ## v1.1 Requirements
 
 Requirements for milestone v1.1 — Mobile Polish & Bug Fix.
@@ -45,6 +53,7 @@ Deferred from v1.0 for future milestones.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+| BRWS-01 | Phase 6 | Pending |
 | UI-01 | Phase 5 | Complete |
 | UI-02 | Phase 5 | Complete |
 | UI-03 | Phase 5 | Complete |
@@ -52,10 +61,10 @@ Deferred from v1.0 for future milestones.
 | BUG-01 | Phase 5 | Complete |
 
 **Coverage:**
-- v1.1 requirements: 5 total
-- Mapped to phases: 5
+- v1.2 requirements: 1 total
+- Mapped to phases: 1
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-11*
-*Last updated: 2026-03-11 — traceability confirmed after roadmap creation*
+*Last updated: 2026-03-11 after v1.2 milestone started*
