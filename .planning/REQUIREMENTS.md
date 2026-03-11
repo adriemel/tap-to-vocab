@@ -33,8 +33,8 @@
 
 ### Mobile
 
-- [ ] **MOB-01**: All pages are usable and visually correct at 375px viewport width (iPhone SE)
-- [ ] **MOB-02**: Tap targets are minimum 44px height/width on all interactive elements
+- [x] **MOB-01**: All pages are usable and visually correct at 375px viewport width (iPhone SE)
+- [x] **MOB-02**: Tap targets are minimum 44px height/width on all interactive elements
 - [x] **MOB-03**: No horizontal overflow or scroll on any page at 375px width
 
 ## v2 Requirements
@@ -77,8 +77,8 @@
 | UI-01 | Phase 4 — UI & Mobile Polish | Complete |
 | UI-02 | Phase 4 — UI & Mobile Polish | Complete |
 | UI-03 | Phase 4 — UI & Mobile Polish | Complete |
-| MOB-01 | Phase 4 — UI & Mobile Polish | Pending |
-| MOB-02 | Phase 4 — UI & Mobile Polish | Pending |
+| MOB-01 | Phase 4 — UI & Mobile Polish | Complete |
+| MOB-02 | Phase 4 — UI & Mobile Polish | Complete |
 | MOB-03 | Phase 4 — UI & Mobile Polish | Complete |
 
 **Coverage:**

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-01-PLAN.md — vocab.html design system integration (UI-01, UI-02, UI-03, MOB-03)
-last_updated: "2026-03-11T07:24:22.340Z"
+stopped_at: Completed 04-02-PLAN.md — mobile tap target fixes and fill-blank header alignment (UI-03, MOB-01, MOB-02)
+last_updated: "2026-03-11T07:27:16.372Z"
 last_activity: 2026-03-10 — Roadmap created, phases derived from requirements
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
   percent: 33
 ---
 
@@ -59,6 +59,7 @@ Progress: [███░░░░░░░] 33%
 | Phase 03-code-cleanup P01 | 2 | 2 tasks | 3 files |
 | Phase 03-code-cleanup P04 | 2 | 1 tasks | 1 files |
 | Phase 04-ui-mobile-polish P01 | 8 | 3 tasks | 1 files |
+| Phase 04-ui-mobile-polish P02 | 8 | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,7 @@ Recent decisions affecting current work:
 - [Phase 04-ui-mobile-polish]: vocab.html IIFE script block left untouched — only head and body HTML structure changed
 - [Phase 04-ui-mobile-polish]: .hint class replaced with inline style="color:var(--muted);" — .hint no longer exists in styles.css
 - [Phase 04-ui-mobile-polish]: shared-utils.js not added to vocab.html — coins.js alone sufficient for this page
+- [Phase 04-ui-mobile-polish]: min-height: 44px added only to .word-btn, .choice-btn, .btn-wrong, .btn-correct — not to .btn globally to protect quiz-nav-row compact buttons
 
 ### Pending Todos
 
@@ -103,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T07:24:22.335Z
-Stopped at: Completed 04-01-PLAN.md — vocab.html design system integration (UI-01, UI-02, UI-03, MOB-03)
+Last session: 2026-03-11T07:27:16.365Z
+Stopped at: Completed 04-02-PLAN.md — mobile tap target fixes and fill-blank header alignment (UI-03, MOB-01, MOB-02)
 Resume file: None
