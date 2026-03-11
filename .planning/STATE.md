@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Mobile Polish & Bug Fix
+milestone: v1.2
+milestone_name: Browse Mode Layout Fix
 status: planning
-stopped_at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
-last_updated: "2026-03-11T08:53:38.792Z"
-last_activity: 2026-03-11 — v1.1 roadmap created
+stopped_at: Milestone started — requirements defined
+last_updated: "2026-03-11T00:00:00.000Z"
+last_activity: 2026-03-11 — Milestone v1.2 started
 progress:
   total_phases: 1
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
   percent: 0
 ---
 
@@ -18,24 +18,24 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-11 after v1.1 milestone started)
+See: .planning/PROJECT.md (updated 2026-03-11 after v1.2 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 5 — Mobile UI Polish & Bug Fix
+**Current focus:** Phase 6 — Browse Mode Layout Fix
 
 ## Current Position
 
-Phase: 5 of 5 (Mobile UI Polish & Bug Fix)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-03-11 — v1.1 roadmap created
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-11 — Milestone v1.2 started
 
 Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12 (v1.0)
+- Total plans completed: 14 (v1.0: 12, v1.1: 2)
 - Average duration: —
 - Total execution time: —
 
@@ -44,10 +44,9 @@ Progress: [░░░░░░░░░░] 0%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | v1.0 phases 1-4 | 12 | — | — |
+| v1.1 phase 5 | 2 | — | — |
 
 *Updated after each plan completion*
-| Phase 05-mobile-ui-polish-bug-fix P01 | 8 | 2 tasks | 2 files |
-| Phase 05-mobile-ui-polish-bug-fix P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -55,11 +54,8 @@ Progress: [░░░░░░░░░░] 0%
 
 Recent decisions affecting current work:
 
-- [v1.0 Phase 4]: min-height:44px on specific button classes, not .btn globally — compact quiz-nav-row buttons preserved
-- [v1.1]: sentences.html and conjugation.html share the same `.controls` flex-wrap nav layout — one pattern fix applies to both
-- [Phase 05-mobile-ui-polish-bug-fix]: Added margin-top: 16px to .sentence-target for header gap; icon-only Home + flex-wrap: nowrap keeps nav row on one line at 375px
-- [Phase 05-mobile-ui-polish-bug-fix]: Changed flex-wrap to nowrap on conjugation.html header div; shortened h1 to 'Conjugation' with clamp font-size for 375px fit
-- [Phase 05-mobile-ui-polish-bug-fix]: Removed showInitialized guard in switchMode() — Show mode always reinits, eliminating blank screen on second visit
+- [v1.1]: `flex-wrap: nowrap` added globally to `.controls` inside `@media (max-width: 600px)` — was intended only for sentences/conjugation nav rows but also affects topic.html browse mode
+- [v1.2]: Fix must scope `nowrap` to sentences/conjugation only, and restore wrapping for browse mode with explicit 2-row layout
 
 ### Pending Todos
 
@@ -67,10 +63,10 @@ None.
 
 ### Blockers/Concerns
 
-- conjugation.js Show mode bug: `showInitialized` flag not reset when `initConjugationGame` rebuilds the DOM — root cause identified, fix is in scope for Phase 5
+None.
 
 ## Session Continuity
 
-Last session: 2026-03-11T08:37:08.053Z
-Stopped at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
+Last session: 2026-03-11
+Stopped at: Milestone v1.2 started — requirements defined
 Resume file: None

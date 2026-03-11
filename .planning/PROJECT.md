@@ -30,24 +30,18 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ 44px minimum tap targets on all learning interaction buttons — v1.0
 - ✓ CLAUDE.md updated to accurately reflect current architecture — v1.0
 
-## Current Milestone: v1.1 Mobile Polish & Bug Fix
+## Current Milestone: v1.2 Browse Mode Layout Fix
 
-**Goal:** Fix mobile layout issues on sentences and conjugation pages, and repair the Show mode regression in verb conjugation.
+**Goal:** Fix the browse mode button layout regression on topic.html introduced by v1.1 — all 6 buttons were forced onto one row by a global `flex-wrap: nowrap`, overflowing on mobile. Split into two rows so navigation controls are accessible on 375px viewports.
 
 **Target features:**
-- sentences.html: increase spacing between header and game panel
-- sentences.html: home button inline with nav buttons (icon only)
-- conjugation.html: header fits in one row on mobile (no wrapping)
-- conjugation.html: home button inline with nav buttons (icon only)
-- conjugation.html: Show mode bug fix (verbs not re-shown after mode switch)
+- topic.html browse mode: Row 1 — Prev, Next, Show, Star (✩)
+- topic.html browse mode: Row 2 — Home (🏠), Hear (▶︎)
+- Scope the `flex-wrap: nowrap` fix so it doesn't affect browse mode
 
 ### Active
 
-- [ ] sentences.html header-to-panel spacing increased on mobile
-- [ ] sentences.html Home button inline with Prev/Reset/Next (🏠 icon only)
-- [ ] conjugation.html header fits on single row at 375px (no wrapping)
-- [ ] conjugation.html Home button inline with Prev/Reset/Next (🏠 icon only)
-- [ ] conjugation.html Show mode bug: verbs display correctly after Practice→Show→Practice→Show
+- [ ] Browse mode (topic.html) at 375px shows Prev/Next/Show/Star on row 1 and Home/Hear on row 2 with no overflow
 
 ### Out of Scope
 
@@ -94,4 +88,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-11 after v1.1 milestone started*
+*Last updated: 2026-03-11 after v1.2 milestone started*
