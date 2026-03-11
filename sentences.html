@@ -15,12 +15,12 @@
 <body>
   <div class="container">
     <div class="card">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="btn ghost" id="btn-manage" style="padding:6px 8px; font-size:1.3rem;" title="Select Sentences">⚙️</button>
-          <h1 style="margin:0;">Sentences</h1>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:nowrap; min-width:0;">
+        <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+          <button class="btn ghost" id="btn-manage" style="padding:6px 8px; font-size:1.3rem; flex-shrink:0;" title="Select Sentences">⚙️</button>
+          <h1 style="margin:0; min-width:0;">Sentences</h1>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
           <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
           <span class="badge" id="progress-badge">0 / 0</span>
         </div>
