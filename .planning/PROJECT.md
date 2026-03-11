@@ -30,12 +30,24 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ 44px minimum tap targets on all learning interaction buttons — v1.0
 - ✓ CLAUDE.md updated to accurately reflect current architecture — v1.0
 
+## Current Milestone: v1.1 Mobile Polish & Bug Fix
+
+**Goal:** Fix mobile layout issues on sentences and conjugation pages, and repair the Show mode regression in verb conjugation.
+
+**Target features:**
+- sentences.html: increase spacing between header and game panel
+- sentences.html: home button inline with nav buttons (icon only)
+- conjugation.html: header fits in one row on mobile (no wrapping)
+- conjugation.html: home button inline with nav buttons (icon only)
+- conjugation.html: Show mode bug fix (verbs not re-shown after mode switch)
+
 ### Active
 
-- [ ] TSV caching with revalidation strategy instead of cache: "no-store"
-- [ ] Service worker for offline fallback
-- [ ] Coin economy upper cap — prevent unrealistic accumulation
-- [ ] User state using stable IDs (not text strings) — survives vocabulary edits
+- [ ] sentences.html header-to-panel spacing increased on mobile
+- [ ] sentences.html Home button inline with Prev/Reset/Next (🏠 icon only)
+- [ ] conjugation.html header fits on single row at 375px (no wrapping)
+- [ ] conjugation.html Home button inline with Prev/Reset/Next (🏠 icon only)
+- [ ] conjugation.html Show mode bug: verbs display correctly after Practice→Show→Practice→Show
 
 ### Out of Scope
 
@@ -74,5 +86,12 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | home.js IIFE wraps both original script blocks | reset-coins was outside DOMContentLoaded, consolidating is safe | ✓ Good — cleaner, single listener |
 | CLAUDE.md rewritten from scratch | Too many stale structural claims to safely patch in-place | ✓ Good — accurate docs for all future sessions |
 
+### Deferred
+
+- TSV caching with revalidation strategy instead of cache: "no-store"
+- Service worker for offline fallback
+- Coin economy upper cap — prevent unrealistic accumulation
+- User state using stable IDs (not text strings) — survives vocabulary edits
+
 ---
-*Last updated: 2026-03-11 after v1.0 milestone*
+*Last updated: 2026-03-11 after v1.1 milestone started*

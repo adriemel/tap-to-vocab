@@ -1,47 +1,38 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: TBD
-status: milestone_complete
-stopped_at: v1.0 Quality MVP shipped — 4 phases, 12 plans, 17/17 requirements complete
-last_updated: "2026-03-11T08:43:00.000Z"
-last_activity: 2026-03-11 — v1.0 milestone archived, ready for next milestone planning
+milestone_name: Mobile Polish & Bug Fix
+status: defining_requirements
+stopped_at: Milestone v1.1 started — defining requirements
+last_updated: "2026-03-11T09:00:00.000Z"
+last_activity: 2026-03-11 — Milestone v1.1 started
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-11 after v1.0 milestone)
+See: .planning/PROJECT.md (updated 2026-03-11 after v1.1 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Planning next milestone (v1.1)
+**Current focus:** Defining requirements for v1.1
 
-## Milestone Status
+## Current Position
 
-v1.0 Quality MVP — ✅ SHIPPED 2026-03-11
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-11 — Milestone v1.1 started
 
-Archive: `.planning/milestones/v1.0-ROADMAP.md`
+## Accumulated Context
 
-## Next Steps
-
-Run `/gsd:new-milestone` to define v1.1 requirements and roadmap.
-
-Deferred items from v1.0 (candidates for v1.1):
-- TSV caching with revalidation strategy (PERF-01)
-- Service worker for offline fallback (PERF-02)
-- Coin economy upper cap (COIN-01)
-- User state with stable IDs instead of text strings (COIN-02)
-- In-game scores (mini-games) connected to persistent CoinTracker
-
-## Session Continuity
-
-Last session: 2026-03-11
-Stopped at: v1.0 milestone complete — all phases and plans done, archived, and tagged
-Resume file: None
+- v1.0 shipped 2026-03-11: all bugs fixed, visual system unified, 375px mobile verified
+- Stack: vanilla HTML/CSS/JS, no build step, GitHub Pages
+- sentences.html and conjugation.html both have the same nav button layout (`.controls` flex-wrap)
+- conjugation.js Show mode bug: `showInitialized` flag not reset when `initConjugationGame` rebuilds DOM
