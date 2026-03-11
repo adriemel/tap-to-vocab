@@ -1069,9 +1069,14 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
     font-size: 1.1rem;
   }
 
-  /* Nav row: prevent wrap on narrow mobile — icon-only Home ensures fit */
+  /* Nav row on sentences/conjugation: prevent wrap — icon-only Home ensures fit */
   .controls {
     flex-wrap: nowrap;
+  }
+
+  /* Browse mode controls: restore wrapping so 4+2 two-row layout works at 375px */
+  .browse-controls {
+    flex-wrap: wrap;
   }
 }
 
