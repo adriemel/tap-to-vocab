@@ -51,4 +51,4 @@ Plans:
 | 2. Bug Fixes | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
-| 5. Mobile UI Polish & Bug Fix | v1.1 | 0/2 | Not started | - |
+| 5. Mobile UI Polish & Bug Fix | 1/2 | In Progress|  | - |

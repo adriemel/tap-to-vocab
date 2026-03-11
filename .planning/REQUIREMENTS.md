@@ -9,8 +9,8 @@ Requirements for milestone v1.1 — Mobile Polish & Bug Fix.
 
 ### UI — Mobile Layout
 
-- [ ] **UI-01**: User sees adequate visual separation between header and game panel on sentences.html at 375px
-- [ ] **UI-02**: User sees Prev/Reset/Next/Home in a single nav row on sentences.html (Home displays 🏠 icon only)
+- [x] **UI-01**: User sees adequate visual separation between header and game panel on sentences.html at 375px
+- [x] **UI-02**: User sees Prev/Reset/Next/Home in a single nav row on sentences.html (Home displays 🏠 icon only)
 - [ ] **UI-03**: User sees Verb Conjugation header (gear + title + coin badge + count) in one row at 375px with no wrapping
 - [ ] **UI-04**: User sees Prev/Reset/Next/Home in a single nav row on conjugation.html (Home displays 🏠 icon only)
 
@@ -45,8 +45,8 @@ Deferred from v1.0 for future milestones.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UI-01 | Phase 5 | Pending |
-| UI-02 | Phase 5 | Pending |
+| UI-01 | Phase 5 | Complete |
+| UI-02 | Phase 5 | Complete |
 | UI-03 | Phase 5 | Pending |
 | UI-04 | Phase 5 | Pending |
 | BUG-01 | Phase 5 | Pending |

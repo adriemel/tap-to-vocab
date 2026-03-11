@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Mobile Polish & Bug Fix
-status: ready_to_plan
-stopped_at: Roadmap created for v1.1 — Phase 5 defined, ready to plan
-last_updated: "2026-03-11T09:00:00.000Z"
-last_activity: 2026-03-11 — v1.1 roadmap created, Phase 5 ready to plan
+status: planning
+stopped_at: Completed 05-mobile-ui-polish-bug-fix 05-01-PLAN.md
+last_updated: "2026-03-11T08:34:35.605Z"
+last_activity: 2026-03-11 — v1.1 roadmap created
 progress:
   total_phases: 1
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -46,6 +46,7 @@ Progress: [░░░░░░░░░░] 0%
 | v1.0 phases 1-4 | 12 | — | — |
 
 *Updated after each plan completion*
+| Phase 05-mobile-ui-polish-bug-fix P01 | 8 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -55,6 +56,7 @@ Recent decisions affecting current work:
 
 - [v1.0 Phase 4]: min-height:44px on specific button classes, not .btn globally — compact quiz-nav-row buttons preserved
 - [v1.1]: sentences.html and conjugation.html share the same `.controls` flex-wrap nav layout — one pattern fix applies to both
+- [Phase 05-mobile-ui-polish-bug-fix]: Added margin-top: 16px to .sentence-target for header gap; icon-only Home + flex-wrap: nowrap keeps nav row on one line at 375px
 
 ### Pending Todos
 
@@ -66,6 +68,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-11
-Stopped at: Roadmap created — Phase 5 defined, no plans yet
+Last session: 2026-03-11T08:34:35.600Z
+Stopped at: Completed 05-mobile-ui-polish-bug-fix 05-01-PLAN.md
 Resume file: None
