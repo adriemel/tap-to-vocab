@@ -11,12 +11,12 @@ Requirements for milestone v1.1 — Mobile Polish & Bug Fix.
 
 - [x] **UI-01**: User sees adequate visual separation between header and game panel on sentences.html at 375px
 - [x] **UI-02**: User sees Prev/Reset/Next/Home in a single nav row on sentences.html (Home displays 🏠 icon only)
-- [ ] **UI-03**: User sees Verb Conjugation header (gear + title + coin badge + count) in one row at 375px with no wrapping
-- [ ] **UI-04**: User sees Prev/Reset/Next/Home in a single nav row on conjugation.html (Home displays 🏠 icon only)
+- [x] **UI-03**: User sees Verb Conjugation header (gear + title + coin badge + count) in one row at 375px with no wrapping
+- [x] **UI-04**: User sees Prev/Reset/Next/Home in a single nav row on conjugation.html (Home displays 🏠 icon only)
 
 ### Bug — Verb Conjugation
 
-- [ ] **BUG-01**: User can switch Practice → Show → Practice → Show and see verb conjugations displayed correctly each time
+- [x] **BUG-01**: User can switch Practice → Show → Practice → Show and see verb conjugations displayed correctly each time
 
 ## v2 Requirements
 
@@ -47,9 +47,9 @@ Deferred from v1.0 for future milestones.
 |-------------|-------|--------|
 | UI-01 | Phase 5 | Complete |
 | UI-02 | Phase 5 | Complete |
-| UI-03 | Phase 5 | Pending |
-| UI-04 | Phase 5 | Pending |
-| BUG-01 | Phase 5 | Pending |
+| UI-03 | Phase 5 | Complete |
+| UI-04 | Phase 5 | Complete |
+| BUG-01 | Phase 5 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 5 total

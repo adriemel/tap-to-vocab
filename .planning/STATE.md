@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Mobile Polish & Bug Fix
 status: planning
-stopped_at: Completed 05-mobile-ui-polish-bug-fix 05-01-PLAN.md
-last_updated: "2026-03-11T08:34:35.605Z"
+stopped_at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
+last_updated: "2026-03-11T08:37:08.057Z"
 last_activity: 2026-03-11 — v1.1 roadmap created
 progress:
   total_phases: 1
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -47,6 +47,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 05-mobile-ui-polish-bug-fix P01 | 8 | 2 tasks | 2 files |
+| Phase 05-mobile-ui-polish-bug-fix P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -57,6 +58,8 @@ Recent decisions affecting current work:
 - [v1.0 Phase 4]: min-height:44px on specific button classes, not .btn globally — compact quiz-nav-row buttons preserved
 - [v1.1]: sentences.html and conjugation.html share the same `.controls` flex-wrap nav layout — one pattern fix applies to both
 - [Phase 05-mobile-ui-polish-bug-fix]: Added margin-top: 16px to .sentence-target for header gap; icon-only Home + flex-wrap: nowrap keeps nav row on one line at 375px
+- [Phase 05-mobile-ui-polish-bug-fix]: Changed flex-wrap to nowrap on conjugation.html header div; shortened h1 to 'Conjugation' with clamp font-size for 375px fit
+- [Phase 05-mobile-ui-polish-bug-fix]: Removed showInitialized guard in switchMode() — Show mode always reinits, eliminating blank screen on second visit
 
 ### Pending Todos
 
@@ -68,6 +71,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-11T08:34:35.600Z
-Stopped at: Completed 05-mobile-ui-polish-bug-fix 05-01-PLAN.md
+Last session: 2026-03-11T08:37:08.053Z
+Stopped at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
 Resume file: None

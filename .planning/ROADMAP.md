@@ -23,7 +23,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 **Milestone Goal:** Fix mobile layout issues on sentences and conjugation pages and repair the Show mode regression in verb conjugation so every interaction works correctly on a 375px viewport.
 
-- [ ] **Phase 5: Mobile UI Polish & Bug Fix** - Fix layout, nav buttons, and Show mode on sentences and conjugation pages
+- [x] **Phase 5: Mobile UI Polish & Bug Fix** - Fix layout, nav buttons, and Show mode on sentences and conjugation pages (completed 2026-03-11)
 
 ## Phase Details
 
@@ -51,4 +51,4 @@ Plans:
 | 2. Bug Fixes | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
-| 5. Mobile UI Polish & Bug Fix | 1/2 | In Progress|  | - |
+| 5. Mobile UI Polish & Bug Fix | 2/2 | Complete   | 2026-03-11 | - |
