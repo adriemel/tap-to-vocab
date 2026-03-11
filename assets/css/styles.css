@@ -666,6 +666,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   border-radius: 16px;
   padding: 24px 20px;
   text-align: center;
+  margin-top: 16px;
   margin-bottom: 24px;
 }
 
@@ -1050,6 +1051,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
   .sentence-target {
     padding: 16px;
+    margin-top: 12px;
     margin-bottom: 16px;
   }
 
