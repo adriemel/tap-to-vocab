@@ -30,7 +30,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 **Milestone Goal:** Fix the browse mode button layout regression on topic.html (categories) introduced by v1.1 — restore two-row control layout so all 6 buttons fit on 375px viewports without overflow.
 
-- [ ] **Phase 6: Browse Mode Layout Fix** — Fix browse mode nav controls to display in two rows at 375px
+- [x] **Phase 6: Browse Mode Layout Fix** — Fix browse mode nav controls to display in two rows at 375px (completed 2026-03-11)
 
 ## Phase Details
 
@@ -72,4 +72,4 @@ Plans:
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
 | 5. Mobile UI Polish & Bug Fix | v1.1 | 2/2 | Complete | 2026-03-11 |
-| 6. Browse Mode Layout Fix | v1.2 | 0/1 | Pending | — |
+| 6. Browse Mode Layout Fix | 1/1 | Complete   | 2026-03-11 | — |

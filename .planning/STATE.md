@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Browse Mode Layout Fix
-status: planning
-stopped_at: Milestone started — requirements defined
-last_updated: "2026-03-11T00:00:00.000Z"
+status: Defining requirements
+stopped_at: Completed 06-01-PLAN.md — Browse Mode Layout Fix
+last_updated: "2026-03-11T12:44:02.924Z"
 last_activity: 2026-03-11 — Milestone v1.2 started
 progress:
-  total_phases: 1
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_phases: 2
+  completed_phases: 2
+  total_plans: 3
+  completed_plans: 3
   percent: 0
 ---
 
@@ -47,6 +47,7 @@ Progress: [░░░░░░░░░░] 0%
 | v1.1 phase 5 | 2 | — | — |
 
 *Updated after each plan completion*
+| Phase 06-browse-mode-layout-fix P01 | 15 | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -56,6 +57,7 @@ Recent decisions affecting current work:
 
 - [v1.1]: `flex-wrap: nowrap` added globally to `.controls` inside `@media (max-width: 600px)` — was intended only for sentences/conjugation nav rows but also affects topic.html browse mode
 - [v1.2]: Fix must scope `nowrap` to sentences/conjugation only, and restore wrapping for browse mode with explicit 2-row layout
+- [Phase 06-browse-mode-layout-fix]: Added browse-controls class to scope flex-wrap override for topic.html browse mode, restoring 4+2 two-row layout at 375px without affecting sentences/conjugation nav rows
 
 ### Pending Todos
 
@@ -67,6 +69,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-11
-Stopped at: Milestone v1.2 started — requirements defined
+Last session: 2026-03-11T12:44:02.920Z
+Stopped at: Completed 06-01-PLAN.md — Browse Mode Layout Fix
 Resume file: None
