@@ -9,7 +9,7 @@ Requirements for milestone v1.2 — Browse Mode Layout Fix.
 
 ### UI — Browse Mode
 
-- [ ] **BRWS-01**: User sees all browse mode controls in two rows on topic.html at 375px — row 1 has Prev/Next/Show/Star, row 2 has Home/Hear — with no overflow or clipping
+- [x] **BRWS-01**: User sees all browse mode controls in two rows on topic.html at 375px — row 1 has Prev/Next/Show/Star, row 2 has Home/Hear — with no overflow or clipping
 
 ## v1.1 Requirements
 
@@ -53,7 +53,7 @@ Deferred from v1.0 for future milestones.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BRWS-01 | Phase 6 | Pending |
+| BRWS-01 | Phase 6 | Complete |
 | UI-01 | Phase 5 | Complete |
 | UI-02 | Phase 5 | Complete |
 | UI-03 | Phase 5 | Complete |
