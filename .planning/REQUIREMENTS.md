@@ -27,15 +27,15 @@
 
 ### UI Consistency
 
-- [ ] **UI-01**: All pages use consistent button styles, spacing, and typography from established CSS variables — no one-off overrides
-- [ ] **UI-02**: Navigation is clear and consistent — every page has an obvious way to go back or return home
-- [ ] **UI-03**: Visual polish pass — no visually unfinished elements (misaligned items, inconsistent padding, mismatched font sizes)
+- [x] **UI-01**: All pages use consistent button styles, spacing, and typography from established CSS variables — no one-off overrides
+- [x] **UI-02**: Navigation is clear and consistent — every page has an obvious way to go back or return home
+- [x] **UI-03**: Visual polish pass — no visually unfinished elements (misaligned items, inconsistent padding, mismatched font sizes)
 
 ### Mobile
 
 - [ ] **MOB-01**: All pages are usable and visually correct at 375px viewport width (iPhone SE)
 - [ ] **MOB-02**: Tap targets are minimum 44px height/width on all interactive elements
-- [ ] **MOB-03**: No horizontal overflow or scroll on any page at 375px width
+- [x] **MOB-03**: No horizontal overflow or scroll on any page at 375px width
 
 ## v2 Requirements
 
@@ -74,12 +74,12 @@
 | STRCT-02 | Phase 3 — Code Cleanup | Complete |
 | STRCT-03 | Phase 3 — Code Cleanup | Complete |
 | STRCT-04 | Phase 3 — Code Cleanup | Complete |
-| UI-01 | Phase 4 — UI & Mobile Polish | Pending |
-| UI-02 | Phase 4 — UI & Mobile Polish | Pending |
-| UI-03 | Phase 4 — UI & Mobile Polish | Pending |
+| UI-01 | Phase 4 — UI & Mobile Polish | Complete |
+| UI-02 | Phase 4 — UI & Mobile Polish | Complete |
+| UI-03 | Phase 4 — UI & Mobile Polish | Complete |
 | MOB-01 | Phase 4 — UI & Mobile Polish | Pending |
 | MOB-02 | Phase 4 — UI & Mobile Polish | Pending |
-| MOB-03 | Phase 4 — UI & Mobile Polish | Pending |
+| MOB-03 | Phase 4 — UI & Mobile Polish | Complete |
 
 **Coverage:**
 - v1 requirements: 17 total
