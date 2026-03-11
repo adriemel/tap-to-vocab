@@ -329,7 +329,7 @@
 
       let currentMode = "practice";
       let practiceInitialized = false;
-      let showInitialized = false;
+      let showInitialized = false; // only set, never read as guard — kept for clarity
 
       btnManage.onclick = () => {
         openVerbManager(allVerbs, (newEnabledMap) => {
@@ -369,10 +369,8 @@
           tabShow.classList.add("active");
           practiceControls.style.display = "none";
           showControls.style.display = "";
-          if (!showInitialized) {
-            initShowMode(getActiveVerbsOrdered());
-            showInitialized = true;
-          }
+          initShowMode(getActiveVerbsOrdered());
+          showInitialized = true;
         }
       }
 
