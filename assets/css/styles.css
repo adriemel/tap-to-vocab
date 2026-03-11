@@ -746,6 +746,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  min-height: 44px;
 }
 
 .word-btn:hover {
@@ -987,6 +988,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   transition: all 0.2s ease;
   user-select: none;
   min-width: 120px;
+  min-height: 44px;
 }
 
 .choice-btn:hover {
@@ -1042,6 +1044,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
     padding: 12px 20px;
     font-size: 1rem;
     min-width: 100px;
+    min-height: 44px;
   }
 
   .sentence-target {
