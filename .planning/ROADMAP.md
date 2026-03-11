@@ -37,7 +37,11 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
   3. On conjugation.html at 375px, the header row (gear icon, title, coin badge, verb count) fits on one line with no text wrapping
   4. On conjugation.html, the Home button appears inline with Prev/Reset/Next and shows only a house icon (no text label)
   5. On conjugation.html, switching Practice → Show → Practice → Show displays verb conjugations correctly every time (no blank Show screen)
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — sentences.html: header spacing + icon-only Home button (UI-01, UI-02)
+- [ ] 05-02-PLAN.md — conjugation.html: header fit + icon-only Home buttons + Show mode bug fix (UI-03, UI-04, BUG-01)
 
 ## Progress
 
@@ -47,4 +51,4 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 | 2. Bug Fixes | v1.0 | 2/2 | Complete | 2026-03-10 |
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
-| 5. Mobile UI Polish & Bug Fix | v1.1 | 0/TBD | Not started | - |
+| 5. Mobile UI Polish & Bug Fix | v1.1 | 0/2 | Not started | - |
