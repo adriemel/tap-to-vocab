@@ -361,10 +361,8 @@
           tabPractice.classList.add("active");
           practiceControls.style.display = "";
           showControls.style.display = "none";
-          if (!practiceInitialized) {
-            initConjugationGame(getActiveVerbs());
-            practiceInitialized = true;
-          }
+          initConjugationGame(getActiveVerbs());
+          practiceInitialized = true;
         } else {
           tabShow.classList.add("active");
           practiceControls.style.display = "none";
