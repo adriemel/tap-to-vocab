@@ -120,6 +120,7 @@
     const ok = normalize(input.value) === normalize(target);
     feedback.textContent = ok ? "✅ Richtig!" : "❌ Noch nicht. Nochmal versuchen.";
     if (ok) {
+      CoinTracker.addCoin();
       if (direction === "de-es") speak(w, lang);
       else speak(de, "de-DE");
       try { localStorage.setItem("lastOk_"+(target||""), Date.now()); } catch(e){}
