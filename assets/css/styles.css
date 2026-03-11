@@ -1127,6 +1127,14 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
+/* Narrow viewport: shrink home grid button text to reduce wrapping */
+@media (max-width: 420px) {
+  .grid-two-col .btn {
+    font-size: 0.85rem;
+    padding: 10px 8px;
+  }
+}
+
 /* ---------- Coin Badge ---------- */
 .coin-badge {
   background: #2a1f00;
