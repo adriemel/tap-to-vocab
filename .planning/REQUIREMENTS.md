@@ -3,6 +3,17 @@
 **Defined:** 2026-03-11
 **Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 
+## v1.3 Requirements
+
+Requirements for Jungle Run Parrot Stomp milestone.
+
+### Stomp Mechanic
+
+- [ ] **STOMP-01**: When monkey is falling (velY > 0) and lands on top of a parrot, the parrot is destroyed and monkey bounces upward — no game over
+- [ ] **STOMP-02**: When monkey collides with a parrot from the side or head-on (not from above while falling), game over triggers as before
+- [ ] **STOMP-03**: After stomping a parrot, monkey receives an upward velocity boost (bounce) allowing continued running
+- [ ] **STOMP-04**: Stomping a parrot plays distinct audio feedback and shows particle explosion at parrot location
+
 ## v1.2 Requirements
 
 Requirements for milestone v1.2 — Browse Mode Layout Fix.
@@ -48,11 +59,18 @@ Deferred from v1.0 for future milestones.
 | ESM modules / build pipeline | Migration cost not justified for project size |
 | Authentication / user accounts | By design, single-user public app |
 | In-game score connection to CoinTracker | Deferred — not in this milestone scope |
+| Coin reward for stomping | Coin economy not connected to in-game score yet |
+| Stomp combo multiplier | Not requested — defer to future |
+| New enemy types | Out of scope — focus on parrot stomp only |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+| STOMP-01 | Phase 7 | Pending |
+| STOMP-02 | Phase 7 | Pending |
+| STOMP-03 | Phase 7 | Pending |
+| STOMP-04 | Phase 7 | Pending |
 | BRWS-01 | Phase 6 | Complete |
 | UI-01 | Phase 5 | Complete |
 | UI-02 | Phase 5 | Complete |
@@ -61,10 +79,10 @@ Deferred from v1.0 for future milestones.
 | BUG-01 | Phase 5 | Complete |
 
 **Coverage:**
-- v1.2 requirements: 1 total
-- Mapped to phases: 1
+- v1.3 requirements: 4 total
+- Mapped to phases: 4
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-11*
-*Last updated: 2026-03-11 after v1.2 milestone started*
+*Last updated: 2026-03-12 after v1.3 milestone started*
