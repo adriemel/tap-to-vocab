@@ -4,7 +4,8 @@
 
 - ✅ **v1.0 Quality MVP** — Phases 1-4 (shipped 2026-03-11)
 - ✅ **v1.1 Mobile Polish & Bug Fix** — Phase 5 (shipped 2026-03-11)
-- 🚧 **v1.2 Browse Mode Layout Fix** — Phase 6 (in progress)
+- ✅ **v1.2 Browse Mode Layout Fix** — Phase 6 (shipped 2026-03-11)
+- 🚧 **v1.3 Jungle Run Parrot Stomp** — Phase 7 (in progress)
 
 ## Phases
 
@@ -26,13 +27,31 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 - [x] **Phase 5: Mobile UI Polish & Bug Fix** - Fix layout, nav buttons, and Show mode on sentences and conjugation pages (completed 2026-03-11)
 
-### 🚧 v1.2 Browse Mode Layout Fix (In Progress)
+### ✅ v1.2 Browse Mode Layout Fix (Shipped 2026-03-11)
 
 **Milestone Goal:** Fix the browse mode button layout regression on topic.html (categories) introduced by v1.1 — restore two-row control layout so all 6 buttons fit on 375px viewports without overflow.
 
 - [x] **Phase 6: Browse Mode Layout Fix** — Fix browse mode nav controls to display in two rows at 375px (completed 2026-03-11)
 
+### 🚧 v1.3 Jungle Run Parrot Stomp (In Progress)
+
+**Milestone Goal:** Add a stomp mechanic to Jungle Run — when the monkey lands on top of a flying parrot while descending, the parrot is destroyed and the monkey bounces upward to continue running.
+
+- [ ] **Phase 7: Parrot Stomp Mechanic** — Implement stomp detection, collision discrimination, bounce, and feedback in jungle-run.html
+
 ## Phase Details
+
+### Phase 7: Parrot Stomp Mechanic
+**Goal**: Players can stomp parrots by landing on them from above — destroying the parrot, bouncing upward, and receiving immediate feedback — while side/head-on collisions still end the game
+**Depends on**: Phase 6
+**Requirements**: STOMP-01, STOMP-02, STOMP-03, STOMP-04
+**Success Criteria** (what must be TRUE):
+  1. When the monkey is falling (moving downward) and lands on a parrot, the parrot disappears and the game continues — no game over screen
+  2. When the monkey hits a parrot from the side or head-on, the game over screen appears as before
+  3. After stomping a parrot, the monkey visibly bounces upward before resuming normal physics
+  4. A particle explosion appears at the parrot's location immediately when stomped
+  5. A distinct sound plays on stomp that is audibly different from the normal death/collision sound
+**Plans**: TBD
 
 ### Phase 6: Browse Mode Layout Fix
 **Goal**: Users can access all browse mode controls on topic.html at 375px without overflow — Prev/Next/Show/Star on row 1, Home/Hear on row 2
@@ -45,7 +64,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 **Plans**: 1 plan
 
 Plans:
-- [ ] 06-01-PLAN.md — topic.html browse mode: fix two-row button layout (BRWS-01)
+- [x] 06-01-PLAN.md — topic.html browse mode: fix two-row button layout (BRWS-01)
 
 ### Phase 5: Mobile UI Polish & Bug Fix
 **Goal**: Users can navigate and practice on sentences and conjugation pages without layout breakage or mode-switching bugs on mobile
@@ -60,8 +79,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — sentences.html: header spacing + icon-only Home button (UI-01, UI-02)
-- [ ] 05-02-PLAN.md — conjugation.html: header fit + icon-only Home buttons + Show mode bug fix (UI-03, UI-04, BUG-01)
+- [x] 05-01-PLAN.md — sentences.html: header spacing + icon-only Home button (UI-01, UI-02)
+- [x] 05-02-PLAN.md — conjugation.html: header fit + icon-only Home buttons + Show mode bug fix (UI-03, UI-04, BUG-01)
 
 ## Progress
 
@@ -72,4 +91,5 @@ Plans:
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
 | 5. Mobile UI Polish & Bug Fix | v1.1 | 2/2 | Complete | 2026-03-11 |
-| 6. Browse Mode Layout Fix | 1/1 | Complete   | 2026-03-11 | — |
+| 6. Browse Mode Layout Fix | v1.2 | 1/1 | Complete | 2026-03-11 |
+| 7. Parrot Stomp Mechanic | v1.3 | 0/? | Not started | - |
