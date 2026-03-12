@@ -29,23 +29,16 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ Mobile/responsive layout verified correct on all pages at 375px — v1.0
 - ✓ 44px minimum tap targets on all learning interaction buttons — v1.0
 - ✓ CLAUDE.md updated to accurately reflect current architecture — v1.0
-
-## Current Milestone: v1.3 Jungle Run Parrot Stomp
-
-**Goal:** Add a stomp mechanic to Jungle Run — when the monkey lands on top of a flying parrot while descending, the parrot is destroyed and the monkey bounces upward to continue running.
-
-**Target features:**
-- Stomp detection: monkey kills parrot when landing on top while falling (velY > 0, monkey above parrot center)
-- Side/head-on collision: still causes game over as before
-- Bounce: monkey bounces upward after stomping a parrot
-- Visual/audio feedback: parrot particles + distinct stomp sound on kill
+- ✓ Mobile layout fixed on sentences.html and conjugation.html at 375px — v1.1
+- ✓ Show mode regression in verb conjugation repaired — v1.1
+- ✓ Browse mode button layout restored to two-row layout at 375px — v1.2
+- ✓ Parrot stomp mechanic added to Jungle Run (fall-from-above kills parrot, bounces monkey) — v1.3
+- ✓ Stomp collision discrimination: side/head-on still triggers game over — v1.3
+- ✓ Distinct stomp audio and particle explosion feedback — v1.3
 
 ### Active
 
-- [ ] When monkey falls onto a parrot from above, parrot is destroyed and monkey bounces — no game over
-- [ ] Side or head-on parrot collision still triggers game over as before
-- [ ] Monkey gets a visible upward bounce after stomping a parrot
-- [ ] Stomp produces distinct visual and audio feedback (particles + sound)
+(None — planning next milestone)
 
 ### Out of Scope
 
@@ -83,6 +76,10 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | min-height:44px on specific button classes, not .btn globally | .btn used for compact quiz-nav-row buttons too | ✓ Good — quiz compact buttons preserved |
 | home.js IIFE wraps both original script blocks | reset-coins was outside DOMContentLoaded, consolidating is safe | ✓ Good — cleaner, single listener |
 | CLAUDE.md rewritten from scratch | Too many stale structural claims to safely patch in-place | ✓ Good — accurate docs for all future sessions |
+| Stomp zone tolerance `pp.y + 4` (not full half-height `pp.y + 8`) | Requires deliberate jump-on-top, not accidental graze | ✓ Good — skill-based without being punishing |
+| `break` after stomp collision block | Prevents multi-parrot processing in one frame | ✓ Good — no double-effects or cascade kills |
+| `score++` on stomp | Simple reward for skill, consistent with banana scoring | ✓ Good — no separate bonus mechanic needed |
+| Dual oscillator stomp sound (sine pop + triangle thud) | Single oscillator wasn't distinct enough from squawk | ✓ Good — audibly differentiated from death sound |
 
 ### Deferred
 
@@ -92,4 +89,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-12 after v1.3 milestone started*
+*Last updated: 2026-03-12 after v1.3 milestone complete*
