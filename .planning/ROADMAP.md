@@ -51,7 +51,10 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
   3. After stomping a parrot, the monkey visibly bounces upward before resuming normal physics
   4. A particle explosion appears at the parrot's location immediately when stomped
   5. A distinct sound plays on stomp that is audibly different from the normal death/collision sound
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 07-01-PLAN.md — jungle-run.html: stomp collision discrimination, bounce, sound, particles (STOMP-01, STOMP-02, STOMP-03, STOMP-04)
 
 ### Phase 6: Browse Mode Layout Fix
 **Goal**: Users can access all browse mode controls on topic.html at 375px without overflow — Prev/Next/Show/Star on row 1, Home/Hear on row 2
