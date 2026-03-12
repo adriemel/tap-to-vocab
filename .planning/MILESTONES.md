@@ -1,5 +1,37 @@
 # Milestones
 
+## v1.3 — Jungle Run Parrot Stomp
+
+**Shipped:** 2026-03-12
+**Phase:** 7
+**Plans:** 1
+**Requirements:** 4/4 complete
+
+### Delivered
+
+Stomp mechanic added to Jungle Run — monkey can now kill parrots by landing on them from above, with collision discrimination, upward bounce physics, dual-oscillator sound, and particle explosion feedback.
+
+### Key Accomplishments
+
+1. Stomp detection: `velY > 0 && monkeyY <= pp.y + 4` discriminates top-landing from side-hit in circular hitbox
+2. Bounce: `STOMP_BOUNCE_VEL = -10` gives visible upward bounce; `onGround = false` ensures air physics apply immediately
+3. Death regression preserved: side/head-on collisions still call `gameOver()` + squawk sound
+4. `playStompSound()`: 800→200Hz sine pop + 120→50Hz triangle thud — audibly distinct from sawtooth squawk
+5. Double particle burst at stomp point in parrot body + wing colors for richer explosion
+
+### Stats
+
+- Timeline: 1 day (2026-03-12)
+- Files modified: 1 (`tap-to-vocab/games/jungle-run.html`)
+- Git tag: v1.3
+
+### Archive
+
+- `.planning/milestones/v1.3-ROADMAP.md` — full phase details
+- `.planning/milestones/v1.3-REQUIREMENTS.md` — requirements with outcomes
+
+---
+
 ## v1.0 — Quality MVP
 
 **Shipped:** 2026-03-11

@@ -45,6 +45,83 @@
 
 ---
 
+## Milestone: v1.1 — Mobile Polish & Bug Fix
+
+**Shipped:** 2026-03-11
+**Phases:** 1 | **Plans:** 2
+
+### What Was Built
+- Header spacing fix on sentences.html at 375px (margin-top on .sentence-target)
+- Icon-only Home button (🏠) inline with Prev/Reset/Next on both sentences.html and conjugation.html
+- Conjugation header made single-row at 375px (flex-shrink adjustments)
+- Show mode bug fix in conjugation.js: `flex-wrap: nowrap` on `.controls` scoped to `@media (max-width: 600px)`
+
+### What Worked
+- **Tight scoped plans**: Each plan touched 1-2 files with clear before/after criteria
+- **Regression catch by scoping CSS**: The bug (v1.1 unintentionally broke browse mode) was caught and deferred cleanly to v1.2 rather than left silent
+
+### What Was Inefficient
+- **CSS scope unintended side effect**: Adding `flex-wrap: nowrap` globally to `.controls` in media query broke topic.html browse mode — caught late and required v1.2 to fix
+
+### Key Lessons
+1. Scoped CSS changes (add to a new class, not a shared class) prevent cross-page regressions
+
+---
+
+## Milestone: v1.2 — Browse Mode Layout Fix
+
+**Shipped:** 2026-03-11
+**Phases:** 1 | **Plans:** 1
+
+### What Was Built
+- New `.browse-controls` class on topic.html browse mode container
+- CSS restores 4+2 two-row layout at 375px (Row 1: Prev/Next/Show/Star; Row 2: Home/Hear)
+- sentences.html and conjugation.html nowrap behavior unaffected
+
+### What Worked
+- **Single-file, single-class fix**: Clean isolation with zero risk to other pages
+- **Regression testing criterion in plan**: Plan explicitly stated sentences/conjugation must be unaffected — verified
+
+### Key Lessons
+1. When fixing a CSS regression, introduce a new scoped class rather than adjusting the shared class again
+
+---
+
+## Milestone: v1.3 — Jungle Run Parrot Stomp
+
+**Shipped:** 2026-03-12
+**Phases:** 1 | **Plans:** 1
+
+### What Was Built
+- Stomp detection in Jungle Run game loop: `velY > 0 && monkeyY <= pp.y + 4` discriminates fall-from-above from side hit
+- Bounce physics: `STOMP_BOUNCE_VEL = -10`, `onGround = false` after stomp
+- `playStompSound()`: dual oscillator (800→200Hz sine pop + 120→50Hz triangle thud) — distinct from sawtooth squawk
+- Double particle burst at stomp point in parrot body + wing colors
+- `score++` on stomp — rewards skill-based play
+
+### What Worked
+- **Single-file scope**: Entire mechanic in one HTML file — no cross-file coordination needed
+- **Velocity-based discrimination**: Using `velY > 0` as the primary stomp gate was clean and correct — no positional ambiguity
+- **Tight tolerance (pp.y + 4)**: Required deliberate jump-on-top; didn't accidentally trigger on grazes
+- **10-minute execution**: Plan was precise enough that implementation matched spec exactly with zero deviations
+
+### What Was Inefficient
+- None notable — this was a well-scoped, fast phase
+
+### Patterns Established
+- **Collision discrimination pattern**: Check velocity direction (`velY > 0`) AND spatial position before classifying collision outcome — applicable to future game enemy types
+- **Dual oscillator sound design**: Two oscillators with different waveforms give a percussive, layered sound without requiring audio files
+
+### Key Lessons
+1. For single-file game features, tight `velY`-based gates are cleaner than complex hitbox math
+2. `break` after collision processing prevents cascade/double-effects in the same frame — always include it when looping over game objects
+
+### Cost Observations
+- Model: claude-sonnet-4-6 (balanced profile)
+- Notable: 1 plan, ~10 min execution, 0 deviations from plan
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -52,8 +129,13 @@
 | Milestone | Phases | Plans | Key Change |
 |-----------|--------|-------|------------|
 | v1.0 | 4 | 12 | First milestone — audit-first quality pass established as pattern |
+| v1.1 | 1 | 2 | CSS scope regression introduced — caught and deferred cleanly |
+| v1.2 | 1 | 1 | Single-class scoped fix for v1.1 regression |
+| v1.3 | 1 | 1 | First game mechanic addition — velocity-based collision discrimination |
 
 ### Top Lessons (Verified Across Milestones)
 
 1. **Audit before fixing** — reveals scope more accurately than assumptions
 2. **Generic shared utilities beat domain-specific duplication** — SharedUtils pattern scales well
+3. **Scoped CSS classes prevent cross-page regressions** — introduce new class rather than modifying shared class
+4. **Velocity-based gates are the right primitive for game collision classification** — clean, deterministic, no positional ambiguity
