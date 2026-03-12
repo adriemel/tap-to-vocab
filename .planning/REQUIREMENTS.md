@@ -9,10 +9,10 @@ Requirements for Jungle Run Parrot Stomp milestone.
 
 ### Stomp Mechanic
 
-- [ ] **STOMP-01**: When monkey is falling (velY > 0) and lands on top of a parrot, the parrot is destroyed and monkey bounces upward — no game over
-- [ ] **STOMP-02**: When monkey collides with a parrot from the side or head-on (not from above while falling), game over triggers as before
-- [ ] **STOMP-03**: After stomping a parrot, monkey receives an upward velocity boost (bounce) allowing continued running
-- [ ] **STOMP-04**: Stomping a parrot plays distinct audio feedback and shows particle explosion at parrot location
+- [x] **STOMP-01**: When monkey is falling (velY > 0) and lands on top of a parrot, the parrot is destroyed and monkey bounces upward — no game over
+- [x] **STOMP-02**: When monkey collides with a parrot from the side or head-on (not from above while falling), game over triggers as before
+- [x] **STOMP-03**: After stomping a parrot, monkey receives an upward velocity boost (bounce) allowing continued running
+- [x] **STOMP-04**: Stomping a parrot plays distinct audio feedback and shows particle explosion at parrot location
 
 ## v1.2 Requirements
 
@@ -67,10 +67,10 @@ Deferred from v1.0 for future milestones.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STOMP-01 | Phase 7 | Pending |
-| STOMP-02 | Phase 7 | Pending |
-| STOMP-03 | Phase 7 | Pending |
-| STOMP-04 | Phase 7 | Pending |
+| STOMP-01 | Phase 7 | Complete |
+| STOMP-02 | Phase 7 | Complete |
+| STOMP-03 | Phase 7 | Complete |
+| STOMP-04 | Phase 7 | Complete |
 | BRWS-01 | Phase 6 | Complete |
 | UI-01 | Phase 5 | Complete |
 | UI-02 | Phase 5 | Complete |
