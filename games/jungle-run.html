@@ -160,6 +160,7 @@
     var GRAVITY     = 0.75;
     var JUMP_VEL    = -14;
     var BASE_SPEED  = 3.5;
+    var STOMP_BOUNCE_VEL = -10;  // upward velocity after stomp
 
     /* ── Colors ── */
     var SKY_TOP     = "#0b1a2e";
@@ -272,6 +273,31 @@
         osc.connect(gain); gain.connect(ac.destination);
         osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.25);
       }
+    }
+
+    function playStompSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      // High pop — bright attack
+      var osc1 = ac.createOscillator();
+      var gain1 = ac.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(800, ac.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(200, ac.currentTime + 0.08);
+      gain1.gain.setValueAtTime(0.25, ac.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.1);
+      osc1.connect(gain1); gain1.connect(ac.destination);
+      osc1.start(ac.currentTime); osc1.stop(ac.currentTime + 0.1);
+      // Low thud — body impact
+      var osc2 = ac.createOscillator();
+      var gain2 = ac.createGain();
+      osc2.type = "triangle";
+      osc2.frequency.setValueAtTime(120, ac.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(50, ac.currentTime + 0.12);
+      gain2.gain.setValueAtTime(0.20, ac.currentTime);
+      gain2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+      osc2.connect(gain2); gain2.connect(ac.destination);
+      osc2.start(ac.currentTime); osc2.stop(ac.currentTime + 0.15);
     }
 
     /* ── Music ── */
@@ -903,16 +929,35 @@
         return;
       }
 
-      // Parrot collision (circular hitbox ~14px radius)
+      // Parrot collision — discriminate stomp (from above) vs side/head-on hit
       for (var i = 0; i < parrots.length; i++) {
         var pp = parrots[i];
         var dx = MONKEY_X - pp.x;
         var dy = (monkeyY - 5) - pp.y;
         if (dx * dx + dy * dy < 24 * 24) {
-          playSquawkSound();
-          spawnParticles(pp.x, pp.y, pp.colors.body);
-          gameOver();
-          return;
+          // Stomp: monkey must be falling AND monkey feet land near parrot top
+          // Parrot top edge ~= pp.y - 8; monkey feet at monkeyY
+          // Condition: velY > 0 (falling) AND monkey feet above parrot center
+          var isStomping = velY > 0 && monkeyY <= pp.y + 4;
+          if (isStomping) {
+            // Destroy parrot
+            spawnParticles(pp.x, pp.y, pp.colors.body);
+            spawnParticles(pp.x, pp.y, pp.colors.wing);
+            parrots.splice(i, 1);
+            // Bounce upward
+            velY = STOMP_BOUNCE_VEL;
+            onGround = false;
+            // Score bonus
+            score++;
+            playStompSound();
+          } else {
+            // Side or head-on hit — game over as before
+            playSquawkSound();
+            spawnParticles(pp.x, pp.y, pp.colors.body);
+            gameOver();
+            return;
+          }
+          break; // only one collision processed per frame
         }
       }
 
