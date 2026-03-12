@@ -30,18 +30,22 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ 44px minimum tap targets on all learning interaction buttons — v1.0
 - ✓ CLAUDE.md updated to accurately reflect current architecture — v1.0
 
-## Current Milestone: v1.2 Browse Mode Layout Fix
+## Current Milestone: v1.3 Jungle Run Parrot Stomp
 
-**Goal:** Fix the browse mode button layout regression on topic.html introduced by v1.1 — all 6 buttons were forced onto one row by a global `flex-wrap: nowrap`, overflowing on mobile. Split into two rows so navigation controls are accessible on 375px viewports.
+**Goal:** Add a stomp mechanic to Jungle Run — when the monkey lands on top of a flying parrot while descending, the parrot is destroyed and the monkey bounces upward to continue running.
 
 **Target features:**
-- topic.html browse mode: Row 1 — Prev, Next, Show, Star (✩)
-- topic.html browse mode: Row 2 — Home (🏠), Hear (▶︎)
-- Scope the `flex-wrap: nowrap` fix so it doesn't affect browse mode
+- Stomp detection: monkey kills parrot when landing on top while falling (velY > 0, monkey above parrot center)
+- Side/head-on collision: still causes game over as before
+- Bounce: monkey bounces upward after stomping a parrot
+- Visual/audio feedback: parrot particles + distinct stomp sound on kill
 
 ### Active
 
-- [ ] Browse mode (topic.html) at 375px shows Prev/Next/Show/Star on row 1 and Home/Hear on row 2 with no overflow
+- [ ] When monkey falls onto a parrot from above, parrot is destroyed and monkey bounces — no game over
+- [ ] Side or head-on parrot collision still triggers game over as before
+- [ ] Monkey gets a visible upward bounce after stomping a parrot
+- [ ] Stomp produces distinct visual and audio feedback (particles + sound)
 
 ### Out of Scope
 
@@ -88,4 +92,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-11 after v1.2 milestone started*
+*Last updated: 2026-03-12 after v1.3 milestone started*
