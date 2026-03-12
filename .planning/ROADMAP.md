@@ -5,7 +5,7 @@
 - ✅ **v1.0 Quality MVP** — Phases 1-4 (shipped 2026-03-11)
 - ✅ **v1.1 Mobile Polish & Bug Fix** — Phase 5 (shipped 2026-03-11)
 - ✅ **v1.2 Browse Mode Layout Fix** — Phase 6 (shipped 2026-03-11)
-- 🚧 **v1.3 Jungle Run Parrot Stomp** — Phase 7 (in progress)
+- ✅ **v1.3 Jungle Run Parrot Stomp** — Phase 7 (shipped 2026-03-12)
 
 ## Phases
 
@@ -33,7 +33,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 - [x] **Phase 6: Browse Mode Layout Fix** — Fix browse mode nav controls to display in two rows at 375px (completed 2026-03-11)
 
-### 🚧 v1.3 Jungle Run Parrot Stomp (In Progress)
+### ✅ v1.3 Jungle Run Parrot Stomp (Shipped 2026-03-12)
 
 **Milestone Goal:** Add a stomp mechanic to Jungle Run — when the monkey lands on top of a flying parrot while descending, the parrot is destroyed and the monkey bounces upward to continue running.
 
@@ -54,7 +54,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 **Plans**: 1 plan
 
 Plans:
-- [ ] 07-01-PLAN.md — jungle-run.html: stomp collision discrimination, bounce, sound, particles (STOMP-01, STOMP-02, STOMP-03, STOMP-04)
+- [x] 07-01-PLAN.md — jungle-run.html: stomp collision discrimination, bounce, sound, particles (STOMP-01, STOMP-02, STOMP-03, STOMP-04)
 
 ### Phase 6: Browse Mode Layout Fix
 **Goal**: Users can access all browse mode controls on topic.html at 375px without overflow — Prev/Next/Show/Star on row 1, Home/Hear on row 2
