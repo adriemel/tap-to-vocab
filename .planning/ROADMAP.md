@@ -37,7 +37,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 **Milestone Goal:** Add a stomp mechanic to Jungle Run — when the monkey lands on top of a flying parrot while descending, the parrot is destroyed and the monkey bounces upward to continue running.
 
-- [ ] **Phase 7: Parrot Stomp Mechanic** — Implement stomp detection, collision discrimination, bounce, and feedback in jungle-run.html
+- [x] **Phase 7: Parrot Stomp Mechanic** — Implement stomp detection, collision discrimination, bounce, and feedback in jungle-run.html (completed 2026-03-12)
 
 ## Phase Details
 
@@ -95,4 +95,4 @@ Plans:
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
 | 5. Mobile UI Polish & Bug Fix | v1.1 | 2/2 | Complete | 2026-03-11 |
 | 6. Browse Mode Layout Fix | v1.2 | 1/1 | Complete | 2026-03-11 |
-| 7. Parrot Stomp Mechanic | v1.3 | 0/? | Not started | - |
+| 7. Parrot Stomp Mechanic | 1/1 | Complete   | 2026-03-12 | - |
