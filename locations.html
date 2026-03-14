@@ -113,8 +113,8 @@
          top face:   scene (120,175)→(200,205) parallelogram
          right face: scene (180,175)→(200,265)
     ── */
-    /* encima: directly above top face center (≈x158) */
-    [data-zone="encima-de"]         { width: 56px; height: 56px; top:  90px; left: 130px; }
+    /* encima: ON the top face surface — z-index above box (6>5) so it sits on top */
+    [data-zone="encima-de"]         { width: 56px; height: 56px; top: 160px; left: 122px; z-index: 6; }
     /* en: centered on front face — clearly "on the box" */
     [data-zone="en"]                { width: 48px; height: 44px; top: 203px; left: 126px; }
     /* detrás: overlaps box upper-right so box clips it → "behind" */
@@ -124,9 +124,10 @@
     [data-zone="a-la-derecha-de"]   { width: 56px; height: 56px; top: 188px; left: 222px; }
     /* al-lado (= cerca/al-lado merged): right-lower area */
     [data-zone="al-lado-de"]        { width: 56px; height: 52px; top: 280px; left: 210px; }
-    /* debajo: directly below box front bottom (y≈265) */
-    [data-zone="debajo-de"]         { width: 62px; height: 40px; top: 272px; left: 109px; }
-    [data-zone="delante-de"]        { width: 58px; height: 46px; top: 280px; left:  44px; }
+    /* debajo: z-index below box (3<5) so box clips top edge — "under" effect */
+    [data-zone="debajo-de"]         { width: 62px; height: 40px; top: 252px; left: 109px; z-index: 3; }
+    /* delante: more centered/straight in front of the box */
+    [data-zone="delante-de"]        { width: 58px; height: 46px; top: 282px; left:  82px; }
     [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 190px; left:  14px; }
 
     /* ── Draggable cat — orange, upper-left corner ─────── */
