@@ -1,13 +1,11 @@
 (function () {
   var shiftX, shiftY, originLeft, originTop, snapTimer;
   var onDropCallback = null;
+  var activeDraggable = null;
 
   function init(draggableEl, onDrop) {
     onDropCallback = onDrop;
     draggableEl.addEventListener('pointerdown', onPointerDown);
-    draggableEl.addEventListener('pointermove', onPointerMove);
-    draggableEl.addEventListener('pointerup', onPointerUp);
-    draggableEl.addEventListener('pointercancel', onPointerUp); // iOS diagonal drag safety
     draggableEl.ondragstart = function () { return false; }; // disable native image drag on desktop Chrome
   }
 
@@ -27,13 +25,17 @@
     el.style.transition = 'none';
     el.style.left = (e.clientX - shiftX) + 'px';
     el.style.top = (e.clientY - shiftY) + 'px';
-    el.setPointerCapture(e.pointerId);
+
+    activeDraggable = el;
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp); // iOS diagonal drag safety
   }
 
   function onPointerMove(e) {
     if (!e.isPrimary) return;
-    var el = e.currentTarget;
-    if (!el.hasPointerCapture(e.pointerId)) return;
+    var el = activeDraggable;
+    if (!el) return;
 
     el.style.left = (e.clientX - shiftX) + 'px';
     el.style.top = (e.clientY - shiftY) + 'px';
@@ -50,9 +52,13 @@
 
   function onPointerUp(e) {
     if (!e.isPrimary) return;
-    var el = e.currentTarget;
-    if (!el.hasPointerCapture(e.pointerId)) return;
-    el.releasePointerCapture(e.pointerId);
+    var el = activeDraggable;
+    if (!el) return;
+
+    document.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerup', onPointerUp);
+    document.removeEventListener('pointercancel', onPointerUp);
+    activeDraggable = null;
 
     // Clear all zone highlights
     document.querySelectorAll('[data-zone]').forEach(function (z) {
