@@ -1,0 +1,80 @@
+# Requirements: Tap-to-Vocab
+
+**Defined:** 2026-03-14
+**Milestone:** v1.4 — Locations
+**Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
+
+## v1.4 Requirements
+
+Requirements for the Locations drag-and-drop spatial prepositions game.
+
+### Game Core
+
+- [ ] **GAME-01**: User can drag an object to a drop zone representing the prompted Spanish preposition (works on mouse and touch/mobile)
+- [ ] **GAME-02**: User sees success feedback (sound, confetti, coin award) when the object is dropped on the correct zone
+- [ ] **GAME-03**: User sees an error message and the object snaps back to origin when dropped on the wrong zone
+- [ ] **GAME-04**: User sees a progress badge showing how many prepositions have been completed out of 10
+- [ ] **GAME-05**: User can skip the current preposition and advance to the next
+- [ ] **GAME-06**: User sees a completion celebration when all 10 prepositions are done
+
+### Scene Layout
+
+- [ ] **SCEN-01**: Scene displays a reference box ("la caja") and a draggable object with clear visual affordance
+- [ ] **SCEN-02**: Scene has 10 distinct, labeled drop zones for all prepositions: encima de, debajo de, delante de, detrás de, al lado de, a la derecha de, a la izquierda de, cerca de, lejos de, en
+- [ ] **SCEN-03**: Drop zone for "detrás de" (behind) has a depth/shadow cue that visually distinguishes it from the front zone
+- [ ] **SCEN-04**: Drop zones for "cerca de", "al lado de", and "lejos de" are visually distinct with clear distance differentiation (separate distance bands)
+- [ ] **SCEN-05**: Drop zones highlight visually when the draggable object hovers over them during drag
+
+### Navigation
+
+- [ ] **NAV-01**: User can access the Locations game from a "Locations" button on the home screen (index.html), positioned below the "Fill in" button
+- [ ] **NAV-02**: User can navigate back or to home from the Locations page
+
+## Future Requirements
+
+### Game Enhancements (v2+)
+
+- **GAME-07**: User hears TTS pronunciation of the Spanish preposition when a prompt loads
+- **GAME-08**: Correct zone is animated when user skips (demonstrates the answer)
+- **GAME-09**: User can restart and shuffle prepositions at the completion screen
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| entre (between) | Requires two reference objects — single-box layout constraint; explicitly excluded |
+| Coin/lives gate (game-init.js) | Locations is a learning game, not a coin-gated mini-game — consistent with fill-blank and conjugation |
+| TSV data file for exercises | 10 prepositions are a fixed, closed set — no need for runtime-loaded data |
+| Canvas rendering | Scene is turn-based, not animation-loop; CSS-positioned divs give native touch targets for free |
+| HTML5 Drag and Drop API | Does not fire on iOS Safari touch — Pointer Events API required |
+| Free-placement with distance judging | Over-engineering for MVP; discrete zones are sufficient |
+| Backend or localStorage persistence | State is ephemeral per session, consistent with other game pages |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| GAME-01 | — | Pending |
+| GAME-02 | — | Pending |
+| GAME-03 | — | Pending |
+| GAME-04 | — | Pending |
+| GAME-05 | — | Pending |
+| GAME-06 | — | Pending |
+| SCEN-01 | — | Pending |
+| SCEN-02 | — | Pending |
+| SCEN-03 | — | Pending |
+| SCEN-04 | — | Pending |
+| SCEN-05 | — | Pending |
+| NAV-01 | — | Pending |
+| NAV-02 | — | Pending |
+
+**Coverage:**
+- v1.4 requirements: 13 total (10 prepositions, "entre" excluded)
+- Mapped to phases: 0
+- Unmapped: 13 ⚠️
+
+---
+*Requirements defined: 2026-03-14*
+*Last updated: 2026-03-14 after initial definition*
