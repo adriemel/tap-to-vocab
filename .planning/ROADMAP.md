@@ -52,3 +52,4 @@ Plans:
 | 3. Code Cleanup | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 4. UI & Mobile Polish | v1.0 | 3/3 | Complete | 2026-03-11 |
 | 5. Mobile UI Polish & Bug Fix | 2/2 | Complete   | 2026-03-11 | - |
+| 9. Scene Layout — Spatial Drag Game | 1/TBD | In Progress | — | — |

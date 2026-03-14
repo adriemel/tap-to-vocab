@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Mobile Polish & Bug Fix
 status: planning
-stopped_at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
-last_updated: "2026-03-11T08:53:38.792Z"
-last_activity: 2026-03-11 — v1.1 roadmap created
+stopped_at: Completed 09-scene-layout 09-01-PLAN.md
+last_updated: "2026-03-14T00:00:00Z"
+last_activity: 2026-03-14 — Phase 9 Plan 01 complete: 3D box scene with 9 spatial drop zones
 progress:
   total_phases: 1
   completed_phases: 1
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-11 after v1.1 milestone started)
 
 ## Current Position
 
-Phase: 5 of 5 (Mobile UI Polish & Bug Fix)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-03-11 — v1.1 roadmap created
+Phase: 9 (Scene Layout — Spatial Drag Game)
+Plan: 1 of TBD in current phase (09-01 complete)
+Status: In progress
+Last activity: 2026-03-14 — 3D box scene with 9 spatial drop zones built and visually verified
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -60,6 +60,8 @@ Recent decisions affecting current work:
 - [Phase 05-mobile-ui-polish-bug-fix]: Added margin-top: 16px to .sentence-target for header gap; icon-only Home + flex-wrap: nowrap keeps nav row on one line at 375px
 - [Phase 05-mobile-ui-polish-bug-fix]: Changed flex-wrap to nowrap on conjugation.html header div; shortened h1 to 'Conjugation' with clamp font-size for 375px fit
 - [Phase 05-mobile-ui-polish-bug-fix]: Removed showInitialized guard in switchMode() — Show mode always reinits, eliminating blank screen on second visit
+- [Phase 09-scene-layout]: cerca-de zone merged into al-lado-de — too visually similar for spatial disambiguation; final zone count 9 not 10
+- [Phase 09-scene-layout]: Blob/ellipse zone shapes chosen over rectangular bordered boxes — reads more naturally as 3D floor/surface regions
 
 ### Pending Todos
 
@@ -71,6 +73,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-11T08:37:08.053Z
-Stopped at: Completed 05-mobile-ui-polish-bug-fix 05-02-PLAN.md
+Last session: 2026-03-14T00:00:00Z
+Stopped at: Completed 09-scene-layout 09-01-PLAN.md
 Resume file: None
