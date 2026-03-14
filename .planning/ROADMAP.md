@@ -68,10 +68,10 @@ Full details: `.planning/milestones/v1.3-ROADMAP.md`
   2. The draggable object follows the pointer precisely during drag, with no jarring offset jump from initial tap point
   3. Drop zones highlight visually when the dragged object is hovering over them
   4. Releasing the object on a zone triggers a hit detection result (correct or incorrect); releasing outside any zone returns the object to its origin
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 08-01: Pointer Events drag loop (pointerdown/pointermove/pointerup, setPointerCapture, touch-action: none, elementFromPoint hit detection)
+- [ ] 08-01-PLAN.md — Pointer Events drag engine (locations.js IIFE + locations.html test scaffold)
 
 ### Phase 9: Scene Layout
 **Goal**: The scene correctly represents all 10 prepositions with unambiguous, visually distinct drop zones on a 375px mobile screen
