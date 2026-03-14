@@ -47,7 +47,7 @@ patterns-established:
 requirements-completed: [GAME-01, SCEN-01, SCEN-05]
 
 # Metrics
-duration: 2min
+duration: 7min
 completed: 2026-03-14
 ---
 
@@ -57,10 +57,10 @@ completed: 2026-03-14
 
 ## Performance
 
-- **Duration:** 2 min
+- **Duration:** ~7 min (including human verification)
 - **Started:** 2026-03-14T18:47:12Z
-- **Completed:** 2026-03-14T18:48:12Z
-- **Tasks:** 2 of 3 (paused at checkpoint:human-verify)
+- **Completed:** 2026-03-14T18:54:04Z
+- **Tasks:** 3 of 3
 - **Files modified:** 2
 
 ## Accomplishments
@@ -76,6 +76,7 @@ Each task was committed atomically:
 
 1. **Task 1: locations.js Pointer Events drag engine IIFE** - `80b44d6` (feat)
 2. **Task 2: locations.html minimal drag test scaffold** - `6c932f2` (feat)
+3. **Task 3: Verify drag engine on desktop and touch** - `[checkpoint]` (human-verify — all 4 criteria passed)
 
 ## Files Created/Modified
 - `tap-to-vocab/assets/js/locations.js` - IIFE drag engine, exports window.LocationsGame with init() and resetDraggable()
@@ -103,7 +104,21 @@ None - no external service configuration required.
 - window.LocationsGame.resetDraggable(el) clears all inline styles for clean exercise transitions
 - locations.html serves as manual verification scaffold — open http://localhost:8000/locations.html
 
-**AWAITING:** Human verification of all 4 Phase 8 success criteria before Task 3 (checkpoint:human-verify) can be marked complete.
+## Human Verification (Task 3)
+
+All 4 Phase 8 success criteria verified as TRUE by human tester on 2026-03-14:
+1. Desktop drag (mouse): drag to zone updates result text; drag to empty snaps back
+2. Zone highlight: border turns blue + background shades during hover; clears on drag away
+3. No offset jump: grabbing by edge stays locked to grab point (shiftX/shiftY correct)
+4. Touch: finger drag does not scroll the page (touch-action: none on #draggable)
+
+## Self-Check: PASSED
+
+- FOUND: tap-to-vocab/assets/js/locations.js
+- FOUND: tap-to-vocab/locations.html
+- FOUND: .planning/phases/08-interaction-foundation/08-01-SUMMARY.md
+- FOUND: commit 80b44d6 (locations.js)
+- FOUND: commit 6c932f2 (locations.html)
 
 ---
 *Phase: 08-interaction-foundation*
