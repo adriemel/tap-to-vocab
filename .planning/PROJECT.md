@@ -36,9 +36,23 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ Stomp collision discrimination: side/head-on still triggers game over — v1.3
 - ✓ Distinct stomp audio and particle explosion feedback — v1.3
 
+## Current Milestone: v1.4 Locations
+
+**Goal:** Add a drag-and-drop spatial prepositions game teaching 11 Spanish location expressions via interactive placement of an object relative to a reference box.
+
+**Target features:**
+- New "Locations" page linked from home screen (below "Fill in")
+- Draggable object (ball/cat) and drop zones representing each preposition
+- 11 prepositions: encima de, debajo de, delante de, detrás de, al lado de, a la derecha de, a la izquierda de, entre, cerca de, lejos de, en
+- Visual drop zone layout where all 11 positions are discernible (behind, close vs far handled explicitly)
+- Success feedback (sound + emoji) and error message on wrong drop
+
 ### Active
 
-(None — planning next milestone)
+- [ ] Locations drag-and-drop game page
+- [ ] 11 spatial prepositions with distinct visual drop zones
+- [ ] Success/error feedback matching existing game patterns
+- [ ] Home screen button linking to Locations game
 
 ### Out of Scope
 
@@ -89,4 +103,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-12 after v1.3 milestone complete*
+*Last updated: 2026-03-14 after v1.4 milestone started*

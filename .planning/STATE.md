@@ -1,49 +1,34 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.3
-milestone_name: Jungle Run Parrot Stomp
-status: milestone_complete
-stopped_at: v1.3 milestone archived — all phases complete, retrospective written
-last_updated: "2026-03-12T19:00:00.000Z"
-last_activity: 2026-03-12 — v1.3 milestone complete and archived
+milestone: v1.4
+milestone_name: Locations
+status: defining_requirements
+stopped_at: Milestone v1.4 started — defining requirements
+last_updated: "2026-03-14T00:00:00.000Z"
+last_activity: 2026-03-14 — Milestone v1.4 started
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 16
-  completed_plans: 16
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-12 after v1.3 milestone complete)
+See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Planning next milestone
+**Current focus:** Phase: Not started (defining requirements)
 
 ## Current Position
 
-Milestone v1.3 complete. All 7 phases shipped across v1.0–v1.3.
-
-Progress: [██████████] 100%
-
-## Performance Metrics
-
-**Velocity:**
-- Total plans completed: 16 (v1.0: 12, v1.1: 2, v1.2: 1, v1.3: 1)
-- Average duration: —
-- Total execution time: —
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| v1.0 phases 1-4 | 12 | — | — |
-| v1.1 phase 5 | 2 | — | — |
-| v1.2 phase 6 | 1 | — | — |
-| v1.3 phase 7 | 1 | 10 min | — |
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-14 — Milestone v1.4 started
 
 ## Accumulated Context
 
@@ -61,6 +46,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-12
-Stopped at: v1.3 milestone complete and archived
+Last session: 2026-03-14
+Stopped at: Milestone v1.4 started, defining requirements
 Resume file: None
