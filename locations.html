@@ -69,7 +69,7 @@
     /* Ground shadow under box */
     #caja-shadow {
       position: absolute;
-      top: 256px; left: 96px;
+      top: 260px; left: 96px;
       width: 100px; height: 18px;
       border-radius: 50%;
       background: rgba(0,0,0,0.22);
@@ -96,28 +96,41 @@
     /* Floor zones — flatter ellipses (ground-level blobs) */
     [data-zone="debajo-de"],
     [data-zone="delante-de"],
-    [data-zone="cerca-de"] {
-      border-radius: 50% / 38%;
+    [data-zone="cerca-de"],
+    [data-zone="al-lado-de"] {
+      border-radius: 50% / 40%;
     }
 
-    /* Depth cues: detrás and lejos are dimmer */
-    [data-zone="detras-de"]  { opacity: 0.42; }
+    /* Depth cues */
+    /* detrás: z-index below box (5) so the box renders over it — "behind" effect */
+    [data-zone="detras-de"]  { opacity: 0.55; z-index: 3; }
     [data-zone="lejos-de"]   { opacity: 0.35; }
 
-    /* en — sits on top face of box */
-    [data-zone="en"] { z-index: 8; opacity: 0.55; }
+    /* en — on the box front face, clearly visible */
+    [data-zone="en"] { z-index: 8; opacity: 0.72; border-radius: 50%; }
 
-    /* ── Zone positions (320×410 scene, box at 100,175) ── */
-    [data-zone="encima-de"]         { width: 56px; height: 56px; top:  84px; left: 104px; }
-    [data-zone="en"]                { width: 46px; height: 40px; top: 170px; left: 117px; }
-    [data-zone="detras-de"]         { width: 52px; height: 40px; top: 128px; left: 186px; }
-    [data-zone="lejos-de"]          { width: 36px; height: 36px; top:  30px; left: 264px; }
-    [data-zone="a-la-derecha-de"]   { width: 56px; height: 56px; top: 183px; left: 212px; }
-    [data-zone="al-lado-de"]        { width: 52px; height: 52px; top: 252px; left: 220px; }
-    [data-zone="cerca-de"]          { width: 54px; height: 46px; top: 310px; left: 182px; }
-    [data-zone="debajo-de"]         { width: 60px; height: 44px; top: 330px; left: 114px; }
-    [data-zone="delante-de"]        { width: 58px; height: 46px; top: 278px; left:  50px; }
-    [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 188px; left:  16px; }
+    /* ── Zone positions (320×410 scene, box at 100,175) ──
+       Box geometry:
+         front face: scene (100,205)→(180,265)
+         top face:   scene (120,175)→(200,205) parallelogram
+         right face: scene (180,175)→(200,265)
+    ── */
+    /* encima: directly above top face center (≈x158) */
+    [data-zone="encima-de"]         { width: 56px; height: 56px; top:  90px; left: 130px; }
+    /* en: centered on front face — clearly "on the box" */
+    [data-zone="en"]                { width: 48px; height: 44px; top: 203px; left: 126px; }
+    /* detrás: overlaps box upper-right so box clips it → "behind" */
+    [data-zone="detras-de"]         { width: 54px; height: 42px; top: 150px; left: 174px; }
+    [data-zone="lejos-de"]          { width: 36px; height: 36px; top:  24px; left: 264px; }
+    /* a-la-derecha: clearly right of box */
+    [data-zone="a-la-derecha-de"]   { width: 56px; height: 56px; top: 188px; left: 222px; }
+    /* al-lado + cerca: grouped as a close vertical pair, right-lower */
+    [data-zone="al-lado-de"]        { width: 52px; height: 52px; top: 256px; left: 214px; }
+    [data-zone="cerca-de"]          { width: 52px; height: 44px; top: 316px; left: 196px; }
+    /* debajo: directly below box front bottom (y≈265) */
+    [data-zone="debajo-de"]         { width: 62px; height: 40px; top: 272px; left: 109px; }
+    [data-zone="delante-de"]        { width: 58px; height: 46px; top: 280px; left:  44px; }
+    [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 190px; left:  14px; }
 
     /* ── Draggable cat — orange, upper-left corner ─────── */
     #draggable {
