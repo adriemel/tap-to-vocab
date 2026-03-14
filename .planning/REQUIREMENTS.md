@@ -56,25 +56,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GAME-01 | — | Pending |
-| GAME-02 | — | Pending |
-| GAME-03 | — | Pending |
-| GAME-04 | — | Pending |
-| GAME-05 | — | Pending |
-| GAME-06 | — | Pending |
-| SCEN-01 | — | Pending |
-| SCEN-02 | — | Pending |
-| SCEN-03 | — | Pending |
-| SCEN-04 | — | Pending |
-| SCEN-05 | — | Pending |
-| NAV-01 | — | Pending |
-| NAV-02 | — | Pending |
+| GAME-01 | Phase 8 | Pending |
+| SCEN-01 | Phase 8 | Pending |
+| SCEN-05 | Phase 8 | Pending |
+| SCEN-02 | Phase 9 | Pending |
+| SCEN-03 | Phase 9 | Pending |
+| SCEN-04 | Phase 9 | Pending |
+| GAME-02 | Phase 10 | Pending |
+| GAME-03 | Phase 10 | Pending |
+| GAME-04 | Phase 10 | Pending |
+| GAME-05 | Phase 10 | Pending |
+| GAME-06 | Phase 10 | Pending |
+| NAV-01 | Phase 10 | Pending |
+| NAV-02 | Phase 10 | Pending |
 
 **Coverage:**
 - v1.4 requirements: 13 total (10 prepositions, "entre" excluded)
-- Mapped to phases: 0
-- Unmapped: 13 ⚠️
+- Mapped to phases: 13
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after initial definition*
+*Last updated: 2026-03-14 — traceability filled after roadmap creation*
