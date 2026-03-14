@@ -66,14 +66,14 @@
       border: 1px solid rgba(0,0,0,0.45);
     }
 
-    /* Ground shadow under box */
+    /* Floor shadow under box — large, soft, gives depth */
     #caja-shadow {
       position: absolute;
-      top: 260px; left: 96px;
-      width: 100px; height: 18px;
+      top: 254px; left: 72px;
+      width: 150px; height: 32px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.22);
-      filter: blur(6px);
+      background: rgba(0,0,0,0.45);
+      filter: blur(10px);
       pointer-events: none;
       z-index: 3;
     }
@@ -95,9 +95,7 @@
 
     /* Floor zones — flatter ellipses (ground-level blobs) */
     [data-zone="debajo-de"],
-    [data-zone="delante-de"],
-    [data-zone="cerca-de"],
-    [data-zone="al-lado-de"] {
+    [data-zone="delante-de"] {
       border-radius: 50% / 40%;
     }
 
@@ -106,8 +104,8 @@
     [data-zone="detras-de"]  { opacity: 0.55; z-index: 3; }
     [data-zone="lejos-de"]   { opacity: 0.35; }
 
-    /* en — on the box front face, clearly visible */
-    [data-zone="en"] { z-index: 8; opacity: 0.72; border-radius: 50%; }
+    /* en — ghostly/pale on box front face, "inside the box" feeling */
+    [data-zone="en"] { z-index: 8; opacity: 0.28; border-radius: 50%; }
 
     /* ── Zone positions (320×410 scene, box at 100,175) ──
        Box geometry:
@@ -124,9 +122,8 @@
     [data-zone="lejos-de"]          { width: 36px; height: 36px; top:  24px; left: 264px; }
     /* a-la-derecha: clearly right of box */
     [data-zone="a-la-derecha-de"]   { width: 56px; height: 56px; top: 188px; left: 222px; }
-    /* al-lado + cerca: grouped as a close vertical pair, right-lower */
-    [data-zone="al-lado-de"]        { width: 52px; height: 52px; top: 256px; left: 214px; }
-    [data-zone="cerca-de"]          { width: 52px; height: 44px; top: 316px; left: 196px; }
+    /* al-lado (= cerca/al-lado merged): right-lower area */
+    [data-zone="al-lado-de"]        { width: 56px; height: 52px; top: 280px; left: 210px; }
     /* debajo: directly below box front bottom (y≈265) */
     [data-zone="debajo-de"]         { width: 62px; height: 40px; top: 272px; left: 109px; }
     [data-zone="delante-de"]        { width: 58px; height: 46px; top: 280px; left:  44px; }
@@ -194,7 +191,6 @@
         <div data-zone="a-la-derecha-de"   class="zone"></div>
         <div data-zone="a-la-izquierda-de" class="zone"></div>
         <div data-zone="en"                class="zone"></div>
-        <div data-zone="cerca-de"          class="zone"></div>
         <div data-zone="al-lado-de"        class="zone"></div>
         <div data-zone="lejos-de"          class="zone"></div>
 
