@@ -53,7 +53,7 @@ Full details: `.planning/milestones/v1.3-ROADMAP.md`
 
 **Milestone Goal:** A drag-and-drop spatial prepositions game teaching 10 Spanish location expressions via interactive placement of a draggable object relative to a reference box. Works on both desktop and mobile (Pointer Events API).
 
-- [ ] **Phase 8: Interaction Foundation** - Working drag-and-drop on mouse and touch using Pointer Events API
+- [x] **Phase 8: Interaction Foundation** - Working drag-and-drop on mouse and touch using Pointer Events API (completed 2026-03-14)
 - [ ] **Phase 9: Scene Layout** - Complete visual scene with reference box and 10 distinct, correctly positioned drop zones
 - [ ] **Phase 10: Game Loop & Integration** - Fully playable game with exercise sequencing, feedback, progress, and home navigation
 
@@ -114,6 +114,6 @@ Plans:
 | 5. Mobile UI Polish & Bug Fix | v1.1 | 2/2 | Complete | 2026-03-11 |
 | 6. Browse Mode Layout Fix | v1.2 | 1/1 | Complete | 2026-03-11 |
 | 7. Parrot Stomp Mechanic | v1.3 | 1/1 | Complete | 2026-03-12 |
-| 8. Interaction Foundation | v1.4 | 0/1 | Not started | - |
+| 8. Interaction Foundation | 1/1 | Complete   | 2026-03-14 | - |
 | 9. Scene Layout | v1.4 | 0/1 | Not started | - |
 | 10. Game Loop & Integration | v1.4 | 0/2 | Not started | - |

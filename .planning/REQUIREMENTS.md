@@ -10,7 +10,7 @@ Requirements for the Locations drag-and-drop spatial prepositions game.
 
 ### Game Core
 
-- [ ] **GAME-01**: User can drag an object to a drop zone representing the prompted Spanish preposition (works on mouse and touch/mobile)
+- [x] **GAME-01**: User can drag an object to a drop zone representing the prompted Spanish preposition (works on mouse and touch/mobile)
 - [ ] **GAME-02**: User sees success feedback (sound, confetti, coin award) when the object is dropped on the correct zone
 - [ ] **GAME-03**: User sees an error message and the object snaps back to origin when dropped on the wrong zone
 - [ ] **GAME-04**: User sees a progress badge showing how many prepositions have been completed out of 10
@@ -19,11 +19,11 @@ Requirements for the Locations drag-and-drop spatial prepositions game.
 
 ### Scene Layout
 
-- [ ] **SCEN-01**: Scene displays a reference box ("la caja") and a draggable object with clear visual affordance
+- [x] **SCEN-01**: Scene displays a reference box ("la caja") and a draggable object with clear visual affordance
 - [ ] **SCEN-02**: Scene has 10 distinct, labeled drop zones for all prepositions: encima de, debajo de, delante de, detrás de, al lado de, a la derecha de, a la izquierda de, cerca de, lejos de, en
 - [ ] **SCEN-03**: Drop zone for "detrás de" (behind) has a depth/shadow cue that visually distinguishes it from the front zone
 - [ ] **SCEN-04**: Drop zones for "cerca de", "al lado de", and "lejos de" are visually distinct with clear distance differentiation (separate distance bands)
-- [ ] **SCEN-05**: Drop zones highlight visually when the draggable object hovers over them during drag
+- [x] **SCEN-05**: Drop zones highlight visually when the draggable object hovers over them during drag
 
 ### Navigation
 
@@ -56,9 +56,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GAME-01 | Phase 8 | Pending |
-| SCEN-01 | Phase 8 | Pending |
-| SCEN-05 | Phase 8 | Pending |
+| GAME-01 | Phase 8 | Complete |
+| SCEN-01 | Phase 8 | Complete |
+| SCEN-05 | Phase 8 | Complete |
 | SCEN-02 | Phase 9 | Pending |
 | SCEN-03 | Phase 9 | Pending |
 | SCEN-04 | Phase 9 | Pending |

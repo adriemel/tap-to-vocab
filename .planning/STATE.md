@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Locations
-status: ready_to_plan
-stopped_at: Roadmap created — Phase 8 ready to plan
-last_updated: "2026-03-14T00:00:00.000Z"
-last_activity: 2026-03-14 — v1.4 roadmap created (3 phases, 13 requirements mapped)
+status: in_progress
+stopped_at: Phase 8 Plan 1 — awaiting checkpoint:human-verify (Tasks 1+2 complete)
+last_updated: "2026-03-14T18:48:12Z"
+last_activity: 2026-03-14 — Phase 8 Plan 01 tasks 1+2 complete; drag engine + test scaffold built
 progress:
   total_phases: 3
   completed_phases: 0
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
 ## Current Position
 
 Phase: 8 of 10 (Interaction Foundation)
-Plan: 0 of 1 in current phase
-Status: Ready to plan
-Last activity: 2026-03-14 — Roadmap created, 13/13 requirements mapped across 3 phases
+Plan: 1 of 1 in current phase (awaiting human-verify checkpoint)
+Status: In progress — awaiting Task 3 checkpoint:human-verify
+Last activity: 2026-03-14 — Plan 08-01 Tasks 1+2 complete; locations.js drag engine + locations.html scaffold built
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [░░░░░░░░░░] 0% (Phase 8 Plan 1 in progress)
 
 ## Performance Metrics
 
@@ -43,7 +43,7 @@ Progress: [░░░░░░░░░░] 0%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 8. Interaction Foundation | 0/1 | — | — |
+| 8. Interaction Foundation | 0/1 (in progress) | — | — |
 | 9. Scene Layout | 0/1 | — | — |
 | 10. Game Loop & Integration | 0/2 | — | — |
 
@@ -59,6 +59,10 @@ Progress: [░░░░░░░░░░] 0%
 - entre excluded — requires two reference objects; single-box layout constraint
 - al lado de: assign a fixed side (right) per exercise definition — avoids directional ambiguity
 - detrás de: dashed border + drop-shadow depth cue (simplest viable MVP approach)
+- setPointerCapture on element (not document-level listeners) — cleaner, no cleanup leak
+- position:fixed during drag — viewport coordinates match clientX/clientY directly without scroll math
+- pointercancel treated identically to pointerup — iOS Safari diagonal drag safety
+- resetDraggable clears inline styles — CSS restores element to scene-defined position
 
 ### Pending Todos
 
@@ -70,6 +74,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14
-Stopped at: Roadmap written — ready to plan Phase 8
-Resume file: None
+Last session: 2026-03-14T18:48:12Z
+Stopped at: Phase 8 Plan 01 — Task 3 checkpoint:human-verify. Open http://localhost:8000/locations.html and verify all 4 drag criteria.
+Resume file: .planning/phases/08-interaction-foundation/08-01-SUMMARY.md
