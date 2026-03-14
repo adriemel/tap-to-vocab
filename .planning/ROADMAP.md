@@ -82,10 +82,10 @@ Plans:
   2. The "detrás de" zone has a depth or shadow visual treatment that distinguishes it from "delante de" — a user who reads neither label can see one is in front and one is behind
   3. The "cerca de", "al lado de", and "lejos de" zones occupy visually distinct distance bands — a user can tell near from adjacent from far without reading the labels
   4. Every drop zone has a minimum 44px touch target on a 375px-wide screen
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 09-01: Scene HTML/CSS layout (reference box, 10 drop zones with data-preposition attributes, detrás de depth cue, distance band styling, hover state)
+- [ ] 09-01-PLAN.md — 10-zone scene layout (reference box, drop zones, detrás depth cue, distance band trio, visual checkpoint)
 
 ### Phase 10: Game Loop & Integration
 **Goal**: Users can play through all 10 prepositions in sequence, receive feedback, track progress, and reach the completion screen — accessible from the home page
