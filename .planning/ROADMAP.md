@@ -55,7 +55,7 @@ Full details: `.planning/milestones/v1.3-ROADMAP.md`
 
 - [x] **Phase 8: Interaction Foundation** - Working drag-and-drop on mouse and touch using Pointer Events API (completed 2026-03-14)
 - [ ] **Phase 9: Scene Layout** - Complete visual scene with reference box and 10 distinct, correctly positioned drop zones
-- [ ] **Phase 10: Game Loop & Integration** - Fully playable game with exercise sequencing, feedback, progress, and home navigation
+- [x] **Phase 10: Game Loop & Integration** - Fully playable game with exercise sequencing, feedback, progress, and home navigation (completed 2026-03-15)
 
 ## Phase Details
 
@@ -116,4 +116,4 @@ Plans:
 | 7. Parrot Stomp Mechanic | v1.3 | 1/1 | Complete | 2026-03-12 |
 | 8. Interaction Foundation | 1/1 | Complete   | 2026-03-14 | - |
 | 9. Scene Layout | v1.4 | 0/1 | Not started | - |
-| 10. Game Loop & Integration | 1/2 | In Progress|  | - |
+| 10. Game Loop & Integration | 2/2 | Complete   | 2026-03-15 | - |

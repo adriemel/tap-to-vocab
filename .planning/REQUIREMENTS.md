@@ -27,8 +27,8 @@ Requirements for the Locations drag-and-drop spatial prepositions game.
 
 ### Navigation
 
-- [ ] **NAV-01**: User can access the Locations game from a "Locations" button on the home screen (index.html), positioned below the "Fill in" button
-- [ ] **NAV-02**: User can navigate back or to home from the Locations page
+- [x] **NAV-01**: User can access the Locations game from a "Locations" button on the home screen (index.html), positioned below the "Fill in" button
+- [x] **NAV-02**: User can navigate back or to home from the Locations page
 
 ## Future Requirements
 
@@ -67,8 +67,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GAME-04 | Phase 10 | Complete |
 | GAME-05 | Phase 10 | Complete |
 | GAME-06 | Phase 10 | Complete |
-| NAV-01 | Phase 10 | Pending |
-| NAV-02 | Phase 10 | Pending |
+| NAV-01 | Phase 10 | Complete |
+| NAV-02 | Phase 10 | Complete |
 
 **Coverage:**
 - v1.4 requirements: 13 total (10 prepositions, "entre" excluded)

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Locations
-status: in_progress
-stopped_at: Completed 10-01-PLAN.md
-last_updated: "2026-03-15T00:12:00.000Z"
-last_activity: 2026-03-15 — Plan 10-01 complete; cerca-de zone added, detrás-de depth cue applied, game loop wired in locations.js
+status: checkpoint_pending
+stopped_at: Completed 10-02-PLAN.md (checkpoint:human-verify pending)
+last_updated: "2026-03-15T09:54:00.000Z"
+last_activity: 2026-03-15 — Plan 10-02 complete; locations.html rebuilt as game page shell, Locations button added to home, checkpoint pending human verification
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
 
 ## Current Position
 
-Phase: 10 of 10 (Game Loop & Integration) — IN PROGRESS
-Plan: 1 of 2 complete in current phase
-Status: Plan 10-01 complete — ready for Plan 10-02 (Page Shell & Integration)
-Last activity: 2026-03-15 — Plan 10-01 complete; 10-zone scene fixed, game loop implemented in locations.js
+Phase: 10 of 10 (Game Loop & Integration) — CHECKPOINT PENDING
+Plan: 2 of 2 complete in current phase
+Status: Plan 10-02 complete — awaiting human checkpoint verification (full game playthrough)
+Last activity: 2026-03-15 — Plan 10-02 complete; locations.html game page shell built, Locations button added to home page
 
-Progress: [████████░░] 75% (3/4 plans done across all phases)
+Progress: [██████████] 100% (4/4 plans done across all phases)
 
 ## Performance Metrics
 
@@ -52,11 +52,14 @@ Progress: [████████░░] 75% (3/4 plans done across all phases
 | Phase 08-interaction-foundation P01 | 7 | 3 tasks | 2 files |
 | Phase 09-scene-layout P01 | 11 | 3 tasks | 2 files |
 | Phase 10-game-loop-and-integration P01 | 12 | 2 tasks | 2 files |
+| Phase 10-game-loop-and-integration P02 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
 ### Decisions
 
+- No game-init.js on locations.html — explicitly out of scope per REQUIREMENTS.md
+- Prompt card uses .sentence-target CSS class for consistent styling without new CSS rules
 - Pointer Events API (not HTML5 DnD) — required for iOS Safari touch support
 - CSS-positioned divs (not canvas) — native touch targets, CSS transitions, easy maintenance
 - Inline JS constant EXERCISES (not TSV) — 10 prepositions are a fixed closed set; no fetch latency
@@ -82,6 +85,6 @@ None — Plan 10-02 (Page Shell) is the final plan; DOM elements queried by game
 
 ## Session Continuity
 
-Last session: 2026-03-15T00:12:00.000Z
-Stopped at: Completed 10-01-PLAN.md
+Last session: 2026-03-15T09:54:00.000Z
+Stopped at: Completed 10-02-PLAN.md (checkpoint:human-verify pending)
 Resume file: None
