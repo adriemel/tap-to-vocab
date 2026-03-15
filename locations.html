@@ -157,7 +157,8 @@
 
     /* debajo: hit 62×44, visual 62×40 — z-index below box so box clips top edge */
     [data-zone="debajo-de"]         { width: 62px; height: 44px; top: 250px; left: 109px; z-index: 3; }
-    [data-zone="debajo-de"]::before { width: 62px; height: 40px; border-radius: 50% / 40%; }
+    [data-zone="debajo-de"]::before { width: 38px; height: 44px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
+    [data-zone="debajo-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
 
     /* delante: 58×46 ✓ */
     [data-zone="delante-de"]        { width: 58px; height: 46px; top: 295px; left: 111px; }
