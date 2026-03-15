@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Locations Bug Fixes
-status: complete
+status: completed
 stopped_at: Completed 11-01-PLAN.md
-last_updated: "2026-03-15T10:05:52.341Z"
-last_activity: 2026-03-15 — Roadmap created, Phase 11 ready to plan
+last_updated: "2026-03-15T10:13:03.259Z"
+last_activity: 2026-03-15 — Phase 11 complete, LOC-01 and LOC-02 fixed
 progress:
   total_phases: 1
   completed_phases: 1
