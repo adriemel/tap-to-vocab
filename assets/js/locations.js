@@ -40,13 +40,14 @@
     el.style.left = (e.clientX - shiftX) + 'px';
     el.style.top = (e.clientY - shiftY) + 'px';
 
-    // Zone hover highlight: hide self so elementFromPoint sees through to zones
-    el.hidden = true;
-    var below = document.elementFromPoint(e.clientX, e.clientY);
-    el.hidden = false;
-    var zone = below && below.closest('[data-zone]');
+    // Zone hover highlight: use cat center vs zone bounding box
+    var rect = el.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
     document.querySelectorAll('[data-zone]').forEach(function (z) {
-      z.classList.toggle('zone-hover', z === zone);
+      var zr = z.getBoundingClientRect();
+      var inside = cx >= zr.left && cx <= zr.right && cy >= zr.top && cy <= zr.bottom;
+      z.classList.toggle('zone-hover', inside);
     });
   }
 
@@ -65,11 +66,15 @@
       z.classList.remove('zone-hover');
     });
 
-    // Final hit detection
-    el.hidden = true;
-    var below = document.elementFromPoint(e.clientX, e.clientY);
-    el.hidden = false;
-    var zone = below && below.closest('[data-zone]');
+    // Final hit detection: cat center vs zone bounding box
+    var rect = el.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var zone = null;
+    document.querySelectorAll('[data-zone]').forEach(function (z) {
+      var zr = z.getBoundingClientRect();
+      if (cx >= zr.left && cx <= zr.right && cy >= zr.top && cy <= zr.bottom) { zone = z; }
+    });
 
     if (zone) {
       onDropCallback(zone.dataset.zone, el);
@@ -110,7 +115,7 @@
     { zone: 'al-lado-de',        es: 'al lado de',        de: 'neben' },
     { zone: 'a-la-derecha-de',   es: 'a la derecha de',   de: 'rechts von' },
     { zone: 'a-la-izquierda-de', es: 'a la izquierda de', de: 'links von' },
-    { zone: 'cerca-de',          es: 'cerca de',          de: 'in der Nähe von' },
+    { zone: 'al-lado-de',        es: 'cerca de',          de: 'in der Nähe von' },
     { zone: 'lejos-de',          es: 'lejos de',          de: 'weit weg von' },
     { zone: 'en',                es: 'en',                de: 'in / auf' }
   ];

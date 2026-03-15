@@ -165,22 +165,6 @@
     /* a-la-izquierda: 56×56 ✓ */
     [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 190px; left:  14px; }
 
-    /* cerca: near zone — brighter, medium-size blob */
-    [data-zone="cerca-de"]          { width: 44px; height: 44px; top: 280px; left: 260px; }
-    [data-zone="cerca-de"]::before  { opacity: 0.55; }
-
-    /* ── Zone labels ─────────────────────────────────────── */
-    .zone-label {
-      position: absolute;
-      bottom: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.55rem;
-      color: var(--muted);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
     /* ── Draggable cat — orange, upper-left corner ─────── */
     #draggable {
       position: absolute;
@@ -245,16 +229,15 @@
         </div>
 
         <!-- Drop zones — teal blobs with labels -->
-        <div data-zone="encima-de"         class="zone"><span class="zone-label">encima de</span></div>
-        <div data-zone="debajo-de"         class="zone"><span class="zone-label">debajo de</span></div>
-        <div data-zone="delante-de"        class="zone"><span class="zone-label">delante de</span></div>
-        <div data-zone="detras-de"         class="zone"><span class="zone-label">detrás de</span></div>
-        <div data-zone="a-la-derecha-de"   class="zone"><span class="zone-label">a la derecha de</span></div>
-        <div data-zone="a-la-izquierda-de" class="zone"><span class="zone-label">a la izquierda de</span></div>
-        <div data-zone="en"                class="zone"><span class="zone-label">en</span></div>
-        <div data-zone="al-lado-de"        class="zone"><span class="zone-label">al lado de</span></div>
-        <div data-zone="cerca-de"          class="zone zone-cerca"><span class="zone-label">cerca de</span></div>
-        <div data-zone="lejos-de"          class="zone"><span class="zone-label">lejos de</span></div>
+        <div data-zone="encima-de"         class="zone"></div>
+        <div data-zone="debajo-de"         class="zone"></div>
+        <div data-zone="delante-de"        class="zone"></div>
+        <div data-zone="detras-de"         class="zone"></div>
+        <div data-zone="a-la-derecha-de"   class="zone"></div>
+        <div data-zone="a-la-izquierda-de" class="zone"></div>
+        <div data-zone="en"                class="zone"></div>
+        <div data-zone="al-lado-de"        class="zone"></div>
+        <div data-zone="lejos-de"          class="zone"></div>
 
         <!-- Draggable cat — upper-left, clear of all zones -->
         <div id="draggable">🐱</div>
