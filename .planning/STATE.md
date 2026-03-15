@@ -2,7 +2,7 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Locations Bug Fixes
-status: planning
+status: complete
 stopped_at: Completed 11-01-PLAN.md
 last_updated: "2026-03-15T10:05:52.341Z"
 last_activity: 2026-03-15 — Roadmap created, Phase 11 ready to plan
@@ -11,7 +11,7 @@ progress:
   completed_phases: 1
   total_plans: 1
   completed_plans: 1
-  percent: 0
+  percent: 100
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-15 after v1.5 milestone started)
 ## Current Position
 
 Phase: 11 of 11 (Locations UI Fixes)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-03-15 — Roadmap created, Phase 11 ready to plan
+Plan: 1 of 1 in current phase
+Status: Complete
+Last activity: 2026-03-15 — Phase 11 complete, LOC-01 and LOC-02 fixed
 
-Progress: [░░░░░░░░░░] 0% (0 plans done in v1.5)
+Progress: [██████████] 100% (1/1 plans done in v1.5)
 
 ## Performance Metrics
 
