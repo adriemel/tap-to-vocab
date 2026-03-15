@@ -1,5 +1,14 @@
 # Milestones
 
+## v1.5 Locations Bug Fixes (Shipped: 2026-03-15)
+
+**Phases completed:** 1 phases, 0 plans, 0 tasks
+
+**Key accomplishments:**
+- (none recorded)
+
+---
+
 ## v1.3 — Jungle Run Parrot Stomp
 
 **Shipped:** 2026-03-12

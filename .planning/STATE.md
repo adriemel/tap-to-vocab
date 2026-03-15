@@ -1,16 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.3
-milestone_name: Jungle Run Parrot Stomp
-status: milestone_complete
-stopped_at: v1.3 milestone archived — all phases complete, retrospective written
-last_updated: "2026-03-12T19:00:00.000Z"
-last_activity: 2026-03-12 — v1.3 milestone complete and archived
+milestone: v1.0
+milestone_name: milestone
+status: unknown
+stopped_at: v1.3 milestone complete and archived
+last_updated: "2026-03-15T10:14:52.617Z"
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 16
-  completed_plans: 16
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 1
   percent: 100
 ---
 
