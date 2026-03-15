@@ -11,7 +11,7 @@
       width: 320px;
       height: 410px;
       margin: 8px auto;
-      background: #1a2240;
+      background: #2a3355;
       border-radius: 16px;
     }
 
@@ -139,9 +139,9 @@
     [data-zone="encima-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
 
     /* en: hit 48×44 ✓ */
-    [data-zone="en"]                { width: 48px; height: 44px; top: 203px; left: 126px; }
+    [data-zone="en"]                { width: 48px; height: 44px; top: 205px; left: 122px; }
 
-    /* detrás: hit 54×44, visual 54×44 */
+    /* detrás: hit 54×54, visual 54×44 */
     [data-zone="detras-de"]         { width: 54px; height: 54px; top: 149px; left: 174px; }
 
     /* lejos: hit 44×44, visual 36×36 */
@@ -156,7 +156,7 @@
 
     /* debajo: hit 62×44, visual 62×40 — z-index below box so box clips top edge */
     [data-zone="debajo-de"]         { width: 62px; height: 44px; top: 250px; left: 109px; z-index: 3; }
-    [data-zone="debajo-de"]::before { width: 48px; height: 40px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
+    [data-zone="debajo-de"]::before { width: 52px; height: 38px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
     [data-zone="debajo-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
 
     /* delante: 58×46 ✓ */
