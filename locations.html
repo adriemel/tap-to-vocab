@@ -112,9 +112,16 @@
     [data-zone="debajo-de"]::before,
     [data-zone="delante-de"]::before { border-radius: 50% / 40%; }
 
-    /* detrás: z-index below box so box clips it → "behind" */
+    /* detrás: z-index below box so box clips it → "behind"; dashed border = depth cue */
     [data-zone="detras-de"]         { z-index: 3; }
-    [data-zone="detras-de"]::before { opacity: 0.55; }
+    [data-zone="detras-de"]::before {
+      width: 54px; height: 44px;
+      border: 2px dashed rgba(255,255,255,0.45);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.55);
+      opacity: 0.7;
+      background: var(--accent);
+      border-radius: 50%;
+    }
     /* lejos: dim and small */
     [data-zone="lejos-de"]::before  { opacity: 0.35; }
     /* en: ghostly pale — inside-the-box feeling */
@@ -135,9 +142,8 @@
     /* en: hit 48×44 ✓ */
     [data-zone="en"]                { width: 48px; height: 44px; top: 203px; left: 126px; }
 
-    /* detrás: hit 54×44, visual 54×42 */
+    /* detrás: hit 54×44, visual 54×44 */
     [data-zone="detras-de"]         { width: 54px; height: 44px; top: 149px; left: 174px; }
-    [data-zone="detras-de"]::before { width: 54px; height: 42px; }
 
     /* lejos: hit 44×44, visual 36×36 */
     [data-zone="lejos-de"]          { width: 44px; height: 44px; top:  20px; left: 260px; }
@@ -158,6 +164,22 @@
 
     /* a-la-izquierda: 56×56 ✓ */
     [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 190px; left:  14px; }
+
+    /* cerca: near zone — brighter, medium-size blob */
+    [data-zone="cerca-de"]          { width: 44px; height: 44px; top: 280px; left: 260px; }
+    [data-zone="cerca-de"]::before  { opacity: 0.55; }
+
+    /* ── Zone labels ─────────────────────────────────────── */
+    .zone-label {
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.55rem;
+      color: var(--muted);
+      white-space: nowrap;
+      pointer-events: none;
+    }
 
     /* ── Draggable cat — orange, upper-left corner ─────── */
     #draggable {
@@ -213,16 +235,17 @@
           <div id="caja-right"></div>
         </div>
 
-        <!-- Drop zones — teal blobs, no labels -->
-        <div data-zone="encima-de"         class="zone"></div>
-        <div data-zone="debajo-de"         class="zone"></div>
-        <div data-zone="delante-de"        class="zone"></div>
-        <div data-zone="detras-de"         class="zone"></div>
-        <div data-zone="a-la-derecha-de"   class="zone"></div>
-        <div data-zone="a-la-izquierda-de" class="zone"></div>
-        <div data-zone="en"                class="zone"></div>
-        <div data-zone="al-lado-de"        class="zone"></div>
-        <div data-zone="lejos-de"          class="zone"></div>
+        <!-- Drop zones — teal blobs with labels -->
+        <div data-zone="encima-de"         class="zone"><span class="zone-label">encima de</span></div>
+        <div data-zone="debajo-de"         class="zone"><span class="zone-label">debajo de</span></div>
+        <div data-zone="delante-de"        class="zone"><span class="zone-label">delante de</span></div>
+        <div data-zone="detras-de"         class="zone"><span class="zone-label">detrás de</span></div>
+        <div data-zone="a-la-derecha-de"   class="zone"><span class="zone-label">a la derecha de</span></div>
+        <div data-zone="a-la-izquierda-de" class="zone"><span class="zone-label">a la izquierda de</span></div>
+        <div data-zone="en"                class="zone"><span class="zone-label">en</span></div>
+        <div data-zone="al-lado-de"        class="zone"><span class="zone-label">al lado de</span></div>
+        <div data-zone="cerca-de"          class="zone zone-cerca"><span class="zone-label">cerca de</span></div>
+        <div data-zone="lejos-de"          class="zone"><span class="zone-label">lejos de</span></div>
 
         <!-- Draggable cat — upper-left, clear of all zones -->
         <div id="draggable">🐱</div>
