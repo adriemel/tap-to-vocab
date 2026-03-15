@@ -3,11 +3,11 @@ gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Locations Bug Fixes
 status: planning
-stopped_at: Defining requirements
-last_updated: "2026-03-15T10:30:00.000Z"
-last_activity: 2026-03-15 — Milestone v1.5 started
+stopped_at: Roadmap created — Phase 11 ready to plan
+last_updated: "2026-03-15T10:45:00.000Z"
+last_activity: 2026-03-15 — Roadmap created for v1.5
 progress:
-  total_phases: 0
+  total_phases: 1
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,62 +18,44 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-15 after v1.4 milestone)
+See: .planning/PROJECT.md (updated 2026-03-15 after v1.5 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Planning next milestone (v1.5)
+**Current focus:** Phase 11 — Locations UI Fixes
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-15 — Milestone v1.5 started
+Phase: 11 of 11 (Locations UI Fixes)
+Plan: 0 of TBD in current phase
+Status: Ready to plan
+Last activity: 2026-03-15 — Roadmap created, Phase 11 ready to plan
 
-Progress: [██████████] 100% (4/4 plans done across all phases)
+Progress: [░░░░░░░░░░] 0% (0 plans done in v1.5)
 
 ## Performance Metrics
 
-**Velocity:**
-- Total plans completed: 3 (this milestone)
+**Velocity (v1.4 reference):**
+- Total plans completed: 4 (v1.4 milestone)
 - Average duration: ~10 min
-- Total execution time: ~30 min
+- Total execution time: ~38 min
 
-**By Phase:**
+**By Phase (v1.4):**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 8. Interaction Foundation | 1/1 (complete) | 7 min | 7 min |
-| 9. Scene Layout | 1/1 (complete) | ~11 min | 11 min |
-| 10. Game Loop & Integration | 2/2 (complete) | ~20 min | 10 min |
+| 8. Interaction Foundation | 1/1 | 7 min | 7 min |
+| 9. Scene Layout | 1/1 | 11 min | 11 min |
+| 10. Game Loop & Integration | 2/2 | 20 min | 10 min |
 
-**Recent Trend:** 3 plans completed
-
-| Phase 08-interaction-foundation P01 | 7 | 3 tasks | 2 files |
-| Phase 09-scene-layout P01 | 11 | 3 tasks | 2 files |
-| Phase 10-game-loop-and-integration P01 | 12 | 2 tasks | 2 files |
-| Phase 10-game-loop-and-integration P02 | 8 | 2 tasks | 3 files |
+**Recent Trend:** Stable
 
 ## Accumulated Context
 
 ### Decisions
 
-- No game-init.js on locations.html — explicitly out of scope per REQUIREMENTS.md
-- Prompt card uses .sentence-target CSS class for consistent styling without new CSS rules
-- Pointer Events API (not HTML5 DnD) — required for iOS Safari touch support
-- CSS-positioned divs (not canvas) — native touch targets, CSS transitions, easy maintenance
-- Inline JS constant EXERCISES (not TSV) — 10 prepositions are a fixed closed set; no fetch latency
-- entre excluded — requires two reference objects; single-box layout constraint
-- al lado de: assign a fixed side (right) per exercise definition — avoids directional ambiguity
-- detrás de: dashed border + drop-shadow depth cue (simplest viable MVP approach)
-- setPointerCapture on element (not document-level listeners) — cleaner, no cleanup leak
-- position:fixed during drag — viewport coordinates match clientX/clientY directly without scroll math
-- pointercancel treated identically to pointerup — iOS Safari diagonal drag safety
-- resetDraggable clears inline styles — CSS restores element to scene-defined position
-- [Phase 08-interaction-foundation]: Pointer Events API drag engine with setPointerCapture, grab-offset, and zone detection via hide/elementFromPoint/unhide — verified on desktop and touch
-- [Phase 10-01]: cerca-de placed at top:280px left:260px forming distance band (lejos high, cerca low, al-lado beside)
-- [Phase 10-01]: gameHistory renamed from 'history' to avoid shadowing window.history
-- [Phase 10-01]: EXERCISES array is fixed order (not shuffled) — pedagogical sequencing intent
+- LOC-01: Prompt card shows only Spanish preposition — German translation was being rendered from the EXERCISES constant's `de` field
+- LOC-02: delante-de drop zone overlaps debajo-de — needs repositioning in CSS within locations.html
+- Both fixes are isolated to locations.html/locations.js; no other files affected
 
 ### Pending Todos
 
@@ -85,6 +67,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-15T10:10:00.000Z
-Stopped at: Completed 10-02-PLAN.md (all phases done, v1.4 milestone complete)
+Last session: 2026-03-15T10:45:00.000Z
+Stopped at: Roadmap written — ready to run /gsd:plan-phase 11
 Resume file: None

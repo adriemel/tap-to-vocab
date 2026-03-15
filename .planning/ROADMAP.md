@@ -7,6 +7,7 @@
 - ✅ **v1.2 Browse Mode Layout Fix** — Phase 6 (shipped 2026-03-11)
 - ✅ **v1.3 Jungle Run Parrot Stomp** — Phase 7 (shipped 2026-03-12)
 - ✅ **v1.4 Locations** — Phases 8-10 (shipped 2026-03-15)
+- 🚧 **v1.5 Locations Bug Fixes** — Phase 11 (in progress)
 
 ## Phases
 
@@ -60,6 +61,27 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 
 </details>
 
+### 🚧 v1.5 Locations Bug Fixes (In Progress)
+
+**Milestone Goal:** Fix two visual/UX bugs in locations.html — remove German from the prompt header and correct the delante-de drop zone position.
+
+#### Phase 11: Locations UI Fixes
+
+- [ ] **Phase 11: Locations UI Fixes** - Fix prompt header and delante-de zone position in locations.html
+
+## Phase Details
+
+### Phase 11: Locations UI Fixes
+**Goal**: Users see a clean Spanish-only prompt and all drop zones are correctly positioned without overlap
+**Depends on**: Phase 10 (v1.4 complete)
+**Requirements**: LOC-01, LOC-02
+**Success Criteria** (what must be TRUE):
+  1. The prompt card shows only the Spanish preposition — no German translation text is visible at any point during a game session
+  2. The "delante de" drop zone is visually centered in front of the box's front face
+  3. The "delante de" zone does not visually overlap the "debajo de" zone at any viewport size the game supports
+  4. Dragging the object onto the correct zone still awards a coin and advances the exercise for both affected zones
+**Plans**: TBD
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -74,3 +96,4 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 | 8. Interaction Foundation | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 9. Scene Layout | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 10. Game Loop & Integration | v1.4 | 2/2 | Complete | 2026-03-15 |
+| 11. Locations UI Fixes | v1.5 | 0/1 | Not started | - |
