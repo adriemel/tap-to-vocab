@@ -9,8 +9,8 @@ Requirements for milestone v1.5 — Locations Bug Fixes.
 
 ### Locations UI
 
-- [ ] **LOC-01**: User sees only the Spanish preposition in the prompt header — German translation is not displayed
-- [ ] **LOC-02**: The "delante de" drop zone is visually centered in front of the box's front face without overlapping the "debajo de" drop zone
+- [x] **LOC-01**: User sees only the Spanish preposition in the prompt header — German translation is not displayed
+- [x] **LOC-02**: The "delante de" drop zone is visually centered in front of the box's front face without overlapping the "debajo de" drop zone
 
 ## Future Requirements
 
@@ -29,8 +29,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LOC-01 | Phase 11 | Pending |
-| LOC-02 | Phase 11 | Pending |
+| LOC-01 | Phase 11 | Complete |
+| LOC-02 | Phase 11 | Complete |
 
 **Coverage:**
 - v1.5 requirements: 2 total

@@ -67,7 +67,7 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 
 #### Phase 11: Locations UI Fixes
 
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 - [ ] 11-01-PLAN.md — Hide German prompt text and reposition delante-de zone
 
@@ -98,4 +98,4 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 | 8. Interaction Foundation | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 9. Scene Layout | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 10. Game Loop & Integration | v1.4 | 2/2 | Complete | 2026-03-15 |
-| 11. Locations UI Fixes | v1.5 | 0/1 | Not started | - |
+| 11. Locations UI Fixes | 1/1 | Complete   | 2026-03-15 | - |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Locations Bug Fixes
 status: planning
-stopped_at: Roadmap created — Phase 11 ready to plan
-last_updated: "2026-03-15T10:45:00.000Z"
-last_activity: 2026-03-15 — Roadmap created for v1.5
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-03-15T10:05:52.341Z"
+last_activity: 2026-03-15 — Roadmap created, Phase 11 ready to plan
 progress:
   total_phases: 1
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  completed_phases: 1
+  total_plans: 1
+  completed_plans: 1
   percent: 0
 ---
 
@@ -48,6 +48,7 @@ Progress: [░░░░░░░░░░] 0% (0 plans done in v1.5)
 | 10. Game Loop & Integration | 2/2 | 20 min | 10 min |
 
 **Recent Trend:** Stable
+| Phase 11-locations-ui-fixes P01 | 15 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -56,6 +57,8 @@ Progress: [░░░░░░░░░░] 0% (0 plans done in v1.5)
 - LOC-01: Prompt card shows only Spanish preposition — German translation was being rendered from the EXERCISES constant's `de` field
 - LOC-02: delante-de drop zone overlaps debajo-de — needs repositioning in CSS within locations.html
 - Both fixes are isolated to locations.html/locations.js; no other files affected
+- [Phase 11-locations-ui-fixes]: Hide #prompt-de via display:none and remove JS population — Spanish-only prompt in Locations game (LOC-01)
+- [Phase 11-locations-ui-fixes]: delante-de zone repositioned to top:295px left:111px — centered under box front face, no overlap with debajo-de (LOC-02)
 
 ### Pending Todos
 
@@ -67,6 +70,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-15T10:45:00.000Z
-Stopped at: Roadmap written — ready to run /gsd:plan-phase 11
+Last session: 2026-03-15T10:05:52.335Z
+Stopped at: Completed 11-01-PLAN.md
 Resume file: None
