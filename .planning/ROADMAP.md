@@ -97,11 +97,11 @@ Plans:
   3. User sees a progress badge (e.g., "3 / 10") that updates after each correct drop or skip
   4. User can skip the current preposition and advance to the next without being stuck
   5. User reaches a completion screen with celebration feedback when all 10 prepositions are done, and can navigate home from any point in the game
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: locations.js IIFE — EXERCISES constant, exercise sequencing, loadExercise(), checkDrop() wiring, CoinTracker.addCoin(), SharedUtils feedback calls, skip logic, completion state
-- [ ] 10-02: locations.html shell + index.html button — page structure, header, coin counter, prompt card, progress badge, back/home nav, home screen entry point
+- [ ] 10-01-PLAN.md — Scene gap fixes (cerca-de zone, detrás depth cue, touch targets, labels) + locations.js game loop (EXERCISES, startGame, loadExercise, checkDrop, advanceExercise, showCompletion)
+- [ ] 10-02-PLAN.md — locations.html game page shell (prompt card, header, controls, script order) + index.html Locations button + styles.css .btn-locations rule
 
 ## Progress
 
