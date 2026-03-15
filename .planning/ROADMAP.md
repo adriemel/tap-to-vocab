@@ -67,7 +67,9 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 
 #### Phase 11: Locations UI Fixes
 
-- [ ] **Phase 11: Locations UI Fixes** - Fix prompt header and delante-de zone position in locations.html
+**Plans:** 1 plan
+
+- [ ] 11-01-PLAN.md — Hide German prompt text and reposition delante-de zone
 
 ## Phase Details
 
@@ -80,7 +82,7 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
   2. The "delante de" drop zone is visually centered in front of the box's front face
   3. The "delante de" zone does not visually overlap the "debajo de" zone at any viewport size the game supports
   4. Dragging the object onto the correct zone still awards a coin and advances the exercise for both affected zones
-**Plans**: TBD
+**Plans**: 1 plan
 
 ## Progress
 
