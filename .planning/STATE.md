@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: Locations
-status: completed
-stopped_at: Completed 10-02-PLAN.md (all phases done, v1.4 milestone complete)
-last_updated: "2026-03-15T09:17:00.485Z"
-last_activity: 2026-03-15 — Plan 10-02 complete; human verify approved; zone labels removed, cerca-de merged, drop detection fixed
+milestone: v1.5
+milestone_name: Locations Bug Fixes
+status: planning
+stopped_at: Defining requirements
+last_updated: "2026-03-15T10:30:00.000Z"
+last_activity: 2026-03-15 — Milestone v1.5 started
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-15 after v1.4 milestone)
 
 ## Current Position
 
-Phase: v1.4 complete — all 10 phases shipped
-Plan: N/A — between milestones
-Status: v1.4 milestone archived; REQUIREMENTS.md deleted; ready for /gsd:new-milestone
-Last activity: 2026-03-15 — v1.4 milestone archived; git tag v1.4 created
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-15 — Milestone v1.5 started
 
 Progress: [██████████] 100% (4/4 plans done across all phases)
 

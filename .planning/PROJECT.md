@@ -42,7 +42,16 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-(None — planning next milestone)
+- [ ] Prompt header shows only the Spanish preposition (no German translation) — locations.html
+- [ ] "delante de" drop zone repositioned in front of the box's front face without overlapping "debajo de"
+
+## Current Milestone: v1.5 Locations Bug Fixes
+
+**Goal:** Fix two visual/UX bugs in locations.html — remove German translation from prompt and correct the delante-de zone position.
+
+**Target features:**
+- Hide German translation in prompt card header
+- Reposition delante-de drop zone to be visually in front of the box
 
 ### Out of Scope
 
@@ -101,4 +110,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-15 after v1.4 milestone*
+*Last updated: 2026-03-15 after v1.5 milestone started*
