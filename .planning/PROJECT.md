@@ -35,24 +35,14 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ Parrot stomp mechanic added to Jungle Run (fall-from-above kills parrot, bounces monkey) — v1.3
 - ✓ Stomp collision discrimination: side/head-on still triggers game over — v1.3
 - ✓ Distinct stomp audio and particle explosion feedback — v1.3
-
-## Current Milestone: v1.4 Locations
-
-**Goal:** Add a drag-and-drop spatial prepositions game teaching 11 Spanish location expressions via interactive placement of an object relative to a reference box.
-
-**Target features:**
-- New "Locations" page linked from home screen (below "Fill in")
-- Draggable object (ball/cat) and drop zones representing each preposition
-- 11 prepositions: encima de, debajo de, delante de, detrás de, al lado de, a la derecha de, a la izquierda de, entre, cerca de, lejos de, en
-- Visual drop zone layout where all 11 positions are discernible (behind, close vs far handled explicitly)
-- Success feedback (sound + emoji) and error message on wrong drop
+- ✓ Locations drag-and-drop game (locations.html + locations.js) with Pointer Events API — v1.4
+- ✓ 9 spatial drop zones around reference box with detrás-de depth cue and distance band — v1.4
+- ✓ Game loop: 10-exercise sequence, success/error feedback, coin awards, progress badge, completion screen — v1.4
+- ✓ Locations button on home screen — v1.4
 
 ### Active
 
-- [ ] Locations drag-and-drop game page
-- [ ] 11 spatial prepositions with distinct visual drop zones
-- [ ] Success/error feedback matching existing game patterns
-- [ ] Home screen button linking to Locations game
+(None — planning next milestone)
 
 ### Out of Scope
 
@@ -71,7 +61,9 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - JS modules: coins.js → game-init.js (games only) → shared-utils.js → [page js]
 - Known debt: in-game scores (mini-games) not connected to CoinTracker; user state keyed by text strings
 - v1.0 codebase: ~6,350 LOC across 11 HTML pages + 8 JS modules + 1 CSS file
+- v1.4 codebase: ~6,820 LOC — added locations.html (265 LOC) + locations.js (201 LOC)
 - All known bugs fixed; CONCERNS.md accurately reflects remaining lower-priority issues
+- Game count: 4 mini-games (Coin Dash, Jungle Run, Tower Stack) + 4 learning games (Sentences, Conjugation, Fill-in-Blank, Locations)
 
 ## Constraints
 
@@ -94,6 +86,12 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | `break` after stomp collision block | Prevents multi-parrot processing in one frame | ✓ Good — no double-effects or cascade kills |
 | `score++` on stomp | Simple reward for skill, consistent with banana scoring | ✓ Good — no separate bonus mechanic needed |
 | Dual oscillator stomp sound (sine pop + triangle thud) | Single oscillator wasn't distinct enough from squawk | ✓ Good — audibly differentiated from death sound |
+| Pointer Events API (not HTML5 DnD) for drag | HTML5 DnD API doesn't fire on iOS Safari touch | ✓ Good — single code path for mouse + touch |
+| CSS-positioned divs (not canvas) for drop zones | Native touch targets, CSS transitions, no frame loop needed | ✓ Good — 44px targets easy to verify and adjust |
+| Inline EXERCISES constant (not TSV) | 10 prepositions are a fixed closed set; no fetch latency | ✓ Good — zero async complexity |
+| entre excluded from prepositions set | Requires two reference objects; single-box layout constraint | ✓ Good — clean MVP boundary, noted in REQUIREMENTS |
+| cerca-de merged into al-lado-de zone (final) | Added separately, labeled, then merged in fix commit — labels cluttered scene and two zones confused users | ✓ Good — 9 zones cleaner than 10 in practice |
+| gameHistory (not history) variable name | window.history built-in shadowing would silently break Back navigation | ✓ Good — naming discipline prevents subtle bug |
 
 ### Deferred
 
@@ -103,4 +101,4 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-14 after v1.4 milestone started*
+*Last updated: 2026-03-15 after v1.4 milestone*

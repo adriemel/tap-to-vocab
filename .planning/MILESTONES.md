@@ -1,5 +1,38 @@
 # Milestones
 
+## v1.4 — Locations
+
+**Shipped:** 2026-03-15
+**Phases:** 8-10
+**Plans:** 4
+**Requirements:** 13/13 complete
+
+### Delivered
+
+New drag-and-drop spatial prepositions game teaching 10 Spanish location expressions via interactive placement of a draggable object relative to a reference box. Pointer Events API enables identical mouse and touch behavior on desktop and iOS Safari. Accessible from home page via Locations button.
+
+### Key Accomplishments
+
+1. Pointer Events drag engine with `setPointerCapture`, grab-offset tracking, and hide/elementFromPoint/unhide zone detection — works on iOS Safari and desktop without page scrolling
+2. 9 CSS-positioned drop zones around a centered reference box; detrás-de depth cue via dashed border + inset box-shadow; spatial distance band (lejos far, cerca near, al-lado beside)
+3. Game loop: 10-exercise `EXERCISES` constant in pedagogically fixed order; `checkDrop()` awards coin + confetti on correct, snaps back on wrong
+4. Progress badge, skip button, and completion celebration screen — fully playable end-to-end
+5. Home page Locations button with `.btn-locations` CSS matching existing full-width button pattern
+
+### Stats
+
+- Timeline: 2 days (2026-03-14 → 2026-03-15)
+- New code: ~466 LOC (locations.js + locations.html)
+- Git range: feat(08-01) → fix(10-02) (9 commits)
+- Git tag: v1.4
+
+### Archive
+
+- `.planning/milestones/v1.4-ROADMAP.md` — full phase details
+- `.planning/milestones/v1.4-REQUIREMENTS.md` — requirements with outcomes
+
+---
+
 ## v1.3 — Jungle Run Parrot Stomp
 
 **Shipped:** 2026-03-12

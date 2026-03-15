@@ -122,6 +122,43 @@
 
 ---
 
+## Milestone: v1.4 — Locations
+
+**Shipped:** 2026-03-15
+**Phases:** 3 (8-10) | **Plans:** 4
+
+### What Was Built
+- Pointer Events drag engine (locations.js IIFE) with `setPointerCapture`, grab-offset tracking, hide/elementFromPoint/unhide zone detection — mouse + touch with no page scroll
+- 9 CSS-positioned drop zones around a centered reference box; detrás-de depth cue (dashed border + inset box-shadow); spatial distance band (lejos far upper-right, cerca/al-lado near-right)
+- Game loop: 10-exercise `EXERCISES` constant, `checkDrop()` with coin + confetti feedback, progress badge, skip, completion screen
+- Home page Locations button wired with `.btn-locations` CSS matching full-width button pattern
+
+### What Worked
+- **Pointer Events API choice**: A single code path for mouse and touch was the right call — no separate touch event handlers needed, iOS Safari drag without page scroll just works
+- **CSS div zones (not canvas)**: Native 44px touch targets, CSS transitions for hover highlights, no frame-loop complexity — exactly the right abstraction for a turn-based game
+- **Phase 10 fixing Phase 9 gaps explicitly**: Verifier found Phase 9 gaps; Plan 10-01 was scoped specifically to fix them before adding game logic — clean sequential resolution
+- **`EXERCISES` as inline constant**: No fetch latency, no async error handling — 10 fixed prepositions don't need a TSV file
+
+### What Was Inefficient
+- **Phase 9 generated many fix commits** (6 fix commits for scene layout): The initial scene layout had multiple spatial/sizing iterations before settling. A more iterative visual-checkpoint-first approach (open browser first, adjust) would have reduced this cycle
+- **cerca-de zone added, then merged twice**: Plan added it as separate zone, labeled, then a fix commit merged it back into al-lado-de. The final design decision (merged) should have been the starting assumption
+
+### Patterns Established
+- **Drag engine pattern**: `setPointerCapture` + grab offset on `pointerdown`; `position:fixed` during drag (viewport coords match clientX/clientY without scroll math); `pointercancel` treated as `pointerup` for iOS diagonal-drag safety
+- **Zone hit detection pattern**: Hide draggable → `elementFromPoint(clientX, clientY)` → unhide draggable → walk up DOM to find `[data-zone]` — cleaner than coordinate overlap math
+- **CSS ::before for visual blob + div for touch target**: Visual and interactive surface are separate, enabling independent sizing. Zone label below with `.zone-label` absolute span
+
+### Key Lessons
+1. **For CSS spatial layouts on mobile, open the browser first** — absolute positioning on small screens requires visual iteration that static analysis cannot replace
+2. **Merge design decisions early**: If cerca-de and al-lado-de represent the same spatial concept for the user, define it as one zone from the start; don't build-then-merge
+3. **`pointercancel` safety is free**: Always add `pointercancel` handler identical to `pointerup` — costs one line, prevents iOS diagonal-drag from leaving ghost state
+
+### Cost Observations
+- Model: claude-sonnet-4-6 (balanced profile)
+- Notable: Phase 9 generated 6 fix commits vs 2 for Phase 10 — scene layout requires more visual iteration than logic implementation
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -132,6 +169,7 @@
 | v1.1 | 1 | 2 | CSS scope regression introduced — caught and deferred cleanly |
 | v1.2 | 1 | 1 | Single-class scoped fix for v1.1 regression |
 | v1.3 | 1 | 1 | First game mechanic addition — velocity-based collision discrimination |
+| v1.4 | 3 | 4 | First drag-and-drop game — Pointer Events API, CSS zone layout, 3-phase delivery |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -139,3 +177,4 @@
 2. **Generic shared utilities beat domain-specific duplication** — SharedUtils pattern scales well
 3. **Scoped CSS classes prevent cross-page regressions** — introduce new class rather than modifying shared class
 4. **Velocity-based gates are the right primitive for game collision classification** — clean, deterministic, no positional ambiguity
+5. **Open the browser first for CSS spatial layouts** — static code review cannot verify absolute positioning on mobile; visual iteration is required and should be budgeted

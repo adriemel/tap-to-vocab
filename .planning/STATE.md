@@ -4,13 +4,13 @@ milestone: v1.4
 milestone_name: Locations
 status: completed
 stopped_at: Completed 10-02-PLAN.md (all phases done, v1.4 milestone complete)
-last_updated: "2026-03-15T09:14:07.317Z"
+last_updated: "2026-03-15T09:17:00.485Z"
 last_activity: 2026-03-15 — Plan 10-02 complete; human verify approved; zone labels removed, cerca-de merged, drop detection fixed
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
   percent: 100
 ---
 
@@ -18,17 +18,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
+See: .planning/PROJECT.md (updated 2026-03-15 after v1.4 milestone)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 10 — Game Loop & Integration
+**Current focus:** Planning next milestone (v1.5)
 
 ## Current Position
 
-Phase: 10 of 10 (Game Loop & Integration) — COMPLETE
-Plan: 2 of 2 complete in current phase
-Status: All plans complete; v1.4 milestone done; checkpoint approved after bug fixes
-Last activity: 2026-03-15 — Plan 10-02 complete; human verify approved; zone labels removed, cerca-de merged, drop detection fixed
+Phase: v1.4 complete — all 10 phases shipped
+Plan: N/A — between milestones
+Status: v1.4 milestone archived; REQUIREMENTS.md deleted; ready for /gsd:new-milestone
+Last activity: 2026-03-15 — v1.4 milestone archived; git tag v1.4 created
 
 Progress: [██████████] 100% (4/4 plans done across all phases)
 
