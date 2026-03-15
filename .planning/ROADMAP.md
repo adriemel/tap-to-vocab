@@ -116,4 +116,4 @@ Plans:
 | 7. Parrot Stomp Mechanic | v1.3 | 1/1 | Complete | 2026-03-12 |
 | 8. Interaction Foundation | 1/1 | Complete   | 2026-03-14 | - |
 | 9. Scene Layout | v1.4 | 0/1 | Not started | - |
-| 10. Game Loop & Integration | 2/2 | Complete   | 2026-03-15 | - |
+| 10. Game Loop & Integration | 2/2 | Complete    | 2026-03-15 | - |

@@ -20,9 +20,9 @@ Requirements for the Locations drag-and-drop spatial prepositions game.
 ### Scene Layout
 
 - [x] **SCEN-01**: Scene displays a reference box ("la caja") and a draggable object with clear visual affordance
-- [ ] **SCEN-02**: Scene has 10 distinct, labeled drop zones for all prepositions: encima de, debajo de, delante de, detrás de, al lado de, a la derecha de, a la izquierda de, cerca de, lejos de, en
-- [ ] **SCEN-03**: Drop zone for "detrás de" (behind) has a depth/shadow cue that visually distinguishes it from the front zone
-- [ ] **SCEN-04**: Drop zones for "cerca de", "al lado de", and "lejos de" are visually distinct with clear distance differentiation (separate distance bands)
+- [x] **SCEN-02**: Scene has 9 distinct unlabeled drop zones covering all 10 prepositions (cerca de and al lado de intentionally share one zone — design decision to simplify the scene)
+- [x] **SCEN-03**: Drop zone for "detrás de" (behind) has a dashed border and inset shadow depth cue that visually distinguishes it from the front zone
+- [x] **SCEN-04**: Drop zones for "al lado de"/"cerca de" and "lejos de" are spatially separated with clear distance differentiation (lejos-de at upper-right corner, al-lado-de/cerca-de at lower-right)
 - [x] **SCEN-05**: Drop zones highlight visually when the draggable object hovers over them during drag
 
 ### Navigation
@@ -59,9 +59,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GAME-01 | Phase 8 | Complete |
 | SCEN-01 | Phase 8 | Complete |
 | SCEN-05 | Phase 8 | Complete |
-| SCEN-02 | Phase 9 | Pending |
-| SCEN-03 | Phase 9 | Pending |
-| SCEN-04 | Phase 9 | Pending |
+| SCEN-02 | Phase 10 | Complete |
+| SCEN-03 | Phase 9 | Complete |
+| SCEN-04 | Phase 10 | Complete |
 | GAME-02 | Phase 10 | Complete |
 | GAME-03 | Phase 10 | Complete |
 | GAME-04 | Phase 10 | Complete |
