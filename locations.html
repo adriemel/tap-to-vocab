@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Locations – Scene Layout – Tap-to-Vocab</title>
+  <title>Locations – Tap-to-Vocab</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
   <style>
     .scene {
@@ -210,19 +210,28 @@
       pointer-events: none;
       z-index: 3;
     }
-
-    #result {
-      text-align: center;
-      margin-top: 10px;
-      font-weight: 700;
-      color: var(--ink);
-      font-size: 0.9rem;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
+
+      <!-- Header: title + coin badge + progress badge -->
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+        <h1 style="margin:0">&#128205; Locations</h1>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+          <span class="badge" id="progress-badge">1 / 10</span>
+        </div>
+      </div>
+
+      <!-- Prompt card: Spanish preposition + German translation -->
+      <div id="prompt-card" class="sentence-target" style="text-align:center; margin-bottom:10px;">
+        <div id="prompt-es" style="font-size:1.4rem; font-weight:700; color:var(--ink);">—</div>
+        <div id="prompt-de" style="font-size:1rem; color:var(--muted); margin-top:4px;">—</div>
+      </div>
+
+      <!-- Scene -->
       <div class="scene">
         <!-- Ground shadows -->
         <div id="caja-shadow"></div>
@@ -250,21 +259,24 @@
         <!-- Draggable cat — upper-left, clear of all zones -->
         <div id="draggable">🐱</div>
       </div>
-      <div id="result">Drag the cat to a zone</div>
+
+      <!-- Controls -->
+      <div class="controls" style="margin-top:10px;">
+        <button class="btn secondary" id="btn-back" disabled>&#8592; Back</button>
+        <button class="btn secondary" id="btn-skip">Skip &#8594;</button>
+        <button class="btn secondary" id="btn-home">&#127968; Home</button>
+      </div>
+
+      <!-- Feedback: error message for wrong drops -->
+      <div class="error" id="feedback" style="display:none; margin-top:8px; text-align:center;"></div>
+
     </div>
   </div>
+
+  <!-- Script load order: coins → shared-utils → locations (project convention) -->
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
   <script src="/assets/js/locations.js"></script>
-  <script>
-    LocationsGame.init(
-      document.getElementById('draggable'),
-      function(zoneName, el) {
-        document.getElementById('result').textContent = 'Dropped on: ' + zoneName;
-        setTimeout(function() {
-          LocationsGame.resetDraggable(el);
-          document.getElementById('result').textContent = 'Drag the cat to a zone';
-        }, 800);
-      }
-    );
-  </script>
+  <script>LocationsGame.startGame();</script>
 </body>
 </html>
