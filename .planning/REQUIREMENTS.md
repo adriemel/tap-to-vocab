@@ -11,11 +11,11 @@ Requirements for the Locations drag-and-drop spatial prepositions game.
 ### Game Core
 
 - [x] **GAME-01**: User can drag an object to a drop zone representing the prompted Spanish preposition (works on mouse and touch/mobile)
-- [ ] **GAME-02**: User sees success feedback (sound, confetti, coin award) when the object is dropped on the correct zone
-- [ ] **GAME-03**: User sees an error message and the object snaps back to origin when dropped on the wrong zone
-- [ ] **GAME-04**: User sees a progress badge showing how many prepositions have been completed out of 10
-- [ ] **GAME-05**: User can skip the current preposition and advance to the next
-- [ ] **GAME-06**: User sees a completion celebration when all 10 prepositions are done
+- [x] **GAME-02**: User sees success feedback (sound, confetti, coin award) when the object is dropped on the correct zone
+- [x] **GAME-03**: User sees an error message and the object snaps back to origin when dropped on the wrong zone
+- [x] **GAME-04**: User sees a progress badge showing how many prepositions have been completed out of 10
+- [x] **GAME-05**: User can skip the current preposition and advance to the next
+- [x] **GAME-06**: User sees a completion celebration when all 10 prepositions are done
 
 ### Scene Layout
 
@@ -62,11 +62,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCEN-02 | Phase 9 | Pending |
 | SCEN-03 | Phase 9 | Pending |
 | SCEN-04 | Phase 9 | Pending |
-| GAME-02 | Phase 10 | Pending |
-| GAME-03 | Phase 10 | Pending |
-| GAME-04 | Phase 10 | Pending |
-| GAME-05 | Phase 10 | Pending |
-| GAME-06 | Phase 10 | Pending |
+| GAME-02 | Phase 10 | Complete |
+| GAME-03 | Phase 10 | Complete |
+| GAME-04 | Phase 10 | Complete |
+| GAME-05 | Phase 10 | Complete |
+| GAME-06 | Phase 10 | Complete |
 | NAV-01 | Phase 10 | Pending |
 | NAV-02 | Phase 10 | Pending |
 

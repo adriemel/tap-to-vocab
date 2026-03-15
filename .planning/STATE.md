@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Locations
-status: completed
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-03-14T20:28:12.877Z"
-last_activity: 2026-03-14 — Plan 08-01 complete; drag engine verified on desktop and touch, all 4 success criteria passed
+status: in_progress
+stopped_at: Completed 10-01-PLAN.md
+last_updated: "2026-03-15T00:12:00.000Z"
+last_activity: 2026-03-15 — Plan 10-01 complete; cerca-de zone added, detrás-de depth cue applied, game loop wired in locations.js
 progress:
   total_phases: 3
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 1
-  percent: 100
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 3
+  percent: 75
 ---
 
 # Project State
@@ -21,35 +21,37 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 8 — Interaction Foundation
+**Current focus:** Phase 10 — Game Loop & Integration
 
 ## Current Position
 
-Phase: 8 of 10 (Interaction Foundation) — COMPLETE
-Plan: 1 of 1 in current phase (complete)
-Status: Phase 8 complete — ready for Phase 9 (Scene Layout)
-Last activity: 2026-03-14 — Plan 08-01 complete; drag engine verified on desktop and touch, all 4 success criteria passed
+Phase: 10 of 10 (Game Loop & Integration) — IN PROGRESS
+Plan: 1 of 2 complete in current phase
+Status: Plan 10-01 complete — ready for Plan 10-02 (Page Shell & Integration)
+Last activity: 2026-03-15 — Plan 10-01 complete; 10-zone scene fixed, game loop implemented in locations.js
 
-Progress: [██████████] 100% (Phase 8 complete — 1/1 plans done)
+Progress: [████████░░] 75% (3/4 plans done across all phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1 (this milestone)
-- Average duration: 7 min
-- Total execution time: 7 min
+- Total plans completed: 3 (this milestone)
+- Average duration: ~10 min
+- Total execution time: ~30 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 8. Interaction Foundation | 1/1 (complete) | 7 min | 7 min |
-| 9. Scene Layout | 0/1 | — | — |
-| 10. Game Loop & Integration | 0/2 | — | — |
+| 9. Scene Layout | 1/1 (complete) | ~11 min | 11 min |
+| 10. Game Loop & Integration | 1/2 (in progress) | ~12 min | 12 min |
 
-**Recent Trend:** 1 plan completed (7 min)
+**Recent Trend:** 3 plans completed
 
 | Phase 08-interaction-foundation P01 | 7 | 3 tasks | 2 files |
+| Phase 09-scene-layout P01 | 11 | 3 tasks | 2 files |
+| Phase 10-game-loop-and-integration P01 | 12 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -66,6 +68,9 @@ Progress: [██████████] 100% (Phase 8 complete — 1/1 plans 
 - pointercancel treated identically to pointerup — iOS Safari diagonal drag safety
 - resetDraggable clears inline styles — CSS restores element to scene-defined position
 - [Phase 08-interaction-foundation]: Pointer Events API drag engine with setPointerCapture, grab-offset, and zone detection via hide/elementFromPoint/unhide — verified on desktop and touch
+- [Phase 10-01]: cerca-de placed at top:280px left:260px forming distance band (lejos high, cerca low, al-lado beside)
+- [Phase 10-01]: gameHistory renamed from 'history' to avoid shadowing window.history
+- [Phase 10-01]: EXERCISES array is fixed order (not shuffled) — pedagogical sequencing intent
 
 ### Pending Todos
 
@@ -73,10 +78,10 @@ None.
 
 ### Blockers/Concerns
 
-- Phase 9 design decision: detrás de visual treatment and al lado de directionality must be locked at planning time before any zone coordinate math is written
+None — Plan 10-02 (Page Shell) is the final plan; DOM elements queried by game loop are not yet present but null guards are in place.
 
 ## Session Continuity
 
-Last session: 2026-03-14T18:55:52.646Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-03-15T00:12:00.000Z
+Stopped at: Completed 10-01-PLAN.md
 Resume file: None
