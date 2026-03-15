@@ -101,5 +101,96 @@
     el.style.top = '';
   }
 
-  window.LocationsGame = { init: init, resetDraggable: resetDraggable };
+  // ── Game loop state ────────────────────────────────────────────────────────
+  var EXERCISES = [
+    { zone: 'encima-de',         es: 'encima de',         de: 'oben auf' },
+    { zone: 'debajo-de',         es: 'debajo de',         de: 'unter' },
+    { zone: 'delante-de',        es: 'delante de',        de: 'vor' },
+    { zone: 'detras-de',         es: 'detrás de',         de: 'hinter' },
+    { zone: 'al-lado-de',        es: 'al lado de',        de: 'neben' },
+    { zone: 'a-la-derecha-de',   es: 'a la derecha de',   de: 'rechts von' },
+    { zone: 'a-la-izquierda-de', es: 'a la izquierda de', de: 'links von' },
+    { zone: 'cerca-de',          es: 'cerca de',          de: 'in der Nähe von' },
+    { zone: 'lejos-de',          es: 'lejos de',          de: 'weit weg von' },
+    { zone: 'en',                es: 'en',                de: 'in / auf' }
+  ];
+  var currentIndex = 0;
+  var gameHistory = [];      // renamed from 'history' to avoid shadowing window.history
+  var advanceTimer = null;
+  var draggableEl = null;
+
+  function startGame() {
+    currentIndex = 0;
+    gameHistory = [];
+    draggableEl = document.getElementById('draggable');
+    init(draggableEl, checkDrop);
+    document.getElementById('btn-skip').onclick = function () { advanceExercise(true); };
+    document.getElementById('btn-back').onclick = function () {
+      if (gameHistory.length === 0) return;
+      currentIndex = gameHistory.pop();
+      updateBackButton();
+      loadExercise();
+    };
+    document.getElementById('btn-home').onclick = function () { location.href = '/'; };
+    updateBackButton();
+    loadExercise();
+  }
+
+  function loadExercise() {
+    if (currentIndex >= EXERCISES.length) { showCompletion(); return; }
+    var ex = EXERCISES[currentIndex];
+    document.getElementById('prompt-es').textContent = ex.es;
+    document.getElementById('prompt-de').textContent = ex.de;
+    document.getElementById('progress-badge').textContent = (currentIndex + 1) + ' / ' + EXERCISES.length;
+    resetDraggable(draggableEl);
+    var fb = document.getElementById('feedback');
+    if (fb) { fb.textContent = ''; fb.style.display = 'none'; }
+  }
+
+  function checkDrop(zoneName, el) {
+    if (advanceTimer) return; // guard: ignore drop if advance already queued
+    var ex = EXERCISES[currentIndex];
+    if (zoneName === ex.zone) {
+      if (window.SharedUtils) SharedUtils.playSuccessSound();
+      if (window.SharedUtils) SharedUtils.confettiBurst(30);
+      if (window.CoinTracker) CoinTracker.addCoin();
+      advanceTimer = setTimeout(function () {
+        advanceTimer = null;
+        advanceExercise(false);
+      }, 900);
+    } else {
+      if (window.SharedUtils) SharedUtils.playErrorSound();
+      var fb = document.getElementById('feedback');
+      if (fb) { fb.textContent = 'Falsch! Try again.'; fb.style.display = 'block'; }
+      resetDraggable(el);
+    }
+  }
+
+  function advanceExercise(isSkip) {
+    if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+    gameHistory.push(currentIndex);
+    currentIndex++;
+    updateBackButton();
+    loadExercise();
+  }
+
+  function updateBackButton() {
+    var btn = document.getElementById('btn-back');
+    if (btn) btn.disabled = gameHistory.length === 0;
+  }
+
+  function showCompletion() {
+    if (window.SharedUtils) SharedUtils.confettiBurst(50);
+    document.getElementById('prompt-card').innerHTML =
+      '<div style="text-align:center; padding: 16px;">' +
+      '<div style="font-size:2rem; margin-bottom:8px;">&#127881;</div>' +
+      '<div style="font-weight:700; font-size:1.2rem; color:var(--ok);">All 10 done!</div>' +
+      '<div style="color:var(--muted); margin-top:8px;">Gut gemacht!</div>' +
+      '</div>';
+    document.getElementById('progress-badge').textContent = '10 / 10';
+    var btnSkip = document.getElementById('btn-skip');
+    if (btnSkip) btnSkip.style.display = 'none';
+  }
+
+  window.LocationsGame = { init: init, resetDraggable: resetDraggable, startGame: startGame };
 })();
