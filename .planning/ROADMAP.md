@@ -6,7 +6,7 @@
 - ✅ **v1.1 Mobile Polish & Bug Fix** — Phase 5 (shipped 2026-03-11)
 - ✅ **v1.2 Browse Mode Layout Fix** — Phase 6 (shipped 2026-03-11)
 - ✅ **v1.3 Jungle Run Parrot Stomp** — Phase 7 (shipped 2026-03-12)
-- 🚧 **v1.4 Locations** — Phases 8-10 (in progress)
+- ✅ **v1.4 Locations** — Phases 8-10 (shipped 2026-03-15)
 
 ## Phases
 
@@ -49,12 +49,12 @@ Full details: `.planning/milestones/v1.3-ROADMAP.md`
 
 </details>
 
-### 🚧 v1.4 Locations (In Progress)
+### ✅ v1.4 Locations (Shipped 2026-03-15)
 
 **Milestone Goal:** A drag-and-drop spatial prepositions game teaching 10 Spanish location expressions via interactive placement of a draggable object relative to a reference box. Works on both desktop and mobile (Pointer Events API).
 
 - [x] **Phase 8: Interaction Foundation** - Working drag-and-drop on mouse and touch using Pointer Events API (completed 2026-03-14)
-- [ ] **Phase 9: Scene Layout** - Complete visual scene with reference box and 10 distinct, correctly positioned drop zones
+- [x] **Phase 9: Scene Layout** - Complete visual scene with reference box and 9 distinct, correctly positioned drop zones (completed 2026-03-14)
 - [x] **Phase 10: Game Loop & Integration** - Fully playable game with exercise sequencing, feedback, progress, and home navigation (completed 2026-03-15)
 
 ## Phase Details
@@ -71,7 +71,7 @@ Full details: `.planning/milestones/v1.3-ROADMAP.md`
 **Plans**: 1 plan
 
 Plans:
-- [ ] 08-01-PLAN.md — Pointer Events drag engine (locations.js IIFE + locations.html test scaffold)
+- [x] 08-01-PLAN.md — Pointer Events drag engine (locations.js IIFE + locations.html test scaffold)
 
 ### Phase 9: Scene Layout
 **Goal**: The scene correctly represents all 10 prepositions with unambiguous, visually distinct drop zones on a 375px mobile screen
@@ -85,7 +85,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 09-01-PLAN.md — 10-zone scene layout (reference box, drop zones, detrás depth cue, distance band trio, visual checkpoint)
+- [x] 09-01-PLAN.md — 10-zone scene layout (reference box, drop zones, detrás depth cue, distance band trio, visual checkpoint)
 
 ### Phase 10: Game Loop & Integration
 **Goal**: Users can play through all 10 prepositions in sequence, receive feedback, track progress, and reach the completion screen — accessible from the home page
@@ -100,8 +100,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — Scene gap fixes (cerca-de zone, detrás depth cue, touch targets, labels) + locations.js game loop (EXERCISES, startGame, loadExercise, checkDrop, advanceExercise, showCompletion)
-- [ ] 10-02-PLAN.md — locations.html game page shell (prompt card, header, controls, script order) + index.html Locations button + styles.css .btn-locations rule
+- [x] 10-01-PLAN.md — Scene gap fixes (cerca-de zone, detrás depth cue, touch targets, labels) + locations.js game loop (EXERCISES, startGame, loadExercise, checkDrop, advanceExercise, showCompletion)
+- [x] 10-02-PLAN.md — locations.html game page shell (prompt card, header, controls, script order) + index.html Locations button + styles.css .btn-locations rule
 
 ## Progress
 

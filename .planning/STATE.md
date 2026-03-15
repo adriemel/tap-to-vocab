@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Locations
-status: checkpoint_pending
-stopped_at: Completed 10-02-PLAN.md (checkpoint:human-verify pending)
-last_updated: "2026-03-15T09:54:00.000Z"
-last_activity: 2026-03-15 — Plan 10-02 complete; locations.html rebuilt as game page shell, Locations button added to home, checkpoint pending human verification
+status: complete
+stopped_at: Completed 10-02-PLAN.md (all phases and plans done)
+last_updated: "2026-03-15T10:10:00.000Z"
+last_activity: 2026-03-15 — Plan 10-02 complete after checkpoint approval; zone labels removed, cerca-de merged, drop detection fixed; Phase 10 and v1.4 milestone fully done
 progress:
   total_phases: 3
   completed_phases: 2
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-14 after v1.4 milestone started)
 
 ## Current Position
 
-Phase: 10 of 10 (Game Loop & Integration) — CHECKPOINT PENDING
+Phase: 10 of 10 (Game Loop & Integration) — COMPLETE
 Plan: 2 of 2 complete in current phase
-Status: Plan 10-02 complete — awaiting human checkpoint verification (full game playthrough)
-Last activity: 2026-03-15 — Plan 10-02 complete; locations.html game page shell built, Locations button added to home page
+Status: All plans complete; v1.4 milestone done; checkpoint approved after bug fixes
+Last activity: 2026-03-15 — Plan 10-02 complete; human verify approved; zone labels removed, cerca-de merged, drop detection fixed
 
 Progress: [██████████] 100% (4/4 plans done across all phases)
 
@@ -45,7 +45,7 @@ Progress: [██████████] 100% (4/4 plans done across all phase
 |-------|-------|-------|----------|
 | 8. Interaction Foundation | 1/1 (complete) | 7 min | 7 min |
 | 9. Scene Layout | 1/1 (complete) | ~11 min | 11 min |
-| 10. Game Loop & Integration | 1/2 (in progress) | ~12 min | 12 min |
+| 10. Game Loop & Integration | 2/2 (complete) | ~20 min | 10 min |
 
 **Recent Trend:** 3 plans completed
 
@@ -81,10 +81,10 @@ None.
 
 ### Blockers/Concerns
 
-None — Plan 10-02 (Page Shell) is the final plan; DOM elements queried by game loop are not yet present but null guards are in place.
+None.
 
 ## Session Continuity
 
-Last session: 2026-03-15T09:54:00.000Z
-Stopped at: Completed 10-02-PLAN.md (checkpoint:human-verify pending)
+Last session: 2026-03-15T10:10:00.000Z
+Stopped at: Completed 10-02-PLAN.md (all phases done, v1.4 milestone complete)
 Resume file: None
