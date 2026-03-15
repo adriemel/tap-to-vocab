@@ -108,9 +108,8 @@
       transform: translate(-50%, -50%) scale(1.18);
     }
 
-    /* Floor zones — flatter ellipses on ::before */
-    [data-zone="debajo-de"]::before,
-    [data-zone="delante-de"]::before { border-radius: 50% / 40%; }
+    /* Floor zone — flatter ellipse on ::before (depth cue) */
+    [data-zone="debajo-de"]::before { border-radius: 50% / 40%; }
 
     /* detrás: z-index below box so box clips it → "behind"; dashed border = depth cue */
     [data-zone="detras-de"]         { z-index: 3; }
@@ -157,7 +156,7 @@
 
     /* debajo: hit 62×44, visual 62×40 — z-index below box so box clips top edge */
     [data-zone="debajo-de"]         { width: 62px; height: 44px; top: 250px; left: 109px; z-index: 3; }
-    [data-zone="debajo-de"]::before { width: 40px; height: 40px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
+    [data-zone="debajo-de"]::before { width: 48px; height: 40px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
     [data-zone="debajo-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
 
     /* delante: 58×46 ✓ */
