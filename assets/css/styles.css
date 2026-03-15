@@ -78,7 +78,7 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
 
 .grid-two-col .btn-locations {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a3a50 0%, #1a2535 100%);
+  background: linear-gradient(135deg, #3c4f6a 0%, #2a364a 100%);
   border: 2px solid var(--accent);
   font-weight: 700;
 }
