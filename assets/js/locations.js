@@ -145,7 +145,6 @@
     if (currentIndex >= EXERCISES.length) { showCompletion(); return; }
     var ex = EXERCISES[currentIndex];
     document.getElementById('prompt-es').textContent = ex.es;
-    document.getElementById('prompt-de').textContent = ex.de;
     document.getElementById('progress-badge').textContent = (currentIndex + 1) + ' / ' + EXERCISES.length;
     resetDraggable(draggableEl);
     var fb = document.getElementById('feedback');
