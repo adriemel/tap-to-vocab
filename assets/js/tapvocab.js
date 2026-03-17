@@ -469,7 +469,7 @@
       if (category.toLowerCase() === "practice") {
         words = getPracticeList();
       } else {
-        words = rows.filter(r => r.category.toLowerCase() === category.toLowerCase());
+        words = shuffleArray(rows.filter(r => r.category.toLowerCase() === category.toLowerCase()));
       }
 
       if (!words.length) {
