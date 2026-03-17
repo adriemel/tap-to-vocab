@@ -119,14 +119,24 @@
     { zone: 'lejos-de',          es: 'lejos de',          de: 'weit weg von' },
     { zone: 'en',                es: 'en',                de: 'in / auf' }
   ];
+  var queue = [];            // shuffled working copy, reset each game
   var currentIndex = 0;
   var gameHistory = [];      // renamed from 'history' to avoid shadowing window.history
   var advanceTimer = null;
   var draggableEl = null;
 
+  function shuffleInPlace(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
   function startGame() {
     currentIndex = 0;
     gameHistory = [];
+    queue = shuffleInPlace(EXERCISES.slice());
     draggableEl = document.getElementById('draggable');
     init(draggableEl, checkDrop);
     document.getElementById('btn-skip').onclick = function () { advanceExercise(true); };
@@ -142,8 +152,8 @@
   }
 
   function loadExercise() {
-    if (currentIndex >= EXERCISES.length) { showCompletion(); return; }
-    var ex = EXERCISES[currentIndex];
+    if (currentIndex >= queue.length) { showCompletion(); return; }
+    var ex = queue[currentIndex];
     document.getElementById('prompt-es').textContent = ex.es;
     document.getElementById('progress-badge').textContent = (currentIndex + 1) + ' / ' + EXERCISES.length;
     resetDraggable(draggableEl);
@@ -153,7 +163,7 @@
 
   function checkDrop(zoneName, el) {
     if (advanceTimer) return; // guard: ignore drop if advance already queued
-    var ex = EXERCISES[currentIndex];
+    var ex = queue[currentIndex];
     if (zoneName === ex.zone) {
       if (window.SharedUtils) SharedUtils.playSuccessSound();
       if (window.SharedUtils) SharedUtils.confettiBurst(30);
