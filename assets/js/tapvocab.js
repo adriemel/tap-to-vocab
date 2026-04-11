@@ -215,7 +215,7 @@
           tapHint.textContent = "Tap anywhere to reveal";
           tapHint.style.opacity = "0.7";
         }
-      }, 2000);
+      }, 1500);
 
       // Speak Spanish: on show for es-de, on reveal for de-es
       if (direction === "es-de") {
