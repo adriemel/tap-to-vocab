@@ -125,23 +125,16 @@
   var advanceTimer = null;
   var draggableEl = null;
 
-  function shuffleInPlace(arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
-  }
-
   function startGame() {
     currentIndex = 0;
     gameHistory = [];
-    queue = shuffleInPlace(EXERCISES.slice());
+    queue = SharedUtils.shuffleArray(EXERCISES);
     draggableEl = document.getElementById('draggable');
     init(draggableEl, checkDrop);
     document.getElementById('btn-skip').onclick = function () { advanceExercise(true); };
     document.getElementById('btn-back').onclick = function () {
       if (gameHistory.length === 0) return;
+      if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
       currentIndex = gameHistory.pop();
       updateBackButton();
       loadExercise();
