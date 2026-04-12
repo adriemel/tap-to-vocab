@@ -159,6 +159,38 @@
 
 ---
 
+## Milestone: v1.5 — Locations Bug Fixes
+
+**Shipped:** 2026-03-15
+**Phases:** 1 | **Plans:** 1
+
+### What Was Built
+- `#prompt-de` hidden with `display:none`; JS line removed from `loadExercise()` — Spanish-only prompt (LOC-01)
+- delante-de zone repositioned to `left:111px, top:295px` — centered on box front face (x=140), 1px clear of debajo-de bottom (LOC-02)
+- debajo-de blob given `skewX(-34deg)` + outline border — matches encima-de's isometric perspective style (polish addition, not in original plan)
+
+### What Worked
+- **Exact interface context in the plan**: Plan included precise line numbers, before/after code snippets, and computed geometry (x-center=140, debajo-de bottom=294px) — implementation was mechanical with zero exploration needed
+- **Human checkpoint for visual verification**: Code-level checks (grep) caught LOC-01/02 automatically; human visual check caught UX nuances that automated checks can't (tilt, visual separation feel)
+- **Targeted display:none over DOM restructuring**: Hiding the element in place was safer than removing it — no risk of breaking JS references
+
+### What Was Inefficient
+- **Out-of-band polish iteration**: The debajo-de blob tilt went through 3 CSS iterations (rotate → skewX → size adjustment) outside the formal plan. A visual design decision checkpoint before implementation would have saved the iteration cycles
+
+### Patterns Established
+- **Zone geometry comment as documentation**: Inline CSS comment with box geometry math (`// x-center = (100+180)/2 = 140`) makes spatial reasoning explicit — no magic numbers
+- **display:none + remove JS population**: For hiding a UI element that's still populated by JS, always do both: hide in CSS AND remove the JS assignment to avoid dead data writes
+
+### Key Lessons
+1. **Plan-level precision pays off for visual bugs** — exact coordinates computed in the plan (not during execution) make CSS fixes mechanical
+2. **Visual CSS iteration needs a design decision first** — knowing the desired tilt style before touching code avoids multiple commits for the same property
+
+### Cost Observations
+- Model: claude-sonnet-4-6 (balanced profile)
+- Notable: ~15 min execution for 2-file, 2-req milestone; 3 CSS iterations for blob polish outside plan scope
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -170,6 +202,7 @@
 | v1.2 | 1 | 1 | Single-class scoped fix for v1.1 regression |
 | v1.3 | 1 | 1 | First game mechanic addition — velocity-based collision discrimination |
 | v1.4 | 3 | 4 | First drag-and-drop game — Pointer Events API, CSS zone layout, 3-phase delivery |
+| v1.5 | 1 | 1 | Visual bug fix — plan-level geometry precision enables mechanical CSS implementation |
 
 ### Top Lessons (Verified Across Milestones)
 
