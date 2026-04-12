@@ -390,17 +390,19 @@ A2 is marked ASSUMED only for caution — it was confirmed by direct code inspec
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should incorrect taps in sentences.js each count as a separate incorrect, or should only the first wrong tap per slot count?**
    - What we know: Current code fires `playErrorSound()` on every wrong tap. STATS-01 says "incorrect counts" without specifying granularity.
    - What's unclear: Whether a user tapping 3 wrong words before getting it right should show 3 incorrect or 1 incorrect for that position.
    - Recommendation: Count each wrong tap as one incorrect (simplest, most consistent with fill-blank behaviour). Accuracy below 100% meaningfully signals difficulty.
+   - RESOLVED: Count each wrong tap separately. Each `playErrorSound()` call maps to one `SessionStats.record(false)` call. This is consistent with fill-blank.js behaviour and gives more meaningful accuracy feedback.
 
 2. **Does the Locations game need a "Stats" button in its controls bar given its layout?**
    - What we know: locations.html controls bar has 3 buttons (Back, Skip, Home). STATS-02 says each mode needs a Stats button.
    - What's unclear: Whether the cramped controls row (small scene card) can accommodate a 4th button.
    - Recommendation: Add the Stats button to the controls row. The row uses `flex-wrap:wrap` so it will overflow to a second line on very small screens, which is acceptable.
+   - RESOLVED: Add 4th Stats button to locations.html controls row. `flex-wrap: wrap` on the `.controls` CSS handles narrow screens gracefully — second row is acceptable.
 
 ---
 
