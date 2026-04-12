@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Fill in the Blank – Tap‑to‑Vocab</title>
+  <meta name="description" content="Fill in the blank to practice Spanish grammar and vocabulary." />
+  <meta property="og:title" content="Fill in the Blank – Tap‑to‑Vocab" />
+  <meta property="og:description" content="Fill in the blank to practice Spanish grammar and vocabulary." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tapvocab.fun/fill-blank.html" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h1 style="margin:0">✏️ Fill in the Blank</h1>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+          <span class="badge" id="progress-badge">0 / 0</span>
+        </div>
+      </div>
+
+      <!-- German Sentence -->
+      <div class="sentence-target">
+        <div class="target-label">Translate to Spanish:</div>
+        <div class="target-sentence" id="german-sentence">—</div>
+      </div>
+
+      <!-- Spanish Sentence with Blank -->
+      <div class="fill-sentence" id="spanish-sentence">—</div>
+
+      <!-- Choice Buttons -->
+      <div class="choices" id="choices"></div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn secondary" id="btn-back" disabled>← Prev</button>
+        <button class="btn secondary" id="btn-skip">Next →</button>
+        <button class="btn secondary" id="btn-home">🏠 Home</button>
+      </div>
+
+      <div class="error" id="error" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
+  <script src="/assets/js/fill-blank.js"></script>
+  <script>
+    FillBlank.init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Tower Stack – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    canvas {
+      display: block;
+      border-radius: 16px;
+      max-width: 100%;
+      touch-action: none;
+    }
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      align-items: center;
+    }
+    .game-score {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--warn);
+      letter-spacing: -1px;
+    }
+    .game-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,10,22,0.9);
+      border-radius: 16px;
+      gap: 16px;
+      z-index: 10;
+    }
+    .game-overlay h2 {
+      color: var(--ink);
+      font-size: 2rem;
+      margin: 0;
+    }
+    .game-overlay .final-score {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--warn);
+      line-height: 1;
+    }
+    .game-overlay .score-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: -8px;
+    }
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,168,255,0.15);
+    }
+    .mute-btn {
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🏗️ Tower Stack</h1>
+      <div class="game-wrapper">
+        <div class="game-hud">
+          <span class="game-score" id="score-display">0</span>
+          <button id="btn-mute" class="mute-btn" title="Mute">🔊</button>
+        </div>
+
+        <div class="canvas-container" id="canvas-container">
+          <canvas id="game-canvas" width="400" height="600"></canvas>
+
+          <div class="game-overlay" id="overlay-start">
+            <h2>🏗️ Tower Stack</h2>
+            <p style="color:var(--muted);text-align:center;margin:0;max-width:240px;line-height:1.7;">
+              Tap to drop blocks.<br>Stack them as high as you can!
+            </p>
+            <button class="btn" id="btn-start" style="min-width:140px;font-size:1.1rem;">▶ Start</button>
+          </div>
+
+          <div class="game-overlay" id="overlay-end" style="display:none;">
+            <h2>Game Over</h2>
+            <div class="final-score" id="final-score">0</div>
+            <div class="score-label">blocks stacked</div>
+            <div class="score-label" id="best-score" style="color:var(--accent);margin-top:2px;"></div>
+            <p style="color:var(--muted);margin:4px 0 0;font-size:.9rem;" id="end-message"></p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+              <button class="btn" id="btn-again" style="display:none;min-width:130px;">▶ Play Again</button>
+              <button class="btn secondary" onclick="location.replace('/games.html')" style="min-width:130px;text-align:center;">✓ Done</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn secondary" onclick="location.replace('/games.html')">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/game-init.js"></script>
+  <script>
+  (function () {
+    if (!GameInit.requireLives(".card h1")) return;
+
+    var canvas = document.getElementById("game-canvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width;
+    var H = canvas.height;
+
+    var scoreDisplay  = document.getElementById("score-display");
+    var overlayStart  = document.getElementById("overlay-start");
+    var overlayEnd    = document.getElementById("overlay-end");
+    var finalScoreEl  = document.getElementById("final-score");
+    var endMessage    = document.getElementById("end-message");
+    var btnStart      = document.getElementById("btn-start");
+    var btnAgain      = document.getElementById("btn-again");
+
+    /* ── Projection ── */
+    var BLOCK_H    = 24;
+    var BLOCK_DEPTH = 80;
+    var ISO_X = 0.7;
+    var ISO_Z = 0.5;
+
+    function project(wx, wy, wz) {
+      return {
+        x: W / 2 + wx * ISO_X - wz * ISO_Z * 0.5,
+        y: H * 0.75 - wy + wz * ISO_Z * 0.55
+      };
+    }
+
+    /* ── Game state ── */
+    var blocks = [], currentBlock = null, fallingPiece = null;
+    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
+    var cameraY = 0, targetCameraY = 0;
+    var BASE_SPEED = 1.8, speed = BASE_SPEED, direction = 1;
+    var moveAxis = "x", perfectCount = 0;
+    var perfectFlash = null;  // { alpha, y }
+    var stars = [];
+
+    /* ── Audio ── */
+    var audioCtx = null;
+    var isMuted = localStorage.getItem("tapvocab_mute") === "1";
+    var musicGain = null;
+    var musicInterval = null;
+    var musicPlaying = false;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    /* Unlock AudioContext on iOS — must be called from a direct user gesture */
+    function unlockAudio() {
+      var ac = getAudioCtx();
+      if (ac.state === "running") return;
+      var buf = ac.createBuffer(1, 1, ac.sampleRate);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      src.connect(ac.destination);
+      src.start(0);
+      ac.resume();
+    }
+
+    function playPlaceSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var bufSize = Math.floor(ac.sampleRate * 0.06);
+      var buf = ac.createBuffer(1, bufSize, ac.sampleRate);
+      var d = buf.getChannelData(0);
+      for (var i = 0; i < bufSize; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / bufSize);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      var g = ac.createGain();
+      g.gain.setValueAtTime(0.18, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+      src.connect(g); g.connect(ac.destination);
+      src.start(ac.currentTime); src.stop(ac.currentTime + 0.08);
+      var osc = ac.createOscillator();
+      var g2 = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 120;
+      g2.gain.setValueAtTime(0.12, ac.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
+      osc.connect(g2); g2.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.1);
+    }
+
+    function playPerfectSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var notes = [784, 988, 1175]; // G5, B5, D6 arpeggio
+      for (var i = 0; i < notes.length; i++) {
+        var osc = ac.createOscillator();
+        var g = ac.createGain();
+        osc.type = "sine";
+        osc.frequency.value = notes[i];
+        var t = ac.currentTime + i * 0.06;
+        g.gain.setValueAtTime(0.12, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+        osc.connect(g); g.connect(ac.destination);
+        osc.start(t); osc.stop(t + 0.18);
+      }
+    }
+
+    function playFallSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var g = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(500, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, ac.currentTime + 0.3);
+      g.gain.setValueAtTime(0.15, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.3);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.35);
+    }
+
+    /* ── Music (chiptune loop – chill G major) ── */
+    var TS_BPM = 120;
+    var TS_BEAT = 60 / TS_BPM;
+    var tsMelody = [392,440,494,587,523,494,440,392, 494,523,587,659,587,523,494,440];
+    var tsBass   = [98,98,110,110,131,131,110,110,   98,98,131,131,110,110,98,98];
+    var tsMusicStep = 0;
+
+    var SCHEDULE_AHEAD = 0.15;
+    var musicNextTime = 0;
+
+    function startMusic() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      musicGain = ac.createGain();
+      musicGain.gain.setValueAtTime(0.12, ac.currentTime);
+      musicGain.connect(ac.destination);
+      musicPlaying = true;
+      tsMusicStep = 0;
+      musicNextTime = ac.currentTime;
+      scheduleMusic();
+    }
+
+    function scheduleMusic() {
+      if (!musicPlaying || !musicGain) return;
+      var ac = getAudioCtx();
+      while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD) {
+        var dur = TS_BEAT * 0.75;
+        var o1 = ac.createOscillator();
+        var g1 = ac.createGain();
+        o1.type = "square";
+        o1.frequency.value = tsMelody[tsMusicStep % tsMelody.length];
+        g1.gain.setValueAtTime(0.06, musicNextTime);
+        g1.gain.exponentialRampToValueAtTime(0.001, musicNextTime + dur);
+        o1.connect(g1); g1.connect(musicGain);
+        o1.start(musicNextTime); o1.stop(musicNextTime + dur);
+        var o2 = ac.createOscillator();
+        var g2 = ac.createGain();
+        o2.type = "triangle";
+        o2.frequency.value = tsBass[tsMusicStep % tsBass.length];
+        g2.gain.setValueAtTime(0.1, musicNextTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, musicNextTime + TS_BEAT * 0.9);
+        o2.connect(g2); g2.connect(musicGain);
+        o2.start(musicNextTime); o2.stop(musicNextTime + TS_BEAT);
+        tsMusicStep++;
+        musicNextTime += TS_BEAT;
+      }
+      if (musicPlaying) musicInterval = setTimeout(scheduleMusic, 100);
+    }
+
+    function stopMusic() {
+      musicPlaying = false;
+      if (musicInterval) { clearTimeout(musicInterval); musicInterval = null; }
+      if (musicGain && audioCtx) {
+        try {
+          musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+          musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+          musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+        } catch(e) {}
+        setTimeout(function() { musicGain = null; }, 400);
+      }
+    }
+
+    /* ── Stars (generated once) ── */
+    (function genStars() {
+      for (var i = 0; i < 90; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.4 + 0.3,
+          a: Math.random() * 0.5 + 0.15
+        });
+      }
+    })();
+
+    /* ── Colors ── */
+    var PALETTE = [
+      {h:210, s:80, l:58},  // sky blue
+      {h:160, s:72, l:52},  // teal
+      {h:270, s:68, l:62},  // purple
+      {h:32,  s:90, l:58},  // orange
+      {h:340, s:74, l:62},  // pink
+      {h:95,  s:62, l:54},  // green
+      {h:52,  s:88, l:58},  // yellow
+      {h:195, s:76, l:56},  // cyan
+    ];
+
+    function blockColor(idx) { return PALETTE[idx % PALETTE.length]; }
+    function hsl(h, s, l)    { return "hsl(" + h + "," + s + "%," + l + "%)"; }
+
+    /* ── Draw one 3-D block (all 5 visible faces) ── */
+    function drawBlock(wx, wz, ww, wd, wy, colorIdx, alpha) {
+      var c = blockColor(colorIdx);
+      var a = (alpha !== undefined) ? alpha : 1;
+
+      /* 8 corners */
+      var tl  = project(wx,      wy,           wz);
+      var tr  = project(wx + ww, wy,           wz);
+      var br  = project(wx + ww, wy,           wz + wd);
+      var bl  = project(wx,      wy,           wz + wd);
+      var btl = project(wx,      wy - BLOCK_H, wz);
+      var btr = project(wx + ww, wy - BLOCK_H, wz);
+      var bbr = project(wx + ww, wy - BLOCK_H, wz + wd);
+      var bbl = project(wx,      wy - BLOCK_H, wz + wd);
+
+      ctx.globalAlpha = a;
+
+      /* 1 — Back face (z = min) — faces away, draw first */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 22);
+      ctx.beginPath();
+      ctx.moveTo(tl.x,  tl.y);
+      ctx.lineTo(tr.x,  tr.y);
+      ctx.lineTo(btr.x, btr.y);
+      ctx.lineTo(btl.x, btl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* 2 — Right face (x = max) — faces away, draw second */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 18);
+      ctx.beginPath();
+      ctx.moveTo(tr.x,  tr.y);
+      ctx.lineTo(br.x,  br.y);
+      ctx.lineTo(bbr.x, bbr.y);
+      ctx.lineTo(btr.x, btr.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* 3 — Front face (z = max) — faces viewer, draw on top */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 10);
+      ctx.beginPath();
+      ctx.moveTo(bl.x,  bl.y);
+      ctx.lineTo(br.x,  br.y);
+      ctx.lineTo(bbr.x, bbr.y);
+      ctx.lineTo(bbl.x, bbl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* 4 — Left face (x = min) — faces viewer, draw on top */
+      ctx.fillStyle = hsl(c.h, c.s, c.l - 4);
+      ctx.beginPath();
+      ctx.moveTo(tl.x,  tl.y);
+      ctx.lineTo(bl.x,  bl.y);
+      ctx.lineTo(bbl.x, bbl.y);
+      ctx.lineTo(btl.x, btl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* 5 — Top face — brightest */
+      ctx.fillStyle = hsl(c.h, c.s, c.l + 10);
+      ctx.beginPath();
+      ctx.moveTo(tl.x, tl.y);
+      ctx.lineTo(tr.x, tr.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bl.x, bl.y);
+      ctx.closePath();
+      ctx.fill();
+
+      /* Subtle top-edge rim */
+      ctx.strokeStyle = "rgba(255,255,255,0.22)";
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = a * 0.55;
+      ctx.beginPath();
+      ctx.moveTo(tl.x, tl.y);
+      ctx.lineTo(tr.x, tr.y);
+      ctx.lineTo(br.x, br.y);
+      ctx.lineTo(bl.x, bl.y);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.globalAlpha = 1;
+    }
+
+    /* ── Background ── */
+    function drawBackground() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "#03060e");
+      g.addColorStop(1, "#091020");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        ctx.globalAlpha = s.a;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    /* ── Ground shadow ── */
+    function drawGround() {
+      var pts = [project(-130, 0, -60), project(130, 0, -60),
+                 project(130, 0, 110),  project(-130, 0, 110)];
+      ctx.fillStyle = "rgba(40,70,140,0.2)";
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    /* ── Init ── */
+    function initGame() {
+      blocks = []; score = 0; cameraY = 0; targetCameraY = 0;
+      speed = BASE_SPEED; direction = 1; moveAxis = "x";
+      perfectCount = 0; fallingPiece = null; perfectFlash = null;
+      scoreDisplay.textContent = "0";
+      blocks.push({ x: -60, z: -40, w: 120, d: BLOCK_DEPTH });
+      spawnBlock();
+      gameRunning = true;
+      startMusic();
+      loop();
+    }
+
+    function spawnBlock() {
+      var last = blocks[blocks.length - 1];
+      if (moveAxis === "x") {
+        currentBlock = { x: -180, z: last.z, w: last.w, d: last.d };
+      } else {
+        currentBlock = { x: last.x, z: -160, w: last.w, d: last.d };
+      }
+    }
+
+    /* ── Drop ── */
+    function dropBlock() {
+      if (!currentBlock || !gameRunning) return;
+      var last = blocks[blocks.length - 1];
+      var cur  = currentBlock;
+
+      var ox1 = Math.max(cur.x, last.x),  ox2 = Math.min(cur.x + cur.w, last.x + last.w);
+      var oz1 = Math.max(cur.z, last.z),   oz2 = Math.min(cur.z + cur.d, last.z + last.d);
+      var ow = ox2 - ox1, od = oz2 - oz1;
+
+      if (ow <= 0 || od <= 0) {
+        playFallSound();
+        fallingPiece = { x: cur.x, z: cur.z, w: cur.w, d: cur.d,
+                         wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
+        currentBlock = null;
+        gameOver();
+        return;
+      }
+
+      var isPerfect = moveAxis === "x" ? Math.abs(cur.x - last.x) < 3
+                                       : Math.abs(cur.z - last.z) < 3;
+      if (isPerfect) {
+        perfectCount++;
+        playPerfectSound();
+        blocks.push({ x: last.x, z: last.z, w: last.w, d: last.d });
+        perfectFlash = { alpha: 1, y: H * 0.38 };
+      } else {
+        playPlaceSound();
+        perfectCount = 0;
+        if (moveAxis === "x") {
+          if (cur.x < last.x) {
+            fallingPiece = { x: cur.x, z: oz1, w: ox1 - cur.x, d: od, wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
+          } else {
+            fallingPiece = { x: ox2, z: oz1, w: (cur.x + cur.w) - ox2, d: od, wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
+          }
+        } else {
+          if (cur.z < last.z) {
+            fallingPiece = { x: ox1, z: cur.z, w: ow, d: oz1 - cur.z, wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
+          } else {
+            fallingPiece = { x: ox1, z: oz2, w: ow, d: (cur.z + cur.d) - oz2, wy: blocks.length * BLOCK_H, vy: 0, alpha: 1, colorIdx: blocks.length };
+          }
+        }
+        blocks.push({ x: ox1, z: oz1, w: ow, d: od });
+      }
+
+      score++;
+      scoreDisplay.textContent = score;
+      if (score % 5 === 0) speed += 0.15;
+      targetCameraY = Math.max(0, blocks.length * BLOCK_H - H * 0.35);
+      moveAxis = moveAxis === "x" ? "z" : "x";
+      spawnBlock();
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      stopMusic();
+      setTimeout(function () {
+        if (animFrame) cancelAnimationFrame(animFrame);
+        var isNewBest = score > bestScore;
+        if (isNewBest) bestScore = score;
+        finalScoreEl.textContent = score;
+        var bestScoreEl = document.getElementById("best-score");
+        if (bestScore > 0) {
+          bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+        } else {
+          bestScoreEl.textContent = "";
+        }
+        endMessage.textContent = "";
+        overlayEnd.style.display = "flex";
+
+        // Decrement game lives
+        var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+        if (lives > 0) {
+          lives--;
+          sessionStorage.setItem("game_lives", String(lives));
+        }
+        if (lives <= 0) {
+          btnAgain.style.display = "none";
+        } else {
+          btnAgain.style.display = "";
+        }
+      }, 700);
+    }
+
+    /* ── Render ── */
+    function draw() {
+      drawBackground();
+
+      ctx.save();
+      ctx.translate(0, cameraY);
+
+      drawGround();
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+        drawBlock(b.x, b.z, b.w, b.d, (i + 1) * BLOCK_H, i);
+      }
+      if (fallingPiece) {
+        drawBlock(fallingPiece.x, fallingPiece.z, fallingPiece.w, fallingPiece.d,
+                  fallingPiece.wy, fallingPiece.colorIdx, fallingPiece.alpha);
+      }
+      if (currentBlock) {
+        drawBlock(currentBlock.x, currentBlock.z, currentBlock.w, currentBlock.d,
+                  (blocks.length + 1) * BLOCK_H, blocks.length);
+      }
+      ctx.restore();
+
+      /* Perfect flash — fixed screen position, not translated */
+      if (perfectFlash) {
+        ctx.globalAlpha = perfectFlash.alpha;
+        ctx.fillStyle = "#ffe066";
+        ctx.font = "bold 26px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("\u2728 Perfect!", W / 2, perfectFlash.y);
+        ctx.textAlign = "left";
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    /* ── Loop ── */
+    function loop() {
+      if (musicPlaying) scheduleMusic(); // keep music fed on iOS
+      cameraY += (targetCameraY - cameraY) * 0.08;
+
+      if (currentBlock && gameRunning) {
+        if (moveAxis === "x") {
+          currentBlock.x += speed * direction;
+          if (currentBlock.x + currentBlock.w > 160) { currentBlock.x = 160 - currentBlock.w; direction = -1; }
+          if (currentBlock.x < -160) { currentBlock.x = -160; direction = 1; }
+        } else {
+          currentBlock.z += speed * direction;
+          if (currentBlock.z + currentBlock.d > 140) { currentBlock.z = 140 - currentBlock.d; direction = -1; }
+          if (currentBlock.z < -140) { currentBlock.z = -140; direction = 1; }
+        }
+      }
+
+      if (fallingPiece) {
+        fallingPiece.vy += 0.9;
+        fallingPiece.wy -= fallingPiece.vy;
+        fallingPiece.alpha -= 0.025;
+        if (fallingPiece.alpha <= 0) fallingPiece = null;
+      }
+
+      if (perfectFlash) {
+        perfectFlash.alpha -= 0.022;
+        perfectFlash.y -= 0.6;
+        if (perfectFlash.alpha <= 0) perfectFlash = null;
+      }
+
+      draw();
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    /* ── Controls ── */
+    btnStart.onclick = function () {
+      unlockAudio();
+      overlayStart.style.display = "none";
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    btnAgain.onclick = function () {
+      unlockAudio();
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    canvas.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
+      if (gameRunning) dropBlock();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.code === "Space" || e.key === " ") {
+        e.preventDefault();
+        if (gameRunning) dropBlock();
+      }
+    });
+
+    /* ── Mute button ── */
+    var btnMute = document.getElementById("btn-mute");
+    btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+    btnMute.onclick = function () {
+      isMuted = !isMuted;
+      localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
+      btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+      if (isMuted) stopMusic();
+      else if (gameRunning) startMusic();
+    };
+
+    function resizeCanvas() {
+      var maxW = Math.min(400, document.getElementById("canvas-container").parentElement.clientWidth - 4);
+      canvas.style.width  = maxW + "px";
+      canvas.style.height = (maxW * 1.5) + "px";
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    draw();
+  })();
+  </script>
+</body>
+</html>

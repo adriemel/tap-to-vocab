@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Jungle Run – Tap-to-Vocab</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --ink: #e8ecff;
+      --muted: #aeb6d9;
+      --warn: #ffcc66;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    canvas {
+      display: block;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      touch-action: none;
+    }
+    .game-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,10,22,0.88);
+      gap: 16px;
+      z-index: 10;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .game-overlay h2 {
+      color: var(--ink);
+      font-size: 2rem;
+      margin: 0;
+    }
+    .game-overlay .final-score {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--warn);
+      line-height: 1;
+    }
+    .game-overlay .score-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .game-overlay p {
+      color: var(--muted);
+      text-align: center;
+      margin: 0;
+      max-width: 280px;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--warn);
+      color: var(--bg);
+      min-width: 140px;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid #555;
+    }
+    .hud-mute {
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .hud-back {
+      position: fixed;
+      top: 12px; left: 12px;
+      z-index: 20;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ccc;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      text-decoration: none;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game-canvas" width="600" height="400"></canvas>
+  <a class="hud-back" href="/games.html">← Back</a>
+  <button id="btn-mute" class="hud-mute" title="Mute">🔊</button>
+
+  <div class="game-overlay" id="overlay-start">
+    <h2>🐒 Jungle Run</h2>
+    <p>Tap or press Space to jump over gaps, dodge parrots, and collect bananas!</p>
+    <button class="btn" id="btn-start">▶ Start</button>
+  </div>
+
+  <div class="game-overlay" id="overlay-end" style="display:none;">
+    <h2>Game Over</h2>
+    <div class="final-score" id="final-score">0</div>
+    <div class="score-label">bananas collected</div>
+    <div class="score-label" id="best-score" style="color:#68b5ff;margin-top:2px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+      <button class="btn" id="btn-again">▶ Play Again</button>
+      <button class="btn secondary" id="btn-done">✓ Done</button>
+    </div>
+  </div>
+
+  <script src="/assets/js/game-init.js"></script>
+  <script>
+  (function () {
+    if (!GameInit.requireLives("#overlay-start h2")) return;
+
+    var canvas = document.getElementById("game-canvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width;   // 600
+    var H = canvas.height;  // 400
+
+    var overlayStart = document.getElementById("overlay-start");
+    var overlayEnd   = document.getElementById("overlay-end");
+    var finalScoreEl = document.getElementById("final-score");
+    var bestScoreEl  = document.getElementById("best-score");
+    var btnStart     = document.getElementById("btn-start");
+    var btnAgain     = document.getElementById("btn-again");
+    var btnDone      = document.getElementById("btn-done");
+
+    btnDone.onclick = function () { location.replace("/games.html"); };
+
+    /* ── Constants ── */
+    var BASE_GROUND_Y = H - 60;
+    var MONKEY_X    = 100;
+    var GRAVITY     = 0.75;
+    var JUMP_VEL    = -14;
+    var BASE_SPEED  = 3.5;
+    var STOMP_BOUNCE_VEL = -10;  // upward velocity after stomp
+
+    /* ── Colors ── */
+    var SKY_TOP     = "#0b1a2e";
+    var SKY_BOT     = "#1a3a2a";
+    var GROUND_C    = "#3a2a1a";
+    var GROUND_TOP  = "#4a6a3a";
+    var BANANA_C    = "#ffe135";
+
+    /* ── Game state ── */
+    var monkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2;
+    var coyoteTimer = 0, jumpBuffer = 0;
+    var COYOTE_FRAMES = 5, BUFFER_FRAMES = 8;
+    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
+    var speed = BASE_SPEED, frameCount = 0;
+    var segments = [], bananas = [], particles = [], parrots = [];
+    var runPhase = 0;
+    var fallAnim = null;
+    var currentGroundY = BASE_GROUND_Y; // monkey's current landing Y
+
+    /* ── Parallax layers ── */
+    var bgTrees = [], fgBushes = [];
+    (function genBG() {
+      for (var i = 0; i < 16; i++) {
+        bgTrees.push({ x: Math.random() * W * 1.5, h: 40 + Math.random() * 70, w: 20 + Math.random() * 15 });
+      }
+      for (var j = 0; j < 10; j++) {
+        fgBushes.push({ x: Math.random() * W * 1.5, w: 25 + Math.random() * 20, h: 15 + Math.random() * 10 });
+      }
+    })();
+
+    /* ── Audio ── */
+    var audioCtx = null;
+    var isMuted = localStorage.getItem("tapvocab_mute") === "1";
+    var musicGain = null;
+    var musicInterval = null;
+    var musicPlaying = false;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function unlockAudio() {
+      var ac = getAudioCtx();
+      if (ac.state === "running") return;
+      var buf = ac.createBuffer(1, 1, ac.sampleRate);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      src.connect(ac.destination);
+      src.start(0);
+      ac.resume();
+    }
+
+    function playJumpSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(300, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(600, ac.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.12, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.12);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.12);
+    }
+
+    function playBananaSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(900, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(1100, ac.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.13, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.12);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.12);
+    }
+
+    function playFallSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(400, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, ac.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.18, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.35);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.4);
+    }
+
+    function playSquawkSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      // Harsh squawk: two detuned sawtooth oscillators
+      for (var i = 0; i < 2; i++) {
+        var osc = ac.createOscillator();
+        var gain = ac.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(600 + i * 80, ac.currentTime);
+        osc.frequency.linearRampToValueAtTime(900 + i * 120, ac.currentTime + 0.06);
+        osc.frequency.linearRampToValueAtTime(300, ac.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.1, ac.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.25);
+        osc.connect(gain); gain.connect(ac.destination);
+        osc.start(ac.currentTime); osc.stop(ac.currentTime + 0.25);
+      }
+    }
+
+    function playStompSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      // High pop — bright attack
+      var osc1 = ac.createOscillator();
+      var gain1 = ac.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(800, ac.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(200, ac.currentTime + 0.08);
+      gain1.gain.setValueAtTime(0.25, ac.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.1);
+      osc1.connect(gain1); gain1.connect(ac.destination);
+      osc1.start(ac.currentTime); osc1.stop(ac.currentTime + 0.1);
+      // Low thud — body impact
+      var osc2 = ac.createOscillator();
+      var gain2 = ac.createGain();
+      osc2.type = "triangle";
+      osc2.frequency.setValueAtTime(120, ac.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(50, ac.currentTime + 0.12);
+      gain2.gain.setValueAtTime(0.20, ac.currentTime);
+      gain2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+      osc2.connect(gain2); gain2.connect(ac.destination);
+      osc2.start(ac.currentTime); osc2.stop(ac.currentTime + 0.15);
+    }
+
+    /* ── Music ── */
+    var MUSIC_BPM = 140;
+    var BEAT_SEC = 60 / MUSIC_BPM;
+    var jrMelody = [587,659,740,587,880,740,659,587, 740,880,988,880,740,659,587,659];
+    var jrBass   = [147,147,175,175,220,220,175,175, 147,147,220,220,175,175,147,147];
+    var musicStep = 0;
+    var SCHEDULE_AHEAD = 0.15;
+    var musicNextTime = 0;
+
+    function startMusic() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      musicGain = ac.createGain();
+      musicGain.gain.setValueAtTime(0.10, ac.currentTime);
+      musicGain.connect(ac.destination);
+      musicPlaying = true;
+      musicStep = 0;
+      musicNextTime = ac.currentTime;
+      scheduleMusic();
+    }
+
+    function scheduleMusic() {
+      if (!musicPlaying || !musicGain) return;
+      var ac = getAudioCtx();
+      while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD) {
+        var dur = BEAT_SEC * 0.7;
+        var o1 = ac.createOscillator();
+        var g1 = ac.createGain();
+        o1.type = "square";
+        o1.frequency.value = jrMelody[musicStep % jrMelody.length];
+        g1.gain.setValueAtTime(0.07, musicNextTime);
+        g1.gain.exponentialRampToValueAtTime(0.001, musicNextTime + dur);
+        o1.connect(g1); g1.connect(musicGain);
+        o1.start(musicNextTime); o1.stop(musicNextTime + dur);
+        var o2 = ac.createOscillator();
+        var g2 = ac.createGain();
+        o2.type = "triangle";
+        o2.frequency.value = jrBass[musicStep % jrBass.length];
+        g2.gain.setValueAtTime(0.10, musicNextTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, musicNextTime + BEAT_SEC * 0.9);
+        o2.connect(g2); g2.connect(musicGain);
+        o2.start(musicNextTime); o2.stop(musicNextTime + BEAT_SEC);
+        musicStep++;
+        musicNextTime += BEAT_SEC;
+      }
+      if (musicPlaying) musicInterval = setTimeout(scheduleMusic, 100);
+    }
+
+    function stopMusic() {
+      musicPlaying = false;
+      if (musicInterval) { clearTimeout(musicInterval); musicInterval = null; }
+      if (musicGain && audioCtx) {
+        try {
+          musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+          musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+          musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+        } catch(e) {}
+        setTimeout(function() { musicGain = null; }, 400);
+      }
+    }
+
+    /* ── Helpers ── */
+    function rand(lo, hi) { return Math.random() * (hi - lo) + lo; }
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+    /* ── Ground segments ── */
+    // Each segment: { x, w, groundY } — groundY varies per segment
+    function generateInitialSegments() {
+      segments = [];
+      var gy = BASE_GROUND_Y;
+      segments.push({ x: -100, w: 600, groundY: gy });
+      var nextX = 500;
+      for (var i = 0; i < 25; i++) {
+        var difficulty = Math.min(i / 12, 1);
+        var gapW = 55 + difficulty * 30 + Math.random() * (25 + difficulty * 20);
+        var segW = 140 + Math.random() * 140 - difficulty * 40;
+        // Smooth ground height variation: ±15px from base, smooth transitions
+        gy = clamp(gy + rand(-12, 12), BASE_GROUND_Y - 15, BASE_GROUND_Y + 15);
+        segments.push({ x: nextX + gapW, w: Math.max(segW, 100), groundY: gy });
+        nextX = nextX + gapW + segW;
+      }
+    }
+
+    function spawnBananasOnSegment(seg) {
+      var count = Math.floor(Math.random() * 3);
+      for (var i = 0; i < count; i++) {
+        var bx = seg.x + 20 + Math.random() * (seg.w - 40);
+        var isHigh = Math.random() < 0.3;
+        var by;
+        if (isHigh) {
+          by = seg.groundY - 90 - Math.random() * 40; // 90–130px above ground
+        } else {
+          by = seg.groundY - 30 - Math.random() * 40;  // 30–70px above ground
+        }
+        bananas.push({ x: bx, y: by, phase: Math.random() * Math.PI * 2, collected: false, high: isHigh });
+      }
+    }
+
+    /* ── Parrot spawning ── */
+    var nextParrotFrame = 200; // first parrot after ~3.5sec
+
+    function spawnParrot() {
+      var lowFlight = Math.random() < 0.5;
+      var py;
+      if (lowFlight) {
+        py = BASE_GROUND_Y - 20 - rand(0, 15); // near ground, must jump over
+      } else {
+        py = BASE_GROUND_Y - 70 - rand(0, 40); // mid-air, at jump apex
+      }
+      var pSpeed = speed * rand(1.5, 2.5);
+      var colorIdx = Math.floor(Math.random() * 3);
+      var colors = [
+        { body: "#e03030", wing: "#30a030", tail: "#2060d0" }, // red parrot
+        { body: "#30b040", wing: "#e0d020", tail: "#d04020" }, // green parrot
+        { body: "#3060e0", wing: "#e0a020", tail: "#e03030" }, // blue parrot
+      ];
+      parrots.push({
+        x: W + 30,
+        y: py,
+        speed: pSpeed,
+        wingPhase: Math.random() * Math.PI * 2,
+        colors: colors[colorIdx],
+        low: lowFlight
+      });
+      // Next parrot: difficulty ramps frequency
+      var ramp = Math.min(frameCount / 3000, 1); // 0→1 over ~50sec
+      nextParrotFrame = frameCount + Math.floor(rand(180 - ramp * 80, 300 - ramp * 100));
+    }
+
+    /* ── Draw background ── */
+    function drawBG() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, SKY_TOP);
+      g.addColorStop(0.7, SKY_BOT);
+      g.addColorStop(1, GROUND_C);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = "#1a3a20";
+      for (var i = 0; i < bgTrees.length; i++) {
+        var t = bgTrees[i];
+        var tx = ((t.x - frameCount * speed * 0.2) % (W * 1.5) + W * 1.5) % (W * 1.5) - W * 0.25;
+        ctx.fillStyle = "#3a2a18";
+        ctx.fillRect(tx + t.w / 2 - 3, BASE_GROUND_Y - t.h, 6, t.h);
+        ctx.fillStyle = "#1a4a24";
+        ctx.beginPath();
+        ctx.arc(tx + t.w / 2, BASE_GROUND_Y - t.h - 5, t.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#2a5a30";
+        ctx.beginPath();
+        ctx.arc(tx + t.w / 2 - 5, BASE_GROUND_Y - t.h, t.w / 2 - 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    /* ── Draw ground segments (varying height) ── */
+    function drawGround() {
+      for (var i = 0; i < segments.length; i++) {
+        var s = segments[i];
+        var gy = s.groundY;
+        // Grass top
+        ctx.fillStyle = GROUND_TOP;
+        ctx.fillRect(s.x, gy, s.w, 6);
+        // Dirt body
+        ctx.fillStyle = GROUND_C;
+        ctx.fillRect(s.x, gy + 6, s.w, H - gy - 6);
+        // Darker dirt line
+        ctx.fillStyle = "#2a1a0a";
+        ctx.fillRect(s.x, gy + 14, s.w, 2);
+        // Left edge
+        ctx.fillStyle = "#2a1a0a";
+        ctx.fillRect(s.x, gy, 2, H - gy);
+        // Right edge
+        ctx.fillRect(s.x + s.w - 2, gy, 2, H - gy);
+      }
+    }
+
+    /* ── Draw monkey ── */
+    function drawMonkey(mx, my, rot) {
+      ctx.save();
+      ctx.translate(mx, my);
+      if (rot) ctx.rotate(rot);
+
+      var bob = onGround ? Math.sin(runPhase) * 2 : 0;
+      var legPhase = onGround ? Math.sin(runPhase * 2) : 0.5;
+
+      // Tail
+      ctx.strokeStyle = "#8B5E3C";
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(-10, -5 + bob);
+      ctx.quadraticCurveTo(-20, -18 + bob, -16, -25 + bob + Math.sin(runPhase) * 3);
+      ctx.stroke();
+
+      // Legs
+      var legW = 5, legH = 10;
+      ctx.fillStyle = "#8B5E3C";
+      ctx.fillRect(-7, 8 + bob + legPhase * 3, legW, legH);
+      ctx.fillRect(2, 8 + bob - legPhase * 3, legW, legH);
+
+      // Feet
+      ctx.fillStyle = "#6B4423";
+      ctx.fillRect(-8, 16 + bob + legPhase * 3, legW + 2, 4);
+      ctx.fillRect(1, 16 + bob - legPhase * 3, legW + 2, 4);
+
+      // Body
+      ctx.fillStyle = "#A0724A";
+      ctx.beginPath();
+      ctx.ellipse(0, 0 + bob, 12, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Belly
+      ctx.fillStyle = "#D4A76A";
+      ctx.beginPath();
+      ctx.ellipse(1, 3 + bob, 7, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Arms
+      ctx.fillStyle = "#8B5E3C";
+      ctx.save();
+      ctx.translate(-12, -4 + bob);
+      ctx.rotate(-0.3 + legPhase * 0.15);
+      ctx.fillRect(-3, 0, 5, 12);
+      ctx.restore();
+      ctx.save();
+      ctx.translate(12, -4 + bob);
+      ctx.rotate(0.3 - legPhase * 0.15);
+      ctx.fillRect(-2, 0, 5, 12);
+      ctx.restore();
+
+      // Head
+      var headY = -18 + bob;
+      ctx.fillStyle = "#A0724A";
+      ctx.beginPath();
+      ctx.arc(0, headY, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Face
+      ctx.fillStyle = "#D4A76A";
+      ctx.beginPath();
+      ctx.ellipse(0, headY + 2, 7, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ears
+      ctx.fillStyle = "#D4A76A";
+      ctx.beginPath(); ctx.arc(-10, headY - 2, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(10, headY - 2, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#C4976A";
+      ctx.beginPath(); ctx.arc(-10, headY - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(10, headY - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+
+      // Eyes
+      ctx.fillStyle = "#2a1a0a";
+      ctx.beginPath(); ctx.arc(-4, headY - 1, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(4, headY - 1, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.beginPath(); ctx.arc(-3.3, headY - 2, 0.8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(4.7, headY - 2, 0.8, 0, Math.PI * 2); ctx.fill();
+
+      // Mouth
+      ctx.strokeStyle = "#6B4423";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(0, headY + 2, 3.5, 0.2, Math.PI - 0.2);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    /* ── Draw banana ── */
+    function drawBanana(b) {
+      var by = b.y + Math.sin(frameCount * 0.06 + b.phase) * 4;
+
+      // High bananas get a sparkle glow
+      if (b.high) {
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 8 + Math.sin(frameCount * 0.1 + b.phase) * 4;
+        // Sparkle dots
+        ctx.fillStyle = "rgba(255,255,255," + (0.4 + Math.sin(frameCount * 0.15 + b.phase) * 0.3) + ")";
+        var sparkAngle = frameCount * 0.05 + b.phase;
+        for (var s = 0; s < 3; s++) {
+          var sa = sparkAngle + s * (Math.PI * 2 / 3);
+          ctx.beginPath();
+          ctx.arc(b.x + Math.cos(sa) * 16, by + Math.sin(sa) * 12, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Glow
+      ctx.shadowColor = BANANA_C;
+      ctx.shadowBlur = b.high ? 14 : 10;
+
+      // Banana shape
+      ctx.fillStyle = BANANA_C;
+      ctx.beginPath();
+      ctx.arc(b.x, by, 10, 0.3, Math.PI - 0.3);
+      ctx.arc(b.x, by - 4, 12, Math.PI - 0.5, 0.5, true);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = "#c4a020";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(b.x, by, 10, 0.3, Math.PI - 0.3);
+      ctx.stroke();
+
+      // Stem
+      ctx.fillStyle = "#8B7320";
+      ctx.fillRect(b.x + 6, by - 9, 3, 5);
+
+      ctx.shadowBlur = 0;
+    }
+
+    /* ── Draw parrot ── */
+    function drawParrot(p) {
+      var wingFlap = Math.sin(frameCount * 0.3 + p.wingPhase) * 12;
+      var c = p.colors;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+
+      // Tail feathers
+      ctx.fillStyle = c.tail;
+      ctx.beginPath();
+      ctx.moveTo(14, 0);
+      ctx.lineTo(24, -4);
+      ctx.lineTo(22, 2);
+      ctx.lineTo(24, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Body
+      ctx.fillStyle = c.body;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Wing (animated)
+      ctx.fillStyle = c.wing;
+      ctx.beginPath();
+      ctx.moveTo(-2, -3);
+      ctx.lineTo(6, -8 + wingFlap * -0.5);
+      ctx.lineTo(10, -4 + wingFlap * -0.3);
+      ctx.lineTo(4, 0);
+      ctx.closePath();
+      ctx.fill();
+      // Upper wing
+      ctx.fillStyle = c.wing;
+      ctx.beginPath();
+      ctx.moveTo(0, -5);
+      ctx.quadraticCurveTo(3, -14 + wingFlap * -1, 10, -10 + wingFlap * -0.6);
+      ctx.lineTo(6, -4);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = c.body;
+      ctx.beginPath();
+      ctx.arc(-10, -2, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye ring (white)
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(-12, -3, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Eye
+      ctx.fillStyle = "#111";
+      ctx.beginPath();
+      ctx.arc(-12, -3, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Beak
+      ctx.fillStyle = "#333";
+      ctx.beginPath();
+      ctx.moveTo(-16, -2);
+      ctx.lineTo(-21, 0);
+      ctx.lineTo(-16, 2);
+      ctx.closePath();
+      ctx.fill();
+      // Upper beak curve
+      ctx.fillStyle = "#555";
+      ctx.beginPath();
+      ctx.moveTo(-16, -2);
+      ctx.quadraticCurveTo(-20, -3, -21, 0);
+      ctx.lineTo(-16, -1);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    /* ── Particles ── */
+    function spawnParticles(px, py, color) {
+      for (var i = 0; i < 6; i++) {
+        var angle = (Math.PI * 2 / 6) * i + rand(-0.3, 0.3);
+        particles.push({
+          x: px, y: py,
+          vx: Math.cos(angle) * rand(1.5, 3),
+          vy: Math.sin(angle) * rand(1.5, 3),
+          life: 1,
+          size: rand(2, 5),
+          color: color
+        });
+      }
+    }
+
+    function updateParticles() {
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.04;
+        if (p.life <= 0) particles.splice(i, 1);
+      }
+    }
+
+    function drawParticles() {
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    /* ── Draw HUD (score on canvas) ── */
+    function drawHUD() {
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      ctx.beginPath();
+      ctx.roundRect(W / 2 - 40, 8, 80, 32, 10);
+      ctx.fill();
+      ctx.fillStyle = "#ffe135";
+      ctx.font = "bold 20px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("🍌 " + score, W / 2, 24);
+    }
+
+    /* ── Check if monkey is over ground, return groundY ── */
+    function getGroundAt(mx) {
+      for (var i = 0; i < segments.length; i++) {
+        var s = segments[i];
+        if (mx >= s.x + 2 && mx <= s.x + s.w - 2) return s.groundY;
+      }
+      return null; // over a gap
+    }
+
+    /* ── Init ── */
+    function initGame() {
+      currentGroundY = BASE_GROUND_Y;
+      monkeyY = currentGroundY - 18;
+      velY = 0;
+      onGround = true;
+      jumpsLeft = 2;
+      coyoteTimer = 0;
+      jumpBuffer = 0;
+      score = 0;
+      speed = BASE_SPEED;
+      frameCount = 0;
+      runPhase = 0;
+      particles = [];
+      bananas = [];
+      parrots = [];
+      fallAnim = null;
+      nextParrotFrame = 200;
+      generateInitialSegments();
+      for (var i = 1; i < segments.length; i++) {
+        spawnBananasOnSegment(segments[i]);
+      }
+      gameRunning = true;
+      startMusic();
+      loop();
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      stopMusic();
+      playFallSound();
+
+      fallAnim = { y: monkeyY, vy: -3, rot: 0, alpha: 1 };
+      var deathFrames = 0;
+
+      function deathLoop() {
+        deathFrames++;
+        fallAnim.vy += 0.5;
+        fallAnim.y += fallAnim.vy;
+        fallAnim.rot += 0.1;
+        fallAnim.alpha = Math.max(0, 1 - deathFrames / 60);
+
+        updateParticles();
+        drawBG();
+        drawGround();
+        for (var i = 0; i < bananas.length; i++) {
+          if (!bananas[i].collected) drawBanana(bananas[i]);
+        }
+        for (var i = 0; i < parrots.length; i++) {
+          drawParrot(parrots[i]);
+        }
+        drawParticles();
+        drawHUD();
+
+        ctx.globalAlpha = fallAnim.alpha;
+        drawMonkey(MONKEY_X, fallAnim.y, fallAnim.rot);
+        ctx.globalAlpha = 1;
+
+        if (deathFrames < 60) {
+          requestAnimationFrame(deathLoop);
+        } else {
+          var isNewBest = score > bestScore;
+          if (isNewBest) bestScore = score;
+          finalScoreEl.textContent = score;
+          if (bestScore > 0) {
+            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+          } else {
+            bestScoreEl.textContent = "";
+          }
+          overlayEnd.style.display = "flex";
+
+          var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+          if (lives > 0) {
+            lives--;
+            sessionStorage.setItem("game_lives", String(lives));
+          }
+          if (lives <= 0) {
+            btnAgain.style.display = "none";
+          } else {
+            btnAgain.style.display = "";
+          }
+        }
+      }
+      deathLoop();
+    }
+
+    /* ── Main loop ── */
+    function loop() {
+      if (!gameRunning) return;
+      if (musicPlaying) scheduleMusic();
+      frameCount++;
+      runPhase += 0.2;
+
+      // Difficulty ramp
+      if (frameCount % 600 === 0) {
+        speed += 0.15;
+      }
+
+      // Scroll segments and bananas
+      for (var i = 0; i < segments.length; i++) segments[i].x -= speed;
+      for (var i = 0; i < bananas.length; i++) bananas[i].x -= speed;
+
+      // Remove off-screen segments, spawn new ones
+      if (segments.length > 0 && segments[0].x + segments[0].w < -50) {
+        segments.shift();
+      }
+      var last = segments[segments.length - 1];
+      while (last.x + last.w < W + 500) {
+        var ramp = Math.min(frameCount * 0.006, 30);
+        var gapW = 55 + Math.random() * (30 + ramp);
+        var segW = 120 + Math.random() * 140;
+        var prevGY = last.groundY;
+        var newGY = clamp(prevGY + rand(-12, 12), BASE_GROUND_Y - 15, BASE_GROUND_Y + 15);
+        var newSeg = { x: last.x + last.w + gapW, w: segW, groundY: newGY };
+        segments.push(newSeg);
+        spawnBananasOnSegment(newSeg);
+        last = newSeg;
+      }
+
+      // Remove off-screen bananas
+      for (var i = bananas.length - 1; i >= 0; i--) {
+        if (bananas[i].x < -30) bananas.splice(i, 1);
+      }
+
+      // Spawn parrots
+      if (frameCount >= nextParrotFrame) {
+        spawnParrot();
+      }
+
+      // Update parrots
+      for (var i = parrots.length - 1; i >= 0; i--) {
+        parrots[i].x -= parrots[i].speed;
+        if (parrots[i].x < -40) parrots.splice(i, 1);
+      }
+
+      // Grace timers
+      if (coyoteTimer > 0) coyoteTimer--;
+      if (jumpBuffer > 0) jumpBuffer--;
+
+      // Physics
+      var groundAt = getGroundAt(MONKEY_X);
+
+      if (!onGround) {
+        velY += GRAVITY;
+        monkeyY += velY;
+        if (groundAt !== null) {
+          var landY = groundAt - 18;
+          if (monkeyY >= landY) {
+            monkeyY = landY;
+            currentGroundY = groundAt;
+            velY = 0;
+            onGround = true;
+            jumpsLeft = 2;
+            coyoteTimer = 0;
+            if (jumpBuffer > 0) {
+              jumpBuffer = 0;
+              jump();
+            }
+          }
+        }
+      } else {
+        if (groundAt === null) {
+          onGround = false;
+          coyoteTimer = COYOTE_FRAMES;
+        } else {
+          // Smoothly follow ground height changes
+          currentGroundY = groundAt;
+          monkeyY = groundAt - 18;
+        }
+      }
+
+      // Fell into crevice
+      if (monkeyY > H + 30) {
+        gameOver();
+        return;
+      }
+
+      // Parrot collision — discriminate stomp (from above) vs side/head-on hit
+      for (var i = 0; i < parrots.length; i++) {
+        var pp = parrots[i];
+        var dx = MONKEY_X - pp.x;
+        var dy = (monkeyY - 5) - pp.y;
+        if (dx * dx + dy * dy < 24 * 24) {
+          // Stomp: monkey must be falling AND monkey feet land near parrot top
+          // Parrot top edge ~= pp.y - 8; monkey feet at monkeyY
+          // Condition: velY > 0 (falling) AND monkey feet above parrot center
+          var isStomping = velY > 0 && monkeyY <= pp.y + 4;
+          if (isStomping) {
+            // Destroy parrot
+            spawnParticles(pp.x, pp.y, pp.colors.body);
+            spawnParticles(pp.x, pp.y, pp.colors.wing);
+            parrots.splice(i, 1);
+            // Bounce upward
+            velY = STOMP_BOUNCE_VEL;
+            onGround = false;
+            // Score bonus
+            score++;
+            playStompSound();
+          } else {
+            // Side or head-on hit — game over as before
+            playSquawkSound();
+            spawnParticles(pp.x, pp.y, pp.colors.body);
+            gameOver();
+            return;
+          }
+          break; // only one collision processed per frame
+        }
+      }
+
+      // Banana collection
+      for (var i = bananas.length - 1; i >= 0; i--) {
+        var b = bananas[i];
+        if (b.collected) continue;
+        var dx = MONKEY_X - b.x;
+        var dy = monkeyY - 10 - b.y;
+        if (Math.abs(dx) < 20 && Math.abs(dy) < 25) {
+          b.collected = true;
+          score++;
+          spawnParticles(b.x, b.y, BANANA_C);
+          playBananaSound();
+          bananas.splice(i, 1);
+        }
+      }
+
+      updateParticles();
+
+      // Draw
+      drawBG();
+      drawGround();
+      for (var i = 0; i < bananas.length; i++) {
+        if (!bananas[i].collected) drawBanana(bananas[i]);
+      }
+      for (var i = 0; i < parrots.length; i++) {
+        drawParrot(parrots[i]);
+      }
+      drawParticles();
+      drawMonkey(MONKEY_X, monkeyY, 0);
+      drawHUD();
+
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    /* ── Jump action ── */
+    function jump() {
+      if (!gameRunning) return;
+      var grounded = onGround || coyoteTimer > 0;
+      if (grounded) {
+        velY = JUMP_VEL;
+        onGround = false;
+        coyoteTimer = 0;
+        jumpsLeft = 1;
+        playJumpSound();
+      } else if (jumpsLeft > 0) {
+        velY = JUMP_VEL * 0.9;
+        jumpsLeft--;
+        playJumpSound();
+      } else {
+        jumpBuffer = BUFFER_FRAMES;
+      }
+    }
+
+    /* ── Controls: tap ANYWHERE on the page ── */
+    document.body.addEventListener("pointerdown", function (e) {
+      // Don't hijack clicks on buttons/overlays
+      if (e.target.closest(".game-overlay") || e.target.closest(".hud-mute") || e.target.closest(".hud-back")) return;
+      e.preventDefault();
+      jump();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") {
+        e.preventDefault();
+        jump();
+      }
+    });
+
+    /* ── Buttons ── */
+    btnStart.onclick = function () {
+      unlockAudio();
+      overlayStart.style.display = "none";
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    btnAgain.onclick = function () {
+      unlockAudio();
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    /* ── Mute button ── */
+    var btnMute = document.getElementById("btn-mute");
+    btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+    btnMute.onclick = function () {
+      isMuted = !isMuted;
+      localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
+      btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+      if (isMuted) stopMusic();
+      else if (gameRunning) startMusic();
+    };
+
+    /* ── Responsive canvas sizing ── */
+    function resizeCanvas() {
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var aspect = W / H; // 600/400 = 1.5
+      var cw, ch;
+      if (vw / vh > aspect) {
+        ch = vh;
+        cw = ch * aspect;
+      } else {
+        cw = vw;
+        ch = cw / aspect;
+      }
+      canvas.style.width = Math.floor(cw) + "px";
+      canvas.style.height = Math.floor(ch) + "px";
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    /* ── roundRect polyfill for older browsers ── */
+    if (!ctx.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+        if (typeof r === "number") r = [r, r, r, r];
+        this.moveTo(x + r[0], y);
+        this.lineTo(x + w - r[1], y);
+        this.arcTo(x + w, y, x + w, y + r[1], r[1]);
+        this.lineTo(x + w, y + h - r[2]);
+        this.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+        this.lineTo(x + r[3], y + h);
+        this.arcTo(x, y + h, x, y + h - r[3], r[3]);
+        this.lineTo(x, y + r[0]);
+        this.arcTo(x, y, x + r[0], y, r[0]);
+        this.closePath();
+      };
+    }
+
+    /* Initial idle draw */
+    drawBG();
+    ctx.fillStyle = GROUND_TOP;
+    ctx.fillRect(0, BASE_GROUND_Y, W, 6);
+    ctx.fillStyle = GROUND_C;
+    ctx.fillRect(0, BASE_GROUND_Y + 6, W, H - BASE_GROUND_Y - 6);
+  })();
+  </script>
+</body>
+</html>

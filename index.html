@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Tap‑to‑Vocab</title>
+  <meta name="description" content="Learn Spanish vocabulary interactively with flashcards, quizzes, sentence building, and verb conjugation practice." />
+  <meta property="og:title" content="Tap‑to‑Vocab" />
+  <meta property="og:description" content="Learn Spanish vocabulary interactively with flashcards, quizzes, and games." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tapvocab.fun/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/home.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+        <h1 style="margin:0;">Tap‑to‑Vocab</h1>
+        <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+      </div>
+      <p style="text-align:center; color:var(--muted); margin-top:8px; margin-bottom:20px;">
+        Learn Spanish vocabulary interactively
+      </p>
+
+      <div class="grid-two-col">
+        <a class="btn" href="/topic.html?cat=Colores">🎨 Colores</a>
+        <a class="btn" href="/topic.html?cat=Animales">🦊 Animales</a>
+        <a class="btn" href="/topic.html?cat=Numeros">🔢 Numeros</a>
+        <a class="btn" href="/topic.html?cat=Saludar">👋 Saludar</a>
+        <div class="palabras-group">
+          <a class="btn btn-palabras-main" href="/topic.html?cat=Palabras">🧩 Palabras</a>
+          <div class="palabras-sub">
+            <a class="btn btn-palabras-sub" href="/topic.html?cat=Tiempo">⏰ Tiempo</a>
+            <a class="btn btn-palabras-sub" href="/topic.html?cat=Idiomas">🗣️ Idiomas</a>
+          </div>
+        </div>
+        <a class="btn" href="/topic.html?cat=Casa_Familia">🏠 Casa y Familia</a>
+        <a class="btn" href="/topic.html?cat=Unidad2">2️⃣ Unidad 2</a>
+        <a class="btn" href="/topic.html?cat=Unidad3">3️⃣ Unidad 3A</a>
+        <a class="btn" href="/topic.html?cat=Unidad3B">3️⃣ Unidad 3B</a>
+        <a class="btn" href="/topic.html?cat=Unidad4">4️⃣ Unidad 4</a>
+        
+        <!-- ⭐ Practice with dynamic count - spans both columns -->
+        <a id="practice-btn" class="btn btn-practice" href="/topic.html?cat=practice">⭐ Practice</a>
+        
+        <!-- 🔤 Build Sentences - spans both columns -->
+        <a class="btn btn-sentences" href="/sentences.html">🔤 Build Sentences</a>
+
+        <!-- 🔄 Verbs - spans both columns -->
+        <a class="btn btn-verbs" href="/conjugation.html">🔄 Verbs</a>
+
+        <!-- ✏️ Fill in - spans both columns -->
+        <a class="btn btn-fill-blank" href="/fill-blank.html">✏️ Fill in</a>
+
+        <!-- 📍 Locations - spans both columns -->
+        <a class="btn btn-locations" href="/locations.html">&#128205; Locations</a>
+
+        <!-- 🎮 Games - spans both columns, always visible -->
+        <button class="btn btn-games" id="btn-games">🎮 Play Games (10 <span class="coin-icon"></span>)</button>
+      </div>
+      <div id="coins-msg" style="display:none; text-align:center; color:var(--warn); margin-top:10px; font-size:.95rem;"></div>
+    </div>
+  </div>
+
+  <button id="btn-reset-coins" style="position:fixed; bottom:16px; right:16px; background:rgba(30,20,50,0.85); border:1px solid #3a2a50; color:var(--muted); font-size:.8rem; padding:8px 10px; border-radius:10px; cursor:pointer; z-index:100; backdrop-filter:blur(4px);" title="Reset coins to 0">Reset</button>
+
+
+</body>
+</html>

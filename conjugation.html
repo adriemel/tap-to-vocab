@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Verb Conjugation – Tap‑to‑Vocab</title>
+  <meta name="description" content="Practice Spanish verb conjugations interactively." />
+  <meta property="og:title" content="Verb Conjugation – Tap‑to‑Vocab" />
+  <meta property="og:description" content="Practice Spanish verb conjugations interactively." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tapvocab.fun/conjugation.html" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:nowrap;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn ghost" id="btn-manage" style="padding:6px 8px; font-size:1.3rem;" title="Select Verbs">⚙️</button>
+          <h1 style="margin:0; font-size:clamp(1rem, 3.5vw, 1.5rem);">🔄 Conjugation</h1>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+          <span class="badge" id="progress-badge">0 / 0</span>
+        </div>
+      </div>
+
+      <!-- Verb Header -->
+      <div class="sentence-target">
+        <div class="target-label">Conjugate this verb:</div>
+        <div class="target-sentence" id="verb-infinitive">—</div>
+        <div style="color: var(--warn); font-size: 1.3rem; margin-top: 8px; font-weight: 600;" id="verb-german">—</div>
+      </div>
+
+      <!-- Conjugation Table -->
+      <div class="conj-table" id="conj-table"></div>
+
+      <!-- Word Bank -->
+      <div class="word-bank" id="word-bank"></div>
+
+      <!-- Controls -->
+      <div class="controls" id="practice-controls">
+        <button class="btn secondary" id="btn-back" disabled>← Prev</button>
+        <button class="btn secondary" id="btn-reset">🔄 Reset</button>
+        <button class="btn secondary" id="btn-skip">Next →</button>
+        <button class="btn secondary" id="btn-home" title="Home">🏠</button>
+      </div>
+
+      <!-- Show mode controls -->
+      <div class="controls" id="show-controls" style="display:none;">
+        <button class="btn secondary" id="btn-show-prev">← Prev</button>
+        <button class="btn secondary" id="btn-show-next">Next →</button>
+        <button class="btn secondary" id="btn-home-show" title="Home">🏠</button>
+      </div>
+
+      <!-- Mode Toggle Tabs -->
+      <div class="mode-tabs" style="margin-top:12px;">
+        <button class="mode-tab active" data-mode="practice" id="tab-practice">🎯 Practice</button>
+        <button class="mode-tab" data-mode="show" id="tab-show">👀 Show</button>
+      </div>
+
+      <div class="error" id="error" style="display:none; margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- Verb Manager Modal -->
+  <div class="sentence-manager-modal" id="verb-manager" style="display:none;">
+    <div class="sentence-manager-content">
+      <div class="sentence-manager-header">
+        <h2>Select Verbs</h2>
+        <button class="btn ghost" id="btn-close-manager" style="padding: 8px 12px;">✕</button>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <button class="btn secondary" id="btn-select-all">Select All</button>
+        <button class="btn secondary" id="btn-deselect-all">Deselect All</button>
+      </div>
+
+      <div class="sentence-list" id="verb-list"></div>
+
+      <div class="manager-actions">
+        <button class="btn" id="btn-save-selection">Save & Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
+  <script src="/assets/js/conjugation.js"></script>
+  <script>
+    VerbConjugation.init();
+  </script>
+</body>
+</html>
