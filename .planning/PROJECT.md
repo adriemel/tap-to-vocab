@@ -39,19 +39,16 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ 9 spatial drop zones around reference box with detrás-de depth cue and distance band — v1.4
 - ✓ Game loop: 10-exercise sequence, success/error feedback, coin awards, progress badge, completion screen — v1.4
 - ✓ Locations button on home screen — v1.4
+- ✓ Locations prompt shows Spanish-only — German translation hidden (LOC-01) — v1.5
+- ✓ delante-de drop zone correctly positioned without overlapping debajo-de (LOC-02) — v1.5
+- ✓ debajo-de blob given isometric perspective tilt (skewX -34deg) for visual depth — v1.5
 
 ### Active
 
-- [ ] Prompt header shows only the Spanish preposition (no German translation) — locations.html
-- [ ] "delante de" drop zone repositioned in front of the box's front face without overlapping "debajo de"
-
-## Current Milestone: v1.5 Locations Bug Fixes
-
-**Goal:** Fix two visual/UX bugs in locations.html — remove German translation from prompt and correct the delante-de zone position.
-
-**Target features:**
-- Hide German translation in prompt card header
-- Reposition delante-de drop zone to be visually in front of the box
+- [ ] Statistics board in Build Sentences, Verbs, Fill-in-Blank, and Locations modes showing correct/incorrect counts per session
+- [ ] Statistics accessible via a new "Statistics" button within each mode and/or shown at session end
+- [ ] Homepage: "Tiempo" and "Idiomas" vocabulary categories moved under the "Palabras" section
+- [ ] All learning modes verified to shuffle their items so sessions never start in the same order
 
 ### Out of Scope
 
@@ -101,6 +98,8 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | entre excluded from prepositions set | Requires two reference objects; single-box layout constraint | ✓ Good — clean MVP boundary, noted in REQUIREMENTS |
 | cerca-de merged into al-lado-de zone (final) | Added separately, labeled, then merged in fix commit — labels cluttered scene and two zones confused users | ✓ Good — 9 zones cleaner than 10 in practice |
 | gameHistory (not history) variable name | window.history built-in shadowing would silently break Back navigation | ✓ Good — naming discipline prevents subtle bug |
+| display:none on #prompt-de (not DOM removal) | Minimal targeted change; removes German text without restructuring prompt card HTML | ✓ Good — LOC-01 fixed in one attribute change |
+| Zone geometry via math comment in CSS (not magic numbers) | Self-documenting: box geometry comment shows x-center=140 calculation for delante-de left:111 | ✓ Good — future zone adjustments are reasoned not guessed |
 
 ### Deferred
 
@@ -110,4 +109,32 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-*Last updated: 2026-03-15 after v1.5 milestone started*
+## Current Milestone: v1.6 Polish & Stats
+
+**Goal:** Add per-session statistics to all four learning modes, consolidate the homepage vocabulary layout, and guarantee shuffle in every mode.
+
+**Target features:**
+- Statistics board (correct/incorrect counts) in Build Sentences, Verbs, Fill-in-Blank, and Locations
+- New "Statistics" button in each mode + optional end-of-session display
+- Move "Tiempo" and "Idiomas" categories under "Palabras" section on homepage
+- Audit and fix shuffle in all learning modes
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
+---
+*Last updated: 2026-04-12 after v1.6 milestone started*
