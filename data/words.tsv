@@ -118,21 +118,21 @@ Casa_Familia	el sol	die Sonne
 Casa_Familia	la luna	der Mond
 Casa_Familia	el tomate	die Tomate
 Casa_Familia	el queso	der Käse
-Idiomas	hablar	sprechen, reden
-Idiomas	el alemán	Deutsch, die deutsche Sprache
-Idiomas	el inglés	Englisch, die englische Sprache
-Idiomas	el español	Spanisch, die spanische Sprache
-Idiomas	el idioma	die Sprache
-Idiomas	estudiar algo	etw. lernen
-Idiomas	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
-Idiomas	el francés	Französisch; die französische Sprache
-Idiomas	¿Hablas francés?	Sprichst du Französisch?
-Idiomas	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
-Idiomas	estudiar	lernen
-Idiomas	Se escribe	Man schreibt..
-Idiomas	¿Como se escribe?	Wie schreibt man das?
-Idiomas	con acento	mit Akzent
-Idiomas	con dos puntos	mit Umlaut
+Palabras	hablar	sprechen, reden
+Palabras	el alemán	Deutsch, die deutsche Sprache
+Palabras	el inglés	Englisch, die englische Sprache
+Palabras	el español	Spanisch, die spanische Sprache
+Palabras	el idioma	die Sprache
+Palabras	estudiar algo	etw. lernen
+Palabras	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
+Palabras	el francés	Französisch; die französische Sprache
+Palabras	¿Hablas francés?	Sprichst du Französisch?
+Palabras	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.
+Palabras	estudiar	lernen
+Palabras	Se escribe	Man schreibt..
+Palabras	¿Como se escribe?	Wie schreibt man das?
+Palabras	con acento	mit Akzent
+Palabras	con dos puntos	mit Umlaut
 Palabras	la palabra	das Wort
 Palabras	entonces	dann
 Palabras	también	auch
@@ -189,44 +189,44 @@ Palabras	el secreto	das Geheimnis
 Palabras	la idea	die Idee
 Palabras	ni idea	keine Ahnung
 Palabras	la sorpresa	die Überraschung
-Tiempo	ahora	jetzt
-Tiempo	hoy	heute
-Tiempo	mañana	morgen
-Tiempo	ayer	gestern
-Tiempo	el segundo	die Sekunde
-Tiempo	el minuto	die Minute
-Tiempo	la hora	die Stunde, die Uhrzeit
-Tiempo	el dia	der Tag
-Tiempo	la semana	die Woche
-Tiempo	el mes	der Monat
-Tiempo	el año	das Jahr
-Tiempo	temprano	früh
-Tiempo	tarde	spät
-Tiempo	lunes	Montag
-Tiempo	martes	Dienstag
-Tiempo	miércoles	Mittwoch
-Tiempo	jueves	Donnerstag
-Tiempo	viernes	Freitag
-Tiempo	sábado	Samstag
-Tiempo	domingo	Sonntag
-Tiempo	la primavera	der Frühling
-Tiempo	el verano	der Sommer
-Tiempo	el otoño	der Herbst
-Tiempo	el invierno	der Winter
-Tiempo	enero	Januar
-Tiempo	febrero	Februar
-Tiempo	marzo	März
-Tiempo	abril	April
-Tiempo	mayo	Mai
-Tiempo	junio	Juni
-Tiempo	julio	Juli
-Tiempo	agosto	August
-Tiempo	septiembre	September
-Tiempo	octubre	Oktober
-Tiempo	noviembre	November
-Tiempo	diciembre	Dezember
-Tiempo	el tiempo	die Zeit
-Tiempo	¿Qué hora es?	Wie spät ist es?
+Palabras	ahora	jetzt
+Palabras	hoy	heute
+Palabras	mañana	morgen
+Palabras	ayer	gestern
+Palabras	el segundo	die Sekunde
+Palabras	el minuto	die Minute
+Palabras	la hora	die Stunde, die Uhrzeit
+Palabras	el dia	der Tag
+Palabras	la semana	die Woche
+Palabras	el mes	der Monat
+Palabras	el año	das Jahr
+Palabras	temprano	früh
+Palabras	tarde	spät
+Palabras	lunes	Montag
+Palabras	martes	Dienstag
+Palabras	miércoles	Mittwoch
+Palabras	jueves	Donnerstag
+Palabras	viernes	Freitag
+Palabras	sábado	Samstag
+Palabras	domingo	Sonntag
+Palabras	la primavera	der Frühling
+Palabras	el verano	der Sommer
+Palabras	el otoño	der Herbst
+Palabras	el invierno	der Winter
+Palabras	enero	Januar
+Palabras	febrero	Februar
+Palabras	marzo	März
+Palabras	abril	April
+Palabras	mayo	Mai
+Palabras	junio	Juni
+Palabras	julio	Juli
+Palabras	agosto	August
+Palabras	septiembre	September
+Palabras	octubre	Oktober
+Palabras	noviembre	November
+Palabras	diciembre	Dezember
+Palabras	el tiempo	die Zeit
+Palabras	¿Qué hora es?	Wie spät ist es?
 Numeros	el número	die Nummer, die Zahl
 Numeros	uno	eins
 Numeros	dos	zwei
