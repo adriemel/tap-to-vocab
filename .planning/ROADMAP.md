@@ -8,6 +8,36 @@
 - ✅ **v1.3 Jungle Run Parrot Stomp** — Phase 7 (shipped 2026-03-12)
 - ✅ **v1.4 Locations** — Phases 8-10 (shipped 2026-03-15)
 - ✅ **v1.5 Locations Bug Fixes** — Phase 11 (shipped 2026-03-15)
+- 🔄 **v1.6 Polish & Stats** — Phases 12-13 (in progress)
+
+## v1.6 Phases
+
+### Phase 12: Homepage & Visual Tweaks
+
+**Goal:** Consolidate Tiempo/Idiomas under the Palabras section and lighten the global background color.
+
+**Requirements:** HOME-01, VIS-01
+
+**Success criteria:**
+1. Homepage displays Tiempo and Idiomas buttons visually grouped within the Palabras section — no longer as standalone rows
+2. Global `--bg` CSS variable value is perceptibly lighter; dark theme is preserved but less oppressive
+3. No layout regressions at 375px mobile width
+
+---
+
+### Phase 13: Session Statistics
+
+**Goal:** Add a live per-session stats board (correct/incorrect + accuracy %) to Build Sentences, Verbs, Fill-in-Blank, and Locations — accessible via a button during the session and auto-shown at session end.
+
+**Requirements:** STATS-01, STATS-02, STATS-03, STATS-04
+
+**Success criteria:**
+1. Correct/incorrect counts and accuracy % update in real time as the user answers in each of the four modes
+2. A "Statistics" button is visible in each mode's UI and opens the stats board without losing session state
+3. Stats board appears automatically when a session completes (all exercises done) with final correct/incorrect and accuracy %
+4. Starting a new round (replay/restart) resets all counts to zero — no stats persist between rounds
+
+---
 
 ## Phases
 
@@ -85,3 +115,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 9. Scene Layout | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 10. Game Loop & Integration | v1.4 | 2/2 | Complete | 2026-03-15 |
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
+| 12. Homepage & Visual Tweaks | v1.6 | 0/1 | Pending | — |
+| 13. Session Statistics | v1.6 | 0/1 | Pending | — |
