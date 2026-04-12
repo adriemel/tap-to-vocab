@@ -115,5 +115,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 9. Scene Layout | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 10. Game Loop & Integration | v1.4 | 2/2 | Complete | 2026-03-15 |
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
-| 12. Homepage & Visual Tweaks | v1.6 | 0/1 | Pending | — |
+| 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete   | 2026-04-12 |
 | 13. Session Statistics | v1.6 | 0/1 | Pending | — |
