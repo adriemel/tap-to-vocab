@@ -76,6 +76,13 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   font-weight: 700;
 }
 
+.grid-two-col .btn-locations {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #3c4f6a 0%, #2a364a 100%);
+  border: 2px solid var(--accent);
+  font-weight: 700;
+}
+
 .grid-two-col .btn-games {
   grid-column: 1 / -1;
 }
@@ -606,8 +613,7 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
-.flip-card-front,
-.flip-card-back {
+.flip-card-front {
   animation: fadeIn 0.3s ease-out;
 }
 

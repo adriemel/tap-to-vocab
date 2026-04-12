@@ -59,7 +59,7 @@
       // First time - enable all by default
       enabledMap = {};
       allSentences.forEach(s => {
-        enabledMap[s.de] = true;
+        enabledMap[s.es] = true;
       });
     }
 
@@ -72,9 +72,9 @@
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.id = `sent-${idx}`;
-      checkbox.checked = enabledMap[sentence.de] !== false;
+      checkbox.checked = enabledMap[sentence.es] !== false;
       checkbox.addEventListener("change", () => {
-        enabledMap[sentence.de] = checkbox.checked;
+        enabledMap[sentence.es] = checkbox.checked;
       });
 
       const label = document.createElement("label");
@@ -89,14 +89,14 @@
     // Select/Deselect All
     btnSelectAll.onclick = () => {
       allSentences.forEach(s => {
-        enabledMap[s.de] = true;
+        enabledMap[s.es] = true;
       });
       listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
     };
 
     btnDeselectAll.onclick = () => {
       allSentences.forEach(s => {
-        enabledMap[s.de] = false;
+        enabledMap[s.es] = false;
       });
       listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
     };
@@ -302,13 +302,13 @@
         // First time - enable all
         enabledMap = {};
         allSentences.forEach(s => {
-          enabledMap[s.de] = true;
+          enabledMap[s.es] = true;
         });
         saveEnabledSentences(enabledMap);
       }
 
       function getActiveSentences() {
-        const active = allSentences.filter(s => enabledMap[s.de] !== false);
+        const active = allSentences.filter(s => enabledMap[s.es] !== false);
         return shuffleArray(active);
       }
 

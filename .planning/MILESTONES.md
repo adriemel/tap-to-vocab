@@ -1,5 +1,36 @@
 # Milestones
 
+## v1.5 — Locations Bug Fixes
+
+**Shipped:** 2026-03-15
+**Phase:** 11
+**Plans:** 1
+**Requirements:** 2/2 complete (LOC-01, LOC-02)
+
+### Delivered
+
+Two visual/UX bugs fixed in the Locations drag-and-drop game — the prompt now shows Spanish-only and all drop zones are correctly positioned without overlap.
+
+### Key Accomplishments
+
+1. LOC-01: German translation hidden from prompt card — `#prompt-de` set to `display:none`, JS no longer populates it
+2. LOC-02: delante-de zone repositioned to `left:111px, top:295px` — x-center aligned to box front face (x=140), 1px below debajo-de bottom edge (294px)
+3. debajo-de blob given `skewX(-34deg)` perspective tilt matching encima-de — visual 3D depth added
+4. Human-verified: Spanish-only prompt, no zone overlap, coins awarded correctly on correct drops
+
+### Stats
+
+- Timeline: 1 day (2026-03-15)
+- Files modified: 2 (`locations.html`, `assets/js/locations.js`)
+- Git tag: v1.5
+
+### Archive
+
+- `.planning/milestones/v1.5-ROADMAP.md` — full phase details
+- `.planning/milestones/v1.5-REQUIREMENTS.md` — requirements with outcomes
+
+---
+
 ## v1.4 — Locations
 
 **Shipped:** 2026-03-15

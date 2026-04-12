@@ -12,7 +12,8 @@
     } catch (e) {}
 
     // Games button: spend 10 coins to play
-    document.getElementById("btn-games").addEventListener("click", function () {
+    var gamesBtn = document.getElementById("btn-games");
+    if (gamesBtn) gamesBtn.addEventListener("click", function () {
       if (CoinTracker.spendCoins(10)) {
         sessionStorage.setItem("game_lives", "3");
         location.assign("/games.html");
@@ -25,7 +26,8 @@
     });
 
     // Reset coins button
-    document.getElementById("btn-reset-coins").addEventListener("click", function () {
+    var resetBtn = document.getElementById("btn-reset-coins");
+    if (resetBtn) resetBtn.addEventListener("click", function () {
       if (confirm("Are you sure you want to reset your coins to 0?")) {
         CoinTracker.resetCoins();
       }

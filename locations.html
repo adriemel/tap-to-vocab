@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Locations – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <style>
+    .scene {
+      position: relative;
+      width: 320px;
+      height: 410px;
+      margin: 8px auto;
+      background: #2a3355;
+      border-radius: 16px;
+    }
+
+    /* ── 3D cardboard box ──────────────────────────────── */
+    #caja {
+      position: absolute;
+      top: 175px;
+      left: 100px;
+      width: 100px;
+      height: 90px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+    }
+
+    /* Front face — warm cardboard */
+    #caja-front {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 80px; height: 60px;
+      background: linear-gradient(160deg, #d4972e, #b8801c);
+      border: 1.5px solid rgba(0,0,0,0.45);
+      border-radius: 1px;
+    }
+    /* Seam lines on front face */
+    #caja-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(transparent 48%, rgba(0,0,0,0.18) 48%, rgba(0,0,0,0.18) 52%, transparent 52%),
+        linear-gradient(90deg, transparent 48%, rgba(0,0,0,0.18) 48%, rgba(0,0,0,0.18) 52%, transparent 52%);
+    }
+
+    /* Top face — lighter, sunlit */
+    #caja-top {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100px; height: 30px;
+      background: linear-gradient(150deg, #f0cc5a, #d4a025);
+      clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
+      border: 1px solid rgba(0,0,0,0.4);
+    }
+
+    /* Right face — dark, in shadow */
+    #caja-right {
+      position: absolute;
+      top: 0; left: 80px;
+      width: 20px; height: 90px;
+      background: linear-gradient(180deg, #8b6015, #5e3f08);
+      clip-path: polygon(0% 33.3%, 100% 0%, 100% 66.7%, 0% 100%);
+      border: 1px solid rgba(0,0,0,0.45);
+    }
+
+    /* Floor shadow under box — large, soft, gives depth */
+    #caja-shadow {
+      position: absolute;
+      top: 254px; left: 72px;
+      width: 150px; height: 32px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      filter: blur(10px);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* ── Drop zones ─────────────────────────────────────
+       .zone    = transparent hit area (min 44×44px)
+       ::before = the visual blob (background, shape, opacity)
+       Separating them lets the touch target be large while
+       the visual stays exactly as designed.
+    ── */
+    .zone {
+      position: absolute;
+      min-width: 44px;
+      min-height: 44px;
+      cursor: pointer;
+      background: transparent;
+      z-index: 4;
+    }
+    .zone::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.65;
+      transition: opacity 0.15s ease, transform 0.12s ease;
+    }
+    .zone.zone-hover::before {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.18);
+    }
+
+    /* Floor zone — flatter ellipse on ::before (depth cue) */
+    [data-zone="debajo-de"]::before { border-radius: 50% / 40%; }
+
+    /* detrás: z-index below box so box clips it → "behind"; dashed border = depth cue */
+    [data-zone="detras-de"]         { z-index: 3; }
+    [data-zone="detras-de"]::before {
+      width: 54px; height: 44px;
+      border: 2px dashed rgba(255,255,255,0.45);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.55);
+      opacity: 0.7;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    /* lejos: dim and small */
+    [data-zone="lejos-de"]::before  { opacity: 0.35; }
+    /* en: ghostly pale — inside-the-box feeling */
+    [data-zone="en"]                { z-index: 8; }
+    [data-zone="en"]::before        { opacity: 0.28; }
+
+    /* ── Zone positions ──
+       Hit area (zone div) ≥ 44×44px.
+       Visual (::before) sized/shaped independently where needed.
+       Box geometry: front (100,205)→(180,265) · top (120,175)→(200,205) · right (180,175)→(200,265)
+    ── */
+
+    /* encima: hit 48×44, visual 48×22 skewed to match top face angle */
+    [data-zone="encima-de"]         { width: 48px; height: 44px; top: 168px; left: 126px; z-index: 6; }
+    [data-zone="encima-de"]::before { width: 48px; height: 22px; transform: translate(-50%,-50%) skewX(-34deg); }
+    [data-zone="encima-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
+
+    /* en: hit 48×44 ✓ */
+    [data-zone="en"]                { width: 48px; height: 44px; top: 210px; left: 120px; }
+
+    /* detrás: hit 54×54, visual 54×44 */
+    [data-zone="detras-de"]         { width: 54px; height: 54px; top: 149px; left: 174px; }
+
+    /* lejos: hit 44×44, visual 36×36 */
+    [data-zone="lejos-de"]          { width: 44px; height: 44px; top:  20px; left: 260px; }
+    [data-zone="lejos-de"]::before  { width: 36px; height: 36px; }
+
+    /* a-la-derecha: 56×56 ✓ */
+    [data-zone="a-la-derecha-de"]   { width: 56px; height: 56px; top: 198px; left: 222px; }
+
+    /* al-lado: 56×52 ✓ */
+    [data-zone="al-lado-de"]        { width: 56px; height: 52px; top: 270px; left: 200px; }
+
+    /* debajo: hit 62×44, visual 62×40 — z-index below box so box clips top edge */
+    [data-zone="debajo-de"]         { width: 62px; height: 44px; top: 250px; left: 109px; z-index: 3; }
+    [data-zone="debajo-de"]::before { width: 52px; height: 38px; border-radius: 50%; transform: translate(-50%,-50%) skewX(-34deg); border: 1.5px solid rgba(255,255,255,0.28); }
+    [data-zone="debajo-de"].zone-hover::before { transform: translate(-50%,-50%) skewX(-34deg) scale(1.18); opacity: 1; }
+
+    /* delante: 58×46 ✓ */
+    [data-zone="delante-de"]        { width: 56px; height: 56px; top: 295px; left: 111px; }
+
+    /* a-la-izquierda: 56×56 ✓ */
+    [data-zone="a-la-izquierda-de"] { width: 56px; height: 56px; top: 198px; left:  25px; }
+
+    /* ── Draggable cat — orange, upper-left corner ─────── */
+    #draggable {
+      position: absolute;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ff9f4a, #d96a00);
+      left: 12px; top: 24px;
+      touch-action: none;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35), 0 0 0 2px rgba(255,255,255,0.12);
+    }
+    /* Cat ground shadow */
+    #draggable-shadow {
+      position: absolute;
+      top: 68px; left: 16px;
+      width: 42px; height: 10px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.18);
+      filter: blur(4px);
+      pointer-events: none;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+
+      <!-- Header: title + coin badge + progress badge -->
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+        <h1 style="margin:0">&#128205; Locations</h1>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
+          <span class="badge" id="progress-badge">1 / 10</span>
+        </div>
+      </div>
+
+      <!-- Prompt card: Spanish preposition + German translation -->
+      <div id="prompt-card" class="sentence-target" style="text-align:center; margin-bottom:10px;">
+        <div id="prompt-es" style="font-size:1.4rem; font-weight:700; color:var(--ink);">—</div>
+        <div id="prompt-de" style="font-size:1rem; color:var(--muted); margin-top:4px; display:none;">—</div>
+      </div>
+
+      <!-- Scene -->
+      <div class="scene">
+        <!-- Ground shadows -->
+        <div id="caja-shadow"></div>
+        <div id="draggable-shadow"></div>
+
+        <!-- 3D cardboard box -->
+        <div id="caja">
+          <div id="caja-front"></div>
+          <div id="caja-top"></div>
+          <div id="caja-right"></div>
+        </div>
+
+        <!-- Drop zones — teal blobs with labels -->
+        <div data-zone="encima-de"         class="zone"></div>
+        <div data-zone="debajo-de"         class="zone"></div>
+        <div data-zone="delante-de"        class="zone"></div>
+        <div data-zone="detras-de"         class="zone"></div>
+        <div data-zone="a-la-derecha-de"   class="zone"></div>
+        <div data-zone="a-la-izquierda-de" class="zone"></div>
+        <div data-zone="en"                class="zone"></div>
+        <div data-zone="al-lado-de"        class="zone"></div>
+        <div data-zone="lejos-de"          class="zone"></div>
+
+        <!-- Draggable cat — upper-left, clear of all zones -->
+        <div id="draggable">🐱</div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls" style="margin-top:10px;">
+        <button class="btn secondary" id="btn-back" disabled>&#8592; Back</button>
+        <button class="btn secondary" id="btn-skip">Skip &#8594;</button>
+        <button class="btn secondary" id="btn-home">&#127968; Home</button>
+      </div>
+
+      <!-- Feedback: error message for wrong drops -->
+      <div class="error" id="feedback" style="display:none; margin-top:8px; text-align:center;"></div>
+
+    </div>
+  </div>
+
+  <!-- Script load order: coins → shared-utils → locations (project convention) -->
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
+  <script src="/assets/js/locations.js"></script>
+  <script>LocationsGame.startGame();</script>
+</body>
+</html>
