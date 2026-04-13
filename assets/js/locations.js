@@ -130,6 +130,16 @@
     gameHistory = [];
     queue = SharedUtils.shuffleArray(EXERCISES);
     draggableEl = document.getElementById('draggable');
+    // Reset session stats at the start of each round (STATS-04)
+    if (window.SessionStats) SessionStats.reset();
+    var btnStats = document.getElementById('btn-stats');
+    var btnStatsClose = document.getElementById('btn-stats-close');
+    if (btnStats) btnStats.onclick = function () {
+      if (window.SessionStats) SessionStats.showPanel();
+    };
+    if (btnStatsClose) btnStatsClose.onclick = function () {
+      if (window.SessionStats) SessionStats.hidePanel();
+    };
     init(draggableEl, checkDrop);
     document.getElementById('btn-skip').onclick = function () { advanceExercise(true); };
     document.getElementById('btn-back').onclick = function () {
@@ -161,12 +171,14 @@
       if (window.SharedUtils) SharedUtils.playSuccessSound();
       if (window.SharedUtils) SharedUtils.confettiBurst(30);
       if (window.CoinTracker) CoinTracker.addCoin();
+      if (window.SessionStats) SessionStats.record(true);
       advanceTimer = setTimeout(function () {
         advanceTimer = null;
         advanceExercise(false);
       }, 900);
     } else {
       if (window.SharedUtils) SharedUtils.playErrorSound();
+      if (window.SessionStats) SessionStats.record(false);
       var fb = document.getElementById('feedback');
       if (fb) { fb.textContent = 'Falsch! Try again.'; fb.style.display = 'block'; }
       resetDraggable(el);
@@ -187,6 +199,7 @@
   }
 
   function showCompletion() {
+    if (window.SessionStats) SessionStats.showPanel();
     if (window.SharedUtils) SharedUtils.confettiBurst(50);
     document.getElementById('prompt-card').innerHTML =
       '<div style="text-align:center; padding: 16px;">' +
