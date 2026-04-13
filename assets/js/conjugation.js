@@ -106,6 +106,14 @@
     const btnBack = document.getElementById("btn-back");
     const btnHome = document.getElementById("btn-home");
     const errorEl = document.getElementById("error");
+    const btnStats = document.getElementById("btn-stats");
+    const btnStatsClose = document.getElementById("btn-stats-close");
+    if (btnStats) btnStats.onclick = () => {
+      if (window.SessionStats) SessionStats.showPanel();
+    };
+    if (btnStatsClose) btnStatsClose.onclick = () => {
+      if (window.SessionStats) SessionStats.hidePanel();
+    };
 
     if (verbs.length === 0) {
       errorEl.textContent = "No verbs available. Please enable some verbs in Select Verbs.";
@@ -118,6 +126,9 @@
     let history = [];
     let advanceTimer = null;
 
+    // Reset session stats at the start of each round (STATS-04)
+    if (window.SessionStats) SessionStats.reset();
+
     function loadVerb() {
       if (currentIndex >= verbs.length) {
         infinitiveEl.textContent = "🎉 All verbs completed!";
@@ -125,6 +136,7 @@
         tableEl.innerHTML = '<div style="color: var(--ok); font-weight: 700; text-align:center; padding:20px;">Great job!</div>';
         wordBankEl.innerHTML = "";
         SharedUtils.confettiBurst(50);
+        if (window.SessionStats) SessionStats.showPanel();
         return;
       }
 
@@ -176,6 +188,7 @@
           if (form !== expectedForm) {
             btn.classList.add("wrong-word");
             SharedUtils.playErrorSound();
+            if (window.SessionStats) SessionStats.record(false);
             setTimeout(() => btn.classList.remove("wrong-word"), 500);
             return;
           }
@@ -185,6 +198,7 @@
           slots[filledCount].classList.add("filled");
           btn.classList.add("used");
           filledCount++;
+          if (window.SessionStats) SessionStats.record(true);
 
           // Check if all filled
           if (filledCount === PRONOUNS.length) {
