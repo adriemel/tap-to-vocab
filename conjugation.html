@@ -45,6 +45,7 @@
         <button class="btn secondary" id="btn-reset">🔄 Reset</button>
         <button class="btn secondary" id="btn-skip">Next →</button>
         <button class="btn secondary" id="btn-home" title="Home">🏠</button>
+        <button class="btn secondary" id="btn-stats" title="Stats">📊 Stats</button>
       </div>
 
       <!-- Show mode controls -->
@@ -86,8 +87,36 @@
   </div>
 
 
+  <!-- Stats Modal — session counters overlay -->
+  <div class="quiz-modal" id="stats-modal" style="display:none;">
+    <div class="quiz-modal-content">
+      <div class="quiz-modal-header">
+        <h2>Session Stats</h2>
+      </div>
+      <div class="quiz-modal-body">
+        <div class="quiz-result">
+          <div class="result-item">
+            <span class="result-label">Correct</span>
+            <span class="result-value correct-color" id="stats-correct">0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Incorrect</span>
+            <span class="result-value warn-color" id="stats-incorrect">0</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Accuracy</span>
+            <span class="result-value" id="stats-accuracy">0%</span>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-modal-actions">
+        <button class="btn secondary" id="btn-stats-close">Close</button>
+      </div>
+    </div>
+  </div>
   <script src="/assets/js/coins.js"></script>
   <script src="/assets/js/shared-utils.js"></script>
+  <script src="/assets/js/stats.js"></script>
   <script src="/assets/js/conjugation.js"></script>
   <script>
     VerbConjugation.init();
