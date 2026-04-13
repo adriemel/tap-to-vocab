@@ -16,6 +16,15 @@
     const btnHome = document.getElementById("btn-home");
     const errorEl = document.getElementById("error");
 
+    const btnStats = document.getElementById("btn-stats");
+    const btnStatsClose = document.getElementById("btn-stats-close");
+    if (btnStats) btnStats.onclick = () => {
+      if (window.SessionStats) SessionStats.showPanel();
+    };
+    if (btnStatsClose) btnStatsClose.onclick = () => {
+      if (window.SessionStats) SessionStats.hidePanel();
+    };
+
     if (sentences.length === 0) {
       errorEl.textContent = "No sentences available.";
       errorEl.style.display = "block";
@@ -26,12 +35,16 @@
     let history = [];
     let advanceTimer = null;
 
+    // Reset session stats at the start of each round (STATS-04)
+    if (window.SessionStats) SessionStats.reset();
+
     function loadSentence() {
       if (currentIndex >= sentences.length) {
         germanEl.textContent = "🎉 All sentences completed!";
         spanishEl.innerHTML = '<span style="color: var(--ok); font-weight: 700;">Great job!</span>';
         choicesEl.innerHTML = "";
         SharedUtils.confettiBurst(50);
+        if (window.SessionStats) SessionStats.showPanel();
         return;
       }
 
@@ -80,6 +93,7 @@
             SharedUtils.showSuccessAnimation();
             SharedUtils.confettiBurst(30);
             if (window.CoinTracker) CoinTracker.addCoin();
+            if (window.SessionStats) SessionStats.record(true);
             advanceTimer = setTimeout(() => {
               advanceTimer = null;
               history.push(currentIndex);
@@ -91,6 +105,7 @@
             // Wrong
             btn.classList.add("choice-wrong");
             SharedUtils.playErrorSound();
+            if (window.SessionStats) SessionStats.record(false);
             btn.classList.add("disabled");
           }
         };
