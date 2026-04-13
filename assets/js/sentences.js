@@ -128,6 +128,14 @@
     const btnBack = document.getElementById("btn-back");
     const btnHome = document.getElementById("btn-home");
     const errorEl = document.getElementById("error");
+    const btnStats = document.getElementById("btn-stats");
+    const btnStatsClose = document.getElementById("btn-stats-close");
+    if (btnStats) btnStats.onclick = () => {
+      if (window.SessionStats) SessionStats.showPanel();
+    };
+    if (btnStatsClose) btnStatsClose.onclick = () => {
+      if (window.SessionStats) SessionStats.hidePanel();
+    };
 
     if (sentences.length === 0) {
       errorEl.textContent = "No sentences available. Please enable some sentences in the sentence manager.";
@@ -141,6 +149,9 @@
     let history = []; // Track completed sentence indices for back button
     let advanceTimer = null; // Auto-advance timer (cleared on skip/reset/back)
 
+    // Reset session stats at the start of each round (STATS-04)
+    if (window.SessionStats) SessionStats.reset();
+
     function loadSentence() {
       if (currentIndex >= sentences.length) {
         // All done!
@@ -148,6 +159,7 @@
         buildAreaEl.innerHTML = '<span style="color: var(--ok); font-weight: 700;">Great job!</span>';
         wordBankEl.innerHTML = "";
         confettiBurst(50);
+        if (window.SessionStats) SessionStats.showPanel();
         return;
       }
 
@@ -181,7 +193,8 @@
             
             // Play error sound
             playErrorSound();
-            
+            if (window.SessionStats) SessionStats.record(false);
+
             // Remove animation class after it completes
             setTimeout(() => {
               btn.classList.remove("wrong-word");
@@ -229,6 +242,7 @@
               showSuccessAnimation();
               confettiBurst(30);
               if (window.CoinTracker) CoinTracker.addCoin();
+              if (window.SessionStats) SessionStats.record(true);
               advanceTimer = setTimeout(() => {
                 advanceTimer = null;
                 history.push(currentIndex);
