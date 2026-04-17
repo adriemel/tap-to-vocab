@@ -8,9 +8,13 @@
 - ✅ **v1.3 Jungle Run Parrot Stomp** — Phase 7 (shipped 2026-03-12)
 - ✅ **v1.4 Locations** — Phases 8-10 (shipped 2026-03-15)
 - ✅ **v1.5 Locations Bug Fixes** — Phase 11 (shipped 2026-03-15)
-- 🔄 **v1.6 Polish & Stats** — Phases 12-13 (in progress)
+- ✅ **v1.6 Polish & Stats** — Phases 12-13 (shipped 2026-04-13)
+- 🔄 **v1.7 Stats Fix** — Phase 14 (in progress)
 
 ## v1.6 Phases
+
+<details>
+<summary>✅ v1.6 Polish & Stats (Phases 12-13) — SHIPPED 2026-04-13</summary>
 
 ### Phase 12: Homepage & Visual Tweaks
 
@@ -45,7 +49,25 @@ Plans:
 3. Stats board appears automatically when a session completes (all exercises done) with final correct/incorrect and accuracy %
 4. Starting a new round (replay/restart) resets all counts to zero — no stats persist between rounds
 
----
+</details>
+
+## v1.7 Phases
+
+### Phase 14: sentences-stats-fix
+
+**Goal:** Fix Build Sentences stats so correct word taps count individually per click, not once per completed sentence — making sentences.js consistent with all other game modes.
+
+**Depends on:** Phase 13
+
+**Requirements:** STAT-FIX-01
+
+**Success Criteria** (what must be TRUE):
+  1. Tapping each correct word in Build Sentences increments the correct count by 1 immediately — stats update word-by-word, not sentence-by-sentence
+  2. Tapping an incorrect word still increments the incorrect count by 1 per tap (unchanged behavior)
+  3. After completing a sentence with N correct word taps, the correct count has increased by N (not by 1)
+  4. Stats board totals in Build Sentences are proportional to the number of word interactions, consistent with Fill-in-Blank, Conjugation, and Locations
+
+**Plans:** TBD
 
 ## Phases
 
@@ -123,5 +145,6 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 9. Scene Layout | v1.4 | 1/1 | Complete | 2026-03-14 |
 | 10. Game Loop & Integration | v1.4 | 2/2 | Complete | 2026-03-15 |
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
-| 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete   | 2026-04-12 |
-| 13. Session Statistics | v1.6 | 4/4 | Complete   | 2026-04-13 |
+| 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete | 2026-04-12 |
+| 13. Session Statistics | v1.6 | 4/4 | Complete | 2026-04-13 |
+| 14. sentences-stats-fix | v1.7 | 0/TBD | Not started | - |

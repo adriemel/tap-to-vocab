@@ -3,22 +3,28 @@
 **Defined:** 2026-04-12
 **Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 
-## v1.6 Requirements
+## v1.7 Requirements
+
+### Stats Fix
+
+- [ ] **STAT-FIX-01**: In Build Sentences, each correct word click increments the correct count individually (not once per completed sentence), matching the per-interaction counting behavior of Fill-in-Blank, Conjugation, and Locations
+
+## v1.6 Requirements (Complete)
 
 ### Statistics
 
-- [ ] **STATS-01**: User sees correct/incorrect counts and accuracy % tracked live in Build Sentences, Verbs, Fill-in-Blank, and Locations modes
-- [ ] **STATS-02**: Each of those four modes has a "Statistics" button visible during the session that opens the stats board
-- [ ] **STATS-03**: Stats board auto-displays at the end of a session (all exercises completed) showing final correct/incorrect and accuracy %
-- [ ] **STATS-04**: Session stats reset at the start of each new round (no localStorage persistence)
+- [x] **STATS-01**: User sees correct/incorrect counts and accuracy % tracked live in Build Sentences, Verbs, Fill-in-Blank, and Locations modes — Phase 13
+- [x] **STATS-02**: Each of those four modes has a "Statistics" button visible during the session that opens the stats board — Phase 13
+- [x] **STATS-03**: Stats board auto-displays at the end of a session (all exercises completed) showing final correct/incorrect and accuracy % — Phase 13
+- [x] **STATS-04**: Session stats reset at the start of each new round (no localStorage persistence) — Phase 13
 
 ### Homepage
 
-- [ ] **HOME-01**: "Tiempo" and "Idiomas" vocabulary categories displayed under the "Palabras" section on the homepage, freeing up layout space
+- [x] **HOME-01**: "Tiempo" and "Idiomas" vocabulary categories displayed under the "Palabras" section on the homepage — Phase 12
 
 ### Visual
 
-- [ ] **VIS-01**: Overall page background color slightly lighter than current dark blue (applied globally via CSS variable)
+- [x] **VIS-01**: Overall page background color slightly lighter than current dark blue (applied globally via CSS variable) — Phase 12
 
 ## Future Requirements
 
@@ -34,24 +40,25 @@
 |---------|--------|
 | Shuffle audit/fix | Already implemented across all modes in prior commits |
 | Stats across modes (global leaderboard) | Each mode is independent; cross-mode aggregation adds complexity without clear learning value |
-| Animated stats charts | Simple numeric display sufficient for v1.6; charts are visual polish for future |
+| Animated stats charts | Simple numeric display sufficient; charts are visual polish for future |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| HOME-01 | Phase 12 | Pending |
-| VIS-01 | Phase 12 | Pending |
-| STATS-01 | Phase 13 | Pending |
-| STATS-02 | Phase 13 | Pending |
-| STATS-03 | Phase 13 | Pending |
-| STATS-04 | Phase 13 | Pending |
+| STAT-FIX-01 | Phase 14 | Pending |
+| HOME-01 | Phase 12 | Complete |
+| VIS-01 | Phase 12 | Complete |
+| STATS-01 | Phase 13 | Complete |
+| STATS-02 | Phase 13 | Complete |
+| STATS-03 | Phase 13 | Complete |
+| STATS-04 | Phase 13 | Complete |
 
 **Coverage:**
-- v1.6 requirements: 6 total
-- Mapped to phases: 6
+- v1.7 requirements: 1 total
+- Mapped to phases: 1
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-12*
-*Last updated: 2026-04-12 after initial definition*
+*Last updated: 2026-04-17 after v1.7 roadmap created*
