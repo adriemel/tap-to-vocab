@@ -70,7 +70,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 14-01-PLAN.md — Move SessionStats.record(true) from sentence-completion block to correct-word-tap branch
+- [x] 14-01-PLAN.md — Move SessionStats.record(true) from sentence-completion block to correct-word-tap branch
 
 ## Phases
 
@@ -150,4 +150,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
 | 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete | 2026-04-12 |
 | 13. Session Statistics | v1.6 | 4/4 | Complete | 2026-04-13 |
-| 14. sentences-stats-fix | v1.7 | 0/1 | Not started | - |
+| 14. sentences-stats-fix | v1.7 | 1/1 | Complete    | 2026-04-17 |
