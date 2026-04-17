@@ -205,6 +205,7 @@
           
           // Correct word - add to build area
           placedWords.push(word);
+          if (window.SessionStats) SessionStats.record(true);
           const slot = document.createElement("span");
           slot.className = "word-slot placed";
           slot.textContent = word;
@@ -242,7 +243,6 @@
               showSuccessAnimation();
               confettiBurst(30);
               if (window.CoinTracker) CoinTracker.addCoin();
-              if (window.SessionStats) SessionStats.record(true);
               advanceTimer = setTimeout(() => {
                 advanceTimer = null;
                 history.push(currentIndex);
