@@ -67,7 +67,10 @@ Plans:
   3. After completing a sentence with N correct word taps, the correct count has increased by N (not by 1)
   4. Stats board totals in Build Sentences are proportional to the number of word interactions, consistent with Fill-in-Blank, Conjugation, and Locations
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 14-01-PLAN.md — Move SessionStats.record(true) from sentence-completion block to correct-word-tap branch
 
 ## Phases
 
@@ -147,4 +150,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
 | 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete | 2026-04-12 |
 | 13. Session Statistics | v1.6 | 4/4 | Complete | 2026-04-13 |
-| 14. sentences-stats-fix | v1.7 | 0/TBD | Not started | - |
+| 14. sentences-stats-fix | v1.7 | 0/1 | Not started | - |
