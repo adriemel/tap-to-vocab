@@ -43,12 +43,14 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ delante-de drop zone correctly positioned without overlapping debajo-de (LOC-02) — v1.5
 - ✓ debajo-de blob given isometric perspective tilt (skewX -34deg) for visual depth — v1.5
 
+- ✓ Statistics board (correct/incorrect + accuracy %) in all four learning modes — v1.6
+- ✓ Statistics button in each mode, auto-shown at session end — v1.6
+- ✓ Homepage: "Tiempo" and "Idiomas" moved under "Palabras" section — v1.6
+- ✓ Shuffle verified in all learning modes — v1.6
+
 ### Active
 
-- [ ] Statistics board in Build Sentences, Verbs, Fill-in-Blank, and Locations modes showing correct/incorrect counts per session
-- [ ] Statistics accessible via a new "Statistics" button within each mode and/or shown at session end
-- [ ] Homepage: "Tiempo" and "Idiomas" vocabulary categories moved under the "Palabras" section
-- [ ] All learning modes verified to shuffle their items so sessions never start in the same order
+- [ ] Build Sentences stats: count each correct word click individually, not once per completed sentence (STAT-FIX-01)
 
 ### Out of Scope
 
@@ -109,15 +111,12 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v1.6 Polish & Stats
+## Current Milestone: v1.7 Stats Fix
 
-**Goal:** Add per-session statistics to all four learning modes, consolidate the homepage vocabulary layout, and guarantee shuffle in every mode.
+**Goal:** Fix the word-click counting asymmetry in Build Sentences stats so correct taps count per word (matching all other modes).
 
 **Target features:**
-- Statistics board (correct/incorrect counts) in Build Sentences, Verbs, Fill-in-Blank, and Locations
-- New "Statistics" button in each mode + optional end-of-session display
-- Move "Tiempo" and "Idiomas" categories under "Palabras" section on homepage
-- Audit and fix shuffle in all learning modes
+- Fix sentences.js: move SessionStats.record(true) from sentence-completion to per-correct-word-click
 
 ## Evolution
 
@@ -137,4 +136,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-12 after v1.6 milestone started*
+*Last updated: 2026-04-17 after v1.7 milestone started*
