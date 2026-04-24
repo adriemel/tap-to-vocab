@@ -47,10 +47,13 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - ✓ Statistics button in each mode, auto-shown at session end — v1.6
 - ✓ Homepage: "Tiempo" and "Idiomas" moved under "Palabras" section — v1.6
 - ✓ Shuffle verified in all learning modes — v1.6
+- ✓ Build Sentences stats: correct taps count per word click, not per completed sentence (STAT-FIX-01) — v1.7
 
 ### Active
 
-- [ ] Build Sentences stats: count each correct word click individually, not once per completed sentence (STAT-FIX-01)
+- [ ] Sync words.tsv with latest vocabulary additions from remote repo (DATA-01)
+- [ ] Add 6 new verbs to verbs.tsv with full conjugations: saber, hacer, beber, vivir, entender, comer (DATA-02)
+- [ ] Build Sentences settings: replace per-sentence toggle list with per-category checkboxes (SENT-01)
 
 ### Out of Scope
 
@@ -111,12 +114,14 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v1.7 Stats Fix
+## Current Milestone: v1.8 Content & Settings
 
-**Goal:** Fix the word-click counting asymmetry in Build Sentences stats so correct taps count per word (matching all other modes).
+**Goal:** Sync vocabulary data with new additions and upgrade Build Sentences settings to category-level filtering.
 
 **Target features:**
-- Fix sentences.js: move SessionStats.record(true) from sentence-completion to per-correct-word-click
+- Sync words.tsv with latest vocabulary additions from remote repo
+- Add 6 new verbs to verbs.tsv: saber, hacer, beber, vivir, entender, comer
+- Replace per-sentence toggle list in Build Sentences settings with per-category checkboxes
 
 ## Evolution
 
@@ -136,4 +141,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 after v1.7 milestone started*
+*Last updated: 2026-04-24 after v1.8 milestone started*
