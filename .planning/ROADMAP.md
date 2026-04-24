@@ -96,7 +96,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 15-01-PLAN.md — Add 6 verb rows to verbs.tsv with full conjugation columns
+- [x] 15-01-PLAN.md — Add 6 verb rows to verbs.tsv with full conjugation columns
 
 ### Phase 16: Build Sentences Category Filter
 
@@ -198,5 +198,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete | 2026-04-12 |
 | 13. Session Statistics | v1.6 | 4/4 | Complete | 2026-04-13 |
 | 14. sentences-stats-fix | v1.7 | 1/1 | Complete | 2026-04-17 |
-| 15. Verb Data Entry | v1.8 | 0/1 | Not started | - |
+| 15. Verb Data Entry | v1.8 | 1/1 | Complete    | 2026-04-24 |
 | 16. Build Sentences Category Filter | v1.8 | 0/1 | Not started | - |
