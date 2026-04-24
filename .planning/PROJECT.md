@@ -52,7 +52,7 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 ### Active
 
 - [ ] Sync words.tsv with latest vocabulary additions from remote repo (DATA-01)
-- [ ] Add 6 new verbs to verbs.tsv with full conjugations: saber, hacer, beber, vivir, entender, comer (DATA-02)
+- ✓ Add 6 new verbs to verbs.tsv with full conjugations: saber, hacer, beber, vivir, entender, comer (DATA-02) — Validated in Phase 15: verb-data-entry
 - [ ] Build Sentences settings: replace per-sentence toggle list with per-category checkboxes (SENT-01)
 
 ### Out of Scope
@@ -141,4 +141,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-24 after v1.8 milestone started*
+*Last updated: 2026-04-24 after Phase 15 (verb-data-entry) complete*
