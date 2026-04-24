@@ -3,11 +3,22 @@
 **Defined:** 2026-04-12
 **Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 
-## v1.7 Requirements
+## v1.8 Requirements
+
+### Vocabulary Data
+
+- [x] **DATA-01**: words.tsv contains the latest vocabulary entries added by the user — pulled from remote in v1.8 kickoff (59 new entries, commit 1a4af40)
+- [ ] **DATA-02**: verbs.tsv contains 6 new verbs with full conjugation tables: saber, hacer, beber, vivir, entender, comer
+
+### Sentence Builder Settings
+
+- [ ] **SENT-01**: Build Sentences settings panel lets the user filter by category (e.g. Unidad3, Unidad4, Palabras) rather than toggling individual sentences — all sentences in a checked category are included; unchecked categories are excluded
+
+## v1.7 Requirements (Complete)
 
 ### Stats Fix
 
-- [ ] **STAT-FIX-01**: In Build Sentences, each correct word click increments the correct count individually (not once per completed sentence), matching the per-interaction counting behavior of Fill-in-Blank, Conjugation, and Locations
+- [x] **STAT-FIX-01**: In Build Sentences, each correct word click increments the correct count individually (not once per completed sentence), matching the per-interaction counting behavior of Fill-in-Blank, Conjugation, and Locations — Phase 14
 
 ## v1.6 Requirements (Complete)
 
@@ -46,7 +57,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STAT-FIX-01 | Phase 14 | Pending |
+| DATA-01 | — | Complete (pulled from remote) |
+| DATA-02 | Phase 15 | Pending |
+| SENT-01 | Phase 16 | Pending |
+| STAT-FIX-01 | Phase 14 | Complete |
 | HOME-01 | Phase 12 | Complete |
 | VIS-01 | Phase 12 | Complete |
 | STATS-01 | Phase 13 | Complete |
@@ -55,10 +69,10 @@
 | STATS-04 | Phase 13 | Complete |
 
 **Coverage:**
-- v1.7 requirements: 1 total
-- Mapped to phases: 1
+- v1.8 requirements: 3 total (1 already complete)
+- Mapped to phases: 2 pending
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-12*
-*Last updated: 2026-04-17 after v1.7 roadmap created*
+*Last updated: 2026-04-24 after v1.8 requirements defined*
