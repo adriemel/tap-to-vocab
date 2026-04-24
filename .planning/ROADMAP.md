@@ -9,7 +9,8 @@
 - ✅ **v1.4 Locations** — Phases 8-10 (shipped 2026-03-15)
 - ✅ **v1.5 Locations Bug Fixes** — Phase 11 (shipped 2026-03-15)
 - ✅ **v1.6 Polish & Stats** — Phases 12-13 (shipped 2026-04-13)
-- 🔄 **v1.7 Stats Fix** — Phase 14 (in progress)
+- ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
+- 🔄 **v1.8 Content & Settings** — Phases 15-16 (in progress)
 
 ## v1.6 Phases
 
@@ -53,6 +54,9 @@ Plans:
 
 ## v1.7 Phases
 
+<details>
+<summary>✅ v1.7 Stats Fix (Phase 14) — SHIPPED 2026-04-17</summary>
+
 ### Phase 14: sentences-stats-fix
 
 **Goal:** Fix Build Sentences stats so correct word taps count individually per click, not once per completed sentence — making sentences.js consistent with all other game modes.
@@ -71,6 +75,49 @@ Plans:
 
 Plans:
 - [x] 14-01-PLAN.md — Move SessionStats.record(true) from sentence-completion block to correct-word-tap branch
+
+</details>
+
+## v1.8 Phases
+
+### Phase 15: Verb Data Entry
+
+**Goal:** verbs.tsv contains 6 new verbs with full conjugation tables so users can practice them in the Verbs mode immediately.
+
+**Depends on:** Phase 14
+
+**Requirements:** DATA-02
+
+**Success Criteria** (what must be TRUE):
+  1. The verbs saber, hacer, beber, vivir, entender, and comer appear as selectable options in the Conjugation game
+  2. Each new verb displays a complete and correct conjugation table (yo, tú, él, nosotros, vosotros, ellos)
+  3. No existing verb entries are missing or corrupted after the addition
+
+**Plans:** TBD
+
+Plans:
+- [ ] 15-01-PLAN.md — Add 6 verb rows to verbs.tsv with full conjugation columns
+
+### Phase 16: Build Sentences Category Filter
+
+**Goal:** The Build Sentences settings panel lets users filter by category rather than toggling individual sentences, so enabling/disabling a whole unit of vocabulary takes one checkbox instead of many individual toggles.
+
+**Depends on:** Phase 15
+
+**Requirements:** SENT-01
+
+**Success Criteria** (what must be TRUE):
+  1. The settings panel shows one checkbox per category (e.g. Unidad3, Unidad4, Palabras) rather than a list of individual sentence toggles
+  2. Unchecking a category removes all sentences from that category from the practice pool immediately
+  3. Checking a category re-adds all sentences from that category to the practice pool
+  4. Category filter state persists across page reloads (stored in localStorage)
+
+**Plans:** TBD
+
+Plans:
+- [ ] 16-01-PLAN.md — Refactor sentences.js and sentences.html settings panel to use per-category checkboxes
+
+**UI hint**: yes
 
 ## Phases
 
@@ -150,4 +197,6 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 11. Locations UI Fixes | v1.5 | 1/1 | Complete | 2026-03-15 |
 | 12. Homepage & Visual Tweaks | v1.6 | 1/1 | Complete | 2026-04-12 |
 | 13. Session Statistics | v1.6 | 4/4 | Complete | 2026-04-13 |
-| 14. sentences-stats-fix | v1.7 | 1/1 | Complete    | 2026-04-17 |
+| 14. sentences-stats-fix | v1.7 | 1/1 | Complete | 2026-04-17 |
+| 15. Verb Data Entry | v1.8 | 0/1 | Not started | - |
+| 16. Build Sentences Category Filter | v1.8 | 0/1 | Not started | - |

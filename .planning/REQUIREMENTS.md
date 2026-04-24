@@ -70,9 +70,9 @@
 
 **Coverage:**
 - v1.8 requirements: 3 total (1 already complete)
-- Mapped to phases: 2 pending
+- Mapped to phases: 2 pending (Phase 15, Phase 16)
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-12*
-*Last updated: 2026-04-24 after v1.8 requirements defined*
+*Last updated: 2026-04-24 after v1.8 roadmap created (phases 15-16 assigned)*
