@@ -72,65 +72,62 @@
     const btnSelectAll = document.getElementById("btn-select-all");
     const btnDeselectAll = document.getElementById("btn-deselect-all");
 
-    // Get current enabled state
-    let enabledMap = getEnabledSentences();
-    if (!enabledMap) {
-      // First time - enable all by default
-      enabledMap = {};
-      allSentences.forEach(s => {
-        enabledMap[s.es] = true;
-      });
-    }
+    // Extract unique categories in order of first appearance
+    const categories = [];
+    const seen = new Set();
+    allSentences.forEach(s => {
+      if (!seen.has(s.category)) { seen.add(s.category); categories.push(s.category); }
+    });
 
-    // Render list
+    // Get current filter state; default all enabled
+    let filterMap = getCategoryFilter();
+    if (!filterMap) {
+      filterMap = {};
+      categories.forEach(c => { filterMap[c] = true; });
+    }
+    // Ensure any new categories (not yet in stored filterMap) default to true
+    categories.forEach(c => {
+      if (filterMap[c] === undefined) filterMap[c] = true;
+    });
+
+    // Render one checkbox per category
     listEl.innerHTML = "";
-    allSentences.forEach((sentence, idx) => {
+    categories.forEach(cat => {
+      const count = allSentences.filter(s => s.category === cat).length;
       const item = document.createElement("div");
       item.className = "sentence-item";
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.id = `sent-${idx}`;
-      checkbox.checked = enabledMap[sentence.es] !== false;
-      checkbox.addEventListener("change", () => {
-        enabledMap[sentence.es] = checkbox.checked;
-      });
+      checkbox.id = "cat-" + cat;
+      checkbox.checked = filterMap[cat] !== false;
+      checkbox.addEventListener("change", () => { filterMap[cat] = checkbox.checked; });
 
       const label = document.createElement("label");
-      label.htmlFor = `sent-${idx}`;
-      label.textContent = sentence.de;
+      label.htmlFor = "cat-" + cat;
+      label.textContent = cat + " (" + count + ")";
 
       item.appendChild(checkbox);
       item.appendChild(label);
       listEl.appendChild(item);
     });
 
-    // Select/Deselect All
     btnSelectAll.onclick = () => {
-      allSentences.forEach(s => {
-        enabledMap[s.es] = true;
-      });
+      categories.forEach(c => { filterMap[c] = true; });
       listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
     };
 
     btnDeselectAll.onclick = () => {
-      allSentences.forEach(s => {
-        enabledMap[s.es] = false;
-      });
+      categories.forEach(c => { filterMap[c] = false; });
       listEl.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
     };
 
-    // Close handlers
-    const closeModal = () => {
-      modal.style.display = "none";
-    };
+    btnClose.onclick = () => { modal.style.display = "none"; };
 
-    btnClose.onclick = closeModal;
-    
     btnSave.onclick = () => {
-      saveEnabledSentences(enabledMap);
-      closeModal();
-      if (onSave) onSave(enabledMap);
+      saveCategoryFilter(filterMap);
+      modal.style.display = "none";
+      if (onSave) onSave(filterMap);
     };
 
     modal.style.display = "flex";
