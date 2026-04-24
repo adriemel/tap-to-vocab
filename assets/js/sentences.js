@@ -6,6 +6,7 @@
 (function () {
   
   const STORAGE_KEY_ENABLED = "enabledSentences";
+  const STORAGE_KEY_CATEGORIES = "sentenceCategories";
 
   /* ---------- Utilities (from shared-utils) ---------- */
   var shuffleArray = SharedUtils.shuffleArray;
@@ -25,6 +26,24 @@
     try { localStorage.setItem(STORAGE_KEY_ENABLED, JSON.stringify(enabledMap)); }
     catch (e) {
       console.warn("Could not save enabled sentences:", e);
+      var el = document.getElementById("error");
+      if (el) { el.textContent = "Storage full — changes could not be saved."; el.style.display = "block"; }
+    }
+  }
+
+  function getCategoryFilter() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_CATEGORIES);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveCategoryFilter(filterMap) {
+    try { localStorage.setItem(STORAGE_KEY_CATEGORIES, JSON.stringify(filterMap)); }
+    catch (e) {
+      console.warn("Could not save category filter:", e);
       var el = document.getElementById("error");
       if (el) { el.textContent = "Storage full — changes could not be saved."; el.style.display = "block"; }
     }
