@@ -1,5 +1,37 @@
 # Milestones
 
+## v1.8 — Content & Settings
+
+**Shipped:** 2026-04-24
+**Phases:** 15-16
+**Plans:** 2
+**Requirements:** 3/3 complete (DATA-01, DATA-02, SENT-01)
+
+### Delivered
+
+Expanded the conjugation practice pool with 6 new verbs and upgraded the Build Sentences settings panel from a per-sentence toggle list to per-category checkboxes — enabling whole vocabulary units to be enabled/disabled in one click.
+
+### Key Accomplishments
+
+1. Appended 6 new verbs to verbs.tsv: saber, hacer, beber, vivir, entender, comer — conjugation pool grows from 13 to 19 verbs
+2. Per-category filter in Build Sentences: one checkbox per category (e.g. "Saludar (10)") enables/disables all sentences in that group
+3. Category filter state persisted in `localStorage["sentenceCategories"]` — survives page reloads
+4. New `getCategoryFilter`/`saveCategoryFilter` functions with try/catch error handling and user-visible quota error
+5. No migration needed from old `enabledSentences` key — independent storage key, additive opt-out model
+
+### Stats
+
+- Timeline: 1 day (2026-04-24)
+- Files modified: 3 (verbs.tsv, assets/js/sentences.js, sentences.html)
+- Git tag: v1.8
+
+### Archive
+
+- `.planning/milestones/v1.8-ROADMAP.md` — full phase details
+- `.planning/milestones/v1.8-REQUIREMENTS.md` — requirements with outcomes
+
+---
+
 ## v1.5 — Locations Bug Fixes
 
 **Shipped:** 2026-03-15

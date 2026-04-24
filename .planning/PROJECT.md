@@ -52,8 +52,11 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 ### Active
 
 - [ ] Sync words.tsv with latest vocabulary additions from remote repo (DATA-01)
-- ✓ Add 6 new verbs to verbs.tsv with full conjugations: saber, hacer, beber, vivir, entender, comer (DATA-02) — Validated in Phase 15: verb-data-entry
-- ✓ Build Sentences settings: replace per-sentence toggle list with per-category checkboxes (SENT-01) — Validated in Phase 16: build-sentences-category-filter
+
+### Validated (v1.8)
+
+- ✓ Add 6 new verbs to verbs.tsv with full conjugations: saber, hacer, beber, vivir, entender, comer (DATA-02) — v1.8
+- ✓ Build Sentences settings: replace per-sentence toggle list with per-category checkboxes (SENT-01) — v1.8
 
 ### Out of Scope
 
@@ -114,14 +117,9 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v1.8 Content & Settings
+## Current State: v1.8 Shipped
 
-**Goal:** Sync vocabulary data with new additions and upgrade Build Sentences settings to category-level filtering.
-
-**Target features:**
-- Sync words.tsv with latest vocabulary additions from remote repo
-- Add 6 new verbs to verbs.tsv: saber, hacer, beber, vivir, entender, comer
-- Replace per-sentence toggle list in Build Sentences settings with per-category checkboxes
+**v1.8 Content & Settings** — shipped 2026-04-24. Conjugation pool expanded to 19 verbs; Build Sentences category filter replaces per-sentence toggles. DATA-01 (words.tsv sync) remains the one open item for the next milestone.
 
 ## Evolution
 
@@ -141,4 +139,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-24 after Phase 16 (build-sentences-category-filter) complete*
+*Last updated: 2026-04-24 after v1.8 milestone*

@@ -191,6 +191,40 @@
 
 ---
 
+## Milestone: v1.8 — Content & Settings
+
+**Shipped:** 2026-04-24
+**Phases:** 2 | **Plans:** 2
+
+### What Was Built
+- 6 new verbs appended to verbs.tsv (saber, hacer, beber, vivir, entender, comer) — conjugation pool 13 → 19
+- Per-category checkbox filter in Build Sentences — replaces 50+ individual sentence toggles with ~8 category checkboxes
+- `getCategoryFilter`/`saveCategoryFilter` with `localStorage["sentenceCategories"]`, try/catch quota handling
+
+### What Worked
+- **Data-only phase is the fastest possible phase**: Phase 15 required zero JS/HTML changes — conjugation.js already loaded TSV rows dynamically. Pure data-entry with grep-based verification ran in minutes
+- **Category-keyed filter design**: Using category names from allSentences (not from localStorage) as the index means tampered localStorage is silently ignored — security came for free from the architecture
+- **XSS safety by default**: Rendering category labels via `label.textContent` instead of `innerHTML` required no extra effort but closed the XSS vector completely
+
+### What Was Inefficient
+- **Code reviewer checked wrong path**: The static-site repo has files at both root level (`assets/js/sentences.js`) and in an untracked `tap-to-vocab/` subdirectory. The reviewer checked the untracked copy and filed a false-positive critical finding. The orchestrator caught and dismissed it, but required a manual explanation
+- **REQUIREMENTS.md checkboxes not auto-updated**: Both DATA-02 and SENT-01 were complete but remained unchecked — the gsd-tools traceability update didn't fire. Required manual correction at milestone close
+
+### Patterns Established
+- **Category-filter pattern**: `categories[]` built from `allSentences`, `filterMap` loaded from storage, missing keys default to `true` — additive opt-out model means new content is always visible by default
+- **Independent localStorage keys for refactored features**: New `sentenceCategories` key alongside old `enabledSentences` — no migration needed, no user data loss, no rollback risk
+
+### Key Lessons
+1. **Data-only phases are zero-risk**: When the app already has a generic loader, adding vocabulary is just TSV rows — no code path to break
+2. **Untracked subdirectories in a repo confuse static analysis tools** — document the authoritative file locations prominently (done in CLAUDE.md)
+3. **Opt-out defaults protect new content**: Defaulting new categories to `true` means vocabulary additions are immediately usable without user action
+
+### Cost Observations
+- Model: claude-sonnet-4-6 (balanced profile)
+- Notable: Both phases completed in a single session on the same day — small, well-scoped milestone with no dependencies to wait on
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -203,6 +237,7 @@
 | v1.3 | 1 | 1 | First game mechanic addition — velocity-based collision discrimination |
 | v1.4 | 3 | 4 | First drag-and-drop game — Pointer Events API, CSS zone layout, 3-phase delivery |
 | v1.5 | 1 | 1 | Visual bug fix — plan-level geometry precision enables mechanical CSS implementation |
+| v1.8 | 2 | 2 | Data + UI refactor — data-only phase fastest execution; category filter pattern established |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -211,3 +246,5 @@
 3. **Scoped CSS classes prevent cross-page regressions** — introduce new class rather than modifying shared class
 4. **Velocity-based gates are the right primitive for game collision classification** — clean, deterministic, no positional ambiguity
 5. **Open the browser first for CSS spatial layouts** — static code review cannot verify absolute positioning on mobile; visual iteration is required and should be budgeted
+6. **Data-only phases are zero-risk** — when the app has a generic loader, adding content is just rows in a file; no code path to break
+7. **Opt-out defaults protect new content** — new vocabulary/categories default to enabled so additions are immediately usable without user action
