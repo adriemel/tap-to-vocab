@@ -326,27 +326,32 @@
         return;
       }
 
-      // Get enabled sentences
-      let enabledMap = getEnabledSentences();
-      if (!enabledMap) {
-        // First time - enable all
-        enabledMap = {};
-        allSentences.forEach(s => {
-          enabledMap[s.es] = true;
-        });
-        saveEnabledSentences(enabledMap);
+      // Get category filter state
+      const categories = [];
+      const seen = new Set();
+      allSentences.forEach(s => {
+        if (!seen.has(s.category)) { seen.add(s.category); categories.push(s.category); }
+      });
+
+      let filterMap = getCategoryFilter();
+      if (!filterMap) {
+        filterMap = {};
+        categories.forEach(c => { filterMap[c] = true; });
+        saveCategoryFilter(filterMap);
       }
+      categories.forEach(c => {
+        if (filterMap[c] === undefined) filterMap[c] = true;
+      });
 
       function getActiveSentences() {
-        const active = allSentences.filter(s => enabledMap[s.es] !== false);
+        const active = allSentences.filter(s => filterMap[s.category] !== false);
         return shuffleArray(active);
       }
 
       // Open sentence manager
       btnManage.onclick = () => {
-        openSentenceManager(allSentences, (newEnabledMap) => {
-          enabledMap = newEnabledMap;
-          // Restart with new selection
+        openSentenceManager(allSentences, (newFilterMap) => {
+          filterMap = newFilterMap;
           const activeSentences = getActiveSentences();
           initSentenceBuilder(activeSentences);
         });
