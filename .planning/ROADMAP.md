@@ -93,7 +93,7 @@ Plans:
   2. Each new verb displays a complete and correct conjugation table (yo, tú, él, nosotros, vosotros, ellos)
   3. No existing verb entries are missing or corrupted after the addition
 
-**Plans:** TBD
+**Plans:** 1 plan
 
 Plans:
 - [ ] 15-01-PLAN.md — Add 6 verb rows to verbs.tsv with full conjugation columns
