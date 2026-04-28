@@ -83,6 +83,13 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   font-weight: 700;
 }
 
+.grid-two-col .btn-numbers {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #2a3a5a 0%, #1a2540 100%);
+  border: 2px solid var(--accent);
+  font-weight: 700;
+}
+
 .grid-two-col .btn-games {
   grid-column: 1 / -1;
 }
