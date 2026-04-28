@@ -51,7 +51,14 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-- [ ] Sync words.tsv with latest vocabulary additions from remote repo (DATA-01)
+- [ ] User can access "Qué número es?" from home screen (NUM-01)
+- [ ] Numbers hub page with 5 range buttons 1-20…81-100 (NUM-02)
+- [ ] Learning page per range showing number/Spanish pairs (NUM-03)
+- [ ] "Take a Test" button on learning page leads to quiz (NUM-04)
+- [ ] Quiz page shows tap-to-flip number card grid (NUM-05)
+- [ ] Flipping a card reveals the Spanish word (NUM-06)
+- [ ] TTS speaks the Spanish word when card flips (NUM-07)
+- [ ] Every numbers page has Home + Back to Numbers navigation (NUM-08)
 
 ### Validated (v1.8)
 
@@ -117,9 +124,16 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current State: v1.8 Shipped
+## Current Milestone: v1.9 Qué Número Es?
 
-**v1.8 Content & Settings** — shipped 2026-04-24. Conjugation pool expanded to 19 verbs; Build Sentences category filter replaces per-sentence toggles. DATA-01 (words.tsv sync) remains the one open item for the next milestone.
+**Goal:** Add a Spanish numbers learning and quiz feature covering 1–100 in five selectable ranges, with flip-card testing and TTS pronunciation.
+
+**Target features:**
+- "Qué número es?" button on home page (between Locations and Play Games)
+- Numbers hub page with 5 range selectors (1-20, 21-40, 41-60, 61-80, 81-100)
+- Learning page per range: displays all numbers with their Spanish word translations
+- Quiz page per range: tap-to-flip number grid → reveals Spanish word + spoken aloud via TTS
+- Home + "Back to Numbers" navigation on every numbers page
 
 ## Evolution
 

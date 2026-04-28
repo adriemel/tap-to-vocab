@@ -11,6 +11,7 @@
 - ✅ **v1.6 Polish & Stats** — Phases 12-13 (shipped 2026-04-13)
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
+- 🔄 **v1.9 Qué Número Es?** — Phases 17-18 (in progress)
 
 ## v1.6 Phases
 
@@ -87,6 +88,40 @@ Plans:
 Full details: `.planning/milestones/v1.8-ROADMAP.md`
 
 </details>
+
+## v1.9 Phases
+
+- [ ] **Phase 17: Numbers Hub & Learning Pages** — Static pages and navigation for the numbers feature
+- [ ] **Phase 18: Numbers Quiz with Flip Cards & TTS** — Interactive flip-card quiz with speech synthesis
+
+## Phase Details
+
+### Phase 17: Numbers Hub & Learning Pages
+
+**Goal:** Users can navigate to the numbers feature from home, select a number range, and study all numbers in that range with their Spanish translations.
+**Depends on:** Phase 16
+**Requirements:** NUM-01, NUM-02, NUM-03, NUM-04, NUM-08
+**Success Criteria** (what must be TRUE):
+  1. User taps "Qué número es?" on the home screen (between Locations and Play Games) and arrives at the numbers hub page
+  2. Numbers hub page shows 5 clearly labelled range buttons (1-20, 21-40, 41-60, 61-80, 81-100) stacked vertically — tapping any one opens the correct learning page
+  3. Learning page for a range lists every number in that range paired with its Spanish word (e.g. "1 — uno", "20 — veinte")
+  4. Learning page has a "Take a Test" button that navigates to the quiz page for the same range
+  5. Every numbers page (hub, learning, quiz) has a working "Home" link to index.html and a "Back to Numbers" link to the hub page
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 18: Numbers Quiz with Flip Cards & TTS
+
+**Goal:** Users can test their number knowledge by flipping cards in a 4-column grid that reveal the Spanish word and speak it aloud.
+**Depends on:** Phase 17
+**Requirements:** NUM-05, NUM-06, NUM-07
+**Success Criteria** (what must be TRUE):
+  1. Quiz page displays all numbers in the selected range as a grid of face-down cards in 4 columns — numbers are visible on the front face
+  2. Tapping a card flips it to reveal the Spanish word for that number on the back face
+  3. Each card flip triggers the Web Speech API to speak the Spanish word aloud in a Spanish voice
+  4. Previously flipped cards remain showing the Spanish word — user can flip all cards freely without cards resetting
+**Plans**: TBD
+**UI hint**: yes
 
 ## Phases
 
@@ -169,3 +204,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 14. sentences-stats-fix | v1.7 | 1/1 | Complete | 2026-04-17 |
 | 15. Verb Data Entry | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 16. Build Sentences Category Filter | v1.8 | 1/1 | Complete | 2026-04-24 |
+| 17. Numbers Hub & Learning Pages | v1.9 | 0/? | Not started | - |
+| 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 0/? | Not started | - |

@@ -1,34 +1,34 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.6
-milestone_name: Phases
-status: executing
-stopped_at: Roadmap written for v1.8 — Phase 15 ready to plan
-last_updated: "2026-04-24T11:41:52.316Z"
-last_activity: 2026-04-24
+milestone: v1.9
+milestone_name: Qué Número Es?
+status: planning
+stopped_at: Roadmap created — Phase 17 ready to plan
+last_updated: "2026-04-28T00:00:00.000Z"
+last_activity: 2026-04-28
 progress:
   total_phases: 2
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-24 after v1.8 roadmap created)
+See: .planning/PROJECT.md (updated 2026-04-28 after v1.9 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 15 — verb-data-entry
+**Current focus:** Phase 17 — Numbers Hub & Learning Pages
 
 ## Current Position
 
-Phase: 16
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-04-24
+Phase: 17 — Numbers Hub & Learning Pages
+Plan: — (not yet planned)
+Status: Ready to plan
+Last activity: 2026-04-28 — Roadmap created for v1.9
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -36,10 +36,13 @@ Progress: [░░░░░░░░░░] 0%
 
 ### Decisions
 
-- v1.7 shipped: sentences.js stats fix — correct taps now counted per word click (STAT-FIX-01)
-- v1.6 shipped: session stats for all 4 modes, homepage vocabulary layout, shuffle audit
-- DATA-01 already complete: words.tsv pulled from remote (59 new entries, commit 1a4af40) — no phase needed
-- All known bugs fixed as of v1.7; codebase is clean
+- v1.8 shipped 2026-04-24: conjugation pool expanded to 19 verbs; Build Sentences category filter added
+- DATA-01 already complete: words.tsv pulled from remote (59 new entries) — no phase needed
+- All known bugs fixed as of v1.8; codebase is clean
+- v1.9 number data will be a hardcoded JS constant (not a TSV) — no fetch latency, closed set of 100 numbers
+- Phase split: Phase 17 = static pages + navigation; Phase 18 = flip-card quiz + TTS
+- TTS reuses existing Web Speech API pattern ("Monica" es-ES preferred, any es voice fallback)
+- Flip card pattern already exists in tapvocab.js quiz mode — reference for Phase 18 implementation
 
 ### Pending Todos
 
@@ -51,6 +54,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-24
-Stopped at: Roadmap written for v1.8 — Phase 15 ready to plan
+Last session: 2026-04-28
+Stopped at: Roadmap created — Phase 17 ready to plan
 Resume file: None
