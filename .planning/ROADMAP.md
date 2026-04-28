@@ -107,7 +107,11 @@ Full details: `.planning/milestones/v1.8-ROADMAP.md`
   3. Learning page for a range lists every number in that range paired with its Spanish word (e.g. "1 — uno", "20 — veinte")
   4. Learning page has a "Take a Test" button that navigates to the quiz page for the same range
   5. Every numbers page (hub, learning, quiz) has a working "Home" link to index.html and a "Back to Numbers" link to the hub page
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 17-01-PLAN.md — Create numbers-data.js (NUMBERS constant) + add Qué número es? button to index.html + styles.css
+- [ ] 17-02-PLAN.md — Create numbers.html hub, numbers-learn.html learning page, numbers-quiz.html stub + human verify checkpoint
 **UI hint**: yes
 
 ### Phase 18: Numbers Quiz with Flip Cards & TTS
@@ -120,7 +124,11 @@ Full details: `.planning/milestones/v1.8-ROADMAP.md`
   2. Tapping a card flips it to reveal the Spanish word for that number on the back face
   3. Each card flip triggers the Web Speech API to speak the Spanish word aloud in a Spanish voice
   4. Previously flipped cards remain showing the Spanish word — user can flip all cards freely without cards resetting
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 17-01-PLAN.md — Create numbers-data.js (NUMBERS constant) + add Qué número es? button to index.html + styles.css
+- [ ] 17-02-PLAN.md — Create numbers.html hub, numbers-learn.html learning page, numbers-quiz.html stub + human verify checkpoint
 **UI hint**: yes
 
 ## Phases
