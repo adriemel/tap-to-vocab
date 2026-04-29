@@ -11,7 +11,7 @@
 - ✅ **v1.6 Polish & Stats** — Phases 12-13 (shipped 2026-04-13)
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
-- 🔄 **v1.9 Qué Número Es?** — Phases 17-18 (in progress)
+- ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
 
 ## v1.6 Phases
 
@@ -91,8 +91,8 @@ Full details: `.planning/milestones/v1.8-ROADMAP.md`
 
 ## v1.9 Phases
 
-- [ ] **Phase 17: Numbers Hub & Learning Pages** — Static pages and navigation for the numbers feature
-- [ ] **Phase 18: Numbers Quiz with Flip Cards & TTS** — Interactive flip-card quiz with speech synthesis
+- [x] **Phase 17: Numbers Hub & Learning Pages** — Static pages and navigation for the numbers feature
+- [x] **Phase 18: Numbers Quiz with Flip Cards & TTS** — Interactive flip-card quiz with speech synthesis
 
 ## Phase Details
 
@@ -127,7 +127,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 18-01-PLAN.md — Add compact nq-* flip-card CSS to styles.css + implement inline IIFE quiz in numbers-quiz.html
+- [x] 18-01-PLAN.md — Add compact nq-* flip-card CSS to styles.css + implement inline IIFE quiz in numbers-quiz.html
 **UI hint**: yes
 
 ## Phases
@@ -212,4 +212,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 15. Verb Data Entry | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 16. Build Sentences Category Filter | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 17. Numbers Hub & Learning Pages | v1.9 | 2/2 | Complete | 2026-04-29 |
-| 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 0/1 | Not started | - |
+| 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 1/1 | Complete | 2026-04-29 |
