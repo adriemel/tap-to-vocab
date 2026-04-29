@@ -1267,3 +1267,70 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   text-align: center;
 }
 
+/* ── Numbers Quiz flip cards ─────────────────────────────── */
+.nq-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nq-card {
+  perspective: 600px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nq-card-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.nq-card.flipped .nq-card-inner {
+  transform: rotateY(180deg);
+}
+
+.nq-card-front,
+.nq-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nq-card-front {
+  background: #0d1740;
+  border: 2px solid #1e2d6b;
+}
+
+.nq-num {
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  font-weight: 800;
+  color: #f5d800;
+  line-height: 1;
+  text-align: center;
+}
+
+.nq-card-back {
+  background: #0d1740;
+  border: 2px solid var(--ok);
+  transform: rotateY(180deg);
+  padding: 4px;
+}
+
+.nq-word {
+  font-size: clamp(0.65rem, 2.8vw, 1rem);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
