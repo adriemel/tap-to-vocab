@@ -17,12 +17,111 @@
           <a class="btn secondary" href="/numbers.html">← Numbers</a>
         </div>
       </div>
-      <!-- Phase 18 will populate quiz-grid with flip cards -->
-      <div id="quiz-grid"></div>
-      <p style="color:var(--muted); text-align:center; margin-top:24px;">Quiz coming soon</p>
+      <div id="quiz-grid" class="nq-grid"></div>
     </div>
   </div>
   <script src="/assets/js/numbers-data.js"></script>
-  <!-- Phase 18 will add quiz JS here -->
+  <script>
+(function () {
+  /* ── TTS (verbatim copy from tapvocab.js:13–53) ── */
+  let _cachedSpanishVoice = null;
+  let _voicesLoaded = false;
+
+  function getSpanishVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    const normalize = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    const monica = voices.find(v => normalize(v.name).includes("monica") && v.lang.toLowerCase().startsWith("es"));
+    if (monica) { _cachedSpanishVoice = monica; return monica; }
+    const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+    _cachedSpanishVoice = preferred[0] || voices[0] || null;
+    return _cachedSpanishVoice;
+  }
+
+  if (typeof speechSynthesis !== "undefined") {
+    var _initialVoices = speechSynthesis.getVoices();
+    if (_initialVoices.length) { _voicesLoaded = true; getSpanishVoice(); }
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.addEventListener("voiceschanged", function () {
+        _voicesLoaded = true;
+        getSpanishVoice();
+      });
+    }
+  }
+
+  function speakSpanish(text) {
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-ES";
+      const v = getSpanishVoice();
+      if (v) u.voice = v;
+      u.rate = 0.95; u.pitch = 1.0;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch (e) { console.warn("Speech synthesis failed:", e); }
+  }
+
+  /* ── URL param parsing (verbatim copy from numbers-learn.html) ── */
+  var params = new URLSearchParams(location.search);
+  var range = params.get("range") || "1-20";
+  var parts = range.split("-");
+  var lo = parseInt(parts[0], 10);
+  var hi = parseInt(parts[1], 10);
+  if (isNaN(lo) || isNaN(hi) || lo < 1 || hi > 100 || lo > hi) {
+    lo = 1; hi = 20; range = "1-20";
+  }
+
+  /* ── Update page title ── */
+  document.querySelector("h1").textContent = "🔢 " + lo + "–" + hi;
+
+  /* ── Render cards ── */
+  var nums = window.NUMBERS.filter(function (item) {
+    return item.n >= lo && item.n <= hi;
+  });
+  var grid = document.getElementById("quiz-grid");
+
+  nums.forEach(function (item) {
+    // Outer perspective wrapper
+    var card = document.createElement("div");
+    card.className = "nq-card";
+
+    // Inner rotating layer
+    var inner = document.createElement("div");
+    inner.className = "nq-card-inner";
+
+    // Front face
+    var front = document.createElement("div");
+    front.className = "nq-card-front";
+    var numEl = document.createElement("span");
+    numEl.className = "nq-num";
+    numEl.textContent = String(item.n);
+    front.appendChild(numEl);
+
+    // Back face
+    var back = document.createElement("div");
+    back.className = "nq-card-back";
+    var wordEl = document.createElement("span");
+    wordEl.className = "nq-word";
+    wordEl.textContent = item.es;
+    back.appendChild(wordEl);
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+
+    // Click handler: flip on first tap; re-speak on subsequent taps (D-05)
+    card.addEventListener("click", function () {
+      var alreadyFlipped = card.classList.contains("flipped");
+      if (!alreadyFlipped) {
+        card.classList.add("flipped");
+      }
+      // Always speak — whether first flip or re-tap
+      speakSpanish(item.es);
+    });
+
+    grid.appendChild(card);
+  });
+})();
+  </script>
 </body>
 </html>
