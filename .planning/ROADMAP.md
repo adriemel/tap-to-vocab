@@ -124,11 +124,10 @@ Plans:
   2. Tapping a card flips it to reveal the Spanish word for that number on the back face
   3. Each card flip triggers the Web Speech API to speak the Spanish word aloud in a Spanish voice
   4. Previously flipped cards remain showing the Spanish word — user can flip all cards freely without cards resetting
-**Plans:** 2 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] 17-01-PLAN.md — Create numbers-data.js (NUMBERS constant) + add Qué número es? button to index.html + styles.css
-- [ ] 17-02-PLAN.md — Create numbers.html hub, numbers-learn.html learning page, numbers-quiz.html stub + human verify checkpoint
+- [ ] 18-01-PLAN.md — Add compact nq-* flip-card CSS to styles.css + implement inline IIFE quiz in numbers-quiz.html
 **UI hint**: yes
 
 ## Phases
@@ -212,5 +211,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 14. sentences-stats-fix | v1.7 | 1/1 | Complete | 2026-04-17 |
 | 15. Verb Data Entry | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 16. Build Sentences Category Filter | v1.8 | 1/1 | Complete | 2026-04-24 |
-| 17. Numbers Hub & Learning Pages | v1.9 | 0/? | Not started | - |
-| 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 0/? | Not started | - |
+| 17. Numbers Hub & Learning Pages | v1.9 | 2/2 | Complete | 2026-04-29 |
+| 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 0/1 | Not started | - |
