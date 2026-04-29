@@ -51,12 +51,12 @@
 
   function speakSpanish(text) {
     try {
+      window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = "es-ES";
       const v = getSpanishVoice();
       if (v) u.voice = v;
       u.rate = 0.95; u.pitch = 1.0;
-      window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
     } catch (e) { console.warn("Speech synthesis failed:", e); }
   }
@@ -75,10 +75,17 @@
   document.querySelector("h1").textContent = "🔢 " + lo + "–" + hi;
 
   /* ── Render cards ── */
-  var nums = window.NUMBERS.filter(function (item) {
+  var nums = (window.NUMBERS || []).filter(function (item) {
     return item.n >= lo && item.n <= hi;
   });
   var grid = document.getElementById("quiz-grid");
+  if (!nums.length) {
+    var msg = document.createElement("p");
+    msg.style.cssText = "color:var(--muted);text-align:center;margin-top:24px;";
+    msg.textContent = "No numbers found for this range.";
+    grid.appendChild(msg);
+    return;
+  }
 
   nums.forEach(function (item) {
     // Outer perspective wrapper
