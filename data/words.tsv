@@ -72,18 +72,23 @@ Animales	la oveja	das Schaf
 Animales	la jirafa	die Giraffe
 Animales	el koala	der Koala
 Animales	mi perro	mein Hund
-xCasa_Familia	en casa	zu Hause
-xCasa_Familia	el móvil	das Handy
-xCasa_Familia	el teléfono	das Telefon
-xCasa_Familia	la silla	der Stuhl
-xCasa_Familia	la cama	das Bett
+Casa_Familia	en casa	zu Hause
+Casa_Familia	el teléfono	das Telefon
+Casa_Familia	la silla	der Stuhl
+Casa_Familia	la cama	das Bett
 Casa_Familia	la ciudad	die Stadt
-xCasa_Familia	el mundo	die Welt
-xCasa_Familia	el colegio	die Schule
-xCasa_Familia	la escuela	die (Grund)Schule
+Casa_Familia	el mundo	die Welt
 Casa_Familia	el profesor	der Lehrer
 Casa_Familia	la profesora	die Lehrerin
 Casa_Familia	la familia	die Familie
+Casa_Familia	los abuelos	die Großeltern (Pl.)
+Casa_Familia	el abuelo / la abuela	der Großvater / die Großmutter
+Casa_Familia	el tío	der Onkel
+Casa_Familia	la tía	die Tante
+Casa_Familia	el novio / la novia	der feste Freund / die feste Freundin
+Casa_Familia	los hijos	die Kinder (Pl.)
+Casa_Familia	Mi tío no tiene hijos.	Mein Onkel hat keine Kinder.
+Casa_Familia	el hijo / la hija	der Sohn / die Tochter
 Casa_Familia	la madre	die Mutter
 Casa_Familia	el padre	der Vater
 Casa_Familia	los padres	die Eltern
@@ -102,22 +107,22 @@ Casa_Familia	la mascota	das Haustier
 Casa_Familia	Mi mascota se llama Tigo.	Mein Haustier heisst Tigo.
 Casa_Familia	tu	dein(e)
 Casa_Familia	¿Como se llama tu mascota?	Wie heisst Dein Haustier?
-Casa_Familia	la mochila	der Rucksack
-Casa_Familia	el zapato	der Schuh
-Casa_Familia	el juego	das Spiel
-Casa_Familia	el barco	das Schiff
-Casa_Familia	el hotel	das Hotel
-Casa_Familia	el restaurante	das Restaurant
-Casa_Familia	el museo	das Museum
-Casa_Familia	la casa	das Haus
-Casa_Familia	la nube	die Wolke
-Casa_Familia	la playa	der Strand
-Casa_Familia	la isla	die Insel
-Casa_Familia	el dado	der Würfel
-Casa_Familia	el sol	die Sonne
-Casa_Familia	la luna	der Mond
-Casa_Familia	el tomate	die Tomate
-Casa_Familia	el queso	der Käse
+Palabras	la mochila	der Rucksack
+Palabras	el zapato	der Schuh
+Palabras	el juego	das Spiel
+Palabras	el barco	das Schiff
+Palabras	el hotel	das Hotel
+Palabras	el restaurante	das Restaurant
+Palabras	el museo	das Museum
+Palabras	la casa	das Haus
+Palabras	la nube	die Wolke
+Palabras	la playa	der Strand
+Palabras	la isla	die Insel
+Palabras	el dado	der Würfel
+Palabras	el sol	die Sonne
+Palabras	la luna	der Mond
+Palabras	el tomate	die Tomate
+Palabras	el queso	der Käse
 Palabras	hablar	sprechen, reden
 Palabras	el alemán	Deutsch, die deutsche Sprache
 Palabras	el inglés	Englisch, die englische Sprache
