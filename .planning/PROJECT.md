@@ -51,14 +51,27 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-- [ ] User can access "Qué número es?" from home screen (NUM-01)
-- [ ] Numbers hub page with 5 range buttons 1-20…81-100 (NUM-02)
-- [ ] Learning page per range showing number/Spanish pairs (NUM-03)
-- [ ] "Take a Test" button on learning page leads to quiz (NUM-04)
-- [ ] Quiz page shows tap-to-flip number card grid (NUM-05)
-- [ ] Flipping a card reveals the Spanish word (NUM-06)
-- [ ] TTS speaks the Spanish word when card flips (NUM-07)
-- [ ] Every numbers page has Home + Back to Numbers navigation (NUM-08)
+- [ ] User can access "Quién soy yo" from home screen below "Qué número es?" (QSY-01)
+- [ ] Chat screen shows WhatsApp-style left (grey) bubbles for questions (QSY-02)
+- [ ] Each question presents 2 answer-choice buttons at the bottom (QSY-03)
+- [ ] Tapping a choice makes the answer appear as a right (colored) bubble (QSY-04)
+- [ ] TTS reads the question aloud when it appears on the left (QSY-05)
+- [ ] TTS reads the chosen answer aloud after it appears on the right (QSY-06)
+- [ ] End screen displays the full introduction as one flowing paragraph (QSY-07)
+- [ ] TTS reads the complete introduction on end screen automatically (QSY-08)
+- [ ] End screen has Replay, Start Again, and Home buttons (QSY-09)
+- [ ] Question/choice/answer data loaded from quien-soy-sentences.txt (QSY-10)
+
+### Validated (v1.9)
+
+- ✓ User can access "Qué número es?" from home screen (NUM-01) — v1.9
+- ✓ Numbers hub page with 5 range buttons 1-20…81-100 (NUM-02) — v1.9
+- ✓ Learning page per range showing number/Spanish pairs (NUM-03) — v1.9
+- ✓ "Take a Test" button on learning page leads to quiz (NUM-04) — v1.9
+- ✓ Quiz page shows tap-to-flip number card grid (NUM-05) — v1.9
+- ✓ Flipping a card reveals the Spanish word (NUM-06) — v1.9
+- ✓ TTS speaks the Spanish word when card flips (NUM-07) — v1.9
+- ✓ Every numbers page has Home + Back to Numbers navigation (NUM-08) — v1.9
 
 ### Validated (v1.8)
 
@@ -124,16 +137,17 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v1.9 Qué Número Es?
+## Current Milestone: v2.0 Quién Soy Yo
 
-**Goal:** Add a Spanish numbers learning and quiz feature covering 1–100 in five selectable ranges, with flip-card testing and TTS pronunciation.
+**Goal:** Add a WhatsApp-style conversational simulator where the student practices a spoken Spanish self-introduction by tapping answers that appear as chat bubbles, with TTS reading both questions and answers aloud.
 
 **Target features:**
-- "Qué número es?" button on home page (between Locations and Play Games)
-- Numbers hub page with 5 range selectors (1-20, 21-40, 41-60, 61-80, 81-100)
-- Learning page per range: displays all numbers with their Spanish word translations
-- Quiz page per range: tap-to-flip number grid → reveals Spanish word + spoken aloud via TTS
-- Home + "Back to Numbers" navigation on every numbers page
+- "Quién soy yo" button on home screen below "Qué número es?"
+- Chat interface: grey left bubbles for questions, colored right bubbles for user's answers
+- 2-choice buttons per question — tap to select answer
+- TTS reads question on appear + chosen answer after bubble lands
+- End screen: full introduction paragraph read aloud; Replay / Start Again / Home buttons
+- Data from quien-soy-sentences.txt (14 Q&A pairs)
 
 ## Evolution
 
@@ -153,4 +167,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-24 after v1.8 milestone*
+*Last updated: 2026-05-08 after v2.0 milestone started*
