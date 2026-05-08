@@ -73,7 +73,7 @@
       }
     }
 
-    function speakSpanish(text) {
+    function speakSpanish(text, onDone) {
       try {
         window.speechSynthesis.cancel();
         setTimeout(function () {
@@ -82,9 +82,13 @@
           var v = getSpanishVoice();
           if (v) u.voice = v;
           u.rate = 0.95; u.pitch = 1.0;
+          if (onDone) { u.onend = onDone; u.onerror = onDone; }
           window.speechSynthesis.speak(u);
         }, 100);
-      } catch (e) { console.warn("Speech synthesis failed:", e); }
+      } catch (e) {
+        console.warn("Speech synthesis failed:", e);
+        if (onDone) onDone();
+      }
     }
 
     /* ── DOM refs ── */
@@ -169,19 +173,25 @@
       // CHAT-04: append right-aligned answer bubble (also triggers CHAT-06 scroll)
       appendBubble(answerText, 'right');
 
-      // AUDIO-02: speak chosen answer 400ms after it lands
-      setTimeout(function () { speakSpanish(answerText); }, 400);
-
-      // CHAT-05: 1200ms after answer lands, advance to next question OR end screen
+      // AUDIO-02: speak chosen answer 400ms after it lands, then advance after TTS finishes
+      var advanced = false;
+      function advance() {
+        if (advanced) return;
+        advanced = true;
+        setTimeout(function () {
+          currentIndex++;
+          if (currentIndex >= questions.length) {
+            showEndScreen();
+          } else {
+            showQuestion(currentIndex);
+          }
+          isAnswering = false;
+        }, 400);
+      }
       setTimeout(function () {
-        currentIndex++;
-        if (currentIndex >= questions.length) {
-          showEndScreen();
-        } else {
-          showQuestion(currentIndex);
-        }
-        isAnswering = false;
-      }, 1200);
+        speakSpanish(answerText, advance);
+        setTimeout(advance, 8000); // fallback if onend never fires
+      }, 400);
     }
 
     btn1.addEventListener('click', function () { onChoiceTap(0); });
