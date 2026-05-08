@@ -1,0 +1,15 @@
+Question	Choices (1,2)	Answer choice 1	Answer choice 2
+¿Cómo te llamas?	Bjarne, Basti	Me llamo Bjarne y mi apellido es Drimello.	Me llamo Basti y mi apellido es Strohallo.
+¿Cuántos años tienes?	12, 67	Tengo doce años.	Tengo sesenta y siete años.
+¿A qué colegio vas?	Gymnasium Langen, Hogwarts	Soy alumno del Gymnasium Langen.	Soy alumno de Hogwarts.
+¿Qué idiomas hablas?	alemán e inglés, alemán y chino	Hablo alemán e inglés y un poco de español.	Hablo alemán y un poco de chino.
+¿De dónde eres y dónde vives?	Langen, luna	Soy de Alemania, y vivo en Langen.	Vivo en la luna.
+¿Cómo es tu barrio?	supermercados, tiendas	En mi barrio hay una parada de autobús y dos supermercados.	En mi barrio hay muchas tiendas diferentes.
+¿Con quién vives?	familia, gatos	Vivo en una casa con mi familia.	Vivo con cien gatos.
+¿Cómo es tu habitación?	guay, pequeña	Mi habitación es guay. Tengo una cama, una tele y un pc.	Mi habitación es pequeña. Tengo una cama y un libro.
+¿Cuántos años tienen tus padres?	48 y 45, 44 y 43	Mi padre tiene cuarenta y ocho años y mi madre tiene cuarenta y cinco años.	Mi padre tiene cuarenta y cuatro años y mi madre tiene cuarenta y tres años.
+¿Tienes hermanos o primos?	primos, hermana	Mis primos se llaman Ferdi, Losi, Konsti y Theo. Mis primas se llaman Lovis y Liv.	Tengo una hermana, se llama Sarah.
+¿Tienes mascota?	perro, dragón	Tengo una mascota, es un perro.	Tengo una mascota, es un dragón.
+¿Cuáles son tus hobbies?	fútbol y amigos, comer y leer	Mis hobbies son el fútbol y quedar con mis amigos.	Mis hobbies son comer pizza y leer libros.
+¿Cómo se llama tu mejor amigo?	Bjarne, Basti	Mi mejor amigo se llama Basti.	Mi mejor amigo se llama Bjarne.
+¿Cómo es tu mejor amigo?	divertido y 12 años, simpático y come demasiado	Es muy divertido y tambien tiene doce años.	Es simpático pero come mucha pizza.
