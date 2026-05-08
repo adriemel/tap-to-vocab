@@ -1,7 +1,8 @@
 ---
 phase: 19
 slug: quien-soy-yo
-status: draft
+status: approved
+reviewed_at: 2026-05-08
 shadcn_initialized: false
 preset: none
 created: 2026-05-08
@@ -40,11 +41,11 @@ Declared values (multiples of 4 only):
 | lg | 24px | Chat scroll bottom padding (keeps last bubble above answer strip) |
 | xl | 32px | End-screen vertical padding, major section gap |
 | 2xl | 48px | End-screen card top/bottom padding on desktop |
-| 3xl | 64px | (reserved — not actively used in this phase) |
+| 3xl | 64px | Answer-strip height (fixed bottom bar) |
 
 Exceptions:
 - Answer-choice buttons: minimum touch target height 48px (meets WCAG 2.5.5 recommended target)
-- Chat scroll area: `padding-bottom: 88px` (24px lg + 64px answer-strip height) to prevent content hiding under fixed answer strip
+- Chat scroll area: `padding-bottom: 88px` — approved composite: lg=24px + answer-strip height=64px — functional, not arbitrary
 - Home button on index.html: uses existing `.btn` class with `.btn-quien-soy` modifier — inherits 12px/16px padding from `.btn` base
 
 ---
@@ -54,9 +55,11 @@ Exceptions:
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body / Bubble text | 16px (1rem) | 400 | 1.5 | Question bubble text, answer bubble text, end-screen paragraph |
-| Label / Button | 15px (0.95rem) | 600 | 1.2 | Answer-choice button labels, nav button labels |
+| Label / Button | 14px (0.875rem) | 700 | 1.2 | Answer-choice button labels, nav button labels |
 | Heading | clamp(1.6rem, 2.8vw, 2.2rem) | 700 | 1.2 | "Quién soy yo" page title, "¡Muy bien!" end heading |
 | Caption | 13px (0.82rem) | 400 | 1.4 | Question counter pill (e.g., "3 / 14"), muted status hints |
+
+Declared weights: 400 (body, caption) and 700 (headings, button labels). No other weights are used in this phase.
 
 All font sizes are inherited from the existing `styles.css` scale — no new `@font-face` or external imports.
 
@@ -65,6 +68,8 @@ All font sizes are inherited from the existing `styles.css` scale — no new `@f
 ## Color
 
 All values reference existing CSS custom properties declared in `:root` of `styles.css`.
+
+Primary focal point: the incoming question bubble — largest text element, first to animate in on each turn.
 
 | Role | Value | Usage |
 |------|-------|-------|
@@ -133,7 +138,7 @@ Bubble entry animation:
 ```
 .qs-choice             Flex 1; min-height: 48px; border-radius: 12px;
                        background: #0d1740; border: 1.5px solid var(--accent);
-                       color: var(--ink); font-size: 0.95rem; font-weight: 600;
+                       color: var(--ink); font-size: 0.875rem; font-weight: 700;
                        padding: 12px 16px; cursor: pointer;
                        transition: background 0.15s ease, transform 0.1s ease
 
