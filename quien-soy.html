@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+  <title>Quién soy yo – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- Chat page (visible by default) -->
+  <main class="qs-page" id="qs-page">
+    <header class="qs-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <a class="btn secondary" href="/" aria-label="Inicio">🏠</a>
+        <h1>💬 Quién soy yo</h1>
+      </div>
+      <div class="qs-progress" id="qs-progress" aria-live="polite">1 / 14</div>
+    </header>
+
+    <section class="qs-chat" id="qs-chat" aria-live="polite" aria-label="Conversación"></section>
+
+    <div id="qs-error" role="alert"></div>
+
+    <div class="qs-answer-strip" id="qs-strip">
+      <button type="button" class="qs-choice" id="qs-btn1" disabled>—</button>
+      <button type="button" class="qs-choice" id="qs-btn2" disabled>—</button>
+    </div>
+  </main>
+
+  <!-- End screen (hidden until last question answered) -->
+  <section class="qs-end" id="qs-end" aria-hidden="true">
+    <div class="qs-end-card">
+      <h2 class="qs-end-heading">¡Muy bien!</h2>
+      <div class="qs-intro-label">Tu presentación:</div>
+      <p class="qs-intro-text" id="qs-intro-text"></p>
+      <div class="qs-end-actions">
+        <button type="button" class="btn" id="qs-replay">↺ Replay</button>
+        <button type="button" class="btn" id="qs-restart">Empezar de nuevo</button>
+        <a class="btn secondary" id="qs-home" href="/">Inicio</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/assets/js/coins.js"></script>
+  <script src="/assets/js/shared-utils.js"></script>
+  <script>
+  (function () {
+    /* ── TTS (verbatim from numbers-quiz.html lines 27–62, with iOS-safe setTimeout wrapper) ── */
+    let _cachedSpanishVoice = null;
+    let _voicesLoaded = false;
+
+    function getSpanishVoice() {
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices.length) return null;
+      const normalize = s => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      const monica = voices.find(v => normalize(v.name).includes("monica") && v.lang.toLowerCase().startsWith("es"));
+      if (monica) { _cachedSpanishVoice = monica; return monica; }
+      const preferred = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+      _cachedSpanishVoice = preferred[0] || voices[0] || null;
+      return _cachedSpanishVoice;
+    }
+
+    if (typeof speechSynthesis !== "undefined") {
+      var _initialVoices = speechSynthesis.getVoices();
+      if (_initialVoices.length) { _voicesLoaded = true; getSpanishVoice(); }
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.addEventListener("voiceschanged", function () {
+          _voicesLoaded = true;
+          getSpanishVoice();
+        });
+      }
+    }
+
+    function speakSpanish(text) {
+      try {
+        window.speechSynthesis.cancel();
+        setTimeout(function () {
+          var u = new SpeechSynthesisUtterance(text);
+          u.lang = "es-ES";
+          var v = getSpanishVoice();
+          if (v) u.voice = v;
+          u.rate = 0.95; u.pitch = 1.0;
+          window.speechSynthesis.speak(u);
+        }, 100);
+      } catch (e) { console.warn("Speech synthesis failed:", e); }
+    }
+
+    /* ── DOM refs ── */
+    var pageEl     = document.getElementById('qs-page');
+    var chatEl     = document.getElementById('qs-chat');
+    var stripEl    = document.getElementById('qs-strip');
+    var btn1       = document.getElementById('qs-btn1');
+    var btn2       = document.getElementById('qs-btn2');
+    var progressEl = document.getElementById('qs-progress');
+    var endEl      = document.getElementById('qs-end');
+    var introTextEl= document.getElementById('qs-intro-text');
+    var replayBtn  = document.getElementById('qs-replay');
+    var restartBtn = document.getElementById('qs-restart');
+    var errorEl    = document.getElementById('qs-error');
+
+    /* ── State (closure-scoped) ── */
+    var questions = [];        // array of {question, label1, label2, answer1, answer2}
+    var currentIndex = 0;
+    var chosenAnswers = [];
+    var isAnswering = false;   // guards against double-tap during 1200ms transition
+
+    function showError(msg) {
+      errorEl.textContent = msg || 'No se pudo cargar la conversación. Recarga la página.';
+      errorEl.style.display = 'block';
+      stripEl.style.display = 'none';
+    }
+
+    /* Task 2 will fill in: appendBubble, showQuestion, onChoiceTap, showEndScreen, startAgain, init */
+
+    /* ── Init: load TSV, kick off chat ── */
+    SharedUtils.loadTSV('/data/quien-soy-sentences.txt').then(function (rows) {
+      questions = rows
+        .filter(function (r) {
+          return r['Question'] && r['Answer choice 1'] && r['Answer choice 2'];
+        })
+        .map(function (r) {
+          var choiceParts = (r['Choices (1,2)'] || '').split(', ');
+          return {
+            question: r['Question'],
+            label1:   choiceParts[0] || 'Opción 1',
+            label2:   choiceParts[1] || 'Opción 2',
+            answer1:  r['Answer choice 1'],
+            answer2:  r['Answer choice 2']
+          };
+        });
+      if (!questions.length) { showError(); return; }
+      // Plan 02 Task 2 wires showQuestion(0) here
+      if (typeof showQuestion === 'function') showQuestion(0);
+    }).catch(function (err) {
+      console.error('Failed to load conversation data:', err);
+      showError();
+    });
+
+  })();
+  </script>
+</body>
+</html>
