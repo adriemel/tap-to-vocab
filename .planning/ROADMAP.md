@@ -12,6 +12,23 @@
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
+- [ ] **v2.0 Quién Soy Yo** — Phase 19 (in progress)
+
+## v2.0 Phases
+
+### Phase 19: Quién Soy Yo — Chat Simulator
+
+**Goal:** Users can practice a Spanish self-introduction by tapping answer choices that appear as chat bubbles, with TTS reading every exchange aloud, culminating in an end screen that recites the full introduction.
+**Depends on:** Phase 18
+**Requirements:** CHAT-01, CHAT-02, CHAT-03, CHAT-04, CHAT-05, CHAT-06, AUDIO-01, AUDIO-02, END-01, END-02, END-03, END-04, END-05, END-06, DATA-01
+**Success Criteria** (what must be TRUE):
+  1. A "Quién soy yo" button appears on the home screen below "Qué número es?" and opens the chat page
+  2. The chat page presents one question at a time as a left-aligned grey bubble, with two tappable answer buttons below — tapping one appends the chosen answer as a right-aligned colored bubble, then the next question appears
+  3. TTS speaks each question aloud when it appears and speaks the chosen answer aloud after it lands as a bubble
+  4. After the final question is answered, an end screen displays "¡Muy bien!" and the full introduction as a single flowing paragraph, and TTS begins reading it automatically
+  5. The end screen has working Replay (re-reads paragraph), Start Again (resets to question 1), and Home (goes to index.html) buttons
+**Plans**: TBD
+**UI hint**: yes
 
 ## v1.6 Phases
 
@@ -213,3 +230,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 16. Build Sentences Category Filter | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 17. Numbers Hub & Learning Pages | v1.9 | 2/2 | Complete | 2026-04-29 |
 | 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 1/1 | Complete | 2026-04-29 |
+| 19. Quién Soy Yo — Chat Simulator | v2.0 | 0/TBD | Not started | - |
