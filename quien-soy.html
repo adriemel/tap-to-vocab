@@ -112,7 +112,119 @@
       stripEl.style.display = 'none';
     }
 
-    /* Task 2 will fill in: appendBubble, showQuestion, onChoiceTap, showEndScreen, startAgain, init */
+    /* ── Bubble rendering ── */
+    function appendBubble(text, side) {
+      // side: 'left' (question) or 'right' (answer)
+      var row = document.createElement('div');
+      row.className = 'qs-bubble-row ' + side;
+
+      var bubble = document.createElement('div');
+      bubble.className = 'qs-bubble ' + (side === 'left' ? 'question' : 'answer');
+      bubble.textContent = text;
+
+      row.appendChild(bubble);
+      chatEl.appendChild(row);
+
+      // CHAT-06: scroll latest bubble into view
+      bubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      return bubble;
+    }
+
+    /* ── Show question N (0-indexed) ── */
+    function showQuestion(i) {
+      currentIndex = i;
+      var q = questions[i];
+
+      // Render question bubble (CHAT-02)
+      appendBubble(q.question, 'left');
+
+      // AUDIO-01: speak question on appear
+      speakSpanish(q.question);
+
+      // Update progress pill (e.g., "3 / 14")
+      progressEl.textContent = (i + 1) + ' / ' + questions.length;
+
+      // CHAT-03: render two choice buttons with short labels
+      btn1.textContent = q.label1;
+      btn2.textContent = q.label2;
+      // Accessibility: aria-label uses full answer text (per UI-SPEC Accessibility section)
+      btn1.setAttribute('aria-label', q.answer1);
+      btn2.setAttribute('aria-label', q.answer2);
+      btn1.disabled = false;
+      btn2.disabled = false;
+    }
+
+    /* ── Handle choice tap ── */
+    function onChoiceTap(choiceIndex) {
+      // Pitfall 2: guard against double-tap during 1200ms transition
+      if (isAnswering) return;
+      isAnswering = true;
+      btn1.disabled = true;
+      btn2.disabled = true;
+
+      var q = questions[currentIndex];
+      var answerText = (choiceIndex === 0) ? q.answer1 : q.answer2;
+      chosenAnswers.push(answerText);
+
+      // CHAT-04: append right-aligned answer bubble (also triggers CHAT-06 scroll)
+      appendBubble(answerText, 'right');
+
+      // AUDIO-02: speak chosen answer 400ms after it lands
+      setTimeout(function () { speakSpanish(answerText); }, 400);
+
+      // CHAT-05: 1200ms after answer lands, advance to next question OR end screen
+      setTimeout(function () {
+        currentIndex++;
+        if (currentIndex >= questions.length) {
+          showEndScreen();
+        } else {
+          showQuestion(currentIndex);
+        }
+        isAnswering = false;
+      }, 1200);
+    }
+
+    btn1.addEventListener('click', function () { onChoiceTap(0); });
+    btn2.addEventListener('click', function () { onChoiceTap(1); });
+
+    /* ── End screen ── */
+    function buildParagraph() {
+      // END-02: chosen answers joined with single space + closing line
+      return chosenAnswers.join(' ') + ' ¡Muchas gracias por escuchar!';
+    }
+
+    function showEndScreen() {
+      // END-01: hard swap (no transition) per UI-SPEC
+      pageEl.style.display = 'none';
+      endEl.classList.add('visible');
+      endEl.setAttribute('aria-hidden', 'false');
+
+      var paragraph = buildParagraph();
+      introTextEl.textContent = paragraph;
+
+      // END-03: auto-read paragraph 300ms after end screen paint
+      setTimeout(function () { speakSpanish(paragraph); }, 300);
+    }
+
+    /* ── End screen actions ── */
+    // END-04: replay re-reads the paragraph
+    replayBtn.addEventListener('click', function () {
+      speakSpanish(buildParagraph());
+    });
+
+    // END-05: start again resets state, hides end screen, shows chat with question 1
+    restartBtn.addEventListener('click', function () {
+      window.speechSynthesis.cancel();
+      currentIndex = 0;
+      chosenAnswers = [];
+      isAnswering = false;
+      chatEl.innerHTML = '';
+      endEl.classList.remove('visible');
+      endEl.setAttribute('aria-hidden', 'true');
+      pageEl.style.display = '';   // restore default (flex via .qs-page rule)
+      showQuestion(0);
+    });
+    // Note: END-06 (Inicio button) is a plain anchor with href="/" — no JS handler needed.
 
     /* ── Init: load TSV, kick off chat ── */
     SharedUtils.loadTSV('/data/quien-soy-sentences.txt').then(function (rows) {
@@ -131,8 +243,7 @@
           };
         });
       if (!questions.length) { showError(); return; }
-      // Plan 02 Task 2 wires showQuestion(0) here
-      if (typeof showQuestion === 'function') showQuestion(0);
+      showQuestion(0);
     }).catch(function (err) {
       console.error('Failed to load conversation data:', err);
       showError();
