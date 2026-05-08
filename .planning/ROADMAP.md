@@ -27,7 +27,11 @@
   3. TTS speaks each question aloud when it appears and speaks the chosen answer aloud after it lands as a bubble
   4. After the final question is answered, an end screen displays "¡Muy bien!" and the full introduction as a single flowing paragraph, and TTS begins reading it automatically
   5. The end screen has working Replay (re-reads paragraph), Start Again (resets to question 1), and Home (goes to index.html) buttons
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 19-01-PLAN.md — Re-encode data file to UTF-8, append qs-* CSS block, add btn-quien-soy to index.html
+- [ ] 19-02-PLAN.md — Create quien-soy.html with inline-IIFE chat simulator (TTS, state machine, end screen)
 **UI hint**: yes
 
 ## v1.6 Phases
