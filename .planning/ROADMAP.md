@@ -50,6 +50,16 @@ Plans:
 2. Global `--bg` CSS variable value is perceptibly lighter; dark theme is preserved but less oppressive
 3. No layout regressions at 375px mobile width
 
+### Phase 20: quien-soy-yo bugfixes and polish
+
+**Goal:** Fix known bugs in quien-soy.html: TTS race condition on first question, missing skip button, mobile scroll/bubble overlap, end-screen button layout on small screens, and data file typo (tambien → también).
+**Requirements**: FIX-TTS, FIX-SKIP, FIX-SCROLL, FIX-ENDSCREEN, FIX-TYPO
+**Depends on:** Phase 19
+**Plans:** 1 plan
+
+Plans:
+- [ ] 20-01-PLAN.md — Fix all five bugs: voice-gate + skip button + safe-area CSS + end-screen media query + data typo
+
 ---
 
 ### Phase 13: Session Statistics
