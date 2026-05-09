@@ -12,4 +12,4 @@ Question	Choices (1,2)	Answer choice 1	Answer choice 2
 ¿Tienes mascota?	perro, dragón	Tengo una mascota, es un perro.	Tengo una mascota, es un dragón.
 ¿Cuáles son tus hobbies?	fútbol y amigos, comer y leer	Mis hobbies son el fútbol y quedar con mis amigos.	Mis hobbies son comer pizza y leer libros.
 ¿Cómo se llama tu mejor amigo?	Bjarne, Basti	Mi mejor amigo se llama Basti.	Mi mejor amigo se llama Bjarne.
-¿Cómo es tu mejor amigo?	divertido y 12 años, simpático y come demasiado	Es muy divertido y tambien tiene doce años.	Es simpático pero come mucha pizza.
+¿Cómo es tu mejor amigo?	divertido y 12 años, simpático y come demasiado	Es muy divertido y también tiene doce años.	Es simpático pero come mucha pizza.
