@@ -58,7 +58,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 20-01-PLAN.md — Fix all five bugs: voice-gate + skip button + safe-area CSS + end-screen media query + data typo
+- [x] 20-01-PLAN.md — Fix all five bugs: voice-gate + skip button + safe-area CSS + end-screen media query + data typo
 
 ---
 
