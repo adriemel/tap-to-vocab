@@ -26,7 +26,7 @@
     <div class="qs-answer-strip" id="qs-strip">
       <button type="button" class="qs-choice" id="qs-btn1" disabled>—</button>
       <button type="button" class="qs-choice" id="qs-btn2" disabled>—</button>
-      <button type="button" class="qs-skip" id="qs-skip" disabled>&#10099; Saltar</button>
+      <button type="button" class="qs-skip" id="qs-skip" disabled>&#10099; Skip</button>
     </div>
   </main>
 
@@ -38,8 +38,8 @@
       <p class="qs-intro-text" id="qs-intro-text"></p>
       <div class="qs-end-actions">
         <button type="button" class="btn" id="qs-replay">↺ Replay</button>
-        <button type="button" class="btn" id="qs-restart">Empezar de nuevo</button>
-        <a class="btn secondary" id="qs-home" href="/">Inicio</a>
+        <button type="button" class="btn" id="qs-restart">Restart</button>
+        <a class="btn secondary" id="qs-home" href="/">🏠</a>
       </div>
     </div>
   </section>
@@ -131,8 +131,8 @@
       row.appendChild(bubble);
       chatEl.appendChild(row);
 
-      // CHAT-06: scroll latest bubble into view
-      bubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      // CHAT-06: scroll to bottom so the 120px padding-bottom clears the fixed answer strip
+      requestAnimationFrame(function () { chatEl.scrollTop = chatEl.scrollHeight; });
       return bubble;
     }
 
