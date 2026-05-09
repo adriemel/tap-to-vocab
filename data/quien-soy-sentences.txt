@@ -11,5 +11,5 @@ Question	Choices (1,2)	Answer choice 1	Answer choice 2
 ¿Tienes hermanos o primos?	primos, hermana	Mis primos se llaman Ferdi, Losi, Konsti y Theo. Mis primas se llaman Lovis y Liv.	Tengo una hermana, se llama Sarah.
 ¿Tienes mascota?	perro, dragón	Tengo una mascota, es un perro.	Tengo una mascota, es un dragón.
 ¿Cuáles son tus hobbies?	fútbol y amigos, comer y leer	Mis hobbies son el fútbol y quedar con mis amigos.	Mis hobbies son comer pizza y leer libros.
-¿Cómo se llama tu mejor amigo?	Bjarne, Basti	Mi mejor amigo se llama Basti.	Mi mejor amigo se llama Bjarne.
+¿Cómo se llama tu mejor amigo?	Bjarne, Basti	Mi mejor amigo se llama Bjarne.	Mi mejor amigo se llama Basti.
 ¿Cómo es tu mejor amigo?	divertido y 12 años, simpático y come demasiado	Es muy divertido y también tiene doce años.	Es simpático pero come mucha pizza.
