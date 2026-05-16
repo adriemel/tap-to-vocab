@@ -12,7 +12,7 @@
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
-- [ ] **v2.0 Quién Soy Yo** — Phase 19 (in progress)
+- [ ] **v2.0 Quién Soy Yo** — Phases 19-21 (in progress)
 
 ## v2.0 Phases
 
@@ -59,6 +59,16 @@ Plans:
 
 Plans:
 - [x] 20-01-PLAN.md — Fix all five bugs: voice-gate + skip button + safe-area CSS + end-screen media query + data typo
+
+### Phase 21: Quién Soy Yo — iOS TTS First-Sentence Bug Fix
+
+**Goal:** Fix the iOS-specific TTS regression where the first question ("¿Cómo te llamas?") is not voiced on iPhone (but works on iPad) when entering quien-soy.html from the home screen — likely a timing/voice-readiness issue.
+**Requirements**: FIX-IOS-TTS
+**Depends on:** Phase 20
+**Plans:** 1 plan
+
+Plans:
+- [ ] 21-01-PLAN.md — Silent priming utterance + resume() guard + replace _voicesLoaded polling with 300ms delay
 
 ---
 
@@ -244,4 +254,6 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 16. Build Sentences Category Filter | v1.8 | 1/1 | Complete | 2026-04-24 |
 | 17. Numbers Hub & Learning Pages | v1.9 | 2/2 | Complete | 2026-04-29 |
 | 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 1/1 | Complete | 2026-04-29 |
-| 19. Quién Soy Yo — Chat Simulator | v2.0 | 0/TBD | Not started | - |
+| 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
+| 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
+| 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 0/1 | Not started | - |
