@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: Phases
-status: milestone_complete
-stopped_at: Roadmap created — Phase 19 defined with 15 requirements and 5 success criteria
-last_updated: "2026-05-08T08:42:06.754Z"
-last_activity: 2026-05-08 -- Phase --phase execution started
+milestone_name: Quién Soy Yo
+status: ready_to_execute
+stopped_at: Phase 21 planned — 1 plan ready for execution
+last_updated: "2026-05-16T00:00:00.000Z"
+last_activity: 2026-05-16 -- Phase 21 planning complete
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 2
+  total_phases: 3
+  completed_phases: 2
+  total_plans: 1
   completed_plans: 0
-  percent: 100
+  percent: 67
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-08 after v2.0 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase --phase — 19
+**Current focus:** Phase 21 — Quién Soy Yo iOS TTS First-Sentence Bug Fix
 
 ## Current Position
 
-Phase: 20
+Phase: 21
 Plan: Not started
-Status: Milestone complete
-Last activity: 2026-05-09
+Status: Ready to execute
+Last activity: 2026-05-16
 
 ## Accumulated Context
 
@@ -43,6 +43,7 @@ Last activity: 2026-05-09
 ### Roadmap Evolution
 
 - Phase 20 added: quien-soy-yo bugfixes and polish (TTS on first question, skip button, scroll/bubble overlap on mobile, end-screen button layout, sentence data push)
+- Phase 21 added: Quién Soy Yo — iOS TTS First-Sentence Bug Fix (first question not voiced on iPhone, likely timing/voice-readiness issue)
 
 ### Pending Todos
 
@@ -57,4 +58,4 @@ None.
 Last session: 2026-05-08
 Stopped at: Roadmap created — Phase 19 defined with 15 requirements and 5 success criteria
 
-**Planned Phase:** 19 (Quién Soy Yo — Chat Simulator) — 2 plans — 2026-05-08T08:40:41.391Z
+**Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
