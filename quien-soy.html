@@ -48,6 +48,17 @@
   <script src="/assets/js/shared-utils.js"></script>
   <script>
   (function () {
+    // iOS Safari: prime the audio session synchronously within the navigation gesture window.
+    // The page navigation tap counts as a user gesture; speak() called here unlocks audio
+    // before the async data fetch completes and closes the gesture window.
+    if (typeof speechSynthesis !== 'undefined') {
+      try {
+        var _primeUtterance = new SpeechSynthesisUtterance(' ');
+        _primeUtterance.volume = 0;
+        window.speechSynthesis.speak(_primeUtterance);
+      } catch (e) {}
+    }
+
     /* ── TTS (verbatim from numbers-quiz.html lines 27–62, with iOS-safe setTimeout wrapper) ── */
     let _cachedSpanishVoice = null;
     let _voicesLoaded = false;
@@ -84,6 +95,7 @@
           if (v) u.voice = v;
           u.rate = 0.95; u.pitch = 1.0;
           if (onDone) { u.onend = onDone; u.onerror = onDone; }
+          window.speechSynthesis.resume(); // iOS: re-activate if paused by tab-switch or cancel()
           window.speechSynthesis.speak(u);
         }, 100);
       } catch (e) {
@@ -280,14 +292,9 @@
           };
         });
       if (!questions.length) { showError(); return; }
-      function startWhenReady() {
-        if (_voicesLoaded || typeof speechSynthesis === 'undefined') {
-          showQuestion(0);
-        } else {
-          setTimeout(startWhenReady, 50);
-        }
-      }
-      startWhenReady();
+      // iOS: skip _voicesLoaded polling — voices are available after a short delay
+      // even when voiceschanged fires late or not at all. 300ms is safe across devices.
+      setTimeout(function () { showQuestion(0); }, 300);
     }).catch(function (err) {
       console.error('Failed to load conversation data:', err);
       showError();
