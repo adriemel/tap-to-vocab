@@ -6,6 +6,29 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
   <title>Quién soy yo – Tap-to-Vocab</title>
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .qs-start-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .qs-start-hint {
+      color: var(--muted);
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      max-width: 280px;
+      line-height: 1.5;
+    }
+    .qs-start-btn {
+      font-size: 1.15rem;
+      padding: 0.8rem 2.5rem;
+      min-width: 160px;
+    }
+  </style>
 </head>
 <body>
 
@@ -16,14 +39,19 @@
         <a class="btn secondary" href="/" aria-label="Inicio">🏠</a>
         <h1>💬 Quién soy yo</h1>
       </div>
-      <div class="qs-progress" id="qs-progress" aria-live="polite">1 / 14</div>
+      <div class="qs-progress" id="qs-progress" aria-live="polite" style="display:none">1 / 14</div>
     </header>
 
-    <section class="qs-chat" id="qs-chat" aria-live="polite" aria-label="Conversación"></section>
+    <div id="qs-start" class="qs-start-screen">
+      <p class="qs-start-hint">Practica presentarte en español</p>
+      <button type="button" class="btn qs-start-btn" id="qs-start-btn" disabled>¡Empezar!</button>
+    </div>
+
+    <section class="qs-chat" id="qs-chat" aria-live="polite" aria-label="Conversación" hidden></section>
 
     <div id="qs-error" role="alert"></div>
 
-    <div class="qs-answer-strip" id="qs-strip">
+    <div class="qs-answer-strip" id="qs-strip" hidden>
       <button type="button" class="qs-choice" id="qs-btn1" disabled>—</button>
       <button type="button" class="qs-choice" id="qs-btn2" disabled>—</button>
       <button type="button" class="qs-skip" id="qs-skip" disabled>&#10099; Skip</button>
@@ -48,26 +76,8 @@
   <script src="/assets/js/shared-utils.js"></script>
   <script>
   (function () {
-    // iOS Safari: keep the audio session alive from the navigation tap until the first
-    // question is ready. The page-load tap opens the gesture window; the heartbeat
-    // re-queues itself silently so iOS never closes the session while TSV data loads.
-    var _heartbeatActive = false;
-    if (typeof speechSynthesis !== 'undefined') {
-      try {
-        _heartbeatActive = true;
-        (function _beat() {
-          if (!_heartbeatActive) return;
-          var hb = new SpeechSynthesisUtterance(' ');
-          hb.volume = 0;
-          hb.onend = _beat;
-          window.speechSynthesis.speak(hb);
-        })();
-      } catch(e) {}
-    }
-
-    /* ── TTS (verbatim from numbers-quiz.html lines 27–62, with iOS-safe setTimeout wrapper) ── */
+    /* ── TTS ── */
     let _cachedSpanishVoice = null;
-    let _voicesLoaded = false;
 
     function getSpanishVoice() {
       const voices = window.speechSynthesis.getVoices();
@@ -80,21 +90,11 @@
       return _cachedSpanishVoice;
     }
 
-    if (typeof speechSynthesis !== "undefined") {
-      var _initialVoices = speechSynthesis.getVoices();
-      if (_initialVoices.length) { _voicesLoaded = true; getSpanishVoice(); }
-      if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.addEventListener("voiceschanged", function () {
-          _voicesLoaded = true;
-          getSpanishVoice();
-        });
-      }
+    if (typeof speechSynthesis !== "undefined" && speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.addEventListener("voiceschanged", getSpanishVoice);
     }
 
     function speakSpanish(text, onDone) {
-      var wasHeartbeating = _heartbeatActive;
-      _heartbeatActive = false; // stop heartbeat from re-queuing on next onend
-      var delay = wasHeartbeating ? 10 : 100; // 10ms gap on first call (heartbeat kept session alive)
       try {
         window.speechSynthesis.cancel();
         setTimeout(function () {
@@ -106,7 +106,7 @@
           if (onDone) { u.onend = onDone; u.onerror = onDone; }
           window.speechSynthesis.resume();
           window.speechSynthesis.speak(u);
-        }, delay);
+        }, 100);
       } catch (e) {
         console.warn("Speech synthesis failed:", e);
         if (onDone) onDone();
@@ -126,33 +126,30 @@
     var replayBtn  = document.getElementById('qs-replay');
     var restartBtn = document.getElementById('qs-restart');
     var errorEl    = document.getElementById('qs-error');
+    var startEl    = document.getElementById('qs-start');
+    var startBtn   = document.getElementById('qs-start-btn');
 
     /* ── State (closure-scoped) ── */
-    var questions = [];        // array of {question, label1, label2, answer1, answer2}
+    var questions = [];
     var currentIndex = 0;
     var chosenAnswers = [];
-    var isAnswering = false;   // guards against double-tap during 1200ms transition
+    var isAnswering = false;
 
     function showError(msg) {
       errorEl.textContent = msg || 'No se pudo cargar la conversación. Recarga la página.';
       errorEl.style.display = 'block';
-      stripEl.style.display = 'none';
+      startEl.style.display = 'none';
     }
 
     /* ── Bubble rendering ── */
     function appendBubble(text, side) {
-      // side: 'left' (question) or 'right' (answer)
       var row = document.createElement('div');
       row.className = 'qs-bubble-row ' + side;
-
       var bubble = document.createElement('div');
       bubble.className = 'qs-bubble ' + (side === 'left' ? 'question' : 'answer');
       bubble.textContent = text;
-
       row.appendChild(bubble);
       chatEl.appendChild(row);
-
-      // CHAT-06: scroll to bottom so the 120px padding-bottom clears the fixed answer strip
       requestAnimationFrame(function () { chatEl.scrollTop = chatEl.scrollHeight; });
       return bubble;
     }
@@ -161,20 +158,12 @@
     function showQuestion(i) {
       currentIndex = i;
       var q = questions[i];
-
-      // Render question bubble (CHAT-02)
       appendBubble(q.question, 'left');
-
-      // AUDIO-01: speak question on appear
       speakSpanish(q.question);
-
-      // Update progress pill (e.g., "3 / 14")
+      progressEl.style.display = '';
       progressEl.textContent = (i + 1) + ' / ' + questions.length;
-
-      // CHAT-03: render two choice buttons with short labels
       btn1.textContent = q.label1;
       btn2.textContent = q.label2;
-      // Accessibility: aria-label uses full answer text (per UI-SPEC Accessibility section)
       btn1.setAttribute('aria-label', q.answer1);
       btn2.setAttribute('aria-label', q.answer2);
       btn1.disabled = false;
@@ -184,7 +173,6 @@
 
     /* ── Handle choice tap ── */
     function onChoiceTap(choiceIndex) {
-      // Pitfall 2: guard against double-tap during 1200ms transition
       if (isAnswering) return;
       isAnswering = true;
       btn1.disabled = true;
@@ -194,11 +182,8 @@
       var q = questions[currentIndex];
       var answerText = (choiceIndex === 0) ? q.answer1 : q.answer2;
       chosenAnswers.push(answerText);
-
-      // CHAT-04: append right-aligned answer bubble (also triggers CHAT-06 scroll)
       appendBubble(answerText, 'right');
 
-      // AUDIO-02: speak chosen answer 400ms after it lands, then advance after TTS finishes
       var advanced = false;
       function advance() {
         if (advanced) return;
@@ -215,7 +200,7 @@
       }
       setTimeout(function () {
         speakSpanish(answerText, advance);
-        setTimeout(advance, 8000); // fallback if onend never fires
+        setTimeout(advance, 8000);
       }, 400);
     }
 
@@ -247,30 +232,22 @@
 
     /* ── End screen ── */
     function buildParagraph() {
-      // END-02: chosen answers joined with single space + closing line
       return chosenAnswers.join(' ') + ' ¡Muchas gracias por escuchar!';
     }
 
     function showEndScreen() {
-      // END-01: hard swap (no transition) per UI-SPEC
       pageEl.style.display = 'none';
       endEl.classList.add('visible');
       endEl.setAttribute('aria-hidden', 'false');
-
       var paragraph = buildParagraph();
       introTextEl.textContent = paragraph;
-
-      // END-03: auto-read paragraph 300ms after end screen paint
       setTimeout(function () { speakSpanish(paragraph); }, 300);
     }
 
-    /* ── End screen actions ── */
-    // END-04: replay re-reads the paragraph
     replayBtn.addEventListener('click', function () {
       speakSpanish(buildParagraph());
     });
 
-    // END-05: start again resets state, hides end screen, shows chat with question 1
     restartBtn.addEventListener('click', function () {
       window.speechSynthesis.cancel();
       currentIndex = 0;
@@ -279,12 +256,19 @@
       chatEl.innerHTML = '';
       endEl.classList.remove('visible');
       endEl.setAttribute('aria-hidden', 'true');
-      pageEl.style.display = '';   // restore default (flex via .qs-page rule)
+      pageEl.style.display = '';
       showQuestion(0);
     });
-    // Note: END-06 (Inicio button) is a plain anchor with href="/" — no JS handler needed.
 
-    /* ── Init: load TSV, kick off chat ── */
+    /* ── Start button: user gesture guarantees iOS TTS on first question ── */
+    startBtn.addEventListener('click', function () {
+      startEl.style.display = 'none';
+      chatEl.removeAttribute('hidden');
+      stripEl.removeAttribute('hidden');
+      showQuestion(0);
+    });
+
+    /* ── Init: load TSV then enable start button ── */
     SharedUtils.loadTSV('/data/quien-soy-sentences.txt').then(function (rows) {
       questions = rows
         .filter(function (r) {
@@ -301,9 +285,7 @@
           };
         });
       if (!questions.length) { showError(); return; }
-      // iOS: skip _voicesLoaded polling — voices are available after a short delay
-      // even when voiceschanged fires late or not at all. 300ms is safe across devices.
-      setTimeout(function () { showQuestion(0); }, 300);
+      startBtn.disabled = false;
     }).catch(function (err) {
       console.error('Failed to load conversation data:', err);
       showError();
