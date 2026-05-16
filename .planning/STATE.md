@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Quién Soy Yo
-status: ready_to_execute
-stopped_at: Phase 21 planned — 1 plan ready for execution
+status: milestone_complete
+stopped_at: Phase 21 complete — v2.0 milestone shipped
 last_updated: "2026-05-16T00:00:00.000Z"
-last_activity: 2026-05-16 -- Phase 21 planning complete
+last_activity: 2026-05-16 -- Phase 21 complete, v2.0 shipped
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 1
-  completed_plans: 0
-  percent: 67
+  completed_plans: 1
+  percent: 100
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-08 after v2.0 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 21 — Quién Soy Yo iOS TTS First-Sentence Bug Fix
+**Current focus:** v2.0 milestone complete — all phases shipped
 
 ## Current Position
 
-Phase: 21
-Plan: Not started
-Status: Ready to execute
+Phase: 21 (complete)
+Plan: 21-01 (complete)
+Status: Milestone complete
 Last activity: 2026-05-16
 
 ## Accumulated Context

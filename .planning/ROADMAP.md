@@ -12,7 +12,7 @@
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
-- [ ] **v2.0 Quién Soy Yo** — Phases 19-21 (in progress)
+- [x] **v2.0 Quién Soy Yo** — Phases 19-21 (shipped 2026-05-16)
 
 ## v2.0 Phases
 
@@ -68,7 +68,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 21-01-PLAN.md — Silent priming utterance + resume() guard + replace _voicesLoaded polling with 300ms delay
+- [x] 21-01-PLAN.md — Add ¡Empezar! start button; showQuestion(0) called from click handler (iOS user gesture guarantee)
 
 ---
 
@@ -256,4 +256,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 18. Numbers Quiz with Flip Cards & TTS | v1.9 | 1/1 | Complete | 2026-04-29 |
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 0/1 | Not started | - |
+| 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
