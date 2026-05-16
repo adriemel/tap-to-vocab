@@ -48,15 +48,21 @@
   <script src="/assets/js/shared-utils.js"></script>
   <script>
   (function () {
-    // iOS Safari: prime the audio session synchronously within the navigation gesture window.
-    // The page navigation tap counts as a user gesture; speak() called here unlocks audio
-    // before the async data fetch completes and closes the gesture window.
+    // iOS Safari: keep the audio session alive from the navigation tap until the first
+    // question is ready. The page-load tap opens the gesture window; the heartbeat
+    // re-queues itself silently so iOS never closes the session while TSV data loads.
+    var _heartbeatActive = false;
     if (typeof speechSynthesis !== 'undefined') {
       try {
-        var _primeUtterance = new SpeechSynthesisUtterance(' ');
-        _primeUtterance.volume = 0;
-        window.speechSynthesis.speak(_primeUtterance);
-      } catch (e) {}
+        _heartbeatActive = true;
+        (function _beat() {
+          if (!_heartbeatActive) return;
+          var hb = new SpeechSynthesisUtterance(' ');
+          hb.volume = 0;
+          hb.onend = _beat;
+          window.speechSynthesis.speak(hb);
+        })();
+      } catch(e) {}
     }
 
     /* ── TTS (verbatim from numbers-quiz.html lines 27–62, with iOS-safe setTimeout wrapper) ── */
@@ -86,6 +92,9 @@
     }
 
     function speakSpanish(text, onDone) {
+      var wasHeartbeating = _heartbeatActive;
+      _heartbeatActive = false; // stop heartbeat from re-queuing on next onend
+      var delay = wasHeartbeating ? 10 : 100; // 10ms gap on first call (heartbeat kept session alive)
       try {
         window.speechSynthesis.cancel();
         setTimeout(function () {
@@ -95,9 +104,9 @@
           if (v) u.voice = v;
           u.rate = 0.95; u.pitch = 1.0;
           if (onDone) { u.onend = onDone; u.onerror = onDone; }
-          window.speechSynthesis.resume(); // iOS: re-activate if paused by tab-switch or cancel()
+          window.speechSynthesis.resume();
           window.speechSynthesis.speak(u);
-        }, 100);
+        }, delay);
       } catch (e) {
         console.warn("Speech synthesis failed:", e);
         if (onDone) onDone();
