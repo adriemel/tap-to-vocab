@@ -225,6 +225,46 @@
 
 ---
 
+## Milestone: v2.1 — Qué Hora Es?
+
+**Shipped:** 2026-08-02
+**Phases:** 1 | **Plans:** 4
+
+### What Was Built
+- `buildTimePhrase(hour24, minute)` — pure, dual-exported (window/CommonJS) Spanish time-grammar engine, with a 12-case + 288-state invariant Node test (`hora-phrase.test.js`) — the project's first automated test
+- `hora.html` — standalone clock page: two reel-picker dials (hour 00–23, minute in 5-min steps), colon separator, CTA, phrase card
+- Pointer Events reel-drag: value-model (integer index + closure pixel remainder), 40px/step, wraparound both directions, active-drag highlight
+- Spanish TTS wiring reusing the project's Monica-voice pattern; Repeat button sentinel-isolated in source to guarantee it never recomputes from live dial state
+
+### What Worked
+- **Isolating the highest-risk logic as a pure, tested function first**: The grammar engine (traditional Spanish time phrasing has two well-documented pitfalls — period-from-wrong-hour, Es-la/Son-las-from-wrong-hour) shipped with zero bugs because it was built and proven in Wave 1, before any UI touched it in Wave 2/3
+- **Sequential single-plan waves with explicit dependency chains**: Each of the 4 plans built cleanly on the prior wave's DOM/state contract (documented in each plan's `<interfaces>` block) — zero cross-plan wiring gaps, zero rework
+- **Sentinel comments for behavior isolation**: Bracketing the Repeat handler with `// --- repeat-handler-start/end ---` let both the plan's own acceptance gate and the code reviewer mechanically prove it never recomputes — a cheap technique worth reusing anywhere "must never touch X" is a hard requirement
+- **Reusing an established pattern (locations.js Pointer Events, tapvocab.js TTS block) instead of inventing new ones**: Both ported almost verbatim, and both worked correctly on the first human UAT pass
+
+### What Was Inefficient
+- **The scheduled `gsd-verifier` subagent hit an account session-usage limit mid-run** and had to be completed inline by the orchestrator instead — not a process failure, but a reminder that agent-spawn cost adds up over a 4-wave + code-review + verification sequence in one session
+- **`git log --grep` without anchoring the search pattern matched an unrelated historical commit** twice during this milestone (once computing the code-review diff base, once computing milestone timeline stats) — cost a few minutes each time to notice the polluted date/file range and recompute from the actual `test(22-01):`-prefixed commit instead
+- **The CLI's `milestone.complete` and `phase.complete` roadmap/requirement scans pulled in two already-shipped-but-never-archived phases (17, 18)** into v2.1's stats and MILESTONES.md entry, because those phase directories were still sitting unarchived in `.planning/phases/` from a prior milestone close that skipped the phase-archival step — required manual correction of the auto-generated milestone entry
+
+### Patterns Established
+- **Dual-export pure-logic modules for correctness-critical grammar/calculation code**: `window.X` + `module.exports` in one IIFE lets the same file be both the shipped browser module and the Node-testable unit — zero build step, zero test framework, full coverage
+- **Value-model drag state (index + pixel remainder in a closure), not scroll-position-derived**: Second confirmed use after `locations.js`'s discrete drag-and-drop — now the established pattern for any future draggable/scrollable custom control in this codebase
+- **Sentinel-comment isolation for "must never call X" handlers**: A reusable technique for any interaction where an automated gate needs to mechanically prove absence of a specific function call inside a specific block
+
+### Key Lessons
+1. **Pure functions with their own test file are worth the departure from "zero automated tests"** when the logic has enough hidden pitfalls (here: 2 documented grammar traps) that manual-only verification would likely have missed an edge case
+2. **`git log --all --grep="<plan-id>"` is not safe for computing date ranges or diff bases** in a repo with enough history — always verify the matched commit's date/subject before trusting it as a boundary; prefer anchored patterns like `--grep="(22-01)"` or `--grep="^test(22-01)"`
+3. **Un-archived phase directories from a prior milestone silently pollute the next milestone's auto-generated stats** — worth an explicit `/gsd:cleanup` pass before starting a new milestone if a prior close skipped phase archival
+4. **A single-phase milestone still benefits from the full completion ceremony** (code review, verification, retrospective) — the overhead was small and it caught 3 real (if non-blocking) code-quality warnings that would otherwise have gone unrecorded
+
+### Cost Observations
+- Model: claude-sonnet-5 (balanced profile), executor waves ran on `sonnet`
+- Sessions: 1 (all 4 waves + code review + verification + milestone close in one session)
+- Notable: hit an account session-usage limit once during the phase verifier subagent spawn; inline recovery worked without losing any verification rigor
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -238,6 +278,7 @@
 | v1.4 | 3 | 4 | First drag-and-drop game — Pointer Events API, CSS zone layout, 3-phase delivery |
 | v1.5 | 1 | 1 | Visual bug fix — plan-level geometry precision enables mechanical CSS implementation |
 | v1.8 | 2 | 2 | Data + UI refactor — data-only phase fastest execution; category filter pattern established |
+| v2.1 | 1 | 4 | First automated test in the repo — pure dual-exported grammar function with Node assert coverage |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -247,4 +288,5 @@
 4. **Velocity-based gates are the right primitive for game collision classification** — clean, deterministic, no positional ambiguity
 5. **Open the browser first for CSS spatial layouts** — static code review cannot verify absolute positioning on mobile; visual iteration is required and should be budgeted
 6. **Data-only phases are zero-risk** — when the app has a generic loader, adding content is just rows in a file; no code path to break
+7. **Pure, dual-exported functions are worth a real test file when the logic has documented pitfalls** — the zero-automated-testing stance is a default, not a hard rule, and correctness-critical grammar/calculation logic is the right exception
 7. **Opt-out defaults protect new content** — new vocabulary/categories default to enabled so additions are immediately usable without user action
