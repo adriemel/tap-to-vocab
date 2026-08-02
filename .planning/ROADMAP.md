@@ -34,18 +34,32 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 **Depends on:** Phase 21
 **Requirements:** HORA-01, HORA-02, HORA-03, HORA-04, HORA-05, HORA-06, HORA-07, HORA-08, HORA-09
 **Success Criteria** (what must be TRUE):
+
   1. A "Qué hora es?" button appears on the home screen below "Quién soy yo" and opens the clock page
   2. The clock page shows two vertical dials (hour 00–23, minute in 5-minute steps) that respond to up/down drag gestures, changing value like a smartwatch alarm picker
   3. Tapping "Qué hora es?" displays the Spanish phrase for the current dial time using traditional phrasing (Es la una / Son las..., y cuarto, y media, menos cuarto/veinte, etc.) plus de la mañana/tarde/noche based on the 24h hour, and speaks it aloud via TTS
   4. Tapping "Repeat" re-speaks the last phrase without changing the dial values
   5. Changing either dial and tapping "Qué hora es?" again produces and speaks the phrase for the new time
+
 **Plans:** 4 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 22-01-PLAN.md — buildTimePhrase grammar module + Node test + home screen entry button
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 22-02-PLAN.md — hora-* component CSS + hora.html shell with reel DOM and renderer
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 22-03-PLAN.md — Pointer Events reel drag + Spanish TTS + CTA/Repeat wiring
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 22-04-PLAN.md — Automated gate run + human verification of all 9 HORA requirements
+
 **UI hint**: yes
 
 ## v1.6 Phases
@@ -60,6 +74,7 @@ Plans:
 **Requirements:** HOME-01, VIS-01
 
 **Success criteria:**
+
 1. Homepage displays Tiempo and Idiomas buttons visually grouped within the Palabras section — no longer as standalone rows
 2. Global `--bg` CSS variable value is perceptibly lighter; dark theme is preserved but less oppressive
 3. No layout regressions at 375px mobile width
@@ -75,12 +90,14 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
+
 - [x] 13-01-PLAN.md — Create stats.js module + add stats modal/button/script-tag to all 4 game HTML pages
 - [x] 13-02-PLAN.md — Wire SessionStats into sentences.js and conjugation.js
 - [x] 13-03-PLAN.md — Wire SessionStats into fill-blank.js and locations.js
 - [x] 13-04-PLAN.md — Manual smoke-test checkpoint across all 4 games
 
 **Success criteria:**
+
 1. Correct/incorrect counts and accuracy % update in real time as the user answers in each of the four modes
 2. A "Statistics" button is visible in each mode's UI and opens the stats board without losing session state
 3. Stats board appears automatically when a session completes (all exercises done) with final correct/incorrect and accuracy %
@@ -102,6 +119,7 @@ Plans:
 **Requirements:** STAT-FIX-01
 
 **Success Criteria** (what must be TRUE):
+
   1. Tapping each correct word in Build Sentences increments the correct count by 1 immediately — stats update word-by-word, not sentence-by-sentence
   2. Tapping an incorrect word still increments the incorrect count by 1 per tap (unchanged behavior)
   3. After completing a sentence with N correct word taps, the correct count has increased by N (not by 1)
@@ -110,6 +128,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
+
 - [x] 14-01-PLAN.md — Move SessionStats.record(true) from sentence-completion block to correct-word-tap branch
 
 </details>
@@ -137,16 +156,20 @@ Full details: `.planning/milestones/v1.8-ROADMAP.md`
 **Depends on:** Phase 16
 **Requirements:** NUM-01, NUM-02, NUM-03, NUM-04, NUM-08
 **Success Criteria** (what must be TRUE):
+
   1. User taps "Qué número es?" on the home screen (between Locations and Play Games) and arrives at the numbers hub page
   2. Numbers hub page shows 5 clearly labelled range buttons (1-20, 21-40, 41-60, 61-80, 81-100) stacked vertically — tapping any one opens the correct learning page
   3. Learning page for a range lists every number in that range paired with its Spanish word (e.g. "1 — uno", "20 — veinte")
   4. Learning page has a "Take a Test" button that navigates to the quiz page for the same range
   5. Every numbers page (hub, learning, quiz) has a working "Home" link to index.html and a "Back to Numbers" link to the hub page
+
 **Plans:** 2 plans
 
 Plans:
+
 - [ ] 17-01-PLAN.md — Create numbers-data.js (NUMBERS constant) + add Qué número es? button to index.html + styles.css
 - [ ] 17-02-PLAN.md — Create numbers.html hub, numbers-learn.html learning page, numbers-quiz.html stub + human verify checkpoint
+
 **UI hint**: yes
 
 ### Phase 18: Numbers Quiz with Flip Cards & TTS
@@ -155,14 +178,18 @@ Plans:
 **Depends on:** Phase 17
 **Requirements:** NUM-05, NUM-06, NUM-07
 **Success Criteria** (what must be TRUE):
+
   1. Quiz page displays all numbers in the selected range as a grid of face-down cards in 4 columns — numbers are visible on the front face
   2. Tapping a card flips it to reveal the Spanish word for that number on the back face
   3. Each card flip triggers the Web Speech API to speak the Spanish word aloud in a Spanish voice
   4. Previously flipped cards remain showing the Spanish word — user can flip all cards freely without cards resetting
+
 **Plans:** 1 plan
 
 Plans:
+
 - [x] 18-01-PLAN.md — Add compact nq-* flip-card CSS to styles.css + implement inline IIFE quiz in numbers-quiz.html
+
 **UI hint**: yes
 
 ## Phases
