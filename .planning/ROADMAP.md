@@ -39,11 +39,13 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
   3. Tapping "Qué hora es?" displays the Spanish phrase for the current dial time using traditional phrasing (Es la una / Son las..., y cuarto, y media, menos cuarto/veinte, etc.) plus de la mañana/tarde/noche based on the 24h hour, and speaks it aloud via TTS
   4. Tapping "Repeat" re-speaks the last phrase without changing the dial values
   5. Changing either dial and tapping "Qué hora es?" again produces and speaks the phrase for the new time
-**Plans:** 2 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] 22-01-PLAN.md — Time-to-Spanish phrase conversion module + home screen button
-- [ ] 22-02-PLAN.md — Clock page with drag-to-set dials, TTS wiring, and Repeat button
+- [ ] 22-01-PLAN.md — buildTimePhrase grammar module + Node test + home screen entry button
+- [ ] 22-02-PLAN.md — hora-* component CSS + hora.html shell with reel DOM and renderer
+- [ ] 22-03-PLAN.md — Pointer Events reel drag + Spanish TTS + CTA/Repeat wiring
+- [ ] 22-04-PLAN.md — Automated gate run + human verification of all 9 HORA requirements
 **UI hint**: yes
 
 ## v1.6 Phases
@@ -249,4 +251,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 0/2 | Pending | — |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 0/4 | Pending | — |
