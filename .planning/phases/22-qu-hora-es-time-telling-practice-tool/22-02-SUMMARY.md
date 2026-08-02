@@ -93,3 +93,10 @@ None - no external service configuration required.
 ---
 *Phase: 22-qu-hora-es-time-telling-practice-tool*
 *Completed: 2026-08-02*
+
+## Self-Check: PASSED
+
+- FOUND: hora.html
+- FOUND: .planning/phases/22-qu-hora-es-time-telling-practice-tool/22-02-SUMMARY.md
+- FOUND: 2bcd3a4 (Task 1 commit)
+- FOUND: 2ad8862 (Task 2 commit)
