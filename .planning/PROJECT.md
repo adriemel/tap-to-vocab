@@ -51,15 +51,19 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-- [ ] User can access "Qué hora es?" from home screen below "Quién soy yo" (HORA-01)
-- [ ] Clock UI has two vertical dials: hour (00–23) and minute (5-minute steps) (HORA-02)
-- [ ] Dragging a dial up/down changes its value like a smartwatch alarm picker (HORA-03)
-- [ ] "Qué hora es?" button displays the Spanish phrase for the set time (HORA-04)
-- [ ] "Qué hora es?" button speaks the Spanish phrase aloud via TTS (HORA-05)
-- [ ] Spanish phrasing follows traditional time-telling conventions (y cuarto, y media, menos cuarto/veinte, Es la una / Son las...) (HORA-06)
-- [ ] Spoken/displayed phrase includes de la mañana/tarde/noche based on the 24h hour (HORA-07)
-- [ ] "Repeat" button re-speaks the last phrase without changing the time (HORA-08)
-- [ ] Changing dials and pressing "Qué hora es?" again produces a new phrase for the new time (HORA-09)
+None — all v2.1 requirements validated below.
+
+### Validated (v2.1)
+
+- ✓ User can access "Qué hora es?" from home screen below "Quién soy yo" (HORA-01) — v2.1
+- ✓ Clock UI has two vertical dials: hour (00–23) and minute (5-minute steps) (HORA-02) — v2.1
+- ✓ Dragging a dial up/down changes its value like a smartwatch alarm picker (HORA-03) — v2.1
+- ✓ "Qué hora es?" button displays the Spanish phrase for the set time (HORA-04) — v2.1
+- ✓ "Qué hora es?" button speaks the Spanish phrase aloud via TTS (HORA-05) — v2.1
+- ✓ Spanish phrasing follows traditional time-telling conventions (y cuarto, y media, menos cuarto/veinte, Es la una / Son las...) (HORA-06) — v2.1
+- ✓ Spoken/displayed phrase includes de la mañana/tarde/noche based on the 24h hour (HORA-07) — v2.1
+- ✓ "Repeat" button re-speaks the last phrase without changing the time (HORA-08) — v2.1
+- ✓ Changing dials and pressing "Qué hora es?" again produces a new phrase for the new time (HORA-09) — v2.1
 
 ### Validated (v2.0)
 
@@ -149,9 +153,11 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v2.1 Qué Hora Es?
+## Current Milestone: v2.1 Qué Hora Es? — Phase 22 complete (2026-08-02)
 
 **Goal:** Add a digital-clock time-telling practice tool where the student sets a time by dragging hour/minute dials and hears + reads how to say that time in Spanish, using traditional clock phrasing.
+
+**Status:** Phase 22 (the only phase in this milestone) shipped 2026-08-02. All 9 HORA requirements verified — see Validated (v2.1) above. `hora.html` + `assets/js/hora-phrase.js` are new; `index.html` and `assets/css/styles.css` gained additive changes only.
 
 **Target features:**
 - "Qué hora es?" button on home screen below "Quién soy yo"
@@ -180,4 +186,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-02 after v2.1 milestone started*
+*Last updated: 2026-08-02 after Phase 22 (v2.1) completed*
