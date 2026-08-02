@@ -51,16 +51,28 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-- [ ] User can access "Quién soy yo" from home screen below "Qué número es?" (QSY-01)
-- [ ] Chat screen shows WhatsApp-style left (grey) bubbles for questions (QSY-02)
-- [ ] Each question presents 2 answer-choice buttons at the bottom (QSY-03)
-- [ ] Tapping a choice makes the answer appear as a right (colored) bubble (QSY-04)
-- [ ] TTS reads the question aloud when it appears on the left (QSY-05)
-- [ ] TTS reads the chosen answer aloud after it appears on the right (QSY-06)
-- [ ] End screen displays the full introduction as one flowing paragraph (QSY-07)
-- [ ] TTS reads the complete introduction on end screen automatically (QSY-08)
-- [ ] End screen has Replay, Start Again, and Home buttons (QSY-09)
-- [ ] Question/choice/answer data loaded from quien-soy-sentences.txt (QSY-10)
+- [ ] User can access "Qué hora es?" from home screen below "Quién soy yo" (HORA-01)
+- [ ] Clock UI has two vertical dials: hour (00–23) and minute (5-minute steps) (HORA-02)
+- [ ] Dragging a dial up/down changes its value like a smartwatch alarm picker (HORA-03)
+- [ ] "Qué hora es?" button displays the Spanish phrase for the set time (HORA-04)
+- [ ] "Qué hora es?" button speaks the Spanish phrase aloud via TTS (HORA-05)
+- [ ] Spanish phrasing follows traditional time-telling conventions (y cuarto, y media, menos cuarto/veinte, Es la una / Son las...) (HORA-06)
+- [ ] Spoken/displayed phrase includes de la mañana/tarde/noche based on the 24h hour (HORA-07)
+- [ ] "Repeat" button re-speaks the last phrase without changing the time (HORA-08)
+- [ ] Changing dials and pressing "Qué hora es?" again produces a new phrase for the new time (HORA-09)
+
+### Validated (v2.0)
+
+- ✓ User can access "Quién soy yo" from home screen below "Qué número es?" (QSY-01) — v2.0
+- ✓ Chat screen shows WhatsApp-style left (grey) bubbles for questions (QSY-02) — v2.0
+- ✓ Each question presents 2 answer-choice buttons at the bottom (QSY-03) — v2.0
+- ✓ Tapping a choice makes the answer appear as a right (colored) bubble (QSY-04) — v2.0
+- ✓ TTS reads the question aloud when it appears on the left (QSY-05) — v2.0
+- ✓ TTS reads the chosen answer aloud after it appears on the right (QSY-06) — v2.0
+- ✓ End screen displays the full introduction as one flowing paragraph (QSY-07) — v2.0
+- ✓ TTS reads the complete introduction on end screen automatically (QSY-08) — v2.0
+- ✓ End screen has Replay, Start Again, and Home buttons (QSY-09) — v2.0
+- ✓ Question/choice/answer data loaded from quien-soy-sentences.txt (QSY-10) — v2.0
 
 ### Validated (v1.9)
 
@@ -137,17 +149,18 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - User state using stable IDs (not text strings) — survives vocabulary edits
 
 ---
-## Current Milestone: v2.0 Quién Soy Yo
+## Current Milestone: v2.1 Qué Hora Es?
 
-**Goal:** Add a WhatsApp-style conversational simulator where the student practices a spoken Spanish self-introduction by tapping answers that appear as chat bubbles, with TTS reading both questions and answers aloud.
+**Goal:** Add a digital-clock time-telling practice tool where the student sets a time by dragging hour/minute dials and hears + reads how to say that time in Spanish, using traditional clock phrasing.
 
 **Target features:**
-- "Quién soy yo" button on home screen below "Qué número es?"
-- Chat interface: grey left bubbles for questions, colored right bubbles for user's answers
-- 2-choice buttons per question — tap to select answer
-- TTS reads question on appear + chosen answer after bubble lands
-- End screen: full introduction paragraph read aloud; Replay / Start Again / Home buttons
-- Data from quien-soy-sentences.txt (14 Q&A pairs)
+- "Qué hora es?" button on home screen below "Quién soy yo"
+- Digital clock with two vertical dials: hour (00–23) and minute (5-minute steps), each set by dragging up/down like a smartwatch alarm picker
+- "Qué hora es?" button reveals the Spanish phrase for the set time and speaks it via TTS
+- Traditional Spanish time phrasing (y cuarto, y media, menos cuarto/veinte, Es la una / Son las..., de la mañana/tarde/noche)
+- "Repeat" button re-speaks the last phrase without changing the time
+- Changing the dials and pressing "Qué hora es?" again produces a new phrase
+- Pure practice tool for v1 — no scoring, coins, or stats board
 
 ## Evolution
 
@@ -167,4 +180,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-08 after v2.0 milestone started*
+*Last updated: 2026-08-02 after v2.1 milestone started*

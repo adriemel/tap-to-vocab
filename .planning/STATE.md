@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Quién Soy Yo
-status: milestone_complete
-stopped_at: Phase 21 complete — v2.0 milestone shipped
-last_updated: "2026-05-16T00:00:00.000Z"
-last_activity: 2026-05-16 -- Phase 21 complete, v2.0 shipped
+milestone: v2.1
+milestone_name: Qué Hora Es?
+status: planning
+last_updated: "2026-08-02T14:00:33.293Z"
+last_activity: 2026-08-02
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 1
-  completed_plans: 1
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-05-08 after v2.0 milestone started)
 
 ## Current Position
 
-Phase: 21 (complete)
-Plan: 21-01 (complete)
-Status: Milestone complete
-Last activity: 2026-05-16
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-08-02 — Milestone v2.1 started
 
 ## Accumulated Context
 
