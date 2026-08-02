@@ -149,6 +149,77 @@
 
   attachReelDrag(hourReel);
   attachReelDrag(minuteReel);
+
+  /* ── Speech (copied from assets/js/tapvocab.js lines 11-53) ── */
+  var _cachedSpanishVoice = null;
+  var _voicesLoaded = false;
+
+  function getSpanishVoice() {
+    var voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    var normalize = function (s) { return (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); };
+    var monica = voices.find(function (v) { return normalize(v.name).includes("monica") && v.lang.toLowerCase().startsWith("es"); });
+    if (monica) { _cachedSpanishVoice = monica; return monica; }
+    var preferred = voices.filter(function (v) { return v.lang && v.lang.toLowerCase().startsWith("es"); });
+    _cachedSpanishVoice = preferred[0] || voices[0] || null;
+    return _cachedSpanishVoice;
+  }
+
+  // BUG-02: check synchronously first (Chrome/Firefox have voices immediately),
+  // then listen for async load (required on iOS/Safari where voiceschanged may
+  // fire before this script runs or not at all).
+  if (typeof speechSynthesis !== "undefined") {
+    var _initialVoices = speechSynthesis.getVoices();
+    if (_initialVoices.length) {
+      _voicesLoaded = true;
+      getSpanishVoice();
+    }
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.addEventListener("voiceschanged", function () {
+        _voicesLoaded = true;
+        getSpanishVoice();
+      });
+    }
+  }
+
+  function speakSpanish(text) {
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-ES";
+      var v = getSpanishVoice();
+      if (v) u.voice = v;
+      u.rate = 0.95; u.pitch = 1.0;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(u);
+    } catch (e) { console.warn("Speech synthesis failed:", e); }
+  }
+
+  /* ── CTA / Repeat wiring ── */
+  var lastPhrase = null;
+  var phraseEl = document.getElementById('hora-phrase');
+  var repeatBtn = document.getElementById('hora-repeat');
+
+  document.getElementById('hora-cta').addEventListener('click', function () {
+    if (!window.HoraPhrase || typeof window.HoraPhrase.buildTimePhrase !== 'function') {
+      console.warn('HoraPhrase module not loaded');
+      return;
+    }
+    var hour = getReelValue(hourReel);
+    var minute = getReelValue(minuteReel);
+    lastPhrase = window.HoraPhrase.buildTimePhrase(hour, minute);
+    phraseEl.textContent = lastPhrase;
+    phraseEl.classList.remove('is-placeholder');
+    speakSpanish(lastPhrase);
+    repeatBtn.hidden = false;
+  });
+
+  // --- repeat-handler-start ---
+  repeatBtn.addEventListener('click', function () {
+    if (!lastPhrase) return;
+    speakSpanish(lastPhrase);
+  });
+  // --- repeat-handler-end ---
 })();
   </script>
 </body>
