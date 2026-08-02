@@ -60,6 +60,24 @@ Stopped at: Phase 22 UI-SPEC approved
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
 
+## Deferred Items
+
+Items acknowledged and deferred at v2.1 milestone close on 2026-08-02. All belong to already-shipped milestones (v1.6–v2.0); none affect v2.1/Phase 22, which has no open items of its own.
+
+| Category | Item | Status |
+|----------|------|--------|
+| uat_gap | Phase 12 — 12-HUMAN-UAT.md | partial (2 pending scenarios) |
+| uat_gap | Phase 14 — 14-HUMAN-UAT.md | partial (4 pending scenarios) |
+| uat_gap | Phase 16 — 16-HUMAN-UAT.md | partial (4 pending scenarios) |
+| uat_gap | Phase 18 — 18-HUMAN-UAT.md | partial (5 pending scenarios) |
+| uat_gap | Phase 20 — 20-HUMAN-UAT.md | passed (0 pending scenarios, artifact just not closed out) |
+| verification_gap | Phase 14 — 14-VERIFICATION.md | human_needed |
+| verification_gap | Phase 15 — 15-VERIFICATION.md | human_needed |
+| verification_gap | Phase 16 — 16-VERIFICATION.md | human_needed |
+| verification_gap | Phase 18 — 18-VERIFICATION.md | human_needed |
+| verification_gap | Phase 20 — 20-VERIFICATION.md | human_needed |
+
 ## Operator Next Steps
 
 - Start the next milestone with /gsd-new-milestone
+- Optional cleanup: run `/gsd:audit-uat` to work through the 10 deferred items above from prior milestones

@@ -26,6 +26,8 @@
 - `.planning/milestones/v2.1-ROADMAP.md` — full phase details
 - `.planning/milestones/v2.1-REQUIREMENTS.md` — requirements with outcomes
 
+Known deferred items at close: 10 (see STATE.md Deferred Items) — all pre-existing debt from milestones v1.6–v2.0, none from v2.1/Phase 22 itself.
+
 ---
 
 ## v1.8 — Content & Settings
