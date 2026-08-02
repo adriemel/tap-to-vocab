@@ -7,18 +7,18 @@
 
 ### Clock UI
 
-- [ ] **HORA-01**: User can access "Qué hora es?" from the home screen (button below "Quién soy yo")
-- [ ] **HORA-02**: Clock page shows two vertical dials — hour (00–23) and minute (5-minute steps: 00, 05, 10 ... 55)
-- [ ] **HORA-03**: Dragging a dial up or down changes its value, like setting an alarm on a smartwatch
+- [x] **HORA-01**: User can access "Qué hora es?" from the home screen (button below "Quién soy yo")
+- [x] **HORA-02**: Clock page shows two vertical dials — hour (00–23) and minute (5-minute steps: 00, 05, 10 ... 55)
+- [x] **HORA-03**: Dragging a dial up or down changes its value, like setting an alarm on a smartwatch
 
 ### Spanish Phrase & Audio
 
-- [ ] **HORA-04**: "Qué hora es?" button displays the Spanish phrase for the currently set time
-- [ ] **HORA-05**: "Qué hora es?" button speaks the Spanish phrase aloud via TTS
-- [ ] **HORA-06**: Phrasing follows traditional Spanish time-telling conventions (Es la una / Son las..., y cuarto, y media, menos cuarto, menos veinte, etc. — not literal digit reading)
-- [ ] **HORA-07**: Phrase includes de la mañana / de la tarde / de la noche, derived from the 24h hour
-- [ ] **HORA-08**: "Repeat" button re-speaks the last phrase without changing the dial values
-- [ ] **HORA-09**: Changing either dial and pressing "Qué hora es?" again produces and speaks the phrase for the new time
+- [x] **HORA-04**: "Qué hora es?" button displays the Spanish phrase for the currently set time
+- [x] **HORA-05**: "Qué hora es?" button speaks the Spanish phrase aloud via TTS
+- [x] **HORA-06**: Phrasing follows traditional Spanish time-telling conventions (Es la una / Son las..., y cuarto, y media, menos cuarto, menos veinte, etc. — not literal digit reading)
+- [x] **HORA-07**: Phrase includes de la mañana / de la tarde / de la noche, derived from the 24h hour
+- [x] **HORA-08**: "Repeat" button re-speaks the last phrase without changing the dial values
+- [x] **HORA-09**: Changing either dial and pressing "Qué hora es?" again produces and speaks the phrase for the new time
 
 ## Out of Scope for v2.1
 
@@ -124,15 +124,15 @@ Full details: `.planning/milestones/v2.0-REQUIREMENTS.md`
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| HORA-01 | Phase 22 | Pending |
-| HORA-02 | Phase 22 | Pending |
-| HORA-03 | Phase 22 | Pending |
-| HORA-04 | Phase 22 | Pending |
-| HORA-05 | Phase 22 | Pending |
-| HORA-06 | Phase 22 | Pending |
-| HORA-07 | Phase 22 | Pending |
-| HORA-08 | Phase 22 | Pending |
-| HORA-09 | Phase 22 | Pending |
+| HORA-01 | Phase 22 | Complete |
+| HORA-02 | Phase 22 | Complete |
+| HORA-03 | Phase 22 | Complete |
+| HORA-04 | Phase 22 | Complete |
+| HORA-05 | Phase 22 | Complete |
+| HORA-06 | Phase 22 | Complete |
+| HORA-07 | Phase 22 | Complete |
+| HORA-08 | Phase 22 | Complete |
+| HORA-09 | Phase 22 | Complete |
 | CHAT-01 | Phase 19 | Complete |
 | CHAT-02 | Phase 19 | Complete |
 | CHAT-03 | Phase 19 | Complete |

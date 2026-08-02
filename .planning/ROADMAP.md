@@ -278,4 +278,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete   | 2026-08-02 |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
