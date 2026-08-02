@@ -1558,3 +1558,15 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   font-size: 1rem;
 }
 
+/* ═══════════════════════════════════════════════════
+   Qué Hora Es? — Time-Telling (hora-*)
+   ═══════════════════════════════════════════════════ */
+
+/* ── Home button (index.html) ─── */
+.grid-two-col .btn-hora {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%);
+  border: 2px solid var(--accent);
+  font-weight: 700;
+}
+
