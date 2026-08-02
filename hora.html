@@ -86,6 +86,69 @@
 
   renderReel(hourReel);
   renderReel(minuteReel);
+
+  /* ── Reel drag (Pointer Events, adapted from assets/js/locations.js) ── */
+  var settleTimer = null;
+
+  function attachReelDrag(reel) {
+    var dragging = false;
+    var lastY = 0;
+    var offsetPx = 0;
+    var pointerId = null;
+
+    reel.el.ondragstart = function () { return false; };
+
+    function onPointerDown(e) {
+      if (!e.isPrimary) return;
+      e.preventDefault();
+      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+      try { reel.el.setPointerCapture(e.pointerId); } catch (err) {}
+      lastY = e.clientY;
+      offsetPx = 0;
+      dragging = true;
+      pointerId = e.pointerId;
+      reel.trackEl.style.transition = 'none';
+      reel.el.classList.add('dragging');
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerMove(e) {
+      if (!e.isPrimary) return;
+      if (!dragging) return;
+      offsetPx += (e.clientY - lastY);
+      lastY = e.clientY;
+      var steps = Math.round(offsetPx / 40);
+      if (steps !== 0) {
+        reel.index = mod(reel.index - steps, reel.values.length);
+        offsetPx -= steps * 40;
+        renderReel(reel);
+      }
+      reel.trackEl.style.transform = 'translateY(' + offsetPx + 'px)';
+    }
+
+    function onPointerUp(e) {
+      if (!e.isPrimary) return;
+      dragging = false;
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('pointercancel', onPointerUp);
+      try { reel.el.releasePointerCapture(pointerId); } catch (err) {}
+      reel.trackEl.style.transition = 'transform 250ms cubic-bezier(0.4, 0.2, 0.2, 1)';
+      reel.trackEl.style.transform = 'translateY(0)';
+      reel.el.classList.remove('dragging');
+      settleTimer = setTimeout(function () {
+        reel.trackEl.style.transition = '';
+        settleTimer = null;
+      }, 260);
+    }
+
+    reel.el.addEventListener('pointerdown', onPointerDown);
+  }
+
+  attachReelDrag(hourReel);
+  attachReelDrag(minuteReel);
 })();
   </script>
 </body>
