@@ -1570,3 +1570,130 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   font-weight: 700;
 }
 
+/* ── Clock page (hora.html) ─── */
+.hora-page {
+  background: var(--bg);
+  padding-bottom: 32px;
+}
+
+.hora-clock-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 32px 0;
+}
+
+.hora-reel {
+  position: relative;
+  min-width: 80px;
+  height: 224px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #0f1540;
+  border: 2px solid #243688;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.hora-reel:active {
+  cursor: grabbing;
+}
+
+.hora-reel.dragging {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.hora-reel-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  will-change: transform;
+}
+
+.hora-reel-item {
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.hora-reel-item.dist-1 {
+  opacity: 0.5;
+}
+
+.hora-reel-item.dist-2 {
+  opacity: 0.25;
+}
+
+.hora-reel-item.is-center {
+  height: 64px;
+  line-height: 64px;
+  font-size: clamp(2rem, 8vw, 2.6rem);
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 1;
+}
+
+.hora-colon {
+  font-size: clamp(2rem, 8vw, 2.6rem);
+  font-weight: 400;
+  color: var(--muted);
+  margin: 0 8px;
+  line-height: 1;
+}
+
+.hora-cta {
+  width: 100%;
+  min-height: 44px;
+  border: 2px solid var(--accent);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.hora-phrase-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.hora-phrase {
+  margin: 0;
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  min-height: 2.4em;
+}
+
+.hora-phrase.is-placeholder {
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.hora-phrase-card .btn {
+  min-height: 44px;
+  margin-top: 16px;
+}
+
