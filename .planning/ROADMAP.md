@@ -12,26 +12,38 @@
 - ✅ **v1.7 Stats Fix** — Phase 14 (shipped 2026-04-17)
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
-- [x] **v2.0 Quién Soy Yo** — Phases 19-21 (shipped 2026-05-16)
+- ✅ **v2.0 Quién Soy Yo** — Phases 19-21 (shipped 2026-05-16)
+- [ ] **v2.1 Qué Hora Es?** — Phase 22 (in progress)
 
-## v2.0 Phases
+<details>
+<summary>✅ v2.0 Quién Soy Yo (Phases 19-21) — SHIPPED 2026-05-16</summary>
 
-### Phase 19: Quién Soy Yo — Chat Simulator
+- [x] Phase 19: Quién Soy Yo — Chat Simulator (2/2 plans) — completed 2026-05-16
+- [x] Phase 20: quien-soy-yo bugfixes and polish (1/1 plan) — completed 2026-05-16
+- [x] Phase 21: Quién Soy Yo — iOS TTS First-Sentence Bug Fix (1/1 plan) — completed 2026-05-16
 
-**Goal:** Users can practice a Spanish self-introduction by tapping answer choices that appear as chat bubbles, with TTS reading every exchange aloud, culminating in an end screen that recites the full introduction.
-**Depends on:** Phase 18
-**Requirements:** CHAT-01, CHAT-02, CHAT-03, CHAT-04, CHAT-05, CHAT-06, AUDIO-01, AUDIO-02, END-01, END-02, END-03, END-04, END-05, END-06, DATA-01
+Full details: `.planning/milestones/v2.0-ROADMAP.md`
+
+</details>
+
+## v2.1 Phases
+
+### Phase 22: Qué Hora Es? — Time-Telling Practice Tool
+
+**Goal:** Users can drag hour/minute dials to set a 24h time and hear + see the traditional Spanish phrase for it.
+**Depends on:** Phase 21
+**Requirements:** HORA-01, HORA-02, HORA-03, HORA-04, HORA-05, HORA-06, HORA-07, HORA-08, HORA-09
 **Success Criteria** (what must be TRUE):
-  1. A "Quién soy yo" button appears on the home screen below "Qué número es?" and opens the chat page
-  2. The chat page presents one question at a time as a left-aligned grey bubble, with two tappable answer buttons below — tapping one appends the chosen answer as a right-aligned colored bubble, then the next question appears
-  3. TTS speaks each question aloud when it appears and speaks the chosen answer aloud after it lands as a bubble
-  4. After the final question is answered, an end screen displays "¡Muy bien!" and the full introduction as a single flowing paragraph, and TTS begins reading it automatically
-  5. The end screen has working Replay (re-reads paragraph), Start Again (resets to question 1), and Home (goes to index.html) buttons
+  1. A "Qué hora es?" button appears on the home screen below "Quién soy yo" and opens the clock page
+  2. The clock page shows two vertical dials (hour 00–23, minute in 5-minute steps) that respond to up/down drag gestures, changing value like a smartwatch alarm picker
+  3. Tapping "Qué hora es?" displays the Spanish phrase for the current dial time using traditional phrasing (Es la una / Son las..., y cuarto, y media, menos cuarto/veinte, etc.) plus de la mañana/tarde/noche based on the 24h hour, and speaks it aloud via TTS
+  4. Tapping "Repeat" re-speaks the last phrase without changing the dial values
+  5. Changing either dial and tapping "Qué hora es?" again produces and speaks the phrase for the new time
 **Plans:** 2 plans
 
 Plans:
-- [ ] 19-01-PLAN.md — Re-encode data file to UTF-8, append qs-* CSS block, add btn-quien-soy to index.html
-- [ ] 19-02-PLAN.md — Create quien-soy.html with inline-IIFE chat simulator (TTS, state machine, end screen)
+- [ ] 22-01-PLAN.md — Time-to-Spanish phrase conversion module + home screen button
+- [ ] 22-02-PLAN.md — Clock page with drag-to-set dials, TTS wiring, and Repeat button
 **UI hint**: yes
 
 ## v1.6 Phases
@@ -49,26 +61,6 @@ Plans:
 1. Homepage displays Tiempo and Idiomas buttons visually grouped within the Palabras section — no longer as standalone rows
 2. Global `--bg` CSS variable value is perceptibly lighter; dark theme is preserved but less oppressive
 3. No layout regressions at 375px mobile width
-
-### Phase 20: quien-soy-yo bugfixes and polish
-
-**Goal:** Fix known bugs in quien-soy.html: TTS race condition on first question, missing skip button, mobile scroll/bubble overlap, end-screen button layout on small screens, and data file typo (tambien → también).
-**Requirements**: FIX-TTS, FIX-SKIP, FIX-SCROLL, FIX-ENDSCREEN, FIX-TYPO
-**Depends on:** Phase 19
-**Plans:** 1 plan
-
-Plans:
-- [x] 20-01-PLAN.md — Fix all five bugs: voice-gate + skip button + safe-area CSS + end-screen media query + data typo
-
-### Phase 21: Quién Soy Yo — iOS TTS First-Sentence Bug Fix
-
-**Goal:** Fix the iOS-specific TTS regression where the first question ("¿Cómo te llamas?") is not voiced on iPhone (but works on iPad) when entering quien-soy.html from the home screen — likely a timing/voice-readiness issue.
-**Requirements**: FIX-IOS-TTS
-**Depends on:** Phase 20
-**Plans:** 1 plan
-
-Plans:
-- [x] 21-01-PLAN.md — Add ¡Empezar! start button; showQuestion(0) called from click handler (iOS user gesture guarantee)
 
 ---
 
@@ -257,3 +249,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 0/2 | Pending | — |
