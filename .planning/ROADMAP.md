@@ -46,7 +46,7 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 Plans:
 **Wave 1**
 
-- [ ] 22-01-PLAN.md — buildTimePhrase grammar module + Node test + home screen entry button
+- [x] 22-01-PLAN.md — buildTimePhrase grammar module + Node test + home screen entry button
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -278,4 +278,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 0/4 | Pending | — |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 1/4 | In Progress|  |
