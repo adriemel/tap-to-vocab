@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕐</text></svg>">
+  <title>Qué hora es? – Tap‑to‑Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container hora-page">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <h1 style="margin:0">🕐 Qué hora es?</h1>
+        <a class="btn secondary" href="/">🏠 Home</a>
+      </div>
+
+      <div class="hora-clock-card">
+        <div class="hora-reel" id="hora-hour" role="spinbutton" tabindex="0" aria-label="Hora" aria-valuemin="0" aria-valuemax="23" aria-valuenow="12">
+          <div class="hora-reel-track" id="hora-hour-track"></div>
+        </div>
+        <span class="hora-colon">:</span>
+        <div class="hora-reel" id="hora-minute" role="spinbutton" tabindex="0" aria-label="Minutos" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0">
+          <div class="hora-reel-track" id="hora-minute-track"></div>
+        </div>
+      </div>
+
+      <button type="button" class="btn hora-cta" id="hora-cta">🕐 Qué hora es?</button>
+
+      <div class="hora-phrase-card">
+        <p class="hora-phrase is-placeholder" id="hora-phrase">Ajusta la hora y pulsa "Qué hora es?"</p>
+        <button type="button" class="btn" id="hora-repeat" hidden>↺ Repeat</button>
+      </div>
+    </div>
+  </div>
+  <script src="/assets/js/hora-phrase.js"></script>
+  <script>
+(function () {
+  /* ── Value model ── */
+  var HOUR_VALUES = [];
+  for (var h = 0; h < 24; h++) HOUR_VALUES.push(h);
+
+  var MINUTE_VALUES = [];
+  for (var m = 0; m < 60; m += 5) MINUTE_VALUES.push(m);
+
+  function mod(n, m) {
+    return ((n % m) + m) % m;
+  }
+
+  function pad2(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  var hourReel = {
+    el: document.getElementById('hora-hour'),
+    trackEl: document.getElementById('hora-hour-track'),
+    values: HOUR_VALUES,
+    index: 12
+  };
+
+  var minuteReel = {
+    el: document.getElementById('hora-minute'),
+    trackEl: document.getElementById('hora-minute-track'),
+    values: MINUTE_VALUES,
+    index: 0
+  };
+
+  function getReelValue(reel) {
+    return reel.values[reel.index];
+  }
+
+  function renderReel(reel) {
+    reel.trackEl.textContent = '';
+    for (var offset = -2; offset <= 2; offset++) {
+      var value = reel.values[mod(reel.index + offset, reel.values.length)];
+      var row = document.createElement('div');
+      row.textContent = pad2(value);
+      row.className = 'hora-reel-item';
+      if (offset === 0) row.className += ' is-center';
+      if (Math.abs(offset) === 1) row.className += ' dist-1';
+      if (Math.abs(offset) === 2) row.className += ' dist-2';
+      reel.trackEl.appendChild(row);
+    }
+    reel.el.setAttribute('aria-valuenow', String(getReelValue(reel)));
+  }
+
+  renderReel(hourReel);
+  renderReel(minuteReel);
+})();
+  </script>
+</body>
+</html>
