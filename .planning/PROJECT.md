@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site on GitHub Pages at tapvocab.fun. It offers multiple practice modes — vocab browse/quiz, sentence building, verb conjugation, and fill-in-blank exercises — plus a coin-reward system with mini-games. No backend, no framework, no build step. As of v1.0, the app is fully audited, all known bugs are fixed, and every page uses a consistent dark theme and mobile layout.
+Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site on GitHub Pages at tapvocab.fun. It offers multiple practice modes — vocab browse/quiz, sentence building, verb conjugation, fill-in-blank exercises, a drag-and-drop locations game, a numbers flip-card quiz, a WhatsApp-style self-introduction chat simulator, and a drag-dial time-telling practice tool — plus a coin-reward system with mini-games. No backend, no framework, no build step. As of v1.0, the app is fully audited, all known bugs are fixed, and every page uses a consistent dark theme and mobile layout.
 
 ## Core Value
 
@@ -112,8 +112,10 @@ None — all v2.1 requirements validated below.
 - Known debt: in-game scores (mini-games) not connected to CoinTracker; user state keyed by text strings
 - v1.0 codebase: ~6,350 LOC across 11 HTML pages + 8 JS modules + 1 CSS file
 - v1.4 codebase: ~6,820 LOC — added locations.html (265 LOC) + locations.js (201 LOC)
+- v2.1 codebase: ~8,600 LOC across 17 HTML pages + 12 JS modules + 1 CSS file (1,699 lines) — added hora.html + hora-phrase.js since v1.4
 - All known bugs fixed; CONCERNS.md accurately reflects remaining lower-priority issues
-- Game count: 4 mini-games (Coin Dash, Jungle Run, Tower Stack) + 4 learning games (Sentences, Conjugation, Fill-in-Blank, Locations)
+- Game/practice-tool count: 4 mini-games (Coin Dash, Jungle Run, Tower Stack) + 6 learning tools (Sentences, Conjugation, Fill-in-Blank, Locations, Numbers Quiz, Qué Hora Es?) + 1 chat simulator (Quién Soy Yo)
+- v2.1 added the project's first automated test (`hora-phrase.test.js`, zero-dependency Node assert script) — scoped narrowly to the grammar engine, not a general test suite
 
 ## Constraints
 
@@ -144,6 +146,10 @@ None — all v2.1 requirements validated below.
 | gameHistory (not history) variable name | window.history built-in shadowing would silently break Back navigation | ✓ Good — naming discipline prevents subtle bug |
 | display:none on #prompt-de (not DOM removal) | Minimal targeted change; removes German text without restructuring prompt card HTML | ✓ Good — LOC-01 fixed in one attribute change |
 | Zone geometry via math comment in CSS (not magic numbers) | Self-documenting: box geometry comment shows x-center=140 calculation for delante-de left:111 | ✓ Good — future zone adjustments are reasoned not guessed |
+| buildTimePhrase isolated as pure, dual-exported module with its own Node test | Traditional Spanish time grammar was the highest-correctness-risk surface (two documented pitfalls); proving it before UI was built on top de-risked everything downstream | ✓ Good — 288-state invariant sweep caught nothing, both pitfall cases passed first try |
+| Reel drag as value-model (integer index + closure pixel remainder), never scroll-position-derived | Matches existing locations.js Pointer Events pattern; avoids scrollTop/overflow:auto fighting touch-action:none | ✓ Good — human-confirmed smooth on desktop mouse and phone touch |
+| Repeat button sentinel-isolated in source (`// --- repeat-handler-start/end ---`) | Guarantees it can never accidentally call buildTimePhrase/getReelValue and silently drift from what's displayed (HORA-08) | ✓ Good — code review + human UAT both confirmed no recompute |
+| TTS block copied from tapvocab.js's simple synchronous variant, not quien-soy.html's chained-callback variant | This page speaks exactly one static string per tap — no sequencing needed | ✓ Good — first-tap audio confirmed working on iOS via UAT |
 
 ### Deferred
 
@@ -151,22 +157,16 @@ None — all v2.1 requirements validated below.
 - Service worker for offline fallback
 - Coin economy upper cap — prevent unrealistic accumulation
 - User state using stable IDs (not text strings) — survives vocabulary edits
+- hora.html: shared settleTimer between the two reel-drag closures (latent bug if user drags one reel then immediately the other) — v2.1 code review
+- hora.html: no keydown handler despite role="spinbutton"/aria-value* on both reels — keyboard/AT users are told arrow keys work but they don't — v2.1 code review
+- hora.html: missing aria-live="polite" on #hora-phrase — v2.1 code review
 
 ---
-## Current Milestone: v2.1 Qué Hora Es? — Phase 22 complete (2026-08-02)
+## Current State
 
-**Goal:** Add a digital-clock time-telling practice tool where the student sets a time by dragging hour/minute dials and hears + reads how to say that time in Spanish, using traditional clock phrasing.
+**Shipped milestone:** v2.1 Qué Hora Es? — completed 2026-08-02 (Phase 22, the only phase in this milestone). All 9 HORA requirements verified and human-approved on desktop and a real touch device. Full details: `.planning/milestones/v2.1-ROADMAP.md` and `.planning/MILESTONES.md`.
 
-**Status:** Phase 22 (the only phase in this milestone) shipped 2026-08-02. All 9 HORA requirements verified — see Validated (v2.1) above. `hora.html` + `assets/js/hora-phrase.js` are new; `index.html` and `assets/css/styles.css` gained additive changes only.
-
-**Target features:**
-- "Qué hora es?" button on home screen below "Quién soy yo"
-- Digital clock with two vertical dials: hour (00–23) and minute (5-minute steps), each set by dragging up/down like a smartwatch alarm picker
-- "Qué hora es?" button reveals the Spanish phrase for the set time and speaks it via TTS
-- Traditional Spanish time phrasing (y cuarto, y media, menos cuarto/veinte, Es la una / Son las..., de la mañana/tarde/noche)
-- "Repeat" button re-speaks the last phrase without changing the time
-- Changing the dials and pressing "Qué hora es?" again produces a new phrase
-- Pure practice tool for v1 — no scoring, coins, or stats board
+**No next milestone defined yet.** Requirements are fresh — run `/gsd:new-milestone` to start the next questioning → research → requirements → roadmap cycle.
 
 ## Evolution
 
@@ -186,4 +186,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-02 after Phase 22 (v2.1) completed*
+*Last updated: 2026-08-02 after v2.1 milestone completed*

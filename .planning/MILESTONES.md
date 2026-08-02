@@ -1,5 +1,33 @@
 # Milestones
 
+## v2.1 Qué Hora Es? (Shipped: 2026-08-02)
+
+**Phases completed:** 1 phase (22), 4 plans, 8 tasks
+**Requirements:** 9/9 complete (HORA-01 through HORA-09)
+
+**Key accomplishments:**
+
+- Pure `buildTimePhrase(hour24, minute)` Spanish grammar engine (dual window/Node export) with a 12-case + 288-state invariant Node test, plus the home-screen `🕐 Qué hora es?` entry button
+- Static `hora.html` clock page shell with dual reel-picker dials (hour 0–23, minute in 5-min steps) and the full `hora-*` CSS component set
+- Pointer Events reel-drag interaction: continuous smartwatch-style scrolling, 40px/step ratio, wraparound in both directions, active-drag highlight
+- Spanish TTS wiring (reusing the project's Monica-voice pattern) plus CTA/Repeat button logic — Repeat is guaranteed never to recompute the phrase (Pitfall 4 / HORA-08)
+- All nine HORA requirements confirmed working by the user end-to-end on desktop and a real touch device (phone via WSL2→Windows port-forward)
+- Code review clean of critical/blocker issues (3 advisory warnings, 2 info items — see `22-REVIEW.md`)
+
+### Stats
+
+- Timeline: same day, ~3h17m (2026-08-02 17:19 → 20:36)
+- Files created: 3 (`hora.html`, `assets/js/hora-phrase.js`, `hora-phrase.test.js`); files modified: 2 (`index.html`, `assets/css/styles.css`)
+- Lines of code: 388 LOC across new files (+530 total insertions)
+- Git range: `test(22-01)` → `docs(22-04)`, 20 commits
+
+### Archive
+
+- `.planning/milestones/v2.1-ROADMAP.md` — full phase details
+- `.planning/milestones/v2.1-REQUIREMENTS.md` — requirements with outcomes
+
+---
+
 ## v1.8 — Content & Settings
 
 **Shipped:** 2026-04-24

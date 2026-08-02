@@ -13,7 +13,16 @@
 - ✅ **v1.8 Content & Settings** — Phases 15-16 (shipped 2026-04-24)
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
 - ✅ **v2.0 Quién Soy Yo** — Phases 19-21 (shipped 2026-05-16)
-- [ ] **v2.1 Qué Hora Es?** — Phase 22 (in progress)
+- ✅ **v2.1 Qué Hora Es?** — Phase 22 (shipped 2026-08-02)
+
+<details>
+<summary>✅ v2.1 Qué Hora Es? (Phase 22) — SHIPPED 2026-08-02</summary>
+
+- [x] Phase 22: Qué Hora Es? — Time-Telling Practice Tool (4/4 plans) — completed 2026-08-02
+
+Full details: `.planning/milestones/v2.1-ROADMAP.md`
+
+</details>
 
 <details>
 <summary>✅ v2.0 Quién Soy Yo (Phases 19-21) — SHIPPED 2026-05-16</summary>
@@ -25,42 +34,6 @@
 Full details: `.planning/milestones/v2.0-ROADMAP.md`
 
 </details>
-
-## v2.1 Phases
-
-### Phase 22: Qué Hora Es? — Time-Telling Practice Tool
-
-**Goal:** Users can drag hour/minute dials to set a 24h time and hear + see the traditional Spanish phrase for it.
-**Depends on:** Phase 21
-**Requirements:** HORA-01, HORA-02, HORA-03, HORA-04, HORA-05, HORA-06, HORA-07, HORA-08, HORA-09
-**Success Criteria** (what must be TRUE):
-
-  1. A "Qué hora es?" button appears on the home screen below "Quién soy yo" and opens the clock page
-  2. The clock page shows two vertical dials (hour 00–23, minute in 5-minute steps) that respond to up/down drag gestures, changing value like a smartwatch alarm picker
-  3. Tapping "Qué hora es?" displays the Spanish phrase for the current dial time using traditional phrasing (Es la una / Son las..., y cuarto, y media, menos cuarto/veinte, etc.) plus de la mañana/tarde/noche based on the 24h hour, and speaks it aloud via TTS
-  4. Tapping "Repeat" re-speaks the last phrase without changing the dial values
-  5. Changing either dial and tapping "Qué hora es?" again produces and speaks the phrase for the new time
-
-**Plans:** 4 plans
-
-Plans:
-**Wave 1**
-
-- [x] 22-01-PLAN.md — buildTimePhrase grammar module + Node test + home screen entry button
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 22-02-PLAN.md — hora-* component CSS + hora.html shell with reel DOM and renderer
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 22-03-PLAN.md — Pointer Events reel drag + Spanish TTS + CTA/Repeat wiring
-
-**Wave 4** *(blocked on Wave 3 completion)*
-
-- [x] 22-04-PLAN.md — Automated gate run + human verification of all 9 HORA requirements
-
-**UI hint**: yes
 
 ## v1.6 Phases
 

@@ -2,33 +2,33 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Qué Hora Es?
-status: milestone_complete
-stopped_at: Milestone complete (Phase 22 was final phase)
-last_updated: 2026-08-02T18:35:28.161Z
-last_activity: 2026-08-02 -- Phase 22 execution started
+status: Awaiting next milestone
+stopped_at: Phase 22 UI-SPEC approved
+last_updated: "2026-08-02T18:42:33.489Z"
+last_activity: 2026-08-02 — Milestone v2.1 completed and archived
 progress:
-  total_phases: 3
+  total_phases: 1
   completed_phases: 1
-  total_plans: 7
-  completed_plans: 18
-  percent: 33
+  total_plans: 4
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-08 after v2.0 milestone started)
+See: .planning/PROJECT.md (updated 2026-08-02 after v2.1 milestone completed)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 **Current focus:** Milestone complete
 
 ## Current Position
 
-Phase: 22
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-08-02
+Phase: Milestone v2.1 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-08-02 — Milestone v2.1 completed and archived
 
 ## Accumulated Context
 
@@ -59,3 +59,7 @@ Last session: 2026-08-02T14:27:03.398Z
 Stopped at: Phase 22 UI-SPEC approved
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
