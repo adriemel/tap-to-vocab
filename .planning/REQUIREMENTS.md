@@ -3,43 +3,72 @@
 **Defined:** 2026-04-12
 **Core Value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
 
-## v2.0 Requirements
+## v2.1 Requirements
 
-### Chat Interface
+### Clock UI
 
-- [ ] **CHAT-01**: User can access "Quién soy yo" from the home screen (button below "Qué número es?")
-- [ ] **CHAT-02**: Chat screen opens showing the first question in a left-aligned grey bubble
-- [ ] **CHAT-03**: Two answer-choice buttons appear at the bottom of the screen for each question
-- [ ] **CHAT-04**: Tapping a choice appends the chosen answer as a right-aligned colored bubble
-- [ ] **CHAT-05**: After a short delay, the next question appears as a new left bubble
-- [ ] **CHAT-06**: Chat scroll follows the latest bubble so content stays visible
+- [ ] **HORA-01**: User can access "Qué hora es?" from the home screen (button below "Quién soy yo")
+- [ ] **HORA-02**: Clock page shows two vertical dials — hour (00–23) and minute (5-minute steps: 00, 05, 10 ... 55)
+- [ ] **HORA-03**: Dragging a dial up or down changes its value, like setting an alarm on a smartwatch
 
-### Audio (TTS)
+### Spanish Phrase & Audio
 
-- [ ] **AUDIO-01**: TTS reads the question aloud when it appears on the left
-- [ ] **AUDIO-02**: TTS reads the chosen answer aloud after it appears on the right
+- [ ] **HORA-04**: "Qué hora es?" button displays the Spanish phrase for the currently set time
+- [ ] **HORA-05**: "Qué hora es?" button speaks the Spanish phrase aloud via TTS
+- [ ] **HORA-06**: Phrasing follows traditional Spanish time-telling conventions (Es la una / Son las..., y cuarto, y media, menos cuarto, menos veinte, etc. — not literal digit reading)
+- [ ] **HORA-07**: Phrase includes de la mañana / de la tarde / de la noche, derived from the 24h hour
+- [ ] **HORA-08**: "Repeat" button re-speaks the last phrase without changing the dial values
+- [ ] **HORA-09**: Changing either dial and pressing "Qué hora es?" again produces and speaks the phrase for the new time
 
-### End Screen
-
-- [ ] **END-01**: After all questions are answered, an end screen appears with "¡Muy bien!" header
-- [ ] **END-02**: End screen displays the full introduction as one flowing paragraph (all chosen answers in order, ending with "¡Muchas gracias por escuchar!")
-- [ ] **END-03**: TTS reads the complete paragraph automatically when the end screen loads
-- [ ] **END-04**: "Replay" button re-reads the paragraph aloud
-- [ ] **END-05**: "Start again" button resets the conversation to the first question
-- [ ] **END-06**: "Home" button navigates to index.html
-
-### Data
-
-- [ ] **DATA-01**: Questions, 2 choice labels, and full answer texts are loaded from quien-soy-sentences.txt at runtime
-
-## Out of Scope for v2.0
+## Out of Scope for v2.1
 
 | Feature | Reason |
 |---------|--------|
 | Coin rewards | No scoring mechanic — pure practice mode |
-| Score / accuracy tracking | No right/wrong answers — both choices are valid self-introductions |
-| Timers | Explicitly excluded per spec |
-| Editing answers after selection | Adds complexity; re-run "Start again" is sufficient |
+| Score / accuracy / stats tracking | No right/wrong answers — this is a reference/practice tool, not a quiz |
+| Quiz mode (app shows target time, user must set it) | Deferred — v1 is set-and-hear only |
+| 1-minute granularity | 5-minute steps match how Spanish time is taught and keep phrasing natural |
+| Literal digital phrasing ("las tres treinta") | Traditional phrasing chosen as more authentic to how Spanish speakers talk |
+
+## v2.0 Requirements (Complete)
+
+### Chat Interface
+
+- [x] **CHAT-01**: User can access "Quién soy yo" from the home screen (button below "Qué número es?") — Phase 19
+- [x] **CHAT-02**: Chat screen opens showing the first question in a left-aligned grey bubble — Phase 19
+- [x] **CHAT-03**: Two answer-choice buttons appear at the bottom of the screen for each question — Phase 19
+- [x] **CHAT-04**: Tapping a choice appends the chosen answer as a right-aligned colored bubble — Phase 19
+- [x] **CHAT-05**: After a short delay, the next question appears as a new left bubble — Phase 19
+- [x] **CHAT-06**: Chat scroll follows the latest bubble so content stays visible — Phase 19
+
+### Audio (TTS)
+
+- [x] **AUDIO-01**: TTS reads the question aloud when it appears on the left — Phase 19
+- [x] **AUDIO-02**: TTS reads the chosen answer aloud after it appears on the right — Phase 19
+
+### End Screen
+
+- [x] **END-01**: After all questions are answered, an end screen appears with "¡Muy bien!" header — Phase 19
+- [x] **END-02**: End screen displays the full introduction as one flowing paragraph (all chosen answers in order, ending with "¡Muchas gracias por escuchar!") — Phase 19
+- [x] **END-03**: TTS reads the complete paragraph automatically when the end screen loads — Phase 19
+- [x] **END-04**: "Replay" button re-reads the paragraph aloud — Phase 19
+- [x] **END-05**: "Start again" button resets the conversation to the first question — Phase 19
+- [x] **END-06**: "Home" button navigates to index.html — Phase 19
+
+### Data
+
+- [x] **DATA-01**: Questions, 2 choice labels, and full answer texts are loaded from quien-soy-sentences.txt at runtime — Phase 19
+
+### Bug Fixes (Phases 20-21)
+
+- [x] **FIX-TTS**: Fix TTS race condition on first question — Phase 20
+- [x] **FIX-SKIP**: Add missing skip button — Phase 20
+- [x] **FIX-SCROLL**: Fix mobile scroll/bubble overlap — Phase 20
+- [x] **FIX-ENDSCREEN**: Fix end-screen button layout on small screens — Phase 20
+- [x] **FIX-TYPO**: Fix data file typo (tambien → también) — Phase 20
+- [x] **FIX-IOS-TTS**: Fix iOS-specific first-question TTS silence — Phase 21
+
+Full details: `.planning/milestones/v2.0-REQUIREMENTS.md`
 
 ## v1.9 Requirements (Complete)
 
@@ -95,21 +124,36 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CHAT-01 | Phase 19 | Pending |
-| CHAT-02 | Phase 19 | Pending |
-| CHAT-03 | Phase 19 | Pending |
-| CHAT-04 | Phase 19 | Pending |
-| CHAT-05 | Phase 19 | Pending |
-| CHAT-06 | Phase 19 | Pending |
-| AUDIO-01 | Phase 19 | Pending |
-| AUDIO-02 | Phase 19 | Pending |
-| END-01 | Phase 19 | Pending |
-| END-02 | Phase 19 | Pending |
-| END-03 | Phase 19 | Pending |
-| END-04 | Phase 19 | Pending |
-| END-05 | Phase 19 | Pending |
-| END-06 | Phase 19 | Pending |
-| DATA-01 | Phase 19 | Pending |
+| HORA-01 | Phase 22 | Pending |
+| HORA-02 | Phase 22 | Pending |
+| HORA-03 | Phase 22 | Pending |
+| HORA-04 | Phase 22 | Pending |
+| HORA-05 | Phase 22 | Pending |
+| HORA-06 | Phase 22 | Pending |
+| HORA-07 | Phase 22 | Pending |
+| HORA-08 | Phase 22 | Pending |
+| HORA-09 | Phase 22 | Pending |
+| CHAT-01 | Phase 19 | Complete |
+| CHAT-02 | Phase 19 | Complete |
+| CHAT-03 | Phase 19 | Complete |
+| CHAT-04 | Phase 19 | Complete |
+| CHAT-05 | Phase 19 | Complete |
+| CHAT-06 | Phase 19 | Complete |
+| AUDIO-01 | Phase 19 | Complete |
+| AUDIO-02 | Phase 19 | Complete |
+| END-01 | Phase 19 | Complete |
+| END-02 | Phase 19 | Complete |
+| END-03 | Phase 19 | Complete |
+| END-04 | Phase 19 | Complete |
+| END-05 | Phase 19 | Complete |
+| END-06 | Phase 19 | Complete |
+| DATA-01 | Phase 19 | Complete |
+| FIX-TTS | Phase 20 | Complete |
+| FIX-SKIP | Phase 20 | Complete |
+| FIX-SCROLL | Phase 20 | Complete |
+| FIX-ENDSCREEN | Phase 20 | Complete |
+| FIX-TYPO | Phase 20 | Complete |
+| FIX-IOS-TTS | Phase 21 | Complete |
 | NUM-01 | Phase 17 | Complete |
 | NUM-02 | Phase 17 | Complete |
 | NUM-03 | Phase 17 | Complete |
@@ -128,10 +172,10 @@
 | STATS-04 | Phase 13 | Complete |
 
 **Coverage:**
-- v2.0 requirements: 15 total
-- Mapped to phases: 15 (Phase 19: all)
+- v2.1 requirements: 9 total
+- Mapped to phases: 9 (Phase 22: all)
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-12*
-*Last updated: 2026-05-08 — v2.0 requirements defined, Phase 19 assigned*
+*Last updated: 2026-08-02 — v2.1 requirements defined, Phase 22 assigned*
