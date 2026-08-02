@@ -54,7 +54,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 22-03-PLAN.md — Pointer Events reel drag + Spanish TTS + CTA/Repeat wiring
+- [x] 22-03-PLAN.md — Pointer Events reel drag + Spanish TTS + CTA/Repeat wiring
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -278,4 +278,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 2/4 | In Progress|  |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 3/4 | In Progress|  |
