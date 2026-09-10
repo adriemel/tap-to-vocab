@@ -4,8 +4,8 @@ milestone: v2.2
 milestone_name: Topics & Unidades
 status: executing
 stopped_at: Phase 23 context gathered
-last_updated: "2026-09-10T14:56:32.403Z"
-last_activity: 2026-09-10 -- Phase 23 planning complete
+last_updated: "2026-09-10T15:03:32.392Z"
+last_activity: 2026-09-10 -- Phase 23 execution started
 progress:
   total_phases: 4
   completed_phases: 0
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** v2.2 Topics & Unidades — Phase 23 (Vocabulary Data & Topic Tagging), ready to plan
+**Current focus:** Phase 23 — vocabulary-data-topic-tagging
 
 ## Current Position
 
-Phase: 23 of 24 (Vocabulary Data & Topic Tagging)
-Plan: TBD — not yet planned
-Status: Ready to execute
-Last activity: 2026-09-10 -- Phase 23 planning complete
+Phase: 23 (vocabulary-data-topic-tagging) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 23
+Last activity: 2026-09-10 -- Phase 23 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
