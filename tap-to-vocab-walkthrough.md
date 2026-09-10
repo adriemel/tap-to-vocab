@@ -64,7 +64,7 @@ tap-to-vocab/
 │       └── fill-blank.js     ← Fill-in-the-blank logic
 │
 └── data/
-    ├── words.tsv             ← Vocabulary: category, Spanish, German
+    ├── words.tsv             ← Vocabulary: category, Spanish, German, topics
     ├── verbs.tsv             ← Verb conjugations (6 forms per verb)
     └── fill-in-blank.tsv     ← Grammar drill sentences
 ```
@@ -83,6 +83,8 @@ These are the heart of the content. They're plain text files in **TSV format** �
 **What it does:** Contains every Spanish/German word pair in the app. Each row is one word or phrase, tagged with a category (e.g., "Colores" for colors, "Animales" for animals). Categories match the buttons on the home page.
 **Why it exists:** Every quiz, sentence-building exercise, and browse mode draws from this file. Change this file and the whole app updates.
 **To change it:** Add a new row with `[category][TAB][Spanish word][TAB][German word]`. To create a new category, just use a new category name — it will appear automatically on the home page. Rows that end with a `.`, `?`, or `!` are treated as sentences for the sentence-builder.
+
+There is also a fourth column called `topics`. Every row can carry at most one topic — never more than one, and never a list. The nine topic names written into the file today are `Colores`, `Animales`, `Numeros`, `Saludar`, `Casa_Familia`, `Palabras`, `Calendario`, `Comida_Bebida`, and `Escuela` — written with underscores instead of spaces, the same way `Casa_Familia` already works elsewhere in this file. The friendlier labels with emoji (like "🍽️ Comida y Bebida") don't live in this data file at all — they live in the home-page buttons, which is a separate concern from this list. An empty `topics` cell is completely normal and deliberate: example sentences are left with no topic on purpose, so that a topic list stays a short list of single words instead of getting cluttered with full sentences. Also worth knowing: the older `category` column was not touched or renamed by adding `topics` — every existing link into this file and the starred practice list keep working exactly as before.
 
 #### `verbs.tsv` — The Verb Table
 **What it does:** One row per verb. Each row has the infinitive (base form), the German meaning, and all six Spanish conjugations: yo, tú, él/ella, nosotros, vosotros, ellos.
@@ -119,8 +121,8 @@ These are the heart of the content. They're plain text files in **TSV format** �
 **Why it exists:** Without this, quizzes would always present words in the same order.
 
 #### TSV Loader
-**What it does:** Fetches a `.tsv` data file from the server, reads the first line as column headers, and turns every subsequent line into an object. So a row `Colores | negro | schwarz` becomes `{category: "Colores", es: "negro", de: "schwarz"}`.
-**Why it exists:** Every learning page needs to load its data file, and they all use the same technique.
+**What it does:** Fetches a `.tsv` data file from the server, reads the first line as column headers, and turns every subsequent line into an object. So a row `Colores | negro | schwarz | Colores` becomes `{category: "Colores", es: "negro", de: "schwarz", topics: "Colores"}`.
+**Why it exists:** Every learning page needs to load its data file, and they all use the same technique. If a data file has no `topics` column at all — an older copy of `words.tsv`, say — the loader simply hands back an empty topic for every row instead of failing, which is why old copies of the file still work without any changes.
 
 #### Success Sound
 **What it does:** Plays a quick upward three-note chime (C–E–G) using the browser's built-in audio engine. No audio files are downloaded.
