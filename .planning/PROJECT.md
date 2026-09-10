@@ -188,6 +188,8 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 **Active milestone:** v2.2 Topics & Unidades — started 2026-09-10. Source images for the Unidad 5B import are stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`.
 
+**Phase 23 complete (2026-09-10)** — verification passed 5/5. `data/words.tsv` now carries a tolerant 4th `topics` column: 752 data rows, 581 tagged across the nine canonical topics, 171 deliberately blank example sentences (D-06). Unidad 5B imported (27 headwords + 17 sentences). `SharedUtils.loadWords` projects `topics` by header name and tolerates both a missing column and a missing cell. NAV-07 proven: all 708 pre-phase Spanish+German pairs survive, so every starred practice-list entry still resolves. Validated: DATA-03, DATA-04, DATA-05, TAG-01 through TAG-06, NAV-07. Phase 24 is the first consumer of `topics` outside the loader.
+
 ---
 ## Evolution
 
@@ -207,4 +209,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-09-10 after v2.2 milestone started*
+*Last updated: 2026-09-10 after Phase 23 completion*

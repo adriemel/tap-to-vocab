@@ -9,18 +9,18 @@ Requirements for this milestone. Each maps to exactly one roadmap phase.
 
 ### Vocabulary Data
 
-- [ ] **DATA-03**: User can browse and quiz Unidad 5B vocabulary (~24 headwords from the two source images)
-- [ ] **DATA-04**: Unidad 5B example sentences (~15) appear in Build Sentences as a `Unidad5B` category checkbox
-- [ ] **DATA-05**: `words.tsv` carries a `topics` column read by header name — rows without it still load correctly
+- [x] **DATA-03**: User can browse and quiz Unidad 5B vocabulary (~24 headwords from the two source images)
+- [x] **DATA-04**: Unidad 5B example sentences (~15) appear in Build Sentences as a `Unidad5B` category checkbox
+- [x] **DATA-05**: `words.tsv` carries a `topics` column read by header name — rows without it still load correctly
 
 ### Topic Tagging
 
-- [ ] **TAG-01**: Every Palabras word either moves into a topic or keeps `topics: Palabras`
-- [ ] **TAG-02**: Unidad words keep their unidad and gain topic tags — the same word appears in both places
-- [ ] **TAG-03**: The five existing coherent topics (Colores, Animales, Numeros, Saludar, Casa y Familia) are tagged with their own name
-- [ ] **TAG-04**: Calendario topic contains the days, months, seasons and period words
-- [ ] **TAG-05**: Comida y Bebida topic contains the food and drink words
-- [ ] **TAG-06**: Escuela topic contains the school, teaching and study words
+- [x] **TAG-01**: Every Palabras word either moves into a topic or keeps `topics: Palabras`
+- [x] **TAG-02**: Unidad words keep their unidad and gain topic tags — the same word appears in both places
+- [x] **TAG-03**: The five existing coherent topics (Colores, Animales, Numeros, Saludar, Casa y Familia) are tagged with their own name
+- [x] **TAG-04**: Calendario topic contains the days, months, seasons and period words
+- [x] **TAG-05**: Comida y Bebida topic contains the food and drink words
+- [x] **TAG-06**: Escuela topic contains the school, teaching and study words
 
 ### Navigation
 
@@ -30,7 +30,7 @@ Requirements for this milestone. Each maps to exactly one roadmap phase.
 - [ ] **NAV-04**: Unidades screen lists 5 buttons (Unidad 2, 3, 4, 5A, 5B) and opens the word list for each
 - [ ] **NAV-05**: Both sub-screens have a Home control and show the coin counter, like every other page
 - [ ] **NAV-06**: Opening a topic shows every word tagged with it, whichever unidad it came from
-- [ ] **NAV-07**: The ⭐ Practice list keeps working — words already saved for practice survive the re-tagging
+- [x] **NAV-07**: The ⭐ Practice list keeps working — words already saved for practice survive the re-tagging
 
 ## Data Model
 
