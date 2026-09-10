@@ -44,7 +44,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 23-03-PLAN.md — tag Unidad2/3/4/5A additively
+- [x] 23-03-PLAN.md — tag Unidad2/3/4/5A additively
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -307,5 +307,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
-| 23. Vocabulary Data & Topic Tagging | v2.2 | 2/5 | In Progress|  |
+| 23. Vocabulary Data & Topic Tagging | v2.2 | 3/5 | In Progress|  |
 | 24. Topics & Unidades Navigation | v2.2 | 0/? | Not started | - |
