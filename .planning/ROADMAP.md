@@ -67,8 +67,21 @@ Plans:
   4. Unidades screen lists the 5 unidades (Unidad 2, 3, 4, 5A, 5B); tapping one opens `topic.html` showing that unidad's complete word list, exactly as the old per-unidad home buttons did
   5. Both new sub-screens show a Home control and the live coin counter (`#coin-counter`), matching every other page in the app
 
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
+
+Plans:
+**Wave 1**
+
+- [ ] 24-01-PLAN.md — `?topic=` filter in tapvocab.js + topic.html, with the blank-title regression fixed
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 24-02-PLAN.md — new static sub-screens topics.html (9 topics) and unidades.html (5 unidades), both with Home + coin counter
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 24-03-PLAN.md — home screen collapses to 📚 Topics / 📖 Unidades, CSS height + gap + narrow-viewport override, docs updated
 
 <details>
 <summary>✅ v2.1 Qué Hora Es? (Phase 22) — SHIPPED 2026-08-02</summary>
