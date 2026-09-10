@@ -31,10 +31,10 @@
     return lines.slice(1).map(line => {
       const cols = line.split("\t");
       return {
-        category: (idx.category >= 0 ? cols[idx.category] : "").trim(),
-        es: (idx.es >= 0 ? cols[idx.es] : "").trim(),
-        de: (idx.de >= 0 ? cols[idx.de] : "").trim(),
-        topics: (idx.topics >= 0 ? cols[idx.topics] : "").trim()
+        category: (idx.category >= 0 ? cols[idx.category] || "" : "").trim(),
+        es: (idx.es >= 0 ? cols[idx.es] || "" : "").trim(),
+        de: (idx.de >= 0 ? cols[idx.de] || "" : "").trim(),
+        topics: (idx.topics >= 0 ? cols[idx.topics] || "" : "").trim()
       };
     }).filter(r => r.category && r.es && r.de);
   }
