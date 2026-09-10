@@ -484,226 +484,226 @@ Unidad3	montar a caballo	reiten	Palabras
 Unidad3	practicar algo	etw. ausüben	Palabras
 Unidad3	Practico deporte en el parque.	Ich mache im Park Sport.	
 Unidad3	el deporte	der Sport	Palabras
-Unidad4	los abuelos	die Großeltern (Pl.)	
-Unidad4	el abuelo / la abuela	der Großvater / die Großmutter	
+Unidad4	los abuelos	die Großeltern (Pl.)	Casa_Familia
+Unidad4	el abuelo / la abuela	der Großvater / die Großmutter	Casa_Familia
 Unidad4	Mi abuelo se llama Yusuf y mi abuela se llama Marta.	Mein Großvater heißt Yusuf und meine Großmutter heißt Marta.	
-Unidad4	el tío	der Onkel	
-Unidad4	la tía	die Tante	
-Unidad4	el novio / la novia	der feste Freund / die feste Freundin	
-Unidad4	los hijos	die Kinder (Pl.)	
+Unidad4	el tío	der Onkel	Casa_Familia
+Unidad4	la tía	die Tante	Casa_Familia
+Unidad4	el novio / la novia	der feste Freund / die feste Freundin	Casa_Familia
+Unidad4	los hijos	die Kinder (Pl.)	Casa_Familia
 Unidad4	Mi tío no tiene hijos.	Mein Onkel hat keine Kinder.	
-Unidad4	el hijo / la hija	der Sohn / die Tochter	
-Unidad4	el primo / la prima	der Cousin / die Cousine	
-Unidad4	la estantería	das Regal	
+Unidad4	el hijo / la hija	der Sohn / die Tochter	Casa_Familia
+Unidad4	el primo / la prima	der Cousin / die Cousine	Casa_Familia
+Unidad4	la estantería	das Regal	Casa_Familia
 Unidad4	Los libros están en la estantería.	Die Bücher sind im Regal.	
-Unidad4	el póster	das Poster	
-Unidad4	la pared	die Wand	
+Unidad4	el póster	das Poster	Casa_Familia
+Unidad4	la pared	die Wand	Casa_Familia
 Unidad4	En la pared tengo un póster de mis animales favoritos.	An der Wand habe ich ein Poster mit meinen Lieblingstieren.	
-Unidad4	la cama	das Bett	
-Unidad4	la tableta	das Tablet	
-Unidad4	la mesa	der Tisch	
+Unidad4	la cama	das Bett	Casa_Familia
+Unidad4	la tableta	das Tablet	Palabras
+Unidad4	la mesa	der Tisch	Casa_Familia
 Unidad4	Los libros están en la mesa.	Die Bücher liegen auf dem Tisch.	
-Unidad4	la tele(visión)	das Fernsehen	
+Unidad4	la tele(visión)	das Fernsehen	Casa_Familia
 Unidad4	Veo la tele.	Ich sehe fern.	
-Unidad4	el armario	der Schrank	
+Unidad4	el armario	der Schrank	Casa_Familia
 Unidad4	La ropa está en el armario.	Die Kleidung ist im Schrank.	
-Unidad4	el espejo	der Spiegel	
-Unidad4	la lámpara	die Lampe	
-Unidad4	el suelo	der Boden	
-Unidad4	la silla	der Stuhl	
+Unidad4	el espejo	der Spiegel	Casa_Familia
+Unidad4	la lámpara	die Lampe	Casa_Familia
+Unidad4	el suelo	der Boden	Casa_Familia
+Unidad4	la silla	der Stuhl	Casa_Familia
 Unidad4	El gato está en la silla.	Die Katze ist auf dem Stuhl.	
-Unidad4	aprender algo	etw. lernen	
+Unidad4	aprender algo	etw. lernen	Escuela
 Unidad4	Aprendo inglés en el instituto.	Ich lerne Englisch in der Schule.	
-Unidad4	leer algo	etw. lesen	
+Unidad4	leer algo	etw. lesen	Escuela
 Unidad4	En el balcón leo libros.	Auf dem Balkon lese ich Bücher.	
-Unidad4	el cómic	der Comic	
-Unidad4	beber algo	etw. trinken	
-Unidad4	el zumo	der Saft	
-Unidad4	la fruta	das Obst	
-Unidad4	el agua	das Wasser	
+Unidad4	el cómic	der Comic	Palabras
+Unidad4	beber algo	etw. trinken	Comida_Bebida
+Unidad4	el zumo	der Saft	Comida_Bebida
+Unidad4	la fruta	das Obst	Comida_Bebida
+Unidad4	el agua	das Wasser	Comida_Bebida
 Unidad4	¿Qué bebes? ¿Agua o zumo?	Was trinkst du? Wasser oder Saft?	
 Unidad4	Bebo un zumo de frutas.	Ich trinke einen Fruchtsaft.	
-Unidad4	comer algo	etw. essen	
-Unidad4	el chocolate	die Schokolade	
-Unidad4	el plátano	die Banane	
-Unidad4	escribir algo	etw. schreiben	
-Unidad4	el poema	das Gedicht	
+Unidad4	comer algo	etw. essen	Comida_Bebida
+Unidad4	el chocolate	die Schokolade	Comida_Bebida
+Unidad4	el plátano	die Banane	Comida_Bebida
+Unidad4	escribir algo	etw. schreiben	Escuela
+Unidad4	el poema	das Gedicht	Escuela
 Unidad4	Escribo poemas.	Ich schreibe Gedichte.	
-Unidad4	ya no	nicht mehr	
+Unidad4	ya no	nicht mehr	Palabras
 Unidad4	Ya no tengo tiempo.	Ich habe keine Zeit mehr.	
-Unidad4	con nosotros/nosotras	mit uns	
+Unidad4	con nosotros/nosotras	mit uns	Palabras
 Unidad4	(No) es cierto.	Das stimmt (nicht).	
-Unidad4	el castigo	die Strafe	
-Unidad4	hacer algo	etw. machen	
-Unidad4	¿Qué haces? 	Was machst du?	
-Unidad4	los deberes 	die Hausaufgaben	
-Unidad4	Hago los deberes. 	Ich mache Hausaufgaben.	
-Unidad4	ver algo	etw. sehen	
-Unidad4	seguro 	sicher	
-Unidad4	mucho 	sehr; viel	
-Unidad4	la clase	die Klasse	
-Unidad4	En mi clase hay un chico de Perú. 	In meiner Klasse ist ein Junge aus Peru.	
-Unidad4	Ya basta	Es reicht	
-Unidad4	el comentario	der Kommentar	
-Unidad4	subir algo	etw. hochladen	
-Unidad4	Subo un vídeo a Internet. 	Ich lade ein Video ins Internet hoch.	
-Unidad4	la red social	das soziale Netzwerk	
-Unidad4	saber algo	etw. wissen	
+Unidad4	el castigo	die Strafe	Palabras
+Unidad4	hacer algo	etw. machen	Palabras
+Unidad4	¿Qué haces? 	Was machst du?	Palabras
+Unidad4	los deberes 	die Hausaufgaben	Escuela
+Unidad4	Hago los deberes. 	Ich mache Hausaufgaben.	Escuela
+Unidad4	ver algo	etw. sehen	Palabras
+Unidad4	seguro 	sicher	Palabras
+Unidad4	mucho 	sehr; viel	Palabras
+Unidad4	la clase	die Klasse	Escuela
+Unidad4	En mi clase hay un chico de Perú. 	In meiner Klasse ist ein Junge aus Peru.	Escuela
+Unidad4	Ya basta	Es reicht	Palabras
+Unidad4	el comentario	der Kommentar	Palabras
+Unidad4	subir algo	etw. hochladen	Palabras
+Unidad4	Subo un vídeo a Internet. 	Ich lade ein Video ins Internet hoch.	Palabras
+Unidad4	la red social	das soziale Netzwerk	Palabras
+Unidad4	saber algo	etw. wissen	Palabras
 Unidad4	¿Sabes dónde vive Ana?	Weißt du, wo Ana wohnt?	
 Unidad4	No lo sé.	Ich weiß es nicht.	
-Unidad4	la fiesta	die Party; das Fest	
+Unidad4	la fiesta	die Party; das Fest	Palabras
 Unidad4	Hay una fiesta en mi barrio.	Es gibt eine Party in meinem Viertel.	
-Unidad4	solo	nur	
+Unidad4	solo	nur	Palabras
 Unidad4	Juan solo bebe agua.	Juan trinkt nur Wasser.	
-Unidad4	o	oder	
+Unidad4	o	oder	Palabras
 Unidad4	¿Hablas inglés o francés?	Sprichst du Englisch oder Französisch?	
-Unidad4	el hambre	der Hunger	
-Unidad4	Tengo hambre	Ich habe Hunger	
-Unidad4	por cierto	übrigens	
+Unidad4	el hambre	der Hunger	Comida_Bebida
+Unidad4	Tengo hambre	Ich habe Hunger	Comida_Bebida
+Unidad4	por cierto	übrigens	Palabras
 Unidad4	Por cierto, mi abuela vive aquí.	Übrigens wohnt meine Großmutter hier.	
-Unidad4	la carne	das Fleisch	
+Unidad4	la carne	das Fleisch	Comida_Bebida
 Unidad4	Yo no como carne.	Ich esse kein Fleisch.	
-Unidad4	e	und (vor i und hi)	
+Unidad4	e	und (vor i und hi)	Palabras
 Unidad4	Yo hablo español e inglés.	Ich spreche Spanisch und Englisch.	
-Unidad4	tampoco	auch nicht	
+Unidad4	tampoco	auch nicht	Palabras
 Unidad4	Yo no tengo hambre.	Ich habe keinen Hunger.	
-Unidad4	también	auch	
-Unidad4	Yo tampoco	Ich auch nicht.	
-Unidad4	el bocadillo	das belegte Brötchen	
-Unidad4	el jamón	der Schinken	
-Unidad4	es que…	nämlich …	
+Unidad4	también	auch	Palabras
+Unidad4	Yo tampoco	Ich auch nicht.	Palabras
+Unidad4	el bocadillo	das belegte Brötchen	Comida_Bebida
+Unidad4	el jamón	der Schinken	Comida_Bebida
+Unidad4	es que…	nämlich …	Palabras
 Unidad4	No entiendo.	Ich verstehe nicht.	
-Unidad4	la salchicha	die Wurst; das Würstchen	
+Unidad4	la salchicha	die Wurst; das Würstchen	Comida_Bebida
 Unidad4	Es que no hablo francés.	Ich spreche nämlich kein Französisch.	
-Unidad4	rápido	schnell	
-Unidad4	a	nach; (hin) zu; auf	
+Unidad4	rápido	schnell	Palabras
+Unidad4	a	nach; (hin) zu; auf	Palabras
 Unidad4	Este es el autobús a Madrid.	Das ist der Bus nach Madrid.	
-Unidad4	hoy	heute	
-Unidad4	en casa de alguien	bei jdm (zu Hause)	
+Unidad4	hoy	heute	Calendario
+Unidad4	en casa de alguien	bei jdm (zu Hause)	Casa_Familia
 Unidad4	Estoy en casa de mis abuelos.	Ich bin bei meinen Großeltern.	
-Unidad4	vivir	wohnen; leben	
+Unidad4	vivir	wohnen; leben	Palabras
 Unidad4	¿Dónde vives?	Wo wohnst du?	
-Unidad4	guay	super; cool	
+Unidad4	guay	super; cool	Palabras
 Unidad4	Vivo en Berlín.	Ich wohne in Berlin.	
 Unidad4	¡Silencio!	Ruhe!	
-Unidad4	alto	laut	
+Unidad4	alto	laut	Palabras
 Unidad4	Hablas muy alto.	Du sprichst sehr laut.	
 Unidad4	¿Por qué…?	Warum …?	
 Unidad4	¿Por qué Julia no está en el instituto?	Warum ist Julia nicht in der Schule?	
-Unidad4	algo	etwas	
+Unidad4	algo	etwas	Palabras
 Unidad4	Miramos algo en la tableta.	Wir schauen etwas auf dem Tablet an.	
-Unidad5A	lunes	Montag	
-Unidad5A	martes	Dienstag	
-Unidad5A	miércoles	Mittwoch	
-Unidad5A	jueves	Donnerstag	
-Unidad5A	viernes	Freitag	
-Unidad5A	sábado	Samstag	
-Unidad5A	domingo	Sonntag	
-Unidad5A	usar algo	etw. verwenden; etw. benutzen	
-Unidad5A	dibujar algo	etw. zeichnen	
-Unidad5A	la bicicleta	das Fahrrad	
-Unidad5A	montar en bicicleta	Rad fahren	
-Unidad5A	nadar	schwimmen	
-Unidad5A	no hacer nada	nichts tun	
-Unidad5A	pasear	spazieren gehen	
+Unidad5A	lunes	Montag	Calendario
+Unidad5A	martes	Dienstag	Calendario
+Unidad5A	miércoles	Mittwoch	Calendario
+Unidad5A	jueves	Donnerstag	Calendario
+Unidad5A	viernes	Freitag	Calendario
+Unidad5A	sábado	Samstag	Calendario
+Unidad5A	domingo	Sonntag	Calendario
+Unidad5A	usar algo	etw. verwenden; etw. benutzen	Palabras
+Unidad5A	dibujar algo	etw. zeichnen	Palabras
+Unidad5A	la bicicleta	das Fahrrad	Palabras
+Unidad5A	montar en bicicleta	Rad fahren	Palabras
+Unidad5A	nadar	schwimmen	Palabras
+Unidad5A	no hacer nada	nichts tun	Palabras
+Unidad5A	pasear	spazieren gehen	Palabras
 Unidad5A	Paseo con mis padres en el parque.	Ich gehe mit meinen Eltern im Park spazieren.	
-Unidad5A	pasear al perro	Gassi gehen	
-Unidad5A	la película	der Film	
+Unidad5A	pasear al perro	Gassi gehen	Palabras
+Unidad5A	la película	der Film	Palabras
 Unidad5A	Vemos una película en el cine.	Wir schauen einen Film im Kino an.	
-Unidad5A	la serie	die Serie	
+Unidad5A	la serie	die Serie	Palabras
 Unidad5A	Los miércoles veo mi serie favorita.	Mittwochs sehe ich meine Lieblingsserie.	
-Unidad5A	el tiempo libre	die Freizeit	
+Unidad5A	el tiempo libre	die Freizeit	Palabras
 Unidad5A	¿Qué haces en tu tiempo libre?	Was machst du in deiner Freizeit?	
 Unidad5A	¿Qué hora es?	Wie spät ist es?	
 Unidad5A	¿Qué hora es? Son las dos.	Wie spät ist es? Es ist zwei Uhr.	
-Unidad5A	menos	vor (zeitlich)	
-Unidad5A	un cuarto	ein Viertel	
+Unidad5A	menos	vor (zeitlich)	Calendario
+Unidad5A	un cuarto	ein Viertel	Calendario
 Unidad5A	Son las dos menos cuarto.	Es ist Viertel vor zwei.	
-Unidad5A	el reloj	die Uhr	
+Unidad5A	el reloj	die Uhr	Calendario
 Unidad5A	¿A qué hora …?	Um wie viel Uhr …?	
 Unidad5A	¿A qué hora quedamos?	Um wie viel Uhr treffen wir uns?	
 Unidad5A	¿A las seis y media?	Um halb sieben?	
-Unidad5A	desayunar (algo)	(etw.) frühstücken	
+Unidad5A	desayunar (algo)	(etw.) frühstücken	Comida_Bebida
 Unidad5A	Desayuno a las siete de la mañana.	Ich frühstücke um sieben Uhr morgens.	
-Unidad5A	la clase	der Unterricht; die Unterrichtsstunde	
+Unidad5A	la clase	der Unterricht; die Unterrichtsstunde	Escuela
 Unidad5A	Hoy no tenemos clase.	Heute haben wir keinen Unterricht.	
-Unidad5A	cenar	zu Abend essen	
+Unidad5A	cenar	zu Abend essen	Comida_Bebida
 Unidad5A	El sábado cenamos en un restaurante.	Am Samstagabend essen wir in einem Restaurant.	
-Unidad5A	normalmente	normalerweise	
-Unidad5A	a las … / a la …	um … Uhr	
+Unidad5A	normalmente	normalerweise	Palabras
+Unidad5A	a las … / a la …	um … Uhr	Calendario
 Unidad5A	Comemos a las tres de la tarde.	Wir essen um drei Uhr nachmittags.	
-Unidad5A	… en punto	Punkt … Uhr	
+Unidad5A	… en punto	Punkt … Uhr	Calendario
 Unidad5A	Son las dos en punto.	Es ist Punkt zwei Uhr.	
-Unidad5A	de la tarde	nachmittags; abends	
+Unidad5A	de la tarde	nachmittags; abends	Calendario
 Unidad5A	¡Buenas tardes!	Guten Tag! Guten Abend!	
-Unidad5A	de … a …	von … bis … (Uhr/Tag/et)	
+Unidad5A	de … a …	von … bis … (Uhr/Tag/et)	Calendario
 Unidad5A	De lunes a miércoles mi padre trabaja en casa.	Von Montag bis Mittwoch arbeitet mein Vater zu Hause.	
-Unidad5A	de la mañana	morgens	
+Unidad5A	de la mañana	morgens	Calendario
 Unidad5A	Son las ocho de la mañana.	Es ist acht Uhr morgens.	
 Unidad5A	¿Cuándo …?	Wann …?	
 Unidad5A	¿Cuándo tienes tiempo?	Wann hast du Zeit?	
-Unidad5A	de la noche	abends; nachts	
+Unidad5A	de la noche	abends; nachts	Calendario
 Unidad5A	¡Buenas noches!	Guten Abend! Gute Nacht!	
-Unidad5A	las Ciencias Naturales	Naturkunde (Schulfach)	
-Unidad5A	las Matemáticas	Mathematik (Schulfach)	
-Unidad5A	la Geografía e Historia	Geschichte und Erdkunde (Schulfach)	
-Unidad5A	la Lengua Castellana y Literatura	Spanisch (als Schulfach)	
-Unidad5A	la Expresión Plástica	Kunst (Schulfach)	
-Unidad5A	la Educación Física	Sport (Schulfach)	
-Unidad5A	el recreo	die Pause	
-Unidad5A	la asignatura	das Unterrichtsfach	
+Unidad5A	las Ciencias Naturales	Naturkunde (Schulfach)	Escuela
+Unidad5A	las Matemáticas	Mathematik (Schulfach)	Escuela
+Unidad5A	la Geografía e Historia	Geschichte und Erdkunde (Schulfach)	Escuela
+Unidad5A	la Lengua Castellana y Literatura	Spanisch (als Schulfach)	Escuela
+Unidad5A	la Expresión Plástica	Kunst (Schulfach)	Escuela
+Unidad5A	la Educación Física	Sport (Schulfach)	Escuela
+Unidad5A	el recreo	die Pause	Escuela
+Unidad5A	la asignatura	das Unterrichtsfach	Escuela
 Unidad5A	¿Qué asignaturas tienes hoy?	Welche Fächer hast du heute?	
-Unidad5A	la carpeta	der Ordner	
-Unidad5A	el lápiz; (Pl.) los lápices	der Bleistift	
-Unidad5A	el cuaderno	das Heft	
-Unidad5A	el bolígrafo	der Kugelschreiber	
-Unidad5A	el estuche	das Federmäppchen	
+Unidad5A	la carpeta	der Ordner	Escuela
+Unidad5A	el lápiz; (Pl.) los lápices	der Bleistift	Escuela
+Unidad5A	el cuaderno	das Heft	Escuela
+Unidad5A	el bolígrafo	der Kugelschreiber	Escuela
+Unidad5A	el estuche	das Federmäppchen	Escuela
 Unidad5A	Los lápices están en el estuche.	Die Bleistifte sind im Federmäppchen.	
-Unidad5A	ir	gehen; fahren	
-Unidad5A	voy / vas / va / vamos / vais / van	ich gehe / du gehst / er, sie, es geht / wir gehen / ihr geht / sie gehen	
+Unidad5A	ir	gehen; fahren	Palabras
+Unidad5A	voy / vas / va / vamos / vais / van	ich gehe / du gehst / er, sie, es geht / wir gehen / ihr geht / sie gehen	Palabras
 Unidad5A	Mañana vamos al cine.	Morgen gehen wir ins Kino.	
-Unidad5A	necesitar algo	etw. brauchen	
+Unidad5A	necesitar algo	etw. brauchen	Palabras
 Unidad5A	Necesito un estuche para el instituto.	Ich brauche ein Mäppchen für die Schule.	
-Unidad5A	tener que hacer algo	etw. tun müssen	
+Unidad5A	tener que hacer algo	etw. tun müssen	Palabras
 Unidad5A	Tenemos que hacer los deberes.	Wir müssen die Hausaufgaben machen.	
-Unidad5A	comprar algo	etw. kaufen	
+Unidad5A	comprar algo	etw. kaufen	Palabras
 Unidad5A	Tengo que comprar cuadernos.	Ich muss Hefte kaufen.	
-Unidad5A	primero	zuerst	
-Unidad5A	tomar algo	etw. trinken; etw. essen	
+Unidad5A	primero	zuerst	Palabras
+Unidad5A	tomar algo	etw. trinken; etw. essen	Comida_Bebida
 Unidad5A	¿Tomamos un bocadillo en la cafetería?	Essen wir ein belegtes Brötchen in der Cafeteria?	
-Unidad5A	la cola	die (Menschen-)Schlange	
+Unidad5A	la cola	die (Menschen-)Schlange	Palabras
 Unidad5A	Delante del cine tenemos que hacer cola.	Vor dem Kino müssen wir Schlange stehen.	
-Unidad5A	enorme	enorm; riesig	
+Unidad5A	enorme	enorm; riesig	Palabras
 Unidad5A	Madrid es una ciudad enorme.	Madrid ist eine riesige Stadt.	
-Unidad5A	esperar algo	auf etw. warten	
+Unidad5A	esperar algo	auf etw. warten	Palabras
 Unidad5A	Tengo que esperar el autobús.	Ich muss auf den Bus warten.	
-Unidad5A	después de	nach (zeitlich)	
+Unidad5A	después de	nach (zeitlich)	Palabras
 Unidad5A	Después del cine, voy a casa.	Nach dem Kino gehe ich nach Hause.	
-Unidad5A	un buen rato	eine ganze Weile	
+Unidad5A	un buen rato	eine ganze Weile	Palabras
 Unidad5A	Tenemos que esperar un buen rato.	Wir müssen eine ganze Weile warten.	
-Unidad5A	regresar	zurückkehren	
-Unidad5A	el mensaje	die Nachricht	
-Unidad5A	increíble	unglaublich	
-Unidad5A	con tranquilidad	in Ruhe	
+Unidad5A	regresar	zurückkehren	Palabras
+Unidad5A	el mensaje	die Nachricht	Palabras
+Unidad5A	increíble	unglaublich	Palabras
+Unidad5A	con tranquilidad	in Ruhe	Palabras
 Unidad5A	Leo mis mensajes con tranquilidad.	Ich lese meine Nachrichten in Ruhe.	
-Unidad5A	con nerviosismo	nervös	
+Unidad5A	con nerviosismo	nervös	Palabras
 Unidad5A	Laura mira el reloj con nerviosismo.	Laura sieht nervös auf die Uhr.	
-Unidad5A	al final	zum Schluss; am Ende	
+Unidad5A	al final	zum Schluss; am Ende	Palabras
 Unidad5A	Primero vamos al parque, después al cine y, al final, tomamos un bocadillo.	Zuerst gehen wir in den Park, dann ins Kino und zum Schluss essen wir ein belegtes Brötchen.	
-Unidad5A	la gorra	die Kappe	
-Unidad5A	tomar algo	etw. nehmen	
+Unidad5A	la gorra	die Kappe	Palabras
+Unidad5A	tomar algo	etw. nehmen	Palabras
 Unidad5A	Tomamos el metro al centro comercial.	Wir nehmen die U-Bahn zum Einkaufszentrum.	
-Unidad5A	el ascensor	der Aufzug	
-Unidad5A	subir a algo	auf etw. hinaufgehen; auf etw. hinauffahren	
-Unidad5A	la terraza	die Terrasse	
+Unidad5A	el ascensor	der Aufzug	Palabras
+Unidad5A	subir a algo	auf etw. hinaufgehen; auf etw. hinauffahren	Palabras
+Unidad5A	la terraza	die Terrasse	Casa_Familia
 Unidad5A	Subimos a la terraza.	Wir gehen auf die Terrasse.	
-Unidad5A	el helado	das (Speise-)Eis	
-Unidad5A	la heladería	die Eisdiele	
-Unidad5A	todavía	(immer) noch	
+Unidad5A	el helado	das (Speise-)Eis	Comida_Bebida
+Unidad5A	la heladería	die Eisdiele	Palabras
+Unidad5A	todavía	(immer) noch	Palabras
 Unidad5A	Laura todavía no está en casa.	Laura ist noch nicht zu Hause.	
-Unidad5A	sin	ohne	
+Unidad5A	sin	ohne	Palabras
 Unidad5A	Voy al supermercado sin mis padres.	Ich gehe ohne meine Eltern zum Supermarkt.	
-Unidad5A	ya	schon	
+Unidad5A	ya	schon	Palabras
 Unidad5A	Son las 11 y ya tengo hambre.	Es ist erst 11 Uhr und ich habe schon Hunger.	
 Unidad5A	¿Adónde?	Wohin?	
 Unidad5A	¿Adónde vas? Voy a casa.	Wo gehst du hin? Ich gehe nach Hause.	
