@@ -102,3 +102,12 @@ None - no external service configuration required.
 - `loadWords` contract is now live and safe for plans 02-04 to write `topics` values into `data/words.tsv` in any order — a row with a blank `topics` cell, a filled cell, or a file with no `topics` column at all all resolve correctly through the loader
 - Both `topic.html`/`tapvocab.js` and `sentences.html`/`sentences.js` continue to behave exactly as before (neither reads `topics` yet — that is Phase 24's job)
 - No blockers for the remaining Phase 23 data-migration plans
+
+## Self-Check: PASSED
+
+- FOUND: assets/js/shared-utils.js
+- FOUND: tap-to-vocab-walkthrough.md
+- FOUND: .planning/phases/23-vocabulary-data-topic-tagging/23-01-SUMMARY.md
+- FOUND commit: 9b332de
+- FOUND commit: 4a36f01
+- FOUND commit: e36e1ff
