@@ -1,0 +1,20 @@
+# GSD (Get Shit Done) local install — machine-specific, not part of the site
+.claude/.gsd-profile
+.claude/agents/
+.claude/commands/
+.claude/get-shit-done/
+.claude/gsd-file-manifest.json
+.claude/gsd-install-state.json
+.claude/gsd-migration-journal/
+.claude/gsd-user-files-backup/
+.claude/hooks/
+.claude/package.json
+.claude/settings.json
+.claude/settings.local.json
+.claude/worktrees/
+
+# GSD local workflow config (per-machine toggles)
+.planning/config.json
+
+# Windows "downloaded file" metadata streams
+*:Zone.Identifier
