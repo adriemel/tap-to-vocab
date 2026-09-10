@@ -8,6 +8,19 @@ Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site 
 
 Every interaction must work correctly and feel polished so nothing interrupts the learning flow. Bugs and inconsistency erode trust in a learning tool.
 
+## Current Milestone: v2.2 Topics & Unidades
+
+**Goal:** Add the Unidad 5B vocabulary and replace the crowded 10-button home grid with two grouped entry points — Topics and Unidades — backed by a new topic-tagging column in `words.tsv`.
+
+**Target features:**
+- Unidad 5B vocabulary (~24 headwords) and its ~15 example sentences added to `words.tsv`
+- New `topics` column in `words.tsv`, read by header name so a missing column stays harmless
+- Palabras (125 words) partitioned into topics; words that fit no topic keep `topics: Palabras`
+- Unidad words additively tagged — Unidades stay complete and words appear in both a Unidad and a topic
+- Three new topics: Calendario, Comida y Bebida, Escuela
+- Home screen: 10 category buttons collapse into 📚 Topics and 📖 Unidades; the 9 tool/game buttons are untouched
+- Two sub-screens listing the 9 topics and the 5 unidades, both linking into existing `topic.html`
+
 ## Requirements
 
 ### Validated
@@ -51,7 +64,14 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-None — all v2.1 requirements validated below.
+<!-- v2.2 — full detail with REQ-IDs in .planning/REQUIREMENTS.md -->
+
+- [ ] Unidad 5B words and example sentences available in the app
+- [ ] `words.tsv` carries a `topics` column consumed by the Topics screens
+- [ ] Palabras partitioned into topics, leftovers retained
+- [ ] Calendario, Comida y Bebida and Escuela topics populated
+- [ ] Home screen reduced to two vocabulary buttons plus the unchanged tool row
+- [ ] Topics and Unidades sub-screens navigate into `topic.html`
 
 ### Validated (v2.1)
 
@@ -164,10 +184,11 @@ None — all v2.1 requirements validated below.
 ---
 ## Current State
 
-**Shipped milestone:** v2.1 Qué Hora Es? — completed 2026-08-02 (Phase 22, the only phase in this milestone). All 9 HORA requirements verified and human-approved on desktop and a real touch device. Full details: `.planning/milestones/v2.1-ROADMAP.md` and `.planning/MILESTONES.md`.
+**Shipped milestone:** v2.1 Qué Hora Es? — completed 2026-08-02 (Phase 22). All 9 HORA requirements verified and human-approved. Full details: `.planning/milestones/v2.1-ROADMAP.md` and `.planning/MILESTONES.md`.
 
-**No next milestone defined yet.** Requirements are fresh — run `/gsd:new-milestone` to start the next questioning → research → requirements → roadmap cycle.
+**Active milestone:** v2.2 Topics & Unidades — started 2026-09-10. Source images for the Unidad 5B import are stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`.
 
+---
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.
@@ -186,4 +207,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-02 after v2.1 milestone completed*
+*Last updated: 2026-09-10 after v2.2 milestone started*

@@ -1,44 +1,44 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.1
-milestone_name: Qué Hora Es?
-status: Awaiting next milestone
-stopped_at: Phase 22 UI-SPEC approved
-last_updated: "2026-08-02T18:42:33.489Z"
-last_activity: 2026-08-02 — Milestone v2.1 completed and archived
+milestone: v2.2
+milestone_name: Topics & Unidades
+status: planning
+last_updated: "2026-09-10T14:02:15.836Z"
+last_activity: 2026-09-10
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-08-02 after v2.1 milestone completed)
+See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Milestone complete
+**Current focus:** v2.2 Topics & Unidades — defining requirements
 
 ## Current Position
 
-Phase: Milestone v2.1 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-08-02 — Milestone v2.1 completed and archived
+Status: Defining requirements
+Last activity: 2026-09-10 — Milestone v2.2 started
 
 ## Accumulated Context
 
 ### Decisions
 
-- v1.9 shipped 2026-04-29: numbers hub, learn pages, and flip-card quiz with TTS complete
-- TTS reuses existing Web Speech API pattern ("Monica" es-ES preferred, any es voice fallback)
-- quien-soy-sentences.txt already exists in repo root — 14 Q&A pairs with 2 choices each (TSV-like format: Question, Choices, Answer1, Answer2)
-- v2.0 is a new standalone page (quien-soy.html + quien-soy.js) — no changes to existing pages beyond adding a home button
-- All 15 v2.0 requirements fit in one phase (Phase 19) — the feature is a single cohesive deliverable with no internal dependency forcing a split
+- v2.2 tagging model: `words.tsv` gains a 4th `topics` column, parsed by header name so rows without it stay valid
+- v2.2 Palabras is *partitioned* — a Palabras word that fits a topic moves into it; leftovers keep `topics: Palabras`
+- v2.2 Unidad words are *additively* tagged — Unidades stay complete for school revision, so a word can appear in both a Unidad and a topic
+- v2.2 new topics: Calendario (~33), Comida y Bebida (~17), Escuela (~16). "Deportes y Ocio" was proposed and explicitly declined by the user
+- v2.2 home screen: only the 10 vocabulary category buttons collapse into 📚 Topics / 📖 Unidades; the 9 tool/game buttons stay exactly as they are
+- Unidad 5B source images stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`
 
 ### Roadmap Evolution
 
