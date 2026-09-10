@@ -52,7 +52,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 23-05-PLAN.md — whole-file audit, NAV-07 practice-list proof, human verification
+- [x] 23-05-PLAN.md — whole-file audit, NAV-07 practice-list proof, human verification
 
 ### Phase 24: Topics & Unidades Navigation
 
@@ -307,5 +307,5 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
-| 23. Vocabulary Data & Topic Tagging | v2.2 | 4/5 | In Progress|  |
+| 23. Vocabulary Data & Topic Tagging | v2.2 | 5/5 | Complete   | 2026-09-10 |
 | 24. Topics & Unidades Navigation | v2.2 | 0/? | Not started | - |
