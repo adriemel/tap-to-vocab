@@ -37,10 +37,21 @@
 **Plans**: 5 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 23-01-PLAN.md — loadWords projects the tolerant `topics` column (+ walkthrough doc)
 - [ ] 23-02-PLAN.md — add the `topics` column; tag the 5 legacy topics, the 7 hidden x-rows, and partition Palabras
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 23-03-PLAN.md — tag Unidad2/3/4/5A additively
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 23-04-PLAN.md — transcribe and tag Unidad 5B from the two source images
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 23-05-PLAN.md — whole-file audit, NAV-07 practice-list proof, human verification
 
 ### Phase 24: Topics & Unidades Navigation

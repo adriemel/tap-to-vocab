@@ -50,7 +50,7 @@ Plus one small code change: `SharedUtils.loadWords` must project the new column 
 
 ### Process
 
-- **D-14:** **No review gate.** The tagging mapping is applied straight into `words.tsv` — no pause to approve a proposed Palabras partition. The user reviews the result in the git diff and the running app, and corrections happen as follow-up edits. Plans should not build in an approval checkpoint for the mapping.
+- **D-14 [informational]:** **No review gate.** The tagging mapping is applied straight into `words.tsv` — no pause to approve a proposed Palabras partition. The user reviews the result in the git diff and the running app, and corrections happen as follow-up edits. Plans should not build in an approval checkpoint for the mapping.
 
 ### Claude's Discretion
 
