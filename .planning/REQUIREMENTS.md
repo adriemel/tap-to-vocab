@@ -88,27 +88,27 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-03 | TBD | Pending |
-| DATA-04 | TBD | Pending |
-| DATA-05 | TBD | Pending |
-| TAG-01 | TBD | Pending |
-| TAG-02 | TBD | Pending |
-| TAG-03 | TBD | Pending |
-| TAG-04 | TBD | Pending |
-| TAG-05 | TBD | Pending |
-| TAG-06 | TBD | Pending |
-| NAV-01 | TBD | Pending |
-| NAV-02 | TBD | Pending |
-| NAV-03 | TBD | Pending |
-| NAV-04 | TBD | Pending |
-| NAV-05 | TBD | Pending |
-| NAV-06 | TBD | Pending |
-| NAV-07 | TBD | Pending |
+| DATA-03 | Phase 23 | Mapped |
+| DATA-04 | Phase 23 | Mapped |
+| DATA-05 | Phase 23 | Mapped |
+| TAG-01 | Phase 23 | Mapped |
+| TAG-02 | Phase 23 | Mapped |
+| TAG-03 | Phase 23 | Mapped |
+| TAG-04 | Phase 23 | Mapped |
+| TAG-05 | Phase 23 | Mapped |
+| TAG-06 | Phase 23 | Mapped |
+| NAV-01 | Phase 24 | Mapped |
+| NAV-02 | Phase 24 | Mapped |
+| NAV-03 | Phase 24 | Mapped |
+| NAV-04 | Phase 24 | Mapped |
+| NAV-05 | Phase 24 | Mapped |
+| NAV-06 | Phase 24 | Mapped |
+| NAV-07 | Phase 23 | Mapped |
 
 **Coverage:**
 - v2.2 requirements: 16 total
-- Mapped to phases: 0 (roadmap pending)
-- Unmapped: 16 ⚠️
+- Mapped to phases: 16 (Phase 23: 10, Phase 24: 6)
+- Unmapped: 0
 
 ## Source Material
 

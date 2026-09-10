@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Topics & Unidades
-status: planning
+status: roadmap_ready
 last_updated: "2026-09-10T14:02:15.836Z"
 last_activity: 2026-09-10
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** v2.2 Topics & Unidades — defining requirements
+**Current focus:** v2.2 Topics & Unidades — Phase 23 (Vocabulary Data & Topic Tagging), ready to plan
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-09-10 — Milestone v2.2 started
+Phase: 23 of 24 (Vocabulary Data & Topic Tagging)
+Plan: TBD — not yet planned
+Status: Ready to plan
+Last activity: 2026-09-10 — ROADMAP.md created for v2.2 (Phases 23-24), 16/16 requirements mapped
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Accumulated Context
 
@@ -42,6 +44,7 @@ Last activity: 2026-09-10 — Milestone v2.2 started
 
 ### Roadmap Evolution
 
+- v2.2 roadmap created 2026-09-10: 2 phases (Phase 23 Vocabulary Data & Topic Tagging, Phase 24 Topics & Unidades Navigation), continuing numbering from Phase 22
 - Phase 20 added: quien-soy-yo bugfixes and polish (TTS on first question, skip button, scroll/bubble overlap on mobile, end-screen button layout, sentence data push)
 - Phase 21 added: Quién Soy Yo — iOS TTS First-Sentence Bug Fix (first question not voiced on iPhone, likely timing/voice-readiness issue)
 
