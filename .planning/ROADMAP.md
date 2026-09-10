@@ -34,7 +34,14 @@
   4. Every row under Unidad2/3/4/5A/5B keeps its original `category` value and additionally carries a `topics` tag, so the same word is findable by both its unidad and its topic
   5. Words already saved to the ⭐ practice list (by exact Spanish text) before the tagging pass are still present and openable in Practice after the tagging pass
 
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 23-01-PLAN.md — loadWords projects the tolerant `topics` column (+ walkthrough doc)
+- [ ] 23-02-PLAN.md — add the `topics` column; tag the 5 legacy topics, the 7 hidden x-rows, and partition Palabras
+- [ ] 23-03-PLAN.md — tag Unidad2/3/4/5A additively
+- [ ] 23-04-PLAN.md — transcribe and tag Unidad 5B from the two source images
+- [ ] 23-05-PLAN.md — whole-file audit, NAV-07 practice-list proof, human verification
 
 ### Phase 24: Topics & Unidades Navigation
 
