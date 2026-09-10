@@ -2,11 +2,12 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Topics & Unidades
-status: roadmap_ready
-last_updated: "2026-09-10T14:02:15.836Z"
-last_activity: 2026-09-10
+status: planning
+stopped_at: Phase 23 context gathered
+last_updated: "2026-09-10T14:27:09.642Z"
+last_activity: 2026-09-10 — ROADMAP.md created for v2.2 (Phases 23-24), 16/16 requirements mapped
 progress:
-  total_phases: 2
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -58,8 +59,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-08-02T14:27:03.398Z
-Stopped at: Phase 22 UI-SPEC approved
+Last session: 2026-09-10T14:27:09.604Z
+Stopped at: Phase 23 context gathered
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
 
