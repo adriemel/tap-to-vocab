@@ -26,24 +26,25 @@ key-files:
 key-decisions:
   - "Task 1 found data/words.tsv already fully compliant with all 8 gates from prior plans - no column-4 corrections were needed, so no data commit was made for this task"
   - "Documented (not fixed) a reasoned edge case: two Saludar rows ('En alemán buenos días se dice Guten Tag.' and 'Me llamo Bjarne y mi apellido es Driemel.', both 8 Spanish words) are tagged topics:Saludar despite exceeding the plan's >7-word long-sentence gate. This is correct per D-05, which unconditionally self-tags ALL 40 Saludar rows (including sentence-shaped sentences) with topics=Saludar, with no length carve-out - confirmed by Gate 5 passing at 0 violations, and thematically consistent with D-07's own worked example ('Como se dice buenos días en alemán?' at 7 words, explicitly a set phrase to be tagged). Blanking these two rows to satisfy the long-sentence gate would instead break Gate 5's D-05 compliance and remove genuinely relevant sentences from Saludar's topic view. Left unchanged."
+  - "Task 3 human-verify checkpoint: user reviewed the running app (all seven verification steps, including the two flagged Saludar sentence rows shown explicitly) and replied 'Approved' with no corrections requested. data/words.tsv was left completely unmodified for the entire plan — zero commits touched column 4 or any other column."
 
 requirements-completed: [NAV-07, DATA-03, DATA-04, DATA-05, TAG-01, TAG-02, TAG-03, TAG-04, TAG-05, TAG-06]
 
 # Metrics
-duration: "in progress (Tasks 1-2 complete, Task 3 checkpoint pending human verification)"
+duration: "Tasks 1-2 (automated audit + NAV-07 proof) plus Task 3 (human-verify checkpoint, approved with no corrections) — single session"
 completed: 2026-09-10
 ---
 
-# Phase 23 Plan 05: Phase Close-Out Audit Summary (partial - checkpoint pending)
+# Phase 23 Plan 05: Phase Close-Out Audit Summary
 
-**Audited the finished `data/words.tsv` (753 lines) against all eight Phase 23 gates and mechanically proved NAV-07 for all 708 pre-phase Spanish+German pairs using the real `loadWords` loader; zero data corrections were needed. Task 3 (human browser verification) is a blocking checkpoint awaiting user response.**
+**Audited the finished `data/words.tsv` (753 lines) against all eight Phase 23 gates, mechanically proved NAV-07 for all 708 pre-phase Spanish+German pairs using the real `loadWords` loader, and obtained human approval of the running app with zero corrections requested. `data/words.tsv` was never modified by this plan.**
 
 ## Performance
 
-- **Duration:** Tasks 1-2 completed in this session; Task 3 checkpoint pending
-- **Completed (Tasks 1-2):** 2026-09-10
-- **Tasks:** 2 of 3 (Task 3 is a blocking human-verify checkpoint)
-- **Files modified:** 0 (audit found the file already fully compliant)
+- **Duration:** Tasks 1-3 completed in this session (Task 3 spanned a checkpoint pause awaiting user response)
+- **Completed:** 2026-09-10
+- **Tasks:** 3 of 3
+- **Files modified:** 0 (audit found the file already fully compliant; human verification requested no corrections)
 
 ## Accomplishments
 
@@ -70,6 +71,22 @@ completed: 2026-09-10
   - **xAnimales:** `el mono` / `der Affe` (line 67, topics=`Animales`)
 - `git status --porcelain` confirmed clean — `nav07-check.js` exists only under `/tmp/gsd23`, nothing leaked into the repo
 
+### Task 3: Human verification of the running app (checkpoint)
+
+- Server was started from the repo root (`python3 -m http.server 8000`) and the seven verification
+  steps in the plan (Unidad5B browse/quiz, sentence manager checkbox, unchanged Colores/Palabras
+  behavior, starred-practice-word survival, console cleanliness, `git diff` skim) were handed to the
+  user per the plan's blocking `checkpoint:human-verify` gate
+- **User response: "Approved."** No topic-assignment corrections were requested.
+- The user was shown, and explicitly approved, the two long Saludar sentence rows flagged in Task 1
+  (`En alemán 'buenos días' se dice 'Guten Tag'.` and `Me llamo Bjarne y mi apellido es Driemel.`) —
+  both keep `topics=Saludar` per CONTEXT.md D-05, exactly as Task 1 had already determined was
+  correct (not a defect)
+- Because no corrections were requested, `data/words.tsv` remains completely untouched by this
+  entire plan — 0 commits to that file across Tasks 1, 2, or 3
+- Per D-14, this checkpoint verifies the running app; it does not approve a proposed mapping (the
+  mapping was already applied by plans 01-04). The checkpoint is now satisfied.
+
 ## Final Topic Distribution (for Phase 24)
 
 ```
@@ -91,7 +108,7 @@ Unidad3 143, Palabras 125, Unidad5A 115, Unidad4 108, Unidad2 77, **Unidad5B 44*
 
 ## Task Commits
 
-No commits were made for Tasks 1 or 2 — the audit found `data/words.tsv` already fully compliant with every gate from prior plans (23-01 through 23-04), so no column-4 corrections were needed and no file in the repo was modified. This SUMMARY.md itself is committed as the record of the audit.
+No commits were made for Tasks 1 or 2 — the audit found `data/words.tsv` already fully compliant with every gate from prior plans (23-01 through 23-04), so no column-4 corrections were needed and no file in the repo was modified. Task 3 (human-verify checkpoint) resulted in user approval with no corrections requested, so `data/words.tsv` was never touched across the whole plan. This SUMMARY.md (partial, then finalized) is committed as the record of the audit and the approval.
 
 ## Files Created/Modified
 
@@ -118,9 +135,21 @@ Practice-list entries saved in `localStorage` before this phase have no `topics`
 
 ## Checkpoint Status
 
-**Task 3 (human-verify, blocking) has NOT been approved.** This SUMMARY documents Tasks 1-2 only. A continuation agent will be spawned after the user responds to the checkpoint; if the user requests topic corrections, those will be applied as column-4-only edits per D-14 and this SUMMARY will be updated and finalized at that point.
+**Task 3 (human-verify, blocking) is APPROVED.** The user exercised the running app against all
+seven verification steps and replied "Approved," requesting no topic-assignment corrections —
+including explicit approval of the two long Saludar sentence rows discussed in Task 1's
+key-decisions. `data/words.tsv` was left byte-identical throughout the plan. All three tasks of
+this plan, and Phase 23 as a whole, are complete.
+
+## Self-Check: PASSED
+
+- `data/words.tsv` exists and is unmodified by this plan (confirmed via `git status --short` showing
+  no pending changes to it across the whole session)
+- Commit `c16916b` (`data(23-05): audit words.tsv against all Phase 23 gates, prove NAV-07`) exists
+  in `git log` and carries the Task 1-2 SUMMARY
+- This finalized SUMMARY.md is committed as the closing record of Task 3's approval
 
 ---
 *Phase: 23-vocabulary-data-topic-tagging*
-*Tasks 1-2 completed: 2026-09-10*
-*Task 3: pending human verification*
+*Plan 05 completed: 2026-09-10*
+*All 3 tasks done; Task 3 checkpoint approved by user with zero corrections requested*
