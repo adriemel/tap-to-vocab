@@ -1,5 +1,39 @@
 # Milestones
 
+## v2.2 Topics & Unidades (Shipped: 2026-09-11)
+
+**Delivered:** Unidad 5B vocabulary plus a new `topics` tagging column, with the crowded 10-button home grid collapsed into two entry points — 📚 Topics and 📖 Unidades.
+
+**Phases completed:** 2 phases (23-24), 8 plans, 18 tasks
+**Requirements:** 16/16 complete (DATA-03–05, TAG-01–06, NAV-01–07)
+
+**Key accomplishments:**
+
+- `words.tsv` gained a tolerant 4th `topics` column, read by header name in `SharedUtils.loadWords` — a missing column, blank cell or short row loads cleanly (the short-row crash was caught in review and fixed)
+- Every word tagged: 118 of 125 Palabras headwords partitioned into topics, all 296 Unidad 2/3/4/5A headwords tagged additively, 7 hidden x-rows restored — 581 of 752 rows tagged across nine topics, including the new Calendario, Comida y Bebida and Escuela
+- Unidad 5B transcribed from two textbook photos: 27 headwords + 17 example sentences, browsable via `?cat=Unidad5B` and selectable in Build Sentences
+- Practice list proven intact — all 708 pre-phase Spanish+German pairs survive the re-tagging (NAV-07)
+- New `?topic=` URL filter on `topic.html`, kept separate from `?cat=`, with topic lists deduplicated on `es`+`de` so a word shared across unidades appears once
+- Static `topics.html` (9 topics) and `unidades.html` (5 unidades) hub pages with Home + live coin counter; home screen collapsed to large 📚 Topics / 📖 Unidades buttons, the 9 tool/game buttons untouched
+
+### Stats
+
+- Timeline: ~16h across 2 days (2026-09-10 16:02 → 2026-09-11 07:54)
+- Files created: 2 (`topics.html`, `unidades.html`); app files modified: 8 (`data/words.tsv`, `index.html`, `topic.html`, `assets/js/shared-utils.js`, `assets/js/tapvocab.js`, `assets/js/coins.js`, `assets/css/styles.css`, `CLAUDE.md`)
+- Code/data changes: +1,217 / −733 across 13 non-planning files (mostly `words.tsv` re-tagging)
+- Git range: `docs: start milestone v2.2` (`e788479`) → `docs(24): complete phase` (`d3dfbed`), 61 commits
+- Quality gates: Phase 23 verification 5/5; Phase 24 verification 10/10, UAT 9/9, security 10/10 threats closed
+- No milestone audit was run (`/gsd:audit-milestone`) — per-phase verification covered all 16 requirements
+
+### Archive
+
+- `.planning/milestones/v2.2-ROADMAP.md` — full phase details
+- `.planning/milestones/v2.2-REQUIREMENTS.md` — requirements with outcomes
+
+Known deferred items at close: 0 new from v2.2's open-artifact audit. v2.2 follow-ups (words.tsv near-duplicates, raw topic slugs in headings, review info items) are logged in PROJECT.md Deferred.
+
+---
+
 ## v2.1 Qué Hora Es? (Shipped: 2026-08-02)
 
 **Phases completed:** 1 phase (22), 4 plans, 8 tasks

@@ -8,19 +8,6 @@ Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site 
 
 Every interaction must work correctly and feel polished so nothing interrupts the learning flow. Bugs and inconsistency erode trust in a learning tool.
 
-## Current Milestone: v2.2 Topics & Unidades
-
-**Goal:** Add the Unidad 5B vocabulary and replace the crowded 10-button home grid with two grouped entry points — Topics and Unidades — backed by a new topic-tagging column in `words.tsv`.
-
-**Target features:**
-- Unidad 5B vocabulary (~24 headwords) and its ~15 example sentences added to `words.tsv`
-- New `topics` column in `words.tsv`, read by header name so a missing column stays harmless
-- Palabras (125 words) partitioned into topics; words that fit no topic keep `topics: Palabras`
-- Unidad words additively tagged — Unidades stay complete and words appear in both a Unidad and a topic
-- Three new topics: Calendario, Comida y Bebida, Escuela
-- Home screen: 10 category buttons collapse into 📚 Topics and 📖 Unidades; the 9 tool/game buttons are untouched
-- Two sub-screens listing the 9 topics and the 5 unidades, both linking into existing `topic.html`
-
 ## Requirements
 
 ### Validated
@@ -64,19 +51,23 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-<!-- v2.2 complete — no active requirements until the next milestone starts -->
+<!-- v2.2 shipped — next milestone requirements are defined by /gsd:new-milestone -->
 
-(none)
+(none — see Next Milestone Goals below for candidates)
 
 ### Validated (v2.2)
 
-- ✓ Unidad 5B words and example sentences available in the app (DATA-03/04/05) — Phase 23
-- ✓ `words.tsv` carries a `topics` column consumed by the Topics screens (TAG-01) — Phase 23, consumed in Phase 24
-- ✓ Palabras partitioned into topics, leftovers retained (TAG-02…TAG-06) — Phase 23
-- ✓ Calendario, Comida y Bebida and Escuela topics populated — Phase 23
-- ✓ Home screen reduced to two vocabulary buttons (📚 Topics / 📖 Unidades) plus the unchanged tool row (NAV-01, NAV-02) — Phase 24
-- ✓ Topics and Unidades sub-screens navigate into `topic.html`; a topic shows every word tagged with it, once, whichever unidad it came from (NAV-03…NAV-06) — Phase 24
-- ✓ Existing practice-list entries survive the data change (NAV-07) — Phase 23
+- ✓ Unidad 5B vocabulary browsable and quizzable — 27 headwords (DATA-03) — v2.2
+- ✓ Unidad 5B example sentences in Build Sentences as a `Unidad5B` checkbox — 17 sentences (DATA-04) — v2.2
+- ✓ `words.tsv` `topics` column read by header name; missing column/cell loads cleanly (DATA-05) — v2.2
+- ✓ Palabras partitioned into topics, leftovers keep `topics: Palabras` (TAG-01) — v2.2
+- ✓ Unidad words keep their unidad and gain a topic tag (TAG-02) — v2.2
+- ✓ Colores, Animales, Numeros, Saludar, Casa y Familia self-tagged (TAG-03) — v2.2
+- ✓ Calendario, Comida y Bebida and Escuela topics populated (TAG-04/05/06) — v2.2
+- ✓ Home screen reduced to 📚 Topics / 📖 Unidades plus the unchanged tool row (NAV-01, NAV-02) — v2.2
+- ✓ Topics (9) and Unidades (5) sub-screens with Home + coin counter, navigating into `topic.html` (NAV-03/04/05) — v2.2
+- ✓ A topic shows every word tagged with it, once, whichever unidad it came from (NAV-06) — v2.2
+- ✓ Practice-list entries survive the re-tagging — all 708 pre-phase pairs proven (NAV-07) — v2.2
 
 ### Validated (v2.1)
 
@@ -121,11 +112,12 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Out of Scope
 
-- New game modes or features — maintain quality-first approach before growth
 - ESM modules / build pipeline — not worth the migration cost for this project size
 - Authentication / user accounts — by design, single-user public app
 - Backend or server — static-only, GitHub Pages
 - Automated testing suite — not justified for project size
+- Deportes y Ocio topic — proposed and declined by the user for v2.2 (kept as future candidate TAG-07)
+- Build step or dependency to generate tags — tagging is a one-off data edit; project stays zero-dependency
 
 ## Context
 
@@ -140,6 +132,8 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - v2.1 codebase: ~8,600 LOC across 17 HTML pages + 12 JS modules + 1 CSS file (1,699 lines) — added hora.html + hora-phrase.js since v1.4
 - All known bugs fixed; CONCERNS.md accurately reflects remaining lower-priority issues
 - Game/practice-tool count: 4 mini-games (Coin Dash, Jungle Run, Tower Stack) + 6 learning tools (Sentences, Conjugation, Fill-in-Blank, Locations, Numbers Quiz, Qué Hora Es?) + 1 chat simulator (Quién Soy Yo)
+- v2.2 codebase: ~8,800 LOC across 19 HTML pages + 12 JS modules + 1 CSS file (1,717 lines) — added topics.html + unidades.html; `data/words.tsv` now 752 rows with a 4th `topics` column
+- Vocabulary navigation: home → 📚 Topics (`topics.html`, `?topic=`) or 📖 Unidades (`unidades.html`, `?cat=`) → `topic.html`
 - v2.1 added the project's first automated test (`hora-phrase.test.js`, zero-dependency Node assert script) — scoped narrowly to the grammar engine, not a general test suite
 
 ## Constraints
@@ -175,6 +169,9 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | Reel drag as value-model (integer index + closure pixel remainder), never scroll-position-derived | Matches existing locations.js Pointer Events pattern; avoids scrollTop/overflow:auto fighting touch-action:none | ✓ Good — human-confirmed smooth on desktop mouse and phone touch |
 | Repeat button sentinel-isolated in source (`// --- repeat-handler-start/end ---`) | Guarantees it can never accidentally call buildTimePhrase/getReelValue and silently drift from what's displayed (HORA-08) | ✓ Good — code review + human UAT both confirmed no recompute |
 | TTS block copied from tapvocab.js's simple synchronous variant, not quien-soy.html's chained-callback variant | This page speaks exactly one static string per tap — no sequencing needed | ✓ Good — first-tap audio confirmed working on iOS via UAT |
+| `topics` added as a 4th `words.tsv` column parsed by header name, blanks allowed | A file without the column or a hand-edited short row must still load; 171 example sentences legitimately carry no topic | ✓ Good — short-row crash caught in review and guarded (Phase 23) |
+| Palabras partitioned into topics, Unidad words tagged additively | Palabras is a catch-all where duplicates are noise; unidades must stay complete for school test revision | ✓ Good — both behaviours verified, user-approved (Phase 23) |
+| Unidad 5B transcribed by hand from textbook photos, stem-change hints stripped | Book annotations like "(ue)" would corrupt TTS and spelling practice | ✓ Good — human-approved with zero corrections (Phase 23) |
 | `?topic=` kept as a separate URL param from `?cat=` (not OR-matched) | Five names exist in both columns with different row counts; merging would change what existing `?cat=` bookmarks show | ✓ Good — both params verified distinct in UAT (Phase 24) |
 | Topic lists deduplicated on `es`+`de`, the practice list's word identity | `words.tsv` keeps the same word under several unidades, so topic aggregation surfaced up to 20 duplicate cards per topic (and double coins) | ✓ Good — code-review CR-01 fix, confirmed in browser (Phase 24) |
 | Topics/Unidades hub pages are static hardcoded link lists, no fetch/JS module | 9 topics and 5 unidades are a closed set; adding one is a one-line HTML edit | ✓ Good — zero JS beyond coins.js on both pages (Phase 24) |
@@ -196,13 +193,20 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 ---
 ## Current State
 
-**Shipped milestone:** v2.1 Qué Hora Es? — completed 2026-08-02 (Phase 22). All 9 HORA requirements verified and human-approved. Full details: `.planning/milestones/v2.1-ROADMAP.md` and `.planning/MILESTONES.md`.
+**Shipped milestone:** v2.2 Topics & Unidades — completed 2026-09-11 (Phases 23-24, 8 plans). All 16 requirements validated. The home screen now reaches vocabulary through 📚 Topics (9 themes aggregated across unidades via the new `topics` column) and 📖 Unidades (5 school units, now including Unidad 5B). Full details: `.planning/milestones/v2.2-ROADMAP.md` and `.planning/MILESTONES.md`.
 
-**Active milestone:** v2.2 Topics & Unidades — started 2026-09-10. Source images for the Unidad 5B import are stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`.
+**Previous:** v2.1 Qué Hora Es? — shipped 2026-08-02 (Phase 22).
 
-**Phase 23 complete (2026-09-10)** — verification passed 5/5. `data/words.tsv` now carries a tolerant 4th `topics` column: 752 data rows, 581 tagged across the nine canonical topics, 171 deliberately blank example sentences (D-06). Unidad 5B imported (27 headwords + 17 sentences). `SharedUtils.loadWords` projects `topics` by header name and tolerates both a missing column and a missing cell. NAV-07 proven: all 708 pre-phase Spanish+German pairs survive, so every starred practice-list entry still resolves. Validated: DATA-03, DATA-04, DATA-05, TAG-01 through TAG-06, NAV-07. Phase 24 is the first consumer of `topics` outside the loader.
+## Next Milestone Goals
 
-**Phase 24 complete (2026-09-11)** — the home screen's 10 category buttons collapsed into large 📚 Topics / 📖 Unidades buttons; `topics.html` (9 topics, `?topic=`) and `unidades.html` (5 unidades incl. first-ever Unidad 5B entry, `?cat=`) link into `topic.html`. Code review fixes shipped: topic lists deduplicated (CR-01), coin badge refreshes after browser Back / cross-tab (WR-01), single practice-list check (WR-02). Verification 10/10 after gap closure, UAT 9/9 passed, security 10/10 threats closed. Validated: NAV-01 through NAV-06. **All v2.2 phases complete — milestone ready to close.**
+Not yet defined — start with `/gsd:new-milestone`. Candidates carried forward from v2.2:
+
+- TAG-07 Deportes y Ocio topic (declined for v2.2, still a candidate)
+- TAG-08 Ropa topic — needs more clothing vocabulary first
+- TAG-09 Multi-topic selection
+- NAV-08 Group the 9 tool/game buttons behind a third home-screen button
+- New unidad content as the school course continues (add rows + one button in `unidades.html`)
+- Data cleanup: the 5 `words.tsv` near-duplicates and the `la casa` decision
 
 ---
 ## Evolution
@@ -223,4 +227,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-09-11 after Phase 24 completion (v2.2 phases complete)*
+*Last updated: 2026-09-11 after v2.2 milestone*

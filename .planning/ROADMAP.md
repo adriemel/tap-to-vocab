@@ -14,74 +14,17 @@
 - ✅ **v1.9 Qué Número Es?** — Phases 17-18 (shipped 2026-04-29)
 - ✅ **v2.0 Quién Soy Yo** — Phases 19-21 (shipped 2026-05-16)
 - ✅ **v2.1 Qué Hora Es?** — Phase 22 (shipped 2026-08-02)
-- 🚧 **v2.2 Topics & Unidades** — Phases 23-24 (in progress)
+- ✅ **v2.2 Topics & Unidades** — Phases 23-24 (shipped 2026-09-11)
 
-## v2.2 Phases
+<details>
+<summary>✅ v2.2 Topics & Unidades (Phases 23-24) — SHIPPED 2026-09-11</summary>
 
-- [x] **Phase 23: Vocabulary Data & Topic Tagging** - Unidad 5B added, `topics` column read tolerantly, all existing words tagged under the partition/additive rules, practice list survives
-- [x] **Phase 24: Topics & Unidades Navigation** - Home screen collapses to Topics/Unidades entry points, both sub-screens list real buttons and open topic.html correctly
+- [x] Phase 23: Vocabulary Data & Topic Tagging (5/5 plans) — completed 2026-09-10
+- [x] Phase 24: Topics & Unidades Navigation (3/3 plans) — completed 2026-09-11
 
-### Phase 23: Vocabulary Data & Topic Tagging
+Full details: `.planning/milestones/v2.2-ROADMAP.md`
 
-**Goal**: `words.tsv` carries a tolerant `topics` column; Unidad 5B (~24 headwords + ~15 sentences) is added; every existing word is tagged into a topic under the partitioned (Palabras) or additive (Unidades) rule; the practice list still resolves correctly after re-tagging.
-**Depends on**: Phase 22
-**Requirements**: DATA-03, DATA-04, DATA-05, TAG-01, TAG-02, TAG-03, TAG-04, TAG-05, TAG-06, NAV-07
-**Success Criteria** (what must be TRUE):
-
-  1. Unidad 5B's ~24 headwords and ~15 example sentences are present in `words.tsv`, browsable/quizzable via `topic.html?cat=Unidad5B`, and the sentences appear as a "Unidad5B" checkbox in the Build Sentences settings panel
-  2. `SharedUtils.loadWords`/`loadTSV` read a `topics` column by header name — rows on a `words.tsv` without that column, or with it blank, still load with no missing/undefined-topics crash
-  3. Every row that was under Palabras either moved into one of the 8 non-Palabras topics or still carries `topics: Palabras` — no row lost, no row left with an empty topics value
-  4. Every row under Unidad2/3/4/5A/5B keeps its original `category` value and additionally carries a `topics` tag, so the same word is findable by both its unidad and its topic
-  5. Words already saved to the ⭐ practice list (by exact Spanish text) before the tagging pass are still present and openable in Practice after the tagging pass
-
-**Plans**: 5 plans
-
-Plans:
-**Wave 1**
-
-- [x] 23-01-PLAN.md — loadWords projects the tolerant `topics` column (+ walkthrough doc)
-- [x] 23-02-PLAN.md — add the `topics` column; tag the 5 legacy topics, the 7 hidden x-rows, and partition Palabras
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 23-03-PLAN.md — tag Unidad2/3/4/5A additively
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 23-04-PLAN.md — transcribe and tag Unidad 5B from the two source images
-
-**Wave 4** *(blocked on Wave 3 completion)*
-
-- [x] 23-05-PLAN.md — whole-file audit, NAV-07 practice-list proof, human verification
-
-### Phase 24: Topics & Unidades Navigation
-
-**Goal**: The home screen replaces its 10 category buttons with two grouped entry points — 📚 Topics and 📖 Unidades — each opening a sub-screen with real buttons that open `topic.html` with the correct word list.
-**Depends on**: Phase 23
-**Requirements**: NAV-01, NAV-02, NAV-03, NAV-04, NAV-05, NAV-06
-**Success Criteria** (what must be TRUE):
-
-  1. Home screen shows exactly two vocabulary buttons (📚 Topics, 📖 Unidades) in place of the previous 10 category buttons
-  2. The 9 existing tool/game buttons (Practice, Build Sentences, Verbs, Fill in, Locations, Qué número es?, Quién soy yo, Qué hora es?, Play Games) remain in their same order, position, and appearance below the new buttons
-  3. Topics screen lists all 9 topics (Colores, Animales, Numeros, Saludar, Casa y Familia, Palabras, Calendario, Comida y Bebida, Escuela); tapping one opens `topic.html` showing every word tagged with that topic, regardless of which unidad or Palabras it came from
-  4. Unidades screen lists the 5 unidades (Unidad 2, 3, 4, 5A, 5B); tapping one opens `topic.html` showing that unidad's complete word list, exactly as the old per-unidad home buttons did
-  5. Both new sub-screens show a Home control and the live coin counter (`#coin-counter`), matching every other page in the app
-
-**Plans**: 3 plans
-**UI hint**: yes
-
-Plans:
-**Wave 1**
-
-- [x] 24-01-PLAN.md — `?topic=` filter in tapvocab.js + topic.html, with the blank-title regression fixed
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 24-02-PLAN.md — new static sub-screens topics.html (9 topics) and unidades.html (5 unidades), both with Home + coin counter
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 24-03-PLAN.md — home screen collapses to 📚 Topics / 📖 Unidades, CSS height + gap + narrow-viewport override, docs updated
+</details>
 
 <details>
 <summary>✅ v2.1 Qué Hora Es? (Phase 22) — SHIPPED 2026-08-02</summary>
@@ -319,6 +262,6 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 19. Quién Soy Yo — Chat Simulator | v2.0 | 2/2 | Complete | 2026-05-16 |
 | 20. Quién Soy Yo — Bugfixes & Polish | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
-| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
-| 23. Vocabulary Data & Topic Tagging | v2.2 | 5/5 | Complete    | 2026-09-10 |
-| 24. Topics & Unidades Navigation | v2.2 | 3/3 | Complete    | 2026-09-11 |
+| 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete | 2026-08-02 |
+| 23. Vocabulary Data & Topic Tagging | v2.2 | 5/5 | Complete | 2026-09-10 |
+| 24. Topics & Unidades Navigation | v2.2 | 3/3 | Complete | 2026-09-11 |
