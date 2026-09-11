@@ -29,7 +29,7 @@ Requirements for this milestone. Each maps to exactly one roadmap phase.
 - [ ] **NAV-03**: Topics screen lists 9 topic buttons and opens the word list for each
 - [ ] **NAV-04**: Unidades screen lists 5 buttons (Unidad 2, 3, 4, 5A, 5B) and opens the word list for each
 - [ ] **NAV-05**: Both sub-screens have a Home control and show the coin counter, like every other page
-- [ ] **NAV-06**: Opening a topic shows every word tagged with it, whichever unidad it came from
+- [x] **NAV-06**: Opening a topic shows every word tagged with it, whichever unidad it came from
 - [x] **NAV-07**: The ⭐ Practice list keeps working — words already saved for practice survive the re-tagging
 
 ## Data Model

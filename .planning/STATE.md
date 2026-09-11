@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Topics & Unidades
 status: executing
-stopped_at: Phase 24 context gathered
-last_updated: "2026-09-10T19:59:21.311Z"
-last_activity: 2026-09-10 -- Phase 24 planning complete
+stopped_at: Completed 24-01-PLAN.md
+last_updated: "2026-09-11T04:26:53.771Z"
+last_activity: 2026-09-11
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 8
-  completed_plans: 5
+  completed_plans: 6
   percent: 25
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 
 **Core value:** Every interaction must work correctly and feel polished so nothing interrupts the learning flow.
-**Current focus:** Phase 24 — topics & unidades navigation
+**Current focus:** Phase 24 — topics-unidades-navigation
 
 ## Current Position
 
-Phase: 24
-Plan: Not started
+Phase: 24 (topics-unidades-navigation) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-09-10 -- Phase 24 planning complete
+Last activity: 2026-09-11
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████████░░] 75%
 
 ## Accumulated Context
 
@@ -42,6 +42,8 @@ Progress: [░░░░░░░░░░] 0%
 - v2.2 new topics: Calendario (~33), Comida y Bebida (~17), Escuela (~16). "Deportes y Ocio" was proposed and explicitly declined by the user
 - v2.2 home screen: only the 10 vocabulary category buttons collapse into 📚 Topics / 📖 Unidades; the 9 tool/game buttons stay exactly as they are
 - Unidad 5B source images stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`
+- [Phase 24]: Kept ?topic= as a separate URL param from ?cat= rather than OR-matching, so overlapping category/topic names (Colores, Animales, Numeros, Saludar, Casa_Familia) keep distinct counts
+- [Phase 24]: Added displayName = topic || category fallback in initFromTSV to fix the blank/wrong h1 title regression that ?topic= pages would otherwise hit
 
 ### Roadmap Evolution
 
@@ -59,8 +61,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-09-10T19:38:05.736Z
-Stopped at: Phase 24 context gathered
+Last session: 2026-09-11T04:26:53.755Z
+Stopped at: Completed 24-01-PLAN.md
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
 

@@ -73,7 +73,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 24-01-PLAN.md — `?topic=` filter in tapvocab.js + topic.html, with the blank-title regression fixed
+- [x] 24-01-PLAN.md — `?topic=` filter in tapvocab.js + topic.html, with the blank-title regression fixed
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -321,4 +321,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
 | 23. Vocabulary Data & Topic Tagging | v2.2 | 5/5 | Complete    | 2026-09-10 |
-| 24. Topics & Unidades Navigation | v2.2 | 0/? | Not started | - |
+| 24. Topics & Unidades Navigation | v2.2 | 1/3 | In Progress|  |
