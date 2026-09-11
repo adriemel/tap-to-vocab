@@ -123,10 +123,6 @@ Palabras	el sol	die Sonne	Palabras
 Palabras	la luna	der Mond	Palabras
 Palabras	el tomate	die Tomate	Comida_Bebida
 Palabras	el queso	der Käse	Comida_Bebida
-Palabras	hablar	sprechen, reden	Escuela
-Palabras	el alemán	Deutsch, die deutsche Sprache	Escuela
-Palabras	el inglés	Englisch, die englische Sprache	Escuela
-Palabras	el español	Spanisch, die spanische Sprache	Escuela
 Palabras	el idioma	die Sprache	Escuela
 Palabras	estudiar algo	etw. lernen	Escuela
 Palabras	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.	
@@ -156,7 +152,6 @@ Palabras	Qué	Was für ein? Was?	Palabras
 Palabras	nada	nichts	Palabras
 Palabras	Quién	Wer?	Palabras
 Palabras	trabajar	arbeiten	Palabras
-Palabras	en	in, auf, an	Palabras
 Palabras	quizás	vielleicht	Palabras
 Palabras	escuchar algo	etw. hören	Escuela
 Palabras	tener	haben	Palabras
@@ -351,7 +346,7 @@ Unidad3	el metro	die U-Bahn	Palabras
 Unidad3	la zapatería	das Schuhgeschäft	Palabras
 Unidad3	el zapato	der Schuh	Palabras
 Unidad3	el diálogo	der Dialog; das Gespräch	Escuela
-Unidad3	en	in; auf; an	Palabras
+Unidad3	en	in, auf, an	Palabras
 Unidad3	No tenemos heladería en el barrio.	Wir haben keine Eisdiele im Viertel.	
 Unidad3	la cafetería	das Café; die Cafeteria	Palabras
 Unidad3	el centro comercial	das Einkaufszentrum	Palabras
@@ -433,9 +428,9 @@ Unidad3	La enfermera trabaja en el hospital.	Die Krankenpflegerin arbeitet im Kr
 Unidad3	trabajar	arbeiten	Palabras
 Unidad3	Mi madre trabaja en un instituto.	Meine Mutter arbeitet an einem Gymnasium.	
 Unidad3	el hospital	das Krankenhaus	Palabras
-Unidad3	hablar	sprechen; reden	Escuela
+Unidad3	hablar	sprechen, reden	Escuela
 Unidad3	Hablo con mi hermano.	Ich spreche mit meinem Bruder.	
-Unidad3	el inglés	Englisch; die englische Sprache	Escuela
+Unidad3	el inglés	Englisch, die englische Sprache	Escuela
 Unidad3	Mi padre habla muy bien inglés.	Mein Vater spricht sehr gut Englisch.	
 Unidad3	un poco	ein bisschen	Palabras
 Unidad3	Sí, un poco	Ja, ein bisschen	Palabras
@@ -450,7 +445,7 @@ Unidad3	Escuchamos música	Wir hören Musik	Palabras
 Unidad3	escuchar algo	etw. hören	Escuela
 Unidad3	la canción	das Lied	Palabras
 Unidad3	Escucho canciones en inglés.	Ich höre Lieder auf Englisch.	
-Unidad3	el español	Spanisch; die spanische Sprache	Escuela
+Unidad3	el español	Spanisch, die spanische Sprache	Escuela
 Unidad3	tocar algo	etw. spielen (Musikinstrument)	Palabras
 Unidad3	María toca la guitarra muy bien.	María spielt sehr gut Gitarre.	
 Unidad3	la guitarra	die Gitarre	Palabras
@@ -472,7 +467,7 @@ Unidad3	Yo estudio español en el instituto.	Ich lerne Spanisch in der Schule.
 Unidad3	el francés	Französisch; die französische Sprache	Escuela
 Unidad3	¿Hablas francés?	Sprichst du Französisch?	
 Unidad3	horrible	schrecklich	Palabras
-Unidad3	el alemán	Deutsch; die deutsche Sprache	Escuela
+Unidad3	el alemán	Deutsch, die deutsche Sprache	Escuela
 Unidad3	Hablo muy bien alemán.	Ich spreche sehr gut Deutsch.	
 Unidad3	Menos mal	Gott sei Dank!	Palabras
 Unidad3	el idioma	die Sprache	Escuela
