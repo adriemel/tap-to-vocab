@@ -36,6 +36,10 @@
 
   document.addEventListener("DOMContentLoaded", updateDisplay);
   window.addEventListener("coinschanged", updateDisplay);
+  /* Refresh on back/forward-cache restore (DOMContentLoaded does not re-fire)
+     and when another tab changes the balance (coinschanged is per-window). */
+  window.addEventListener("pageshow", function (e) { if (e.persisted) updateDisplay(); });
+  window.addEventListener("storage", function (e) { if (e.key === KEY) updateDisplay(); });
 
   function resetCoins() {
     setCoins(0);
