@@ -18,3 +18,7 @@
 
 # Windows "downloaded file" metadata streams
 *:Zone.Identifier
+
+# Local-only: archived leftovers and Playwright MCP test output
+archive/
+.playwright-mcp/
