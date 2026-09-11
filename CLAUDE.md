@@ -23,8 +23,10 @@ All asset paths are absolute from root (`/assets/...`, `/data/...`), so file:// 
 **Data flow:** TSV files in `/data/` drive all content. User state (practice list, enabled sentences, coin balance) lives in `localStorage`. Game lives are passed between pages via `sessionStorage`.
 
 **Pages and routing:**
-- `index.html` — Home grid linking to categories
-- `topic.html?cat=<Name>` — Browse/Quiz for a category (special case: `?cat=practice` reads from localStorage)
+- `index.html` — Home grid linking to the Topics/Unidades sub-screens plus the tool/game buttons
+- `topics.html` — sub-screen listing the 9 topics, each opening `topic.html?topic=<Topic>`
+- `unidades.html` — sub-screen listing the 5 unidades, each opening `topic.html?cat=Unidad<N>`
+- `topic.html?cat=<Name>` / `topic.html?topic=<Topic>` — Browse/Quiz page. `?cat=<Name>` filters on the `category` column (special case: `?cat=practice` reads from localStorage); `?topic=<Topic>` filters on the `topics` column. The two parameters are deliberately separate rather than merged: five names — `Colores`, `Animales`, `Numeros`, `Saludar`, `Casa_Familia` — exist in both columns with different row counts, so merging them would change what existing `?cat=` bookmarks show.
 - `sentences.html` — Sentence building game
 - `conjugation.html` — Verb conjugation practice
 - `fill-blank.html` — Fill-in-the-blank grammar game
@@ -51,7 +53,7 @@ All asset paths are absolute from root (`/assets/...`, `/data/...`), so file:// 
 
 ## Adding Vocabulary
 
-Add rows to `data/words.tsv` (tab-separated). Categories prefixed with `x` (e.g., `xAnimales`) are excluded from the main navigation but remain in the file. To add a new visible category, also add a button in `index.html`'s `.grid-two-col` div.
+Add rows to `data/words.tsv` (tab-separated). Categories prefixed with `x` (e.g., `xAnimales`) are excluded from the main navigation but remain in the file. The home screen no longer lists categories directly: to add a new unidad, add a button in `unidades.html`; to add a new topic, add a button in `topics.html`. `index.html` does not need to change either way.
 
 ## Key Conventions
 

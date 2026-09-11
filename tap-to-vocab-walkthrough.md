@@ -41,6 +41,8 @@ The whole app runs without a server — all computation happens in the browser. 
 tap-to-vocab/
 │
 ├── index.html            ← Home page with navigation + coin display
+├── topics.html           ← Sub-screen: pick one of 9 vocabulary topics
+├── unidades.html         ← Sub-screen: pick one of 5 school units
 ├── topic.html            ← Browse vocabulary / take quizzes
 ├── conjugation.html      ← Verb conjugation practice
 ├── sentences.html        ← Build sentences from scrambled words
@@ -80,11 +82,11 @@ tap-to-vocab/
 These are the heart of the content. They're plain text files in **TSV format** — like a spreadsheet saved as text, where each column is separated by a tab character. Open them in any text editor or Excel.
 
 #### `words.tsv` — The Vocabulary List
-**What it does:** Contains every Spanish/German word pair in the app. Each row is one word or phrase, tagged with a category (e.g., "Colores" for colors, "Animales" for animals). Categories match the buttons on the home page.
+**What it does:** Contains every Spanish/German word pair in the app. Each row is one word or phrase, tagged with a category (e.g., "Colores" for colors, "Animales" for animals). Categories match the school-unit buttons on `unidades.html`.
 **Why it exists:** Every quiz, sentence-building exercise, and browse mode draws from this file. Change this file and the whole app updates.
-**To change it:** Add a new row with `[category][TAB][Spanish word][TAB][German word]`. To create a new category, just use a new category name — it will appear automatically on the home page. Rows that end with a `.`, `?`, or `!` are treated as sentences for the sentence-builder.
+**To change it:** Add a new row with `[category][TAB][Spanish word][TAB][German word]`. A brand-new category name needs its own button added to `unidades.html` (or `topics.html`, for the `topics` column below) — it does not appear automatically anywhere. Rows that end with a `.`, `?`, or `!` are treated as sentences for the sentence-builder.
 
-There is also a fourth column called `topics`. Every row can carry at most one topic — never more than one, and never a list. The nine topic names written into the file today are `Colores`, `Animales`, `Numeros`, `Saludar`, `Casa_Familia`, `Palabras`, `Calendario`, `Comida_Bebida`, and `Escuela` — written with underscores instead of spaces, the same way `Casa_Familia` already works elsewhere in this file. The friendlier labels with emoji (like "🍽️ Comida y Bebida") don't live in this data file at all — they live in the home-page buttons, which is a separate concern from this list. An empty `topics` cell is completely normal and deliberate: example sentences are left with no topic on purpose, so that a topic list stays a short list of single words instead of getting cluttered with full sentences. Also worth knowing: the older `category` column was not touched or renamed by adding `topics` — every existing link into this file and the starred practice list keep working exactly as before.
+There is also a fourth column called `topics`. Every row can carry at most one topic — never more than one, and never a list. The nine topic names written into the file today are `Colores`, `Animales`, `Numeros`, `Saludar`, `Casa_Familia`, `Palabras`, `Calendario`, `Comida_Bebida`, and `Escuela` — written with underscores instead of spaces, the same way `Casa_Familia` already works elsewhere in this file. The friendlier labels with emoji (like "🍽️ Comida y Bebida") don't live in this data file at all — they live in the `topics.html` buttons, which is a separate concern from this list. An empty `topics` cell is completely normal and deliberate: example sentences are left with no topic on purpose, so that a topic list stays a short list of single words instead of getting cluttered with full sentences. Also worth knowing: the older `category` column was not touched or renamed by adding `topics` — every existing link into this file and the starred practice list keep working exactly as before.
 
 #### `verbs.tsv` — The Verb Table
 **What it does:** One row per verb. Each row has the infinitive (base form), the German meaning, and all six Spanish conjugations: yo, tú, él/ella, nosotros, vosotros, ellos.
@@ -152,12 +154,13 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 
 ### `index.html` — The Home Page
 
-**What it does:** The starting point of the app. Shows a grid of vocabulary category buttons, four learning-mode buttons (Practice, Build Sentences, Verbs, Fill in the Blank), the Games button, and your current coin count in the top-right corner.
+**What it does:** The starting point of the app. Shows two doors into the vocabulary — 📚 Topics and 📖 Unidades — followed by the learning-mode buttons (Practice, Build Sentences, Verbs, Fill in the Blank, Locations, Qué número es?, Quién soy yo, Qué hora es?), the Games button, and your current coin count in the top-right corner.
 **Why it exists:** Central navigation hub — from here you get to every other section.
 
-#### Category grid
-**What it does:** Each button links to `topic.html?cat=CategoryName`, loading that specific vocabulary set. Categories come directly from the category names used in `words.tsv`.
-**To change it:** Add or rename categories in `words.tsv`. The home page buttons are defined in the HTML itself and must be updated manually to match.
+#### Topics / Unidades row
+**What it does:** Two buttons, side by side, sitting where a long list of ten separate category buttons used to be. 📚 Topics opens `topics.html`, a screen listing all 9 vocabulary topics. 📖 Unidades opens `unidades.html`, a screen listing all 5 school units. Neither button carries a subtitle or a count — just the emoji and the name, matching every other button in the app.
+**Why it exists:** The old one-button-per-category layout had grown to ten buttons and was crowding the practice and game buttons underneath it. Grouping everything behind two doors keeps the home screen short while still reaching every vocabulary set.
+**To change it:** These two buttons never need editing when vocabulary changes — see the new section below for how to add a topic or a unidad.
 
 #### Practice button
 **What it does:** Shows how many words you've starred for focused review. Links to `topic.html?cat=practice`.
@@ -170,6 +173,14 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 #### Reset button
 **What it does:** A small fixed button in the bottom-right corner. After confirmation, sets coins back to 0.
 **Why it exists:** A convenience reset for teachers or for starting fresh.
+
+---
+
+### `topics.html` and `unidades.html` — The Two Vocabulary Doors
+
+**What they do:** `topics.html` lists all 9 vocabulary topics (Colores, Animales, Numeros, Saludar, Palabras, Casa y Familia, Calendario, Comida y Bebida, Escuela) as a stack of buttons. `unidades.html` lists all 5 school units (Unidad 2 through Unidad 5B) the same way. Tapping any button on either screen opens `topic.html` with that topic or unit's word list already loaded. Both screens also show the coin counter and a 🏠 Home button, just like the main home page.
+**Why they exist and how they differ:** Topics groups words by theme, regardless of which school unit they came from — so "Colores" pulls together every color word the app knows, wherever it was first taught. Unidades keeps each school unit complete and untouched, exactly as a student would encounter it in class, for revising a specific lesson. The same word can appear on both screens under different labels; that is intentional, not a duplicate to clean up.
+**To change it:** Adding a new entry to either screen means editing that one HTML file directly and adding a new button line — nothing else in the app needs to know about the change.
 
 ---
 
