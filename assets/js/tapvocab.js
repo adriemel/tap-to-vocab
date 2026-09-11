@@ -460,6 +460,9 @@
     const category = (opts && opts.category) || inferCategoryFromPath();
     const topic = (opts && opts.topic) || "";
     const displayName = topic || category;
+    // Source precedence: practice > topic > cat. isPractice drives the filter,
+    // the title and the empty-state text so they can never disagree.
+    const isPractice = category.toLowerCase() === "practice";
     const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
     const titleEl = document.getElementById("title");
     const errorEl = document.getElementById("error");
@@ -468,7 +471,7 @@
       let rows = await loadWords(tsvPath);
       let words = [];
 
-      if (category.toLowerCase() === "practice") {
+      if (isPractice) {
         words = getPracticeList();
       } else if (topic) {
         // A topic aggregates rows across categories, and words.tsv keeps the
@@ -489,8 +492,8 @@
       }
 
       if (!words.length) {
-        titleEl.textContent = category === "practice" ? "⭐ Practice" : displayName;
-        errorEl.textContent = category.toLowerCase() === "practice"
+        titleEl.textContent = isPractice ? "⭐ Practice" : displayName;
+        errorEl.textContent = isPractice
           ? "Your practice list is empty. Mark words with ⭐ to add them."
           : topic
           ? "No words found for topic: " + topic
@@ -515,7 +518,7 @@
         return;
       }
 
-      titleEl.textContent = category === "practice" ? "⭐ Practice" : displayName;
+      titleEl.textContent = isPractice ? "⭐ Practice" : displayName;
 
       // Initialize browse mode
       initBrowseMode(words, category);
