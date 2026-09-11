@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Topics & Unidades
 status: executing
-stopped_at: Completed 24-01-PLAN.md
-last_updated: "2026-09-11T04:26:53.771Z"
+stopped_at: Completed 24-02-PLAN.md
+last_updated: "2026-09-11T04:32:09.564Z"
 last_activity: 2026-09-11
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
   percent: 25
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 ## Current Position
 
 Phase: 24 (topics-unidades-navigation) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-09-11
 
-Progress: [████████░░] 75%
+Progress: [█████████░] 88%
 
 ## Accumulated Context
 
@@ -44,6 +44,7 @@ Progress: [████████░░] 75%
 - Unidad 5B source images stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`
 - [Phase 24]: Kept ?topic= as a separate URL param from ?cat= rather than OR-matching, so overlapping category/topic names (Colores, Animales, Numeros, Saludar, Casa_Familia) keep distinct counts
 - [Phase 24]: Added displayName = topic || category fallback in initFromTSV to fix the blank/wrong h1 title regression that ?topic= pages would otherwise hit
+- [Phase 24]: Single-column button stack on topics.html/unidades.html (not 2-column grid) per numbers.html precedent and mobile tap-target sizing
 
 ### Roadmap Evolution
 
@@ -61,8 +62,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-09-11T04:26:53.755Z
-Stopped at: Completed 24-01-PLAN.md
+Last session: 2026-09-11T04:32:09.548Z
+Stopped at: Completed 24-02-PLAN.md
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
 
