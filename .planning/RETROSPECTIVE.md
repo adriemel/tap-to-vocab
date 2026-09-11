@@ -265,6 +265,50 @@
 
 ---
 
+## Milestone: v2.2 — Topics & Unidades
+
+**Shipped:** 2026-09-11
+**Phases:** 2 | **Plans:** 8
+
+### What Was Built
+- Tolerant 4th `topics` column in `words.tsv`, projected by `SharedUtils.loadWords` via header name — missing column, blank cell and short row all load cleanly
+- Full re-tagging pass: Palabras partitioned into topics, Unidad 2/3/4/5A tagged additively, 7 hidden x-rows restored — 581 of 752 rows tagged across nine topics
+- Unidad 5B hand-transcribed from two textbook photos (27 headwords + 17 sentences)
+- Mechanical NAV-07 proof: all 708 pre-phase Spanish+German pairs survive, so every starred practice entry still resolves
+- `?topic=` filter on `topic.html` (separate from `?cat=`), with `es`+`de` deduplication
+- Static `topics.html` / `unidades.html` hubs; home screen collapsed from 10 category buttons to 📚 Topics / 📖 Unidades
+
+### What Worked
+- **Splitting data from navigation across phases**: Phase 23 changed only data plus one loader line, so Phase 24 could build on a verified, human-approved `words.tsv` instead of a moving target
+- **Proving invariants with the real loader, not by inspection**: NAV-07 was checked by running `loadWords` in Node over all 708 pre-phase pairs, which gave the practice-list guarantee real force
+- **Code review earned its place twice**: it caught a short-row crash that would have blanked every vocabulary page after a careless hand edit (Phase 23 CR-01), and duplicate cards paying double coins (Phase 24 CR-01), which the plans had not anticipated
+- **Writing the asymmetric partition/additive rule into REQUIREMENTS.md as a table**: every tagging plan and the final audit could point at one unambiguous rule
+
+### What Was Inefficient
+- **Aggregating by topic surfaced duplicates the planning never modelled**: `words.tsv` stores the same word under several unidades, which only mattered once words were grouped across unidades. This cost a verification gap and a fix cycle in Phase 24
+- **Punctuation-only near-duplicates (`,` vs `;` in `de`) slipped through the dedup key**: 5 words still show twice, left as deferred data cleanup
+- **`milestone.complete` output needed manual repair again**: it copied the whole live ROADMAP.md into the v2.2 archive instead of just the v2.2 section, and set STATE.md progress to 2/4 phases (50%). Both were rewritten by hand
+- **The UAT reversed a design decision (D-02, "taller but not more prominent")**: the user wanted the new buttons bigger once they saw them live. Cheap to fix, but a quick visual mock during discuss-phase could have settled it earlier
+
+### Patterns Established
+- **Tolerant column projection**: new TSV columns are read by header name with `(cols[i] || "")`, so older files and short rows stay valid and blanks are legal values
+- **Separate URL params per data column** (`?cat=` for category, `?topic=` for topics) instead of OR-matching, when names overlap across columns
+- **Word identity is `es`+`de`**: the same key is used by the practice list and by topic deduplication
+- **Closed-set hub pages are static HTML**: no fetch and no module, and adding an entry is a one-line edit (topics.html, unidades.html, numbers.html)
+
+### Key Lessons
+1. **When a view starts aggregating across a grouping column, check for cross-group duplicates first**: data that was harmless within a category becomes visible noise once it's merged
+2. **Hand-edited TSVs need loaders that tolerate short rows**: the realistic failure is a missing trailing tab, not a malformed file
+3. **Check the auto-generated milestone archive before committing it**: the CLI's archive and STATE progress output are not trustworthy as written
+4. **Size and prominence are things users judge by eye**: for home-screen layout changes, show a live preview before locking a "don't make it more prominent" decision
+
+### Cost Observations
+- Model mix: Opus 5 orchestration, `balanced` profile for subagents
+- Sessions: several across 2 days (discuss/plan/execute per phase, plus code review, verification, UAT and security passes)
+- Notable: most of the milestone's diff is data. 1,462 of the 1,950 changed non-planning lines are in `words.tsv`
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -279,6 +323,7 @@
 | v1.5 | 1 | 1 | Visual bug fix — plan-level geometry precision enables mechanical CSS implementation |
 | v1.8 | 2 | 2 | Data + UI refactor — data-only phase fastest execution; category filter pattern established |
 | v2.1 | 1 | 4 | First automated test in the repo — pure dual-exported grammar function with Node assert coverage |
+| v2.2 | 2 | 8 | First data-model change — tolerant `topics` column, data phase verified before the navigation phase consumed it |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -289,4 +334,5 @@
 5. **Open the browser first for CSS spatial layouts** — static code review cannot verify absolute positioning on mobile; visual iteration is required and should be budgeted
 6. **Data-only phases are zero-risk** — when the app has a generic loader, adding content is just rows in a file; no code path to break
 7. **Pure, dual-exported functions are worth a real test file when the logic has documented pitfalls** — the zero-automated-testing stance is a default, not a hard rule, and correctness-critical grammar/calculation logic is the right exception
-7. **Opt-out defaults protect new content** — new vocabulary/categories default to enabled so additions are immediately usable without user action
+8. **Opt-out defaults protect new content** — new vocabulary/categories default to enabled so additions are immediately usable without user action
+9. **Aggregating across a grouping column exposes latent duplicates** — check cross-group identity (here `es`+`de`) before shipping a merged view
