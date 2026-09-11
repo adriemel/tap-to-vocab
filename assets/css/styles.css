@@ -94,6 +94,12 @@ h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted)
   grid-column: 1 / -1;
 }
 
+.grid-two-col .btn-topics,
+.grid-two-col .btn-unidades {
+  padding: 20px 16px;
+  margin-bottom: 16px;
+}
+
 /* Palabras group — main button + sub-buttons row */
 .palabras-group {
   display: flex;
@@ -1187,6 +1193,11 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   .grid-two-col .btn {
     font-size: 0.85rem;
     padding: 10px 8px;
+  }
+
+  .grid-two-col .btn-topics,
+  .grid-two-col .btn-unidades {
+    padding: 16px 8px;
   }
 }
 
