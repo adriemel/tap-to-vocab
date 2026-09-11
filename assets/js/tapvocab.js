@@ -471,7 +471,19 @@
       if (category.toLowerCase() === "practice") {
         words = getPracticeList();
       } else if (topic) {
-        words = shuffleArray(rows.filter(r => (r.topics || "").toLowerCase() === topic.toLowerCase()));
+        // A topic aggregates rows across categories, and words.tsv keeps the
+        // same word under several categories. Dedupe on es+de (the same
+        // identity the practice list uses) so each word appears once.
+        const t = topic.toLowerCase();
+        const seen = new Set();
+        const matched = rows.filter(r => {
+          if ((r.topics || "").toLowerCase() !== t) return false;
+          const key = r.es + "\t" + r.de;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        words = shuffleArray(matched);
       } else {
         words = shuffleArray(rows.filter(r => r.category.toLowerCase() === category.toLowerCase()));
       }
