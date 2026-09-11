@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site on GitHub Pages at tapvocab.fun. It offers multiple practice modes — vocab browse/quiz, sentence building, verb conjugation, fill-in-blank exercises, a drag-and-drop locations game, a numbers flip-card quiz, a WhatsApp-style self-introduction chat simulator, and a drag-dial time-telling practice tool — plus a coin-reward system with mini-games. No backend, no framework, no build step. As of v1.0, the app is fully audited, all known bugs are fixed, and every page uses a consistent dark theme and mobile layout.
+Tap-to-Vocab is a Spanish vocabulary learning web app deployed as a static site on GitHub Pages at tapvocab.fun. It offers multiple practice modes — vocab browse/quiz, sentence building, verb conjugation, fill-in-blank exercises, a drag-and-drop locations game, a numbers flip-card quiz, a WhatsApp-style self-introduction chat simulator, and a drag-dial time-telling practice tool — plus a coin-reward system with mini-games. Vocabulary is reached through two home-screen entry points, 📚 Topics (9 themes aggregated across unidades via a `topics` column) and 📖 Unidades (5 school units). No backend, no framework, no build step. As of v1.0, the app is fully audited, all known bugs are fixed, and every page uses a consistent dark theme and mobile layout.
 
 ## Core Value
 
@@ -64,14 +64,19 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 
 ### Active
 
-<!-- v2.2 — full detail with REQ-IDs in .planning/REQUIREMENTS.md -->
+<!-- v2.2 complete — no active requirements until the next milestone starts -->
 
-- [ ] Unidad 5B words and example sentences available in the app
-- [ ] `words.tsv` carries a `topics` column consumed by the Topics screens
-- [ ] Palabras partitioned into topics, leftovers retained
-- [ ] Calendario, Comida y Bebida and Escuela topics populated
-- [ ] Home screen reduced to two vocabulary buttons plus the unchanged tool row
-- [ ] Topics and Unidades sub-screens navigate into `topic.html`
+(none)
+
+### Validated (v2.2)
+
+- ✓ Unidad 5B words and example sentences available in the app (DATA-03/04/05) — Phase 23
+- ✓ `words.tsv` carries a `topics` column consumed by the Topics screens (TAG-01) — Phase 23, consumed in Phase 24
+- ✓ Palabras partitioned into topics, leftovers retained (TAG-02…TAG-06) — Phase 23
+- ✓ Calendario, Comida y Bebida and Escuela topics populated — Phase 23
+- ✓ Home screen reduced to two vocabulary buttons (📚 Topics / 📖 Unidades) plus the unchanged tool row (NAV-01, NAV-02) — Phase 24
+- ✓ Topics and Unidades sub-screens navigate into `topic.html`; a topic shows every word tagged with it, once, whichever unidad it came from (NAV-03…NAV-06) — Phase 24
+- ✓ Existing practice-list entries survive the data change (NAV-07) — Phase 23
 
 ### Validated (v2.1)
 
@@ -170,6 +175,10 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 | Reel drag as value-model (integer index + closure pixel remainder), never scroll-position-derived | Matches existing locations.js Pointer Events pattern; avoids scrollTop/overflow:auto fighting touch-action:none | ✓ Good — human-confirmed smooth on desktop mouse and phone touch |
 | Repeat button sentinel-isolated in source (`// --- repeat-handler-start/end ---`) | Guarantees it can never accidentally call buildTimePhrase/getReelValue and silently drift from what's displayed (HORA-08) | ✓ Good — code review + human UAT both confirmed no recompute |
 | TTS block copied from tapvocab.js's simple synchronous variant, not quien-soy.html's chained-callback variant | This page speaks exactly one static string per tap — no sequencing needed | ✓ Good — first-tap audio confirmed working on iOS via UAT |
+| `?topic=` kept as a separate URL param from `?cat=` (not OR-matched) | Five names exist in both columns with different row counts; merging would change what existing `?cat=` bookmarks show | ✓ Good — both params verified distinct in UAT (Phase 24) |
+| Topic lists deduplicated on `es`+`de`, the practice list's word identity | `words.tsv` keeps the same word under several unidades, so topic aggregation surfaced up to 20 duplicate cards per topic (and double coins) | ✓ Good — code-review CR-01 fix, confirmed in browser (Phase 24) |
+| Topics/Unidades hub pages are static hardcoded link lists, no fetch/JS module | 9 topics and 5 unidades are a closed set; adding one is a one-line HTML edit | ✓ Good — zero JS beyond coins.js on both pages (Phase 24) |
+| Topics/Unidades home buttons enlarged and bolded after UAT (reversing D-02 "taller but not more prominent") | User asked for them to be more prominent once live | ✓ Good — user-approved on tapvocab.fun (Phase 24) |
 
 ### Deferred
 
@@ -180,6 +189,9 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 - hora.html: shared settleTimer between the two reel-drag closures (latent bug if user drags one reel then immediately the other) — v2.1 code review
 - hora.html: no keydown handler despite role="spinbutton"/aria-value* on both reels — keyboard/AT users are told arrow keys work but they don't — v2.1 code review
 - hora.html: missing aria-live="polite" on #hora-phrase — v2.1 code review
+- words.tsv: 5 punctuation-only near-duplicates (`,` vs `;` in `de`) still show twice in their topic — hablar, el alemán, el inglés, el español (Escuela), en (Palabras); `la casa` needs a decision — v2.2 Phase 24 review
+- topic.html: headings show raw slugs (`Casa_Familia`, `Comida_Bebida`) — user accepted as-is in UAT; optional polish (24-REVIEW IN-02) — v2.2
+- 24-REVIEW info items IN-01 (bogus `category` value "topic" on topic pages), IN-03 (duplicated inline styles on the two hub pages), IN-04 (Unidad 5A/5B share an emoji) — v2.2
 
 ---
 ## Current State
@@ -189,6 +201,8 @@ Every interaction must work correctly and feel polished so nothing interrupts th
 **Active milestone:** v2.2 Topics & Unidades — started 2026-09-10. Source images for the Unidad 5B import are stored at `new-vocab/unidad5b-1.jpeg` and `new-vocab/unidad5b-2.jpeg`.
 
 **Phase 23 complete (2026-09-10)** — verification passed 5/5. `data/words.tsv` now carries a tolerant 4th `topics` column: 752 data rows, 581 tagged across the nine canonical topics, 171 deliberately blank example sentences (D-06). Unidad 5B imported (27 headwords + 17 sentences). `SharedUtils.loadWords` projects `topics` by header name and tolerates both a missing column and a missing cell. NAV-07 proven: all 708 pre-phase Spanish+German pairs survive, so every starred practice-list entry still resolves. Validated: DATA-03, DATA-04, DATA-05, TAG-01 through TAG-06, NAV-07. Phase 24 is the first consumer of `topics` outside the loader.
+
+**Phase 24 complete (2026-09-11)** — the home screen's 10 category buttons collapsed into large 📚 Topics / 📖 Unidades buttons; `topics.html` (9 topics, `?topic=`) and `unidades.html` (5 unidades incl. first-ever Unidad 5B entry, `?cat=`) link into `topic.html`. Code review fixes shipped: topic lists deduplicated (CR-01), coin badge refreshes after browser Back / cross-tab (WR-01), single practice-list check (WR-02). Verification 10/10 after gap closure, UAT 9/9 passed, security 10/10 threats closed. Validated: NAV-01 through NAV-06. **All v2.2 phases complete — milestone ready to close.**
 
 ---
 ## Evolution
@@ -209,4 +223,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-09-10 after Phase 23 completion*
+*Last updated: 2026-09-11 after Phase 24 completion (v2.2 phases complete)*

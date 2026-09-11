@@ -1,12 +1,14 @@
 ---
 phase: 24-topics-unidades-navigation
 verified: 2026-09-11T00:00:00Z
-status: gaps_found
-score: 9/10 must-haves verified
+status: passed
+score: 10/10 must-haves verified
+re_verified: 2026-09-11
+resolution: "Sole gap (duplicate topic cards) closed by 3431019 (CR-01 dedupe on es+de); confirmed in browser by 24-UAT.md test 3. All 4 human_verification items resolved by 24-UAT.md (tests 1, 3, 6, 8)."
 overrides_applied: 0
 gaps:
   - truth: "Topics screen shows the correct word list for each topic (SC3/NAV-06: 'showing every word tagged with that topic, regardless of which unidad ... it came from')"
-    status: partial
+    status: resolved  # closed by 3431019, confirmed by 24-UAT.md test 3
     reason: >
       The `?topic=` filter correctly aggregates rows across unidades (verified against
       data/words.tsv row counts, all 9 slugs match exactly), but data/words.tsv keeps
@@ -60,8 +62,8 @@ human_verification:
 
 **Phase Goal:** The home screen replaces its 10 category buttons with two grouped entry points — 📚 Topics and 📖 Unidades — each opening a sub-screen with real buttons that open `topic.html` with the correct word list.
 **Verified:** 2026-09-11
-**Status:** gaps_found
-**Re-verification:** No — initial verification
+**Status:** passed (re-verified 2026-09-11 — see Gap Resolution)
+**Re-verification:** Yes — gap closed after code-review fixes
 
 ## Goal Achievement
 
@@ -156,3 +158,17 @@ This looks like an unresolved code-review finding rather than an intentional dev
 
 *Verified: 2026-09-11*
 *Verifier: Claude (gsd-verifier)*
+
+## Gap Resolution (2026-09-11)
+
+| Item | Resolution | Evidence |
+|------|-----------|----------|
+| Gap: duplicate flashcards in topic lists (truth #3 / NAV-06) | **Closed.** Topic branch in `initFromTSV` now dedupes on `r.es + "\t" + r.de`, the practice list's identity | Commit `3431019` (24-REVIEW-FIX.md CR-01). 24-UAT.md test 3: Playwright rendered all 9 topics with distinct-word counters — Casa_Familia 63, Palabras 227, Calendario 49, Escuela 45, Saludar 54; others unchanged; zero page errors |
+| Residual: 5 punctuation-only near-duplicates in `data/words.tsv` (`,` vs `;` in `de`) | **Carried forward as data cleanup**, not a code gap — code-level dedup cannot match them | hablar, el alemán, el inglés, el español (Escuela); en (Palabras) |
+| Human check 1 — hub pages at phone width | Passed | 24-UAT.md test 8 (user on phone; Unidades header wrap accepted) |
+| Human check 2 — home button height | Passed, superseded | Buttons enlarged on user request (`fbd9ead`): 92px at 390px vs 40px Practice; 24-UAT.md test 1 |
+| Human check 3 — click-through of 14 buttons | Passed | 24-UAT.md tests 3-4 (Playwright, titles + counters) |
+| Human check 4 — bfcache coin staleness (WR-01) | Fixed, not accepted | Commit `ca6d9b2`; 24-UAT.md test 6 (user confirmed) |
+
+Truth #3 / NAV-06 is now ✓ VERIFIED. Score: 10/10.
+
