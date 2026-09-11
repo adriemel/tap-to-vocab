@@ -81,7 +81,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 24-03-PLAN.md — home screen collapses to 📚 Topics / 📖 Unidades, CSS height + gap + narrow-viewport override, docs updated
+- [x] 24-03-PLAN.md — home screen collapses to 📚 Topics / 📖 Unidades, CSS height + gap + narrow-viewport override, docs updated
 
 <details>
 <summary>✅ v2.1 Qué Hora Es? (Phase 22) — SHIPPED 2026-08-02</summary>
@@ -321,4 +321,4 @@ Full details: `.planning/milestones/v1.5-ROADMAP.md`
 | 21. Quién Soy Yo — iOS TTS Fix | v2.0 | 1/1 | Complete | 2026-05-16 |
 | 22. Qué Hora Es? — Time-Telling Practice Tool | v2.1 | 4/4 | Complete    | 2026-08-02 |
 | 23. Vocabulary Data & Topic Tagging | v2.2 | 5/5 | Complete    | 2026-09-10 |
-| 24. Topics & Unidades Navigation | v2.2 | 2/3 | In Progress|  |
+| 24. Topics & Unidades Navigation | v2.2 | 3/3 | Complete   | 2026-09-11 |

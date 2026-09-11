@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Topics & Unidades
-status: executing
-stopped_at: Completed 24-02-PLAN.md
-last_updated: "2026-09-11T04:32:09.564Z"
+status: verifying
+stopped_at: Completed 24-03-PLAN.md
+last_updated: "2026-09-11T04:38:01.054Z"
 last_activity: 2026-09-11
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
-  percent: 25
+  completed_plans: 8
+  percent: 50
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-09-10 after v2.2 milestone started)
 
 Phase: 24 (topics-unidades-navigation) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-09-11
 
-Progress: [█████████░] 88%
+Progress: [██████████] 100%
 
 ## Accumulated Context
 
@@ -45,6 +45,9 @@ Progress: [█████████░] 88%
 - [Phase 24]: Kept ?topic= as a separate URL param from ?cat= rather than OR-matching, so overlapping category/topic names (Colores, Animales, Numeros, Saludar, Casa_Familia) keep distinct counts
 - [Phase 24]: Added displayName = topic || category fallback in initFromTSV to fix the blank/wrong h1 title regression that ?topic= pages would otherwise hit
 - [Phase 24]: Single-column button stack on topics.html/unidades.html (not 2-column grid) per numbers.html precedent and mobile tap-target sizing
+- [Phase 24]: Deleted the 10 category anchors outright (D-05) rather than commenting them out; index.html has zero cat=category/cat=UnidadN links, only cat=practice survives
+- [Phase 24]: Applied margin-bottom to both .btn-topics and .btn-unidades so grid-stretching can't make one look shorter, keeping the gap logic off .btn-practice and below (D-04/NAV-02)
+- [Phase 24]: Documented ?topic= vs ?cat= as deliberately separate parameters in CLAUDE.md, matching Plan 01 and Phase 23's overlapping-name rationale
 
 ### Roadmap Evolution
 
@@ -62,8 +65,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-09-11T04:32:09.548Z
-Stopped at: Completed 24-02-PLAN.md
+Last session: 2026-09-11T04:38:01.039Z
+Stopped at: Completed 24-03-PLAN.md
 
 **Planned Phase:** 21 (Quién Soy Yo — iOS TTS First-Sentence Bug Fix) — 1 plan — 2026-05-16T00:00:00.000Z
 
