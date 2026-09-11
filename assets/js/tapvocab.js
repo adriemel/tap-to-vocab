@@ -458,6 +458,8 @@
   /* ---------- Main init ---------- */
   async function initFromTSV(opts) {
     const category = (opts && opts.category) || inferCategoryFromPath();
+    const topic = (opts && opts.topic) || "";
+    const displayName = topic || category;
     const tsvPath = (opts && opts.tsvPath) || "/data/words.tsv";
     const titleEl = document.getElementById("title");
     const errorEl = document.getElementById("error");
@@ -468,14 +470,18 @@
 
       if (category.toLowerCase() === "practice") {
         words = getPracticeList();
+      } else if (topic) {
+        words = shuffleArray(rows.filter(r => (r.topics || "").toLowerCase() === topic.toLowerCase()));
       } else {
         words = shuffleArray(rows.filter(r => r.category.toLowerCase() === category.toLowerCase()));
       }
 
       if (!words.length) {
-        titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
+        titleEl.textContent = category === "practice" ? "⭐ Practice" : displayName;
         errorEl.textContent = category.toLowerCase() === "practice"
           ? "Your practice list is empty. Mark words with ⭐ to add them."
+          : topic
+          ? "No words found for topic: " + topic
           : "No words found for category: " + category;
         errorEl.style.display = "block";
 
@@ -497,8 +503,8 @@
         return;
       }
 
-      titleEl.textContent = category === "practice" ? "⭐ Practice" : category;
-      
+      titleEl.textContent = category === "practice" ? "⭐ Practice" : displayName;
+
       // Initialize browse mode
       initBrowseMode(words, category);
       
