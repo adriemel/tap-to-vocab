@@ -50,8 +50,14 @@
       allVerbs.forEach(v => { enabledMap[v.infinitive] = true; });
     }
 
+    // Show the picker list A–Z (Spanish collation) so verbs are easy to find.
+    // Only this list is sorted — practice order stays shuffled, Show mode stays in file order.
+    const sortedVerbs = [...allVerbs].sort((a, b) =>
+      a.infinitive.localeCompare(b.infinitive, "es")
+    );
+
     listEl.innerHTML = "";
-    allVerbs.forEach((verb, idx) => {
+    sortedVerbs.forEach((verb, idx) => {
       const item = document.createElement("div");
       item.className = "sentence-item";
 

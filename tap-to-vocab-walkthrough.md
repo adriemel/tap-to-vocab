@@ -2,6 +2,12 @@
 
 ---
 
+## What Changed
+
+**19 September 2026** — Three changes. The verbs *poder* (können) and *querer* (wollen, mögen) were added to the verb list, so they now show up in conjugation practice. The ⚙️ verb picker on the conjugation page now lists verbs in alphabetical order instead of the order they happen to sit in the data file, making a specific verb much easier to find. And a fourth arcade game was added — ☄️ Meteor Blast, a space shooter where you steer a ship, shoot falling meteors for points, and lose a heart whenever one crashes into you.
+
+---
+
 ## What This App Does
 
 Tap-to-Vocab is an interactive Spanish vocabulary learning app that runs entirely in a web browser. Students browse vocabulary cards, take quizzes in both directions (Spanish → German and German → Spanish), practice verb conjugations, build sentences word-by-word, and play arcade games — all on a single site with no accounts or servers required. Every correct answer earns a virtual coin, and coins are spent to unlock the games.
@@ -27,8 +33,8 @@ Think of the app as a language classroom with several rooms. The home page is th
     └─────────────┘   └──────────────┘  │         │ tower-stack.html   │
                                   ┌─────▼──────┐  │ coin-dash.html     │
                                   │ sentences  │  │ jungle-run.html    │
-                                  │ fill-blank │  └────────────────────┘
-                                  └────────────┘
+                                  │ fill-blank │  │ meteor-blast.html  │
+                                  └────────────┘  └────────────────────┘
 ```
 
 The whole app runs without a server — all computation happens in the browser. There is no database, no login, and no internet connection needed after the first load. Vocabulary, verbs, and exercises are stored in simple text files (`.tsv` format, like spreadsheets) that are easy to edit.
@@ -53,7 +59,8 @@ tap-to-vocab/
 ├── games/
 │   ├── tower-stack.html  ← 3D block stacking game
 │   ├── coin-dash.html    ← Side-scrolling dodge & collect game
-│   └── jungle-run.html   ← Platformer with a monkey
+│   ├── jungle-run.html   ← Platformer with a monkey
+│   └── meteor-blast.html ← Space shooter: blast falling meteors
 │
 ├── assets/
 │   ├── css/styles.css    ← All visual styling for the app
@@ -91,7 +98,7 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 #### `verbs.tsv` — The Verb Table
 **What it does:** One row per verb. Each row has the infinitive (base form), the German meaning, and all six Spanish conjugations: yo, tú, él/ella, nosotros, vosotros, ellos.
 **Why it exists:** The conjugation practice page reads directly from this file. Add a verb here and it appears in the practice rotation immediately.
-**To change it:** Add a new row with all eight columns filled in. All six conjugated forms are required.
+**To change it:** Add a new row with all eight columns filled in. All six conjugated forms are required. The file currently holds 28 verbs — *poder* and *querer* were the most recent additions. Order in the file doesn't matter: practice mode shuffles the verbs anyway, and the ⚙️ picker sorts them alphabetically on screen. One detail to respect if you edit the file outside a spreadsheet: the lines end in Windows-style line breaks and the text is saved as UTF-8, which is what keeps accented forms like *podéis* readable.
 
 #### `fill-in-blank.tsv` — Grammar Drill Questions
 **What it does:** Each row is one fill-in-the-blank question. It has a German sentence (for context), the Spanish sentence with a `___` placeholder, the correct answer, and wrong answers separated by commas.
@@ -208,8 +215,9 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 **What it does:** Presents Spanish verbs one at a time. In Practice mode, all six conjugated forms appear as buttons in a scrambled word bank below the verb. You tap them in the correct order (yo → tú → él → nosotros → vosotros → ellos) to fill in the conjugation table. A wrong tap triggers an error sound and the button shakes. Completing a verb earns 1 coin. In Show mode, you just browse all conjugations without interacting.
 
 #### Verb Manager
-**What it does:** A settings panel (⚙️ button) that lets you choose which verbs to include in your rotation. Your selection is remembered across sessions.
-**Why it exists:** Lets a teacher assign specific verbs for a lesson, or lets a student focus on verbs they find difficult.
+**What it does:** A settings panel (⚙️ button) that lets you choose which verbs to include in your rotation. The list appears in alphabetical order (A–Z, using Spanish alphabet rules, so accented letters land where a Spanish dictionary would put them). Your selection is remembered across sessions.
+**Why it exists:** Lets a teacher assign specific verbs for a lesson, or lets a student focus on verbs they find difficult. Sorting matters once the list grows past a handful — scanning 28 verbs in data-file order means reading every line; alphabetical means jumping straight to the one you want.
+**To change it:** The sorting happens only in this picker. Practice mode still serves verbs in random order and Show mode still walks through them in data-file order, so the new sort changes nothing about what a student practises. A brand-new verb added to `verbs.tsv` starts out ticked for everyone, including students who saved a selection earlier.
 
 ---
 
@@ -234,7 +242,7 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 
 ### `games.html` — Game Zone
 
-**What it does:** A simple menu showing the three available games with short descriptions. It reads session storage to know how many game plays ("lives") remain from the 10-coin entry fee. When lives run out, the page shows that no more plays are available without earning more coins.
+**What it does:** A simple menu showing the four available games with short descriptions. It reads session storage to know how many game plays ("lives") remain from the 10-coin entry fee. When lives run out, the page shows that no more plays are available without earning more coins.
 
 ---
 
@@ -263,6 +271,27 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 **What it does:** A platform runner where a monkey jumps across platforms, collects bananas, and dodges parrots. Tap, click, or press Space/Up to jump. A double-jump is available. Parrot collisions end the game. Platforms are generated procedurally (created on the fly) with increasing gaps and speed as you go further.
 
 **Controls:** Tap/click/Space/Up to jump.
+
+---
+
+### `games/meteor-blast.html` — Meteor Blast
+
+**What it does:** A space shooter. Your ship sits at the bottom of a starfield and fires by itself, about four shots a second — the player's only job is steering left and right. Meteors tumble down from the top. Shooting a large meteor breaks it into two medium ones, a medium into two small ones, and a small one into dust. Every break scores points: 10 for a large, 15 for a medium, 25 for a small, so clearing a big rock all the way down is worth more than letting the fragments drift past. You start with three hearts and lose one each time a meteor crashes into the ship. At zero hearts the game ends.
+
+**Why the ship shoots on its own:** Steering *and* aiming *and* firing is a lot for young hands on a phone. Taking away the fire button leaves one simple skill — move away from danger, line up under the rock — and the game still has real pressure.
+
+**Controls:**
+- Touch: hold and slide a finger anywhere on the play area; the ship follows it
+- Mouse: just move the pointer across the play area
+- Keyboard: arrow keys or A/D
+
+**Fairness details:** After a crash the ship flashes for about a second and a half and cannot be hit again during that time, so one bad moment doesn't cost all three hearts at once. Meteors that slip past the bottom of the screen cost nothing — only a direct hit does. Difficulty creeps up every seven seconds or so: rocks fall a little faster and arrive a little more often.
+
+**Music and sound:** A minor-key chiptune loop plays during the game, with a laser blip for each shot, a crunch when a rock breaks (deeper for bigger rocks), and a longer explosion when the ship is hit. All of it is generated in code — no audio files. The 🔊 button mutes everything and shares its setting with the other games.
+
+**Best score:** Saved in localStorage, so the record survives closing the browser.
+
+**To change it:** The numbers worth tuning sit together near the top of the file, under "Constants" and the meteor-tier list — how often the ship fires, how many hearts you start with, how fast meteors arrive, and each rock size's speed and points value.
 
 ---
 
@@ -295,7 +324,7 @@ There is also a fourth column called `topics`. Every row can carry at most one t
 - **sessionStorage:** Similar to localStorage, but erased when the browser tab is closed. Used here for game lives.
 - **Web Speech API:** A built-in browser feature that converts text to spoken audio using voices installed on your device. Used here to pronounce Spanish words.
 - **Web Audio API:** A built-in browser feature for generating and playing sounds entirely through code, without audio files. Used here for game music and sound effects.
-- **Canvas:** An HTML element that lets JavaScript draw graphics pixel-by-pixel. Used for all three games.
+- **Canvas:** An HTML element that lets JavaScript draw graphics pixel-by-pixel. Used for all four games.
 - **Isometric projection:** A visual trick that makes 2D graphics look 3D by drawing them at a fixed 30° angle, giving the illusion of depth.
 - **Chiptune:** Simple, synthesized music that sounds like classic video games. The game music is generated entirely in code (no audio files) using the Web Audio API.
 - **Confetti:** The animated colored dots that burst across the screen on correct answers — a CSS animation triggered by JavaScript.

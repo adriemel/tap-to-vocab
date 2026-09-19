@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <title>Meteor Blast – Tap-to-Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      align-items: center;
+    }
+    .game-score {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--warn);
+      letter-spacing: -1px;
+      min-width: 70px;
+    }
+    .game-lives {
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,168,255,0.15);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    canvas {
+      display: block;
+      border-radius: 16px;
+      max-width: 100%;
+      touch-action: none;
+    }
+    .game-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,10,22,0.9);
+      border-radius: 16px;
+      gap: 16px;
+      z-index: 10;
+    }
+    .game-overlay h2 {
+      color: var(--ink);
+      font-size: 2rem;
+      margin: 0;
+    }
+    .game-overlay .final-score {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--warn);
+      line-height: 1;
+    }
+    .game-overlay .score-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: -8px;
+    }
+    .mute-btn {
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>☄️ Meteor Blast</h1>
+      <div class="game-wrapper">
+        <div class="game-hud">
+          <span class="game-score" id="score-display">0</span>
+          <span class="game-lives" id="lives-display">❤️❤️❤️</span>
+          <button id="btn-mute" class="mute-btn" title="Mute">🔊</button>
+        </div>
+
+        <div class="canvas-container" id="canvas-container">
+          <canvas id="game-canvas" width="390" height="600"></canvas>
+
+          <div class="game-overlay" id="overlay-start">
+            <h2>☄️ Meteor Blast</h2>
+            <p style="color:var(--muted);text-align:center;margin:0;max-width:270px;line-height:1.7;">
+              Slide your finger to steer the ship — it shoots all by itself!<br>
+              Blast the meteors before they crash into you.
+            </p>
+            <button class="btn" id="btn-start" style="min-width:140px;font-size:1.1rem;">▶ Start</button>
+          </div>
+
+          <div class="game-overlay" id="overlay-end" style="display:none;">
+            <h2>Game Over</h2>
+            <div class="final-score" id="final-score">0</div>
+            <div class="score-label">points</div>
+            <div class="score-label" id="best-score" style="color:var(--accent);margin-top:2px;"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+              <button class="btn" id="btn-again" style="min-width:130px;">▶ Play Again</button>
+              <button class="btn secondary" onclick="location.replace('/games.html')" style="min-width:130px;text-align:center;">✓ Done</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn secondary" onclick="location.replace('/games.html')">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/game-init.js"></script>
+  <script>
+  (function () {
+    if (!GameInit.requireLives(".card h1")) return;
+
+    var canvas = document.getElementById("game-canvas");
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width;
+    var H = canvas.height;
+
+    var scoreDisplay = document.getElementById("score-display");
+    var livesDisplay = document.getElementById("lives-display");
+    var overlayStart = document.getElementById("overlay-start");
+    var overlayEnd   = document.getElementById("overlay-end");
+    var finalScoreEl = document.getElementById("final-score");
+    var bestScoreEl  = document.getElementById("best-score");
+    var btnStart     = document.getElementById("btn-start");
+    var btnAgain     = document.getElementById("btn-again");
+
+    /* ── Constants ── */
+    var SHIP_Y        = H - 72;   // ship stays on this line, only moves sideways
+    var SHIP_R        = 15;       // collision radius of the ship
+    var START_LIVES   = 3;
+    var FIRE_INTERVAL = 13;       // frames between auto-fired shots
+    var BULLET_SPEED  = 9;
+    var SPAWN_BASE    = 68;       // frames between meteors at the start
+    var SPAWN_MIN     = 26;
+    var INVULN_FRAMES = 90;       // grace period after being hit (~1.5 s)
+    var BEST_KEY      = "tapvocab_best_meteor";
+
+    /* Meteor sizes: bigger ones are slower and split, small ones are worth more */
+    var METEOR_TIERS = [
+      { r: 30, speed: 1.05, points: 10, next: 1 },  // 0 = large
+      { r: 20, speed: 1.45, points: 15, next: 2 },  // 1 = medium
+      { r: 12, speed: 1.95, points: 25, next: -1 }  // 2 = small (no split)
+    ];
+
+    /* ── Colors (app theme, space edition) ── */
+    var BG_TOP   = "#05070f";
+    var BG_BOT   = "#141a36";
+    var SHIP_C   = "#6ca8ff";
+    var SHIP_DK  = "#3f6bb8";
+    var BULLET_C = "#7dffc4";
+    var ROCK_C   = "#8a7d6e";
+    var ROCK_DK  = "#584e44";
+    var ROCK_LT  = "#b5a595";
+
+    /* ── Game state ── */
+    var shipX = W / 2, targetX = W / 2;
+    var score = 0, lives = START_LIVES;
+    var bestScore = 0;
+    try { bestScore = parseInt(localStorage.getItem(BEST_KEY) || "0", 10) || 0; } catch (e) {}
+    var gameRunning = false, animFrame = null;
+    var frameCount = 0, fireTimer = 0, spawnTimer = 0, spawnInterval = SPAWN_BASE;
+    var difficulty = 0;           // grows slowly, speeds every meteor up
+    var invuln = 0;               // frames of remaining hit protection
+    var shakeFrames = 0;          // screen shake after a crash
+    var bullets = [], meteors = [], particles = [], stars = [];
+
+    /* ── Audio ── */
+    var audioCtx = null;
+    var isMuted = localStorage.getItem("tapvocab_mute") === "1";
+    var musicGain = null;
+    var musicInterval = null;
+    var musicPlaying = false;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    /* Unlock AudioContext on iOS — must be called from a direct user gesture */
+    function unlockAudio() {
+      var ac = getAudioCtx();
+      if (ac.state === "running") return;
+      var buf = ac.createBuffer(1, 1, ac.sampleRate);
+      var src = ac.createBufferSource();
+      src.buffer = buf;
+      src.connect(ac.destination);
+      src.start(0);
+      ac.resume();
+    }
+
+    /* Short burst of filtered white noise — the base of every "crunch" sound */
+    function playNoise(duration, volume, freqFrom, freqTo) {
+      var ac = getAudioCtx();
+      var bufferSize = Math.floor(ac.sampleRate * duration);
+      var buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
+      var data = buffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      var noise = ac.createBufferSource();
+      noise.buffer = buffer;
+      var filter = ac.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(freqFrom, ac.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(freqTo, ac.currentTime + duration);
+      var gain = ac.createGain();
+      gain.gain.setValueAtTime(volume, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+      noise.connect(filter); filter.connect(gain); gain.connect(ac.destination);
+      noise.start(ac.currentTime);
+      noise.stop(ac.currentTime + duration + 0.02);
+    }
+
+    function playLaserSound() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(920, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(260, ac.currentTime + 0.09);
+      gain.gain.setValueAtTime(0.07, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.1);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + 0.12);
+    }
+
+    function playBreakSound(tier) {
+      if (isMuted) return;
+      /* Bigger rocks break with a deeper, longer crunch */
+      var dur = tier === 0 ? 0.28 : tier === 1 ? 0.2 : 0.14;
+      playNoise(dur, 0.16, tier === 0 ? 1400 : 2600, 200);
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(tier === 0 ? 160 : tier === 1 ? 240 : 340, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(60, ac.currentTime + dur);
+      gain.gain.setValueAtTime(0.12, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + dur + 0.02);
+    }
+
+    function playCrashSound() {
+      if (isMuted) return;
+      playNoise(0.45, 0.22, 1800, 120);
+      var ac = getAudioCtx();
+      var osc = ac.createOscillator();
+      var gain = ac.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(110, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(35, ac.currentTime + 0.45);
+      gain.gain.setValueAtTime(0.2, ac.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.45);
+      osc.connect(gain); gain.connect(ac.destination);
+      osc.start(ac.currentTime);
+      osc.stop(ac.currentTime + 0.5);
+    }
+
+    /* ── Music (spacey minor-key arpeggio) ── */
+    var MUSIC_BPM = 118;
+    var BEAT_SEC = 60 / MUSIC_BPM;
+    var mbMelody = [440,523,659,523, 392,494,587,494, 349,440,523,440, 392,494,587,698];
+    var mbBass   = [110,110,110,110, 98,98,98,98,  87,87,87,87,  98,98,98,98];
+    var musicStep = 0;
+
+    var SCHEDULE_AHEAD = 0.15; // seconds to schedule ahead
+    var musicNextTime = 0;     // AudioContext time of next note
+
+    function startMusic() {
+      if (isMuted) return;
+      var ac = getAudioCtx();
+      musicGain = ac.createGain();
+      musicGain.gain.setValueAtTime(0.11, ac.currentTime);
+      musicGain.connect(ac.destination);
+      musicPlaying = true;
+      musicStep = 0;
+      musicNextTime = ac.currentTime;
+      scheduleMusic();
+    }
+
+    function scheduleMusic() {
+      if (!musicPlaying || !musicGain) return;
+      var ac = getAudioCtx();
+      while (musicNextTime < ac.currentTime + SCHEDULE_AHEAD) {
+        var dur = BEAT_SEC * 0.55;
+        var o1 = ac.createOscillator();
+        var g1 = ac.createGain();
+        o1.type = "triangle";
+        o1.frequency.value = mbMelody[musicStep % mbMelody.length];
+        g1.gain.setValueAtTime(0.09, musicNextTime);
+        g1.gain.exponentialRampToValueAtTime(0.001, musicNextTime + dur);
+        o1.connect(g1); g1.connect(musicGain);
+        o1.start(musicNextTime); o1.stop(musicNextTime + dur);
+        var o2 = ac.createOscillator();
+        var g2 = ac.createGain();
+        o2.type = "sawtooth";
+        o2.frequency.value = mbBass[musicStep % mbBass.length];
+        g2.gain.setValueAtTime(0.06, musicNextTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, musicNextTime + BEAT_SEC * 0.95);
+        o2.connect(g2); g2.connect(musicGain);
+        o2.start(musicNextTime); o2.stop(musicNextTime + BEAT_SEC);
+        musicStep++;
+        musicNextTime += BEAT_SEC;
+      }
+      if (musicPlaying) musicInterval = setTimeout(scheduleMusic, 100);
+    }
+
+    function stopMusic() {
+      musicPlaying = false;
+      if (musicInterval) { clearTimeout(musicInterval); musicInterval = null; }
+      if (musicGain && audioCtx) {
+        try {
+          musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+          musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+          musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+        } catch (e) {}
+        setTimeout(function () { musicGain = null; }, 400);
+      }
+    }
+
+    /* ── Helpers ── */
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function rand(lo, hi) { return Math.random() * (hi - lo) + lo; }
+    function randInt(lo, hi) { return Math.floor(rand(lo, hi + 1)); }
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+    /* ── Starfield (three layers, slow drift) ── */
+    function makeStars() {
+      stars = [];
+      for (var i = 0; i < 70; i++) {
+        var layer = i < 34 ? 0 : i < 56 ? 1 : 2;
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          layer: layer,
+          r: layer === 0 ? rand(0.5, 0.9) : layer === 1 ? rand(0.9, 1.4) : rand(1.4, 2.1),
+          twinkle: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function drawBG() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, BG_TOP);
+      g.addColorStop(1, BG_BOT);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      /* Two faint nebula clouds for depth */
+      var n1 = ctx.createRadialGradient(W * 0.22, H * 0.26, 10, W * 0.22, H * 0.26, 190);
+      n1.addColorStop(0, "rgba(108,168,255,0.10)");
+      n1.addColorStop(1, "rgba(108,168,255,0)");
+      ctx.fillStyle = n1;
+      ctx.fillRect(0, 0, W, H);
+      var n2 = ctx.createRadialGradient(W * 0.82, H * 0.66, 10, W * 0.82, H * 0.66, 220);
+      n2.addColorStop(0, "rgba(180,110,255,0.08)");
+      n2.addColorStop(1, "rgba(180,110,255,0)");
+      ctx.fillStyle = n2;
+      ctx.fillRect(0, 0, W, H);
+
+      /* Stars drift downward, back layers slower (parallax) */
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        if (gameRunning) {
+          s.y += (s.layer === 0 ? 0.18 : s.layer === 1 ? 0.42 : 0.75);
+          if (s.y > H) { s.y = -2; s.x = Math.random() * W; }
+          s.twinkle += 0.05;
+        }
+        var alpha = 0.35 + 0.3 * Math.sin(s.twinkle) + s.layer * 0.12;
+        ctx.fillStyle = "rgba(220,232,255," + clamp(alpha, 0.1, 0.95).toFixed(2) + ")";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    /* ── Player ship ── */
+    function drawShip() {
+      /* Blink while protected after a crash */
+      if (invuln > 0 && Math.floor(invuln / 5) % 2 === 0) return;
+
+      var x = shipX, y = SHIP_Y;
+
+      /* Engine flame (flickers) */
+      var flame = 10 + Math.random() * 8;
+      var fg = ctx.createLinearGradient(x, y + 14, x, y + 14 + flame);
+      fg.addColorStop(0, "rgba(255,210,90,0.95)");
+      fg.addColorStop(1, "rgba(255,90,60,0)");
+      ctx.fillStyle = fg;
+      ctx.beginPath();
+      ctx.moveTo(x - 6, y + 14);
+      ctx.lineTo(x + 6, y + 14);
+      ctx.lineTo(x, y + 14 + flame);
+      ctx.closePath();
+      ctx.fill();
+
+      /* Glow */
+      ctx.shadowColor = SHIP_C;
+      ctx.shadowBlur = 16;
+
+      /* Hull — a pointed arrow */
+      ctx.fillStyle = SHIP_C;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 20);
+      ctx.lineTo(x + 13, y + 12);
+      ctx.lineTo(x, y + 6);
+      ctx.lineTo(x - 13, y + 12);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      /* Wings */
+      ctx.fillStyle = SHIP_DK;
+      ctx.beginPath();
+      ctx.moveTo(x - 13, y + 12);
+      ctx.lineTo(x - 19, y + 16);
+      ctx.lineTo(x - 8, y + 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(x + 13, y + 12);
+      ctx.lineTo(x + 19, y + 16);
+      ctx.lineTo(x + 8, y + 4);
+      ctx.closePath();
+      ctx.fill();
+
+      /* Cockpit window */
+      ctx.fillStyle = "#e8f2ff";
+      ctx.beginPath();
+      ctx.ellipse(x, y - 6, 4, 6.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(108,168,255,0.55)";
+      ctx.beginPath();
+      ctx.ellipse(x, y - 4.5, 2.6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    /* ── Bullets ── */
+    function fireBullet() {
+      bullets.push({ x: shipX, y: SHIP_Y - 20 });
+      playLaserSound();
+    }
+
+    function drawBullets() {
+      ctx.shadowColor = BULLET_C;
+      ctx.shadowBlur = 12;
+      for (var i = 0; i < bullets.length; i++) {
+        var b = bullets[i];
+        ctx.fillStyle = BULLET_C;
+        ctx.beginPath();
+        ctx.ellipse(b.x, b.y, 2.6, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.ellipse(b.x, b.y, 1.1, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    /* ── Meteors ── */
+    function spawnMeteor(tier, x, y, vx) {
+      var t = METEOR_TIERS[tier];
+      /* Each rock gets its own lumpy outline so no two look alike */
+      var points = [];
+      var count = randInt(8, 11);
+      for (var i = 0; i < count; i++) points.push(rand(0.76, 1.12));
+      var craters = [];
+      for (var c = 0; c < randInt(2, 4); c++) {
+        craters.push({
+          a: rand(0, Math.PI * 2),
+          d: rand(0.15, 0.55),
+          r: rand(0.1, 0.22)
+        });
+      }
+      meteors.push({
+        tier: tier,
+        x: x, y: y,
+        r: t.r,
+        vx: vx,
+        vy: t.speed + difficulty,
+        rot: rand(0, Math.PI * 2),
+        spin: rand(-0.035, 0.035),
+        points: points,
+        craters: craters
+      });
+    }
+
+    function spawnWave() {
+      var tier = Math.random() < 0.5 ? 0 : Math.random() < 0.7 ? 1 : 2;
+      var r = METEOR_TIERS[tier].r;
+      var x = rand(r + 6, W - r - 6);
+      spawnMeteor(tier, x, -r - 10, rand(-0.5, 0.5));
+    }
+
+    function drawMeteor(m) {
+      ctx.save();
+      ctx.translate(m.x, m.y);
+      ctx.rotate(m.rot);
+
+      /* Jagged rock outline */
+      ctx.beginPath();
+      for (var i = 0; i < m.points.length; i++) {
+        var a = (i / m.points.length) * Math.PI * 2;
+        var rr = m.r * m.points[i];
+        var px = Math.cos(a) * rr, py = Math.sin(a) * rr;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+
+      var g = ctx.createLinearGradient(-m.r, -m.r, m.r, m.r);
+      g.addColorStop(0, ROCK_LT);
+      g.addColorStop(0.5, ROCK_C);
+      g.addColorStop(1, ROCK_DK);
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.strokeStyle = "rgba(30,24,20,0.6)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      /* Craters */
+      for (var c = 0; c < m.craters.length; c++) {
+        var cr = m.craters[c];
+        ctx.fillStyle = "rgba(60,52,44,0.55)";
+        ctx.beginPath();
+        ctx.arc(Math.cos(cr.a) * m.r * cr.d, Math.sin(cr.a) * m.r * cr.d, m.r * cr.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      /* Warm glow of atmospheric burn on the leading edge */
+      ctx.fillStyle = "rgba(255,140,60,0.12)";
+      ctx.beginPath();
+      ctx.arc(m.x, m.y + m.r * 0.35, m.r * 0.85, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    /* ── Particles (sparks, dust, explosions) ── */
+    function spawnParticles(x, y, count, color, power) {
+      for (var i = 0; i < count; i++) {
+        var a = rand(0, Math.PI * 2);
+        var sp = rand(1, power);
+        particles.push({
+          x: x, y: y,
+          vx: Math.cos(a) * sp,
+          vy: Math.sin(a) * sp,
+          life: randInt(18, 34),
+          maxLife: 34,
+          r: rand(1.5, 3.8),
+          color: color
+        });
+      }
+    }
+
+    function updateParticles() {
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.04;
+        p.vx *= 0.97;
+        p.life--;
+        if (p.life <= 0) particles.splice(i, 1);
+      }
+    }
+
+    function drawParticles() {
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        ctx.globalAlpha = clamp(p.life / p.maxLife, 0, 1);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    /* ── Score & lives display ── */
+    function updateHUD() {
+      scoreDisplay.textContent = score;
+      /* Lost lives stay as the same heart, just faded — avoids fonts that
+         render a black-heart emoji as an empty box on some devices */
+      var hearts = "";
+      for (var i = 0; i < START_LIVES; i++) {
+        hearts += i < lives
+          ? "❤️"
+          : '<span style="opacity:.25">❤️</span>';
+      }
+      livesDisplay.innerHTML = hearts;
+    }
+
+    /* ── Collisions ── */
+    function hitCircle(ax, ay, ar, bx, by, br) {
+      var dx = ax - bx, dy = ay - by;
+      return dx * dx + dy * dy < (ar + br) * (ar + br);
+    }
+
+    function breakMeteor(index) {
+      var m = meteors[index];
+      var tier = METEOR_TIERS[m.tier];
+      meteors.splice(index, 1);
+
+      score += tier.points;
+      updateHUD();
+      playBreakSound(m.tier);
+      spawnParticles(m.x, m.y, m.tier === 0 ? 18 : m.tier === 1 ? 12 : 8, "#c9b8a4", m.tier === 0 ? 4.5 : 3.5);
+      spawnParticles(m.x, m.y, 6, "#ffb163", 3);
+
+      /* Large and medium rocks break into two smaller ones */
+      if (tier.next >= 0) {
+        spawnMeteor(tier.next, m.x - m.r * 0.35, m.y, m.vx - rand(0.5, 1.3));
+        spawnMeteor(tier.next, m.x + m.r * 0.35, m.y, m.vx + rand(0.5, 1.3));
+      }
+    }
+
+    function crash(m, index) {
+      meteors.splice(index, 1);
+      lives--;
+      invuln = INVULN_FRAMES;
+      shakeFrames = 18;
+      updateHUD();
+      playCrashSound();
+      spawnParticles(shipX, SHIP_Y, 26, "#ff8a5c", 5.5);
+      spawnParticles(m.x, m.y, 14, "#c9b8a4", 4);
+      if (lives <= 0) gameOver();
+    }
+
+    function checkCollisions() {
+      /* Bullets vs meteors */
+      for (var i = meteors.length - 1; i >= 0; i--) {
+        var m = meteors[i];
+        for (var b = bullets.length - 1; b >= 0; b--) {
+          if (hitCircle(bullets[b].x, bullets[b].y, 3, m.x, m.y, m.r * 0.92)) {
+            bullets.splice(b, 1);
+            breakMeteor(i);
+            break; // this meteor is gone — stop testing bullets against it
+          }
+        }
+      }
+
+      /* Meteors vs ship (skipped while protected) */
+      if (invuln > 0) return;
+      for (var j = meteors.length - 1; j >= 0; j--) {
+        var mm = meteors[j];
+        if (hitCircle(shipX, SHIP_Y, SHIP_R, mm.x, mm.y, mm.r * 0.85)) {
+          crash(mm, j);
+          return;
+        }
+      }
+    }
+
+    /* ── Init / game over ── */
+    function initGame() {
+      shipX = W / 2;
+      targetX = W / 2;
+      score = 0;
+      lives = START_LIVES;
+      frameCount = 0;
+      fireTimer = 0;
+      spawnTimer = 0;
+      spawnInterval = SPAWN_BASE;
+      difficulty = 0;
+      invuln = 0;
+      shakeFrames = 0;
+      bullets = [];
+      meteors = [];
+      particles = [];
+      makeStars();
+      updateHUD();
+      gameRunning = true;
+      startMusic();
+      loop();
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+      stopMusic();
+
+      /* Play the final explosion out before showing the overlay */
+      var deathFrames = 0;
+      function deathLoop() {
+        deathFrames++;
+        updateParticles();
+        for (var i = meteors.length - 1; i >= 0; i--) {
+          meteors[i].y += meteors[i].vy;
+          meteors[i].rot += meteors[i].spin;
+        }
+
+        drawBG();
+        for (var m = 0; m < meteors.length; m++) drawMeteor(meteors[m]);
+        drawParticles();
+        /* No ship — it just blew up */
+
+        if (deathFrames < 55) {
+          requestAnimationFrame(deathLoop);
+        } else {
+          var isNewBest = score > bestScore;
+          if (isNewBest) {
+            bestScore = score;
+            try { localStorage.setItem(BEST_KEY, String(bestScore)); } catch (e) {}
+          }
+          finalScoreEl.textContent = score;
+          if (bestScore > 0) {
+            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+          } else {
+            bestScoreEl.textContent = "";
+          }
+          overlayEnd.style.display = "flex";
+
+          // Decrement game lives
+          var gameLives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+          if (gameLives > 0) {
+            gameLives--;
+            sessionStorage.setItem("game_lives", String(gameLives));
+          }
+          btnAgain.style.display = gameLives <= 0 ? "none" : "";
+        }
+      }
+      deathLoop();
+    }
+
+    /* ── Draw everything ── */
+    function draw() {
+      ctx.save();
+      if (shakeFrames > 0) {
+        ctx.translate(rand(-4, 4) * (shakeFrames / 18), rand(-4, 4) * (shakeFrames / 18));
+      }
+      drawBG();
+      drawBullets();
+      for (var i = 0; i < meteors.length; i++) drawMeteor(meteors[i]);
+      drawParticles();
+      drawShip();
+      ctx.restore();
+    }
+
+    /* ── Main loop ── */
+    function loop() {
+      if (!gameRunning) return;
+      if (musicPlaying) scheduleMusic(); // keep music fed on iOS
+      frameCount++;
+      if (invuln > 0) invuln--;
+      if (shakeFrames > 0) shakeFrames--;
+
+      /* Gradual difficulty: rocks fall faster and arrive more often */
+      if (frameCount % 420 === 0) {
+        difficulty += 0.18;
+        if (spawnInterval > SPAWN_MIN) spawnInterval -= 4;
+      }
+
+      /* Ship glides toward where the player is pointing */
+      shipX = lerp(shipX, targetX, 0.22);
+
+      /* Auto-fire */
+      fireTimer++;
+      if (fireTimer >= FIRE_INTERVAL) {
+        fireTimer = 0;
+        fireBullet();
+      }
+
+      /* Spawn meteors */
+      spawnTimer++;
+      if (spawnTimer >= spawnInterval) {
+        spawnTimer = 0;
+        spawnWave();
+      }
+
+      /* Move bullets */
+      for (var b = bullets.length - 1; b >= 0; b--) {
+        bullets[b].y -= BULLET_SPEED;
+        if (bullets[b].y < -20) bullets.splice(b, 1);
+      }
+
+      /* Move meteors, bouncing them off the side walls */
+      for (var i = meteors.length - 1; i >= 0; i--) {
+        var m = meteors[i];
+        m.y += m.vy;
+        m.x += m.vx;
+        m.rot += m.spin;
+        if (m.x < m.r * 0.6 && m.vx < 0) m.vx = -m.vx;
+        if (m.x > W - m.r * 0.6 && m.vx > 0) m.vx = -m.vx;
+        if (m.y > H + m.r + 20) meteors.splice(i, 1);
+      }
+
+      updateParticles();
+      checkCollisions();
+      if (!gameRunning) return;
+
+      draw();
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    /* ══════════════════════════════════════
+       Controls — drag to steer on touch, move
+       the mouse on desktop, arrow keys too
+       ══════════════════════════════════════ */
+
+    function pointerToCanvasX(clientX) {
+      var rect = canvas.getBoundingClientRect();
+      return ((clientX - rect.left) / rect.width) * W;
+    }
+
+    function steerTo(clientX) {
+      targetX = clamp(pointerToCanvasX(clientX), 22, W - 22);
+    }
+
+    canvas.addEventListener("touchstart", function (e) {
+      if (!gameRunning) return;
+      e.preventDefault();
+      steerTo(e.touches[0].clientX);
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", function (e) {
+      if (!gameRunning) return;
+      e.preventDefault();
+      steerTo(e.touches[0].clientX);
+    }, { passive: false });
+
+    canvas.addEventListener("mousemove", function (e) {
+      if (!gameRunning) return;
+      steerTo(e.clientX);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!gameRunning) return;
+      if (e.key === "ArrowLeft" || e.key === "a") { targetX = clamp(targetX - 34, 22, W - 22); e.preventDefault(); }
+      if (e.key === "ArrowRight" || e.key === "d") { targetX = clamp(targetX + 34, 22, W - 22); e.preventDefault(); }
+    });
+
+    /* ── Buttons ── */
+    btnStart.onclick = function () {
+      unlockAudio();
+      overlayStart.style.display = "none";
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    btnAgain.onclick = function () {
+      unlockAudio();
+      overlayEnd.style.display = "none";
+      initGame();
+    };
+
+    /* ── Mute button ── */
+    var btnMute = document.getElementById("btn-mute");
+    btnMute.textContent = isMuted ? "🔇" : "🔊";
+    btnMute.onclick = function () {
+      isMuted = !isMuted;
+      localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
+      btnMute.textContent = isMuted ? "🔇" : "🔊";
+      if (isMuted) stopMusic();
+      else if (gameRunning) startMusic();
+    };
+
+    /* ── Responsive sizing ── */
+    function resizeCanvas() {
+      var maxW = Math.min(390, document.getElementById("canvas-container").parentElement.clientWidth - 4);
+      canvas.style.width = maxW + "px";
+      canvas.style.height = (maxW * (600 / 390)) + "px";
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    /* Initial idle draw */
+    makeStars();
+    updateHUD();
+    drawBG();
+  })();
+  </script>
+</body>
+</html>
