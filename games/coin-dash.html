@@ -123,6 +123,7 @@
   </div>
 
   <script src="/assets/js/game-init.js"></script>
+  <script src="/assets/js/game-loop.js"></script>
   <script>
   (function () {
     if (!GameInit.requireLives(".card h1")) return;
@@ -146,6 +147,7 @@
     var PLAYER_Y    = H - 110;
     var BASE_SPEED  = 3.0;
     var SPAWN_BASE  = 52;
+    var BEST_KEY    = "tapvocab_best_coindash";
 
     /* ── Colors (app theme) ── */
     var BG_TOP    = "#0b1020";
@@ -157,7 +159,7 @@
 
     /* ── Game state ── */
     var lane = 1, targetX = 0, playerX = 0;
-    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
+    var score = 0, bestScore = GameLoop.loadBest(BEST_KEY), gameRunning = false, mainLoop = null;
     var speed = BASE_SPEED, spawnTimer = 0, spawnInterval = SPAWN_BASE;
     var frameCount = 0;
     var obstacles = [], coins = [], particles = [];
@@ -777,7 +779,7 @@
       scoreDisplay.textContent = "0";
       gameRunning = true;
       startMusic();
-      loop();
+      mainLoop = GameLoop.start(update, draw);
     }
 
     function gameOver() {
@@ -785,46 +787,52 @@
       stopMusic();
       /* Play explosion animation then show overlay */
       var deathFrames = 0;
-      function deathLoop() {
+      GameLoop.start(function () {
         deathFrames++;
         updateParticles();
         updateExplosion();
-
-        drawBG();
-        for (var ci = 0; ci < coins.length; ci++) drawCoin(coins[ci]);
-        for (var oi = 0; oi < obstacles.length; oi++) drawObstacle(obstacles[oi]);
-        drawExplosion();
-        drawParticles();
-        /* Don't draw player — they got blown up! */
-
-        if (deathFrames < 50) {
-          requestAnimationFrame(deathLoop);
-        } else {
-          var isNewBest = score > bestScore;
-          if (isNewBest) bestScore = score;
-          finalScoreEl.textContent = score;
-          var bestScoreEl = document.getElementById("best-score");
-          if (bestScore > 0) {
-            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
-          } else {
-            bestScoreEl.textContent = "";
-          }
-          overlayEnd.style.display = "flex";
-
-          // Decrement game lives
-          var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
-          if (lives > 0) {
-            lives--;
-            sessionStorage.setItem("game_lives", String(lives));
-          }
-          if (lives <= 0) {
-            btnAgain.style.display = "none";
-          } else {
-            btnAgain.style.display = "";
-          }
+        if (deathFrames >= 50) {
+          showEndScreen();
+          return false;
         }
+      }, drawDeath);
+    }
+
+    function drawDeath() {
+      drawBG();
+      for (var ci = 0; ci < coins.length; ci++) drawCoin(coins[ci]);
+      for (var oi = 0; oi < obstacles.length; oi++) drawObstacle(obstacles[oi]);
+      drawExplosion();
+      drawParticles();
+      /* Don't draw player — they got blown up! */
+    }
+
+    function showEndScreen() {
+      var isNewBest = score > bestScore;
+      if (isNewBest) {
+        bestScore = score;
+        GameLoop.saveBest(BEST_KEY, bestScore);
       }
-      deathLoop();
+      finalScoreEl.textContent = score;
+      var bestScoreEl = document.getElementById("best-score");
+      if (bestScore > 0) {
+        bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+      } else {
+        bestScoreEl.textContent = "";
+      }
+      overlayEnd.style.display = "flex";
+
+      // Decrement game lives
+      var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+      if (lives > 0) {
+        lives--;
+        sessionStorage.setItem("game_lives", String(lives));
+      }
+      if (lives <= 0) {
+        btnAgain.style.display = "none";
+      } else {
+        btnAgain.style.display = "";
+      }
     }
 
     /* ── Draw everything ── */
@@ -836,9 +844,9 @@
       drawPlayer();
     }
 
-    /* ── Main loop ── */
-    function loop() {
-      if (!gameRunning) return;
+    /* ── Fixed-rate update (60/sec) ── */
+    function update() {
+      if (!gameRunning) return false;
       if (musicPlaying) scheduleMusic(); // keep music fed on iOS
       frameCount++;
       runBob += 0.18;
@@ -867,11 +875,16 @@
 
       updateParticles();
       checkCollisions();
-      if (!gameRunning) return;
-
-      draw();
-      animFrame = requestAnimationFrame(loop);
+      if (!gameRunning) return false;
     }
+
+    /* ── Pause when the app/tab is hidden ── */
+    GameLoop.autoPause({
+      container: document.getElementById("canvas-container"),
+      isActive: function () { return gameRunning; },
+      onPause: function () { mainLoop.pause(); stopMusic(); },
+      onResume: function () { unlockAudio(); startMusic(); mainLoop.resume(); }
+    });
 
     /* ══════════════════════════════════════
        Controls — fixed: works on desktop AND mobile
@@ -953,17 +966,16 @@
       else if (gameRunning) startMusic();
     };
 
-    /* ── Responsive sizing ── */
+    /* ── Responsive, sharp canvas sizing ── */
     function resizeCanvas() {
       var maxW = Math.min(390, document.getElementById("canvas-container").parentElement.clientWidth - 4);
-      canvas.style.width = maxW + "px";
-      canvas.style.height = (maxW * (600 / 390)) + "px";
+      GameLoop.fitCanvas(canvas, ctx, W, H, maxW, maxW * (H / W));
+      if (gameRunning) draw();
+      else if (explosion) drawDeath();
+      else drawBG();
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-
-    /* Initial idle draw */
-    drawBG();
   })();
   </script>
 </body>

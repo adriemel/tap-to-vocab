@@ -121,6 +121,7 @@
   </div>
 
   <script src="/assets/js/game-init.js"></script>
+  <script src="/assets/js/game-loop.js"></script>
   <script>
   (function () {
     if (!GameInit.requireLives(".card h1")) return;
@@ -153,7 +154,8 @@
 
     /* ── Game state ── */
     var blocks = [], currentBlock = null, fallingPiece = null;
-    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
+    var BEST_KEY = "tapvocab_best_tower";
+    var score = 0, bestScore = GameLoop.loadBest(BEST_KEY), gameRunning = false, mainLoop = null;
     var cameraY = 0, targetCameraY = 0;
     var BASE_SPEED = 1.8, speed = BASE_SPEED, direction = 1;
     var moveAxis = "x", perfectCount = 0;
@@ -452,7 +454,8 @@
       spawnBlock();
       gameRunning = true;
       startMusic();
-      loop();
+      if (mainLoop) mainLoop.stop();
+      mainLoop = GameLoop.start(update, draw);
     }
 
     function spawnBlock() {
@@ -521,9 +524,12 @@
       gameRunning = false;
       stopMusic();
       setTimeout(function () {
-        if (animFrame) cancelAnimationFrame(animFrame);
+        if (mainLoop) { mainLoop.stop(); mainLoop = null; }
         var isNewBest = score > bestScore;
-        if (isNewBest) bestScore = score;
+        if (isNewBest) {
+          bestScore = score;
+          GameLoop.saveBest(BEST_KEY, bestScore);
+        }
         finalScoreEl.textContent = score;
         var bestScoreEl = document.getElementById("best-score");
         if (bestScore > 0) {
@@ -582,8 +588,9 @@
       }
     }
 
-    /* ── Loop ── */
-    function loop() {
+    /* ── Fixed-rate update (60/sec); keeps running briefly after game over
+          so the last falling piece animates ── */
+    function update() {
       if (musicPlaying) scheduleMusic(); // keep music fed on iOS
       cameraY += (targetCameraY - cameraY) * 0.08;
 
@@ -611,10 +618,15 @@
         perfectFlash.y -= 0.6;
         if (perfectFlash.alpha <= 0) perfectFlash = null;
       }
-
-      draw();
-      animFrame = requestAnimationFrame(loop);
     }
+
+    /* ── Pause when the app/tab is hidden ── */
+    GameLoop.autoPause({
+      container: document.getElementById("canvas-container"),
+      isActive: function () { return gameRunning; },
+      onPause: function () { mainLoop.pause(); stopMusic(); },
+      onResume: function () { unlockAudio(); startMusic(); mainLoop.resume(); }
+    });
 
     /* ── Controls ── */
     btnStart.onclick = function () {
@@ -655,13 +667,11 @@
 
     function resizeCanvas() {
       var maxW = Math.min(400, document.getElementById("canvas-container").parentElement.clientWidth - 4);
-      canvas.style.width  = maxW + "px";
-      canvas.style.height = (maxW * 1.5) + "px";
+      GameLoop.fitCanvas(canvas, ctx, W, H, maxW, maxW * (H / W));
+      draw();
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-
-    draw();
   })();
   </script>
 </body>

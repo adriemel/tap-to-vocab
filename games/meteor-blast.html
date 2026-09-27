@@ -131,6 +131,7 @@
   </div>
 
   <script src="/assets/js/game-init.js"></script>
+  <script src="/assets/js/game-loop.js"></script>
   <script>
   (function () {
     if (!GameInit.requireLives(".card h1")) return;
@@ -180,9 +181,8 @@
     /* ── Game state ── */
     var shipX = W / 2, targetX = W / 2;
     var score = 0, lives = START_LIVES;
-    var bestScore = 0;
-    try { bestScore = parseInt(localStorage.getItem(BEST_KEY) || "0", 10) || 0; } catch (e) {}
-    var gameRunning = false, animFrame = null;
+    var bestScore = GameLoop.loadBest(BEST_KEY);
+    var gameRunning = false, mainLoop = null, dying = false;
     var frameCount = 0, fireTimer = 0, spawnTimer = 0, spawnInterval = SPAWN_BASE;
     var difficulty = 0;           // grows slowly, speeds every meteor up
     var invuln = 0;               // frames of remaining hit protection
@@ -698,55 +698,59 @@
       updateHUD();
       gameRunning = true;
       startMusic();
-      loop();
+      mainLoop = GameLoop.start(update, draw);
     }
 
     function gameOver() {
       gameRunning = false;
-      if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
       stopMusic();
 
       /* Play the final explosion out before showing the overlay */
       var deathFrames = 0;
-      function deathLoop() {
+      dying = true;
+      GameLoop.start(function () {
         deathFrames++;
         updateParticles();
         for (var i = meteors.length - 1; i >= 0; i--) {
           meteors[i].y += meteors[i].vy;
           meteors[i].rot += meteors[i].spin;
         }
-
-        drawBG();
-        for (var m = 0; m < meteors.length; m++) drawMeteor(meteors[m]);
-        drawParticles();
-        /* No ship — it just blew up */
-
-        if (deathFrames < 55) {
-          requestAnimationFrame(deathLoop);
-        } else {
-          var isNewBest = score > bestScore;
-          if (isNewBest) {
-            bestScore = score;
-            try { localStorage.setItem(BEST_KEY, String(bestScore)); } catch (e) {}
-          }
-          finalScoreEl.textContent = score;
-          if (bestScore > 0) {
-            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
-          } else {
-            bestScoreEl.textContent = "";
-          }
-          overlayEnd.style.display = "flex";
-
-          // Decrement game lives
-          var gameLives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
-          if (gameLives > 0) {
-            gameLives--;
-            sessionStorage.setItem("game_lives", String(gameLives));
-          }
-          btnAgain.style.display = gameLives <= 0 ? "none" : "";
+        if (deathFrames >= 55) {
+          dying = false;
+          showEndScreen();
+          return false;
         }
+      }, drawDeath);
+    }
+
+    function drawDeath() {
+      drawBG();
+      for (var m = 0; m < meteors.length; m++) drawMeteor(meteors[m]);
+      drawParticles();
+      /* No ship — it just blew up */
+    }
+
+    function showEndScreen() {
+      var isNewBest = score > bestScore;
+      if (isNewBest) {
+        bestScore = score;
+        GameLoop.saveBest(BEST_KEY, bestScore);
       }
-      deathLoop();
+      finalScoreEl.textContent = score;
+      if (bestScore > 0) {
+        bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+      } else {
+        bestScoreEl.textContent = "";
+      }
+      overlayEnd.style.display = "flex";
+
+      // Decrement game lives
+      var gameLives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+      if (gameLives > 0) {
+        gameLives--;
+        sessionStorage.setItem("game_lives", String(gameLives));
+      }
+      btnAgain.style.display = gameLives <= 0 ? "none" : "";
     }
 
     /* ── Draw everything ── */
@@ -763,9 +767,9 @@
       ctx.restore();
     }
 
-    /* ── Main loop ── */
-    function loop() {
-      if (!gameRunning) return;
+    /* ── Fixed-rate update (60/sec) ── */
+    function update() {
+      if (!gameRunning) return false;
       if (musicPlaying) scheduleMusic(); // keep music fed on iOS
       frameCount++;
       if (invuln > 0) invuln--;
@@ -813,11 +817,16 @@
 
       updateParticles();
       checkCollisions();
-      if (!gameRunning) return;
-
-      draw();
-      animFrame = requestAnimationFrame(loop);
+      if (!gameRunning) return false;
     }
+
+    /* ── Pause when the app/tab is hidden ── */
+    GameLoop.autoPause({
+      container: document.getElementById("canvas-container"),
+      isActive: function () { return gameRunning; },
+      onPause: function () { mainLoop.pause(); stopMusic(); },
+      onResume: function () { unlockAudio(); startMusic(); mainLoop.resume(); }
+    });
 
     /* ══════════════════════════════════════
        Controls — drag to steer on touch, move
@@ -884,16 +893,17 @@
     /* ── Responsive sizing ── */
     function resizeCanvas() {
       var maxW = Math.min(390, document.getElementById("canvas-container").parentElement.clientWidth - 4);
-      canvas.style.width = maxW + "px";
-      canvas.style.height = (maxW * (600 / 390)) + "px";
+      GameLoop.fitCanvas(canvas, ctx, W, H, maxW, maxW * (H / W));
+      if (gameRunning) draw();
+      else if (dying) drawDeath();
+      else drawBG();
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
     /* Initial idle draw */
     makeStars();
     updateHUD();
-    drawBG();
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
   })();
   </script>
 </body>

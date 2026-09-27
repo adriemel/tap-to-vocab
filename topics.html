@@ -10,17 +10,17 @@
 <body>
   <div class="container">
     <div class="card">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
-        <h1 style="margin:0">📚 Topics</h1>
-        <div style="display:flex; align-items:center; gap:8px;">
+      <header class="page-header">
+        <div>
+          <h1>📚 Topics</h1>
+          <p class="page-subtitle">Choose a topic to study</p>
+        </div>
+        <div class="page-header-actions">
           <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
           <a class="btn secondary" href="/">🏠 Home</a>
         </div>
-      </div>
-      <p style="text-align:center; color:var(--muted); margin-top:-8px; margin-bottom:20px;">
-        Choose a topic to study
-      </p>
-      <div style="display:flex; flex-direction:column; gap:12px;">
+      </header>
+      <div class="list-grid">
         <a class="btn" href="/topic.html?topic=Colores">🎨 Colores</a>
         <a class="btn" href="/topic.html?topic=Animales">🦊 Animales</a>
         <a class="btn" href="/topic.html?topic=Numeros">🔢 Numeros</a>

@@ -16,52 +16,80 @@
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
-        <h1 style="margin:0;">Tap‑to‑Vocab</h1>
+    <div class="card home">
+      <header class="page-header">
+        <div>
+          <h1>Tap‑to‑Vocab</h1>
+          <p class="page-subtitle">Learn Spanish vocabulary interactively</p>
+        </div>
         <span class="badge coin-badge" id="coin-counter"><span class="coin-icon"></span> 0</span>
-      </div>
-      <p style="text-align:center; color:var(--muted); margin-top:8px; margin-bottom:20px;">
-        Learn Spanish vocabulary interactively
-      </p>
+      </header>
 
-      <div class="grid-two-col">
-        <a class="btn btn-topics" href="/topics.html">📚 Topics</a>
-        <a class="btn btn-unidades" href="/unidades.html">📖 Unidades</a>
+      <section class="home-section" aria-labelledby="h-learn">
+        <h2 class="section-title" id="h-learn">Learn words</h2>
+        <div class="home-learn">
+          <a class="home-tile tile-big tile-topics" href="/topics.html">
+            <span class="tile-icon">📚</span>
+            <span class="tile-label">Topics</span>
+          </a>
+          <a class="home-tile tile-big tile-unidades" href="/unidades.html">
+            <span class="tile-icon">📖</span>
+            <span class="tile-label">Unidades</span>
+          </a>
+          <a id="practice-btn" class="home-tile tile-row tile-practice" href="/topic.html?cat=practice">
+            <span class="tile-icon">⭐</span>
+            <span class="tile-label">Practice</span>
+            <span class="tile-count" id="practice-count" hidden></span>
+          </a>
+        </div>
+      </section>
 
-        <!-- ⭐ Practice with dynamic count - spans both columns -->
-        <a id="practice-btn" class="btn btn-practice" href="/topic.html?cat=practice">⭐ Practice</a>
-        
-        <!-- 🔤 Build Sentences - spans both columns -->
-        <a class="btn btn-sentences" href="/sentences.html">🔤 Build Sentences</a>
+      <section class="home-section" aria-labelledby="h-skills">
+        <h2 class="section-title" id="h-skills">Practice skills</h2>
+        <div class="home-skills">
+          <a class="home-tile tile-sentences" href="/sentences.html">
+            <span class="tile-icon">🔤</span><span class="tile-label">Build Sentences</span>
+          </a>
+          <a class="home-tile tile-verbs" href="/conjugation.html">
+            <span class="tile-icon">🔄</span><span class="tile-label">Verbs</span>
+          </a>
+          <a class="home-tile tile-fill-blank" href="/fill-blank.html">
+            <span class="tile-icon">✏️</span><span class="tile-label">Fill in</span>
+          </a>
+          <a class="home-tile tile-locations" href="/locations.html">
+            <span class="tile-icon">📍</span><span class="tile-label">Locations</span>
+          </a>
+          <a class="home-tile tile-numbers" href="/numbers.html">
+            <span class="tile-icon">🔢</span><span class="tile-label">Qué número es?</span>
+          </a>
+          <a class="home-tile tile-quien-soy" href="/quien-soy.html">
+            <span class="tile-icon">💬</span><span class="tile-label">Quién soy yo</span>
+          </a>
+          <a class="home-tile tile-hora" href="/hora.html">
+            <span class="tile-icon">🕐</span><span class="tile-label">Qué hora es?</span>
+          </a>
+        </div>
+      </section>
 
-        <!-- 🔄 Verbs - spans both columns -->
-        <a class="btn btn-verbs" href="/conjugation.html">🔄 Verbs</a>
+      <section class="home-section" aria-labelledby="h-games">
+        <h2 class="section-title" id="h-games">Games</h2>
+        <div class="games-panel">
+          <div class="games-progress-text">
+            <span id="games-progress-label">0 / 10</span>
+            <span id="games-progress-hint" class="games-hint"></span>
+          </div>
+          <div class="games-progress" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-labelledby="games-progress-label">
+            <div class="games-progress-fill" id="games-progress-fill"></div>
+          </div>
+          <button class="btn btn-games" id="btn-games">🎮 Play Games (10 <span class="coin-icon"></span>)</button>
+          <div id="coins-msg" class="coins-msg" hidden></div>
+        </div>
+      </section>
 
-        <!-- ✏️ Fill in - spans both columns -->
-        <a class="btn btn-fill-blank" href="/fill-blank.html">✏️ Fill in</a>
-
-        <!-- 📍 Locations - spans both columns -->
-        <a class="btn btn-locations" href="/locations.html">&#128205; Locations</a>
-
-        <!-- 🔢 Numbers - spans both columns -->
-        <a class="btn btn-numbers" href="/numbers.html">🔢 Qué número es?</a>
-
-        <!-- 💬 Quién soy yo - spans both columns -->
-        <a class="btn btn-quien-soy" href="/quien-soy.html">💬 Quién soy yo</a>
-
-        <!-- 🕐 Qué hora es? - spans both columns -->
-        <a class="btn btn-hora" href="/hora.html">🕐 Qué hora es?</a>
-
-        <!-- 🎮 Games - spans both columns, always visible -->
-        <button class="btn btn-games" id="btn-games">🎮 Play Games (10 <span class="coin-icon"></span>)</button>
-      </div>
-      <div id="coins-msg" style="display:none; text-align:center; color:var(--warn); margin-top:10px; font-size:.95rem;"></div>
+      <footer class="home-footer">
+        <button type="button" class="link-btn" id="btn-reset-coins" title="Reset coins to 0">Reset coins</button>
+      </footer>
     </div>
   </div>
-
-  <button id="btn-reset-coins" style="position:fixed; bottom:16px; right:16px; background:rgba(30,20,50,0.85); border:1px solid #3a2a50; color:var(--muted); font-size:.8rem; padding:8px 10px; border-radius:10px; cursor:pointer; z-index:100; backdrop-filter:blur(4px);" title="Reset coins to 0">Reset</button>
-
-
 </body>
 </html>

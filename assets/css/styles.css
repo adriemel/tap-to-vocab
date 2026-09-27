@@ -35,76 +35,6 @@ a { color: var(--accent); text-decoration: none; }
 h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin: 0 0 12px; text-align:center; }
 h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin-top: 0; color: var(--muted); font-weight: 600; }
 
-/* Two-column grid for home page - always 2 equal columns */
-.grid-two-col {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 1fr 1fr; /* Force 2 equal columns */
-}
-
-.grid-two-col .btn {
-  width: 100%; /* Ensure buttons fill their grid cell */
-  text-align: center;
-  justify-content: center;
-}
-
-.grid-two-col .btn-practice {
-  grid-column: 1 / -1; /* Span both columns */
-  background: linear-gradient(135deg, #2a3a80 0%, #1a2350 100%);
-  border: 2px solid var(--warn);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-sentences {
-  grid-column: 1 / -1; /* Span both columns */
-  background: linear-gradient(135deg, #3a2a80 0%, #2a1a50 100%);
-  border: 2px solid var(--accent);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-verbs {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a4a30 0%, #1a3020 100%);
-  border: 2px solid var(--ok);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-fill-blank {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #4a2a30 0%, #301a20 100%);
-  border: 2px solid var(--error);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-locations {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #3c4f6a 0%, #2a364a 100%);
-  border: 2px solid var(--accent);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-numbers {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a3a5a 0%, #1a2540 100%);
-  border: 2px solid var(--accent);
-  font-weight: 700;
-}
-
-.grid-two-col .btn-games {
-  grid-column: 1 / -1;
-}
-
-.grid-two-col .btn-topics,
-.grid-two-col .btn-unidades {
-  min-height: 110px;
-  padding: 28px 16px;
-  margin-bottom: 16px;
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
-  font-weight: 700;
-  border-width: 2px;
-  border-radius: 16px;
-}
-
 /* Palabras group — main button + sub-buttons row */
 .palabras-group {
   display: flex;
@@ -707,12 +637,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
-@media (min-width: 601px) and (max-width: 900px) {
-  .grid-two-col {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 /* ---------- Sentence Builder ---------- */
 .sentence-target {
   background: linear-gradient(135deg, #1a2350 0%, #121a3a 100%);
@@ -1193,21 +1117,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   }
 }
 
-/* Narrow viewport: shrink home grid button text to reduce wrapping */
-@media (max-width: 420px) {
-  .grid-two-col .btn {
-    font-size: 0.85rem;
-    padding: 10px 8px;
-  }
-
-  .grid-two-col .btn-topics,
-  .grid-two-col .btn-unidades {
-    min-height: 92px;
-    padding: 22px 8px;
-    font-size: 1.1rem;
-  }
-}
-
 /* ---------- Coin Badge ---------- */
 .coin-badge {
   background: #2a1f00;
@@ -1227,15 +1136,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   box-shadow: inset 0 1px 2px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.3);
   vertical-align: middle;
   flex-shrink: 0;
-}
-
-/* ---------- Games Button (homepage) ---------- */
-.btn-games {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a2a10 0%, #1a1a08 100%);
-  border: 2px solid #a07010;
-  color: var(--warn);
-  font-weight: 700;
 }
 
 /* ---------- Game Hub ---------- */
@@ -1363,14 +1263,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 /* ═══════════════════════════════════════════════════
    Quién Soy Yo — Chat Simulator  (qs-*)
    ═══════════════════════════════════════════════════ */
-
-/* ── Home button (index.html) ─── */
-.grid-two-col .btn-quien-soy {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%);
-  border: 2px solid var(--accent);
-  font-weight: 700;
-}
 
 /* ── Page layout ─── */
 .qs-page {
@@ -1580,14 +1472,6 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
    Qué Hora Es? — Time-Telling (hora-*)
    ═══════════════════════════════════════════════════ */
 
-/* ── Home button (index.html) ─── */
-.grid-two-col .btn-hora {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%);
-  border: 2px solid var(--accent);
-  font-weight: 700;
-}
-
 /* ── Clock page (hora.html) ─── */
 .hora-page {
   background: var(--bg);
@@ -1715,3 +1599,201 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   margin-top: 16px;
 }
 
+
+/* ═══════════════════════════════════════════════════
+   Page header (home + Topics/Unidades sub-screens)
+   ═══════════════════════════════════════════════════ */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.page-header h1 { margin: 0; text-align: left; }
+.page-subtitle { margin: 4px 0 0; color: var(--muted); font-size: .95rem; }
+.page-header .coin-badge { flex-shrink: 0; margin-top: 4px; }
+.page-header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Topics/Unidades list: one column on phones, two on wider screens */
+.list-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.list-grid .btn { min-height: 52px; font-size: 1.05rem; }
+@media (min-width: 560px) {
+  .list-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════
+   Home (index.html)
+   ═══════════════════════════════════════════════════ */
+.home-section { margin-top: 18px; }
+.home-section:first-of-type { margin-top: 4px; }
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.home-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 92px;
+  padding: 14px 10px;
+  border-radius: 16px;
+  border: 2px solid var(--accent);
+  background: linear-gradient(135deg, #1a2350 0%, #121a3a 100%);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .1s ease, filter .15s ease;
+}
+.home-tile:active { transform: scale(.97); }
+@media (hover: hover) {
+  .home-tile:hover { filter: brightness(1.15); }
+}
+.tile-icon { font-size: 1.7rem; line-height: 1; }
+.tile-label { font-size: clamp(.9rem, 3.6vw, 1.05rem); line-height: 1.2; min-width: 0; overflow-wrap: break-word; }
+
+/* Learn words: two big tiles + a full-width Practice row */
+.home-learn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tile-big { min-height: 100px; }
+.tile-big .tile-icon { font-size: 2.1rem; }
+.tile-big .tile-label { font-size: clamp(1.15rem, 4.5vw, 1.4rem); font-weight: 800; }
+.tile-row {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  gap: 10px;
+  min-height: 56px;
+}
+.tile-row .tile-icon { font-size: 1.4rem; }
+.tile-row .tile-label { font-size: 1.1rem; }
+.tile-count {
+  background: var(--warn);
+  color: #1a1405;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: .85rem;
+  font-weight: 800;
+}
+
+.tile-topics, .tile-unidades { border-color: #3a4ea0; }
+.tile-practice   { background: linear-gradient(135deg, #2a3a80 0%, #1a2350 100%); border-color: var(--warn); }
+.tile-sentences  { background: linear-gradient(135deg, #3a2a80 0%, #2a1a50 100%); }
+.tile-verbs      { background: linear-gradient(135deg, #2a4a30 0%, #1a3020 100%); border-color: var(--ok); }
+.tile-fill-blank { background: linear-gradient(135deg, #4a2a30 0%, #301a20 100%); border-color: var(--error); }
+.tile-locations  { background: linear-gradient(135deg, #3c4f6a 0%, #2a364a 100%); }
+.tile-numbers    { background: linear-gradient(135deg, #2a3a5a 0%, #1a2540 100%); }
+.tile-quien-soy,
+.tile-hora       { background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%); }
+
+/* Practice skills: compact 2-column rows on phones, 3 columns of big tiles on
+   iPad; an odd last tile fills its row */
+.home-skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.home-skills .home-tile {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 60px;
+  padding: 10px 12px;
+  text-align: left;
+}
+.home-skills .tile-icon { font-size: 1.4rem; flex-shrink: 0; }
+.home-skills > :last-child:nth-child(odd) { justify-content: center; }
+.home-skills > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+@media (min-width: 700px) {
+  .home-skills { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .home-skills > :last-child:nth-child(odd) { grid-column: auto; }
+  .home-skills > :last-child:nth-child(3n+1) { grid-column: 1 / -1; }
+  .home-skills .home-tile {
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-height: 104px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .home-skills .tile-icon { font-size: 1.7rem; }
+  .tile-big { min-height: 128px; }
+}
+
+/* Very narrow phones (iPhone SE 1st gen): icon above label so words don't break */
+@media (max-width: 360px) {
+  .home-skills .home-tile {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+  }
+}
+
+/* Games panel: coin progress towards the next game */
+.games-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  border: 2px solid #a07010;
+  background: linear-gradient(135deg, #2a2a10 0%, #1a1a08 100%);
+}
+.games-progress-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+#games-progress-label { color: var(--warn); font-weight: 800; font-size: 1.05rem; }
+.games-hint { color: var(--muted); font-size: .88rem; }
+.games-progress {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+}
+.games-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d4a017, #ffe066);
+  transition: width .4s ease;
+}
+.btn-games {
+  width: 100%;
+  min-height: 50px;
+  background: transparent;
+  border: 2px solid #a07010;
+  color: var(--warn);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.btn-games:hover { background: rgba(255,204,102,.08); }
+.btn-games.is-ready {
+  background: linear-gradient(135deg, #ffcc66 0%, #d4a017 100%);
+  border-color: #ffe066;
+  color: #1a1405;
+  font-weight: 800;
+}
+.btn-games .coin-icon { margin: 0 2px 0 5px; }
+.coins-msg { text-align: center; color: var(--warn); font-size: .95rem; }
+
+.home-footer { margin-top: 20px; text-align: center; }
+.link-btn {
+  min-height: 44px;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: .85rem;
+  text-decoration: underline;
+  opacity: .7;
+  cursor: pointer;
+}
