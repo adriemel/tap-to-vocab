@@ -38,6 +38,7 @@ All asset paths are absolute from root (`/assets/...`, `/data/...`), so file:// 
 - `assets/js/shared-utils.js` → `window.SharedUtils` — `shuffleArray(arr)`, `loadWords(path)` (words.tsv-specific), `loadTSV(path)` (generic any-TSV, returns header-keyed row objects), `playSuccessSound()`, `playErrorSound()`, `showSuccessAnimation()`, `confettiBurst(count)`
 - `assets/js/home.js` — home page logic: practice count badge, Games button (spend 10 coins + set sessionStorage game_lives), Reset Coins button
 - `assets/js/game-init.js` → `window.GameInit` — `requireLives(selector)`: returns false and inserts error HTML when sessionStorage game_lives is missing or 0 (direct URL bypass guard)
+- `assets/js/game-loop.js` → `window.GameLoop` — shared by the canvas games in `/games/`: `start(step, draw)` fixed 60 Hz update loop (same speed on 60/120 Hz screens; `step()` returning false stops it; handle has `pause/resume/stop`), `fitCanvas(...)` sharp high-DPI canvas that keeps the logical W×H coordinates, `autoPause(opts)` pause overlay when the app is hidden, `loadBest/saveBest(key)` persisted best scores
 - `assets/js/tapvocab.js` → `window.TapVocabTSV` — Browse mode, Quiz mode with flip cards, practice list (localStorage), speech synthesis
 - `assets/js/sentences.js` → `window.SentenceBuilder` — sentence building game, word bank scrambling, sentence manager modal
 - `assets/js/conjugation.js` → `window.VerbConjugation` — verb conjugation practice (tap-to-fill table), Show mode, verb manager modal

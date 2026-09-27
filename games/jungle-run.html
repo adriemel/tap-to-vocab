@@ -95,6 +95,10 @@
       cursor: pointer;
       line-height: 1;
     }
+    .rotate-hint { display: none; font-size: .9rem; color: var(--warn); }
+    @media (orientation: portrait) and (max-width: 600px) {
+      .rotate-hint { display: block; }
+    }
     .hud-back {
       position: fixed;
       top: 12px; left: 12px;
@@ -119,7 +123,9 @@
 
   <div class="game-overlay" id="overlay-start">
     <h2>🐒 Jungle Run</h2>
-    <p>Tap or press Space to jump over gaps, dodge parrots, and collect bananas!</p>
+    <p>Tap or press Space to jump. Hold for a higher jump, tap again in the air for a double jump.</p>
+    <p>Jump <strong>on top of</strong> parrots to bounce off them, but don't run into them!</p>
+    <p class="rotate-hint">Tip: turn your phone sideways for a bigger view.</p>
     <button class="btn" id="btn-start">▶ Start</button>
   </div>
 
@@ -135,6 +141,7 @@
   </div>
 
   <script src="/assets/js/game-init.js"></script>
+  <script src="/assets/js/game-loop.js"></script>
   <script>
   (function () {
     if (!GameInit.requireLives("#overlay-start h2")) return;
@@ -159,8 +166,12 @@
     var MONKEY_X    = 100;
     var GRAVITY     = 0.75;
     var JUMP_VEL    = -14;
+    var JUMP_CUT_VEL = -7;       // releasing early caps upward speed -> short hop
     var BASE_SPEED  = 3.5;
-    var STOMP_BOUNCE_VEL = -10;  // upward velocity after stomp
+    var STOMP_BOUNCE_VEL = -11;  // upward velocity after stomp
+    var FEET_OFFSET = 18;        // monkeyY is the body centre; feet are 18px lower
+    var PARROT_WARN_FRAMES = 45; // "!" shown at the right edge before a parrot enters
+    var BEST_KEY    = "tapvocab_best_jungle";
 
     /* ── Colors ── */
     var SKY_TOP     = "#0b1a2e";
@@ -170,12 +181,12 @@
     var BANANA_C    = "#ffe135";
 
     /* ── Game state ── */
-    var monkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2;
+    var monkeyY = 0, prevMonkeyY = 0, velY = 0, onGround = true, jumpsLeft = 2, jumpHeld = false;
     var coyoteTimer = 0, jumpBuffer = 0;
     var COYOTE_FRAMES = 5, BUFFER_FRAMES = 8;
-    var score = 0, bestScore = 0, gameRunning = false, animFrame = null;
+    var score = 0, bestScore = GameLoop.loadBest(BEST_KEY), gameRunning = false, mainLoop = null;
     var speed = BASE_SPEED, frameCount = 0;
-    var segments = [], bananas = [], particles = [], parrots = [];
+    var segments = [], bananas = [], particles = [], parrots = [], popups = [];
     var runPhase = 0;
     var fallAnim = null;
     var currentGroundY = BASE_GROUND_Y; // monkey's current landing Y
@@ -401,32 +412,88 @@
     /* ── Parrot spawning ── */
     var nextParrotFrame = 200; // first parrot after ~3.5sec
 
+    var PARROT_COLORS = [
+      { body: "#e03030", wing: "#30a030", tail: "#2060d0" }, // red parrot
+      { body: "#30b040", wing: "#e0d020", tail: "#d04020" }, // green parrot
+      { body: "#3060e0", wing: "#e0a020", tail: "#e03030" }, // blue parrot
+    ];
+
+    /* Ground under the monkey `frames` steps from now (null = gap), checked
+       with some margin either side so parrots never meet the monkey mid-gap. */
+    function groundAhead(frames, margin) {
+      var x = MONKEY_X + speed * frames;
+      var g1 = getGroundAt(x - margin), g2 = getGroundAt(x), g3 = getGroundAt(x + margin);
+      if (g1 === null || g2 === null || g3 === null) return null;
+      return g2;
+    }
+
     function spawnParrot() {
-      var lowFlight = Math.random() < 0.5;
-      var py;
-      if (lowFlight) {
-        py = BASE_GROUND_Y - 20 - rand(0, 15); // near ground, must jump over
-      } else {
-        py = BASE_GROUND_Y - 70 - rand(0, 40); // mid-air, at jump apex
+      // One predictable speed per difficulty level instead of a random range
+      var pSpeed = speed * 1.5;
+      var startX = W + 30 + pSpeed * PARROT_WARN_FRAMES;
+      var framesToMonkey = (startX - MONKEY_X) / pSpeed;
+      var meetGround = groundAhead(framesToMonkey, 45);
+      if (meetGround === null) {
+        nextParrotFrame = frameCount + 20; // would arrive over a gap: try again shortly
+        return;
       }
-      var pSpeed = speed * rand(1.5, 2.5);
-      var colorIdx = Math.floor(Math.random() * 3);
-      var colors = [
-        { body: "#e03030", wing: "#30a030", tail: "#2060d0" }, // red parrot
-        { body: "#30b040", wing: "#e0d020", tail: "#d04020" }, // green parrot
-        { body: "#3060e0", wing: "#e0a020", tail: "#e03030" }, // blue parrot
-      ];
+
+      // Heights relative to the ground where the parrot will meet the monkey
+      var lowFlight = Math.random() < 0.5;
+      var py = lowFlight
+        ? meetGround - 30               // body height: jump over it or stomp it
+        : meetGround - 82 - rand(0, 20); // above the head: safe to run under
+
       parrots.push({
-        x: W + 30,
+        x: startX,
         y: py,
         speed: pSpeed,
         wingPhase: Math.random() * Math.PI * 2,
-        colors: colors[colorIdx],
+        colors: PARROT_COLORS[Math.floor(Math.random() * PARROT_COLORS.length)],
         low: lowFlight
       });
       // Next parrot: difficulty ramps frequency
       var ramp = Math.min(frameCount / 3000, 1); // 0→1 over ~50sec
       nextParrotFrame = frameCount + Math.floor(rand(180 - ramp * 80, 300 - ramp * 100));
+    }
+
+    /* Blinking "!" at the right edge while a parrot is still off-screen */
+    function drawParrotWarnings() {
+      for (var i = 0; i < parrots.length; i++) {
+        var p = parrots[i];
+        if (p.x <= W + 20) continue;
+        if (Math.floor(frameCount / 8) % 2) continue;
+        ctx.fillStyle = "rgba(255,80,60,0.9)";
+        ctx.beginPath();
+        ctx.arc(W - 16, p.y, 11, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 16px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("!", W - 16, p.y + 1);
+      }
+    }
+
+    /* Floating "+2" after a stomp */
+    function updatePopups() {
+      for (var i = popups.length - 1; i >= 0; i--) {
+        popups[i].y -= 0.8;
+        popups[i].life -= 0.025;
+        if (popups[i].life <= 0) popups.splice(i, 1);
+      }
+    }
+
+    function drawPopups() {
+      ctx.font = "bold 18px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (var i = 0; i < popups.length; i++) {
+        ctx.globalAlpha = Math.max(0, popups[i].life);
+        ctx.fillStyle = "#ffe135";
+        ctx.fillText(popups[i].text, popups[i].x, popups[i].y);
+      }
+      ctx.globalAlpha = 1;
     }
 
     /* ── Draw background ── */
@@ -755,10 +822,12 @@
     /* ── Init ── */
     function initGame() {
       currentGroundY = BASE_GROUND_Y;
-      monkeyY = currentGroundY - 18;
+      monkeyY = currentGroundY - FEET_OFFSET;
+      prevMonkeyY = monkeyY;
       velY = 0;
       onGround = true;
       jumpsLeft = 2;
+      jumpHeld = false;
       coyoteTimer = 0;
       jumpBuffer = 0;
       score = 0;
@@ -768,6 +837,7 @@
       particles = [];
       bananas = [];
       parrots = [];
+      popups = [];
       fallAnim = null;
       nextParrotFrame = 200;
       generateInitialSegments();
@@ -776,7 +846,7 @@
       }
       gameRunning = true;
       startMusic();
-      loop();
+      mainLoop = GameLoop.start(update, draw);
     }
 
     function gameOver() {
@@ -787,63 +857,86 @@
       fallAnim = { y: monkeyY, vy: -3, rot: 0, alpha: 1 };
       var deathFrames = 0;
 
-      function deathLoop() {
+      GameLoop.start(function () {
         deathFrames++;
         fallAnim.vy += 0.5;
         fallAnim.y += fallAnim.vy;
         fallAnim.rot += 0.1;
         fallAnim.alpha = Math.max(0, 1 - deathFrames / 60);
-
         updateParticles();
-        drawBG();
-        drawGround();
-        for (var i = 0; i < bananas.length; i++) {
-          if (!bananas[i].collected) drawBanana(bananas[i]);
+        updatePopups();
+        if (deathFrames >= 60) {
+          showEndScreen();
+          return false;
         }
-        for (var i = 0; i < parrots.length; i++) {
-          drawParrot(parrots[i]);
-        }
-        drawParticles();
-        drawHUD();
-
-        ctx.globalAlpha = fallAnim.alpha;
-        drawMonkey(MONKEY_X, fallAnim.y, fallAnim.rot);
-        ctx.globalAlpha = 1;
-
-        if (deathFrames < 60) {
-          requestAnimationFrame(deathLoop);
-        } else {
-          var isNewBest = score > bestScore;
-          if (isNewBest) bestScore = score;
-          finalScoreEl.textContent = score;
-          if (bestScore > 0) {
-            bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
-          } else {
-            bestScoreEl.textContent = "";
-          }
-          overlayEnd.style.display = "flex";
-
-          var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
-          if (lives > 0) {
-            lives--;
-            sessionStorage.setItem("game_lives", String(lives));
-          }
-          if (lives <= 0) {
-            btnAgain.style.display = "none";
-          } else {
-            btnAgain.style.display = "";
-          }
-        }
-      }
-      deathLoop();
+      }, drawDeath);
     }
 
-    /* ── Main loop ── */
-    function loop() {
-      if (!gameRunning) return;
+    function drawDeath() {
+      drawScene();
+      ctx.globalAlpha = fallAnim.alpha;
+      drawMonkey(MONKEY_X, fallAnim.y, fallAnim.rot);
+      ctx.globalAlpha = 1;
+      drawHUD();
+    }
+
+    function showEndScreen() {
+      var isNewBest = score > bestScore;
+      if (isNewBest) {
+        bestScore = score;
+        GameLoop.saveBest(BEST_KEY, bestScore);
+      }
+      finalScoreEl.textContent = score;
+      if (bestScore > 0) {
+        bestScoreEl.textContent = isNewBest ? "⭐ New Best: " + bestScore : "Best: " + bestScore;
+      } else {
+        bestScoreEl.textContent = "";
+      }
+      overlayEnd.style.display = "flex";
+
+      var lives = parseInt(sessionStorage.getItem("game_lives") || "0", 10);
+      if (lives > 0) {
+        lives--;
+        sessionStorage.setItem("game_lives", String(lives));
+      }
+      if (lives <= 0) {
+        btnAgain.style.display = "none";
+      } else {
+        btnAgain.style.display = "";
+      }
+    }
+
+    /* ── Hit boxes (relative to monkeyY = body centre, pp.y = parrot centre) ── */
+    // Monkey hurt box is a little smaller than the drawing so grazes are forgiven.
+    var MONKEY_HALF_W = 9, MONKEY_TOP = -24, MONKEY_BOTTOM = 14;
+    var PARROT_HALF_W = 14, PARROT_HALF_H = 7;
+    var STOMP_HALF_W = 32;  // horizontal reach for a stomp: parrot incl. beak/tail + feet
+    var STOMP_ABOVE = 16;   // feet may be this far above the parrot centre and still count
+    var STOMP_BELOW = 6;    // ...or this far below it, if they were above it last step
+
+    function hitsParrot(pp) {
+      return Math.abs(MONKEY_X - pp.x) < MONKEY_HALF_W + PARROT_HALF_W &&
+             monkeyY + MONKEY_BOTTOM > pp.y - PARROT_HALF_H &&
+             monkeyY + MONKEY_TOP < pp.y + PARROT_HALF_H;
+    }
+
+    /* Stomp = falling, horizontally close, and the feet crossed into the band
+       around the parrot's back during this step. Checking the swept path
+       (previous -> current feet position) means a fast fall can't skip it. */
+    function stompsParrot(pp) {
+      if (velY <= 0) return false;
+      if (Math.abs(MONKEY_X - pp.x) >= STOMP_HALF_W) return false;
+      var feet = monkeyY + FEET_OFFSET, prevFeet = prevMonkeyY + FEET_OFFSET;
+      return prevFeet <= pp.y + STOMP_BELOW && feet >= pp.y - STOMP_ABOVE;
+    }
+
+    /* ── Fixed-rate update (60/sec) ── */
+    function update() {
+      if (!gameRunning) return false;
       if (musicPlaying) scheduleMusic();
       frameCount++;
       runPhase += 0.2;
+      prevMonkeyY = monkeyY;
 
       // Difficulty ramp
       if (frameCount % 600 === 0) {
@@ -898,7 +991,7 @@
         velY += GRAVITY;
         monkeyY += velY;
         if (groundAt !== null) {
-          var landY = groundAt - 18;
+          var landY = groundAt - FEET_OFFSET;
           if (monkeyY >= landY) {
             monkeyY = landY;
             currentGroundY = groundAt;
@@ -919,45 +1012,37 @@
         } else {
           // Smoothly follow ground height changes
           currentGroundY = groundAt;
-          monkeyY = groundAt - 18;
+          monkeyY = groundAt - FEET_OFFSET;
         }
       }
 
       // Fell into crevice
       if (monkeyY > H + 30) {
         gameOver();
-        return;
+        return false;
       }
 
-      // Parrot collision — discriminate stomp (from above) vs side/head-on hit
+      // Parrot collision: stomps are checked first and win over side hits
       for (var i = 0; i < parrots.length; i++) {
         var pp = parrots[i];
-        var dx = MONKEY_X - pp.x;
-        var dy = (monkeyY - 5) - pp.y;
-        if (dx * dx + dy * dy < 24 * 24) {
-          // Stomp: monkey must be falling AND monkey feet land near parrot top
-          // Parrot top edge ~= pp.y - 8; monkey feet at monkeyY
-          // Condition: velY > 0 (falling) AND monkey feet above parrot center
-          var isStomping = velY > 0 && monkeyY <= pp.y + 4;
-          if (isStomping) {
-            // Destroy parrot
-            spawnParticles(pp.x, pp.y, pp.colors.body);
-            spawnParticles(pp.x, pp.y, pp.colors.wing);
-            parrots.splice(i, 1);
-            // Bounce upward
-            velY = STOMP_BOUNCE_VEL;
-            onGround = false;
-            // Score bonus
-            score++;
-            playStompSound();
-          } else {
-            // Side or head-on hit — game over as before
-            playSquawkSound();
-            spawnParticles(pp.x, pp.y, pp.colors.body);
-            gameOver();
-            return;
-          }
-          break; // only one collision processed per frame
+        if (stompsParrot(pp)) {
+          spawnParticles(pp.x, pp.y, pp.colors.body);
+          spawnParticles(pp.x, pp.y, pp.colors.wing);
+          parrots.splice(i, 1);
+          // Bounce and get the double jump back
+          velY = STOMP_BOUNCE_VEL;
+          onGround = false;
+          jumpsLeft = 1;
+          score += 2;
+          popups.push({ x: MONKEY_X, y: monkeyY - 30, text: "+2", life: 1 });
+          playStompSound();
+          break; // only one collision processed per step
+        }
+        if (hitsParrot(pp)) {
+          playSquawkSound();
+          spawnParticles(pp.x, pp.y, pp.colors.body);
+          gameOver();
+          return false;
         }
       }
 
@@ -977,8 +1062,11 @@
       }
 
       updateParticles();
+      updatePopups();
+    }
 
-      // Draw
+    /* ── Draw ── */
+    function drawScene() {
       drawBG();
       drawGround();
       for (var i = 0; i < bananas.length; i++) {
@@ -987,11 +1075,23 @@
       for (var i = 0; i < parrots.length; i++) {
         drawParrot(parrots[i]);
       }
+      drawParrotWarnings();
       drawParticles();
+      drawPopups();
+    }
+
+    function draw() {
+      drawScene();
       drawMonkey(MONKEY_X, monkeyY, 0);
       drawHUD();
+    }
 
-      animFrame = requestAnimationFrame(loop);
+    function drawIdle() {
+      drawBG();
+      ctx.fillStyle = GROUND_TOP;
+      ctx.fillRect(0, BASE_GROUND_Y, W, 6);
+      ctx.fillStyle = GROUND_C;
+      ctx.fillRect(0, BASE_GROUND_Y + 6, W, H - BASE_GROUND_Y - 6);
     }
 
     /* ── Jump action ── */
@@ -1013,19 +1113,45 @@
       }
     }
 
+    /* Releasing the button while still rising cuts the jump short */
+    function releaseJump() {
+      if (!jumpHeld) return;
+      jumpHeld = false;
+      if (gameRunning && !onGround && velY < JUMP_CUT_VEL) velY = JUMP_CUT_VEL;
+    }
+
+    function pressJump() {
+      if (mainLoop && mainLoop.isPaused()) return;
+      jumpHeld = true;
+      jump();
+    }
+
     /* ── Controls: tap ANYWHERE on the page ── */
     document.body.addEventListener("pointerdown", function (e) {
       // Don't hijack clicks on buttons/overlays
-      if (e.target.closest(".game-overlay") || e.target.closest(".hud-mute") || e.target.closest(".hud-back")) return;
+      if (e.target.closest(".game-overlay") || e.target.closest(".gl-pause") ||
+          e.target.closest(".hud-mute") || e.target.closest(".hud-back")) return;
       e.preventDefault();
-      jump();
+      pressJump();
     });
+    document.addEventListener("pointerup", releaseJump);
+    document.addEventListener("pointercancel", releaseJump);
 
     document.addEventListener("keydown", function (e) {
       if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") {
         e.preventDefault();
-        jump();
+        if (!e.repeat) pressJump();
       }
+    });
+    document.addEventListener("keyup", function (e) {
+      if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") releaseJump();
+    });
+
+    /* ── Pause when the app/tab is hidden ── */
+    GameLoop.autoPause({
+      isActive: function () { return gameRunning; },
+      onPause: function () { mainLoop.pause(); stopMusic(); jumpHeld = false; },
+      onResume: function () { unlockAudio(); startMusic(); mainLoop.resume(); }
     });
 
     /* ── Buttons ── */
@@ -1044,33 +1170,14 @@
 
     /* ── Mute button ── */
     var btnMute = document.getElementById("btn-mute");
-    btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+    btnMute.textContent = isMuted ? "🔇" : "🔊";
     btnMute.onclick = function () {
       isMuted = !isMuted;
       localStorage.setItem("tapvocab_mute", isMuted ? "1" : "0");
-      btnMute.textContent = isMuted ? "\uD83D\uDD07" : "\uD83D\uDD0A";
+      btnMute.textContent = isMuted ? "🔇" : "🔊";
       if (isMuted) stopMusic();
       else if (gameRunning) startMusic();
     };
-
-    /* ── Responsive canvas sizing ── */
-    function resizeCanvas() {
-      var vw = window.innerWidth;
-      var vh = window.innerHeight;
-      var aspect = W / H; // 600/400 = 1.5
-      var cw, ch;
-      if (vw / vh > aspect) {
-        ch = vh;
-        cw = ch * aspect;
-      } else {
-        cw = vw;
-        ch = cw / aspect;
-      }
-      canvas.style.width = Math.floor(cw) + "px";
-      canvas.style.height = Math.floor(ch) + "px";
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
     /* ── roundRect polyfill for older browsers ── */
     if (!ctx.roundRect) {
@@ -1089,12 +1196,26 @@
       };
     }
 
-    /* Initial idle draw */
-    drawBG();
-    ctx.fillStyle = GROUND_TOP;
-    ctx.fillRect(0, BASE_GROUND_Y, W, 6);
-    ctx.fillStyle = GROUND_C;
-    ctx.fillRect(0, BASE_GROUND_Y + 6, W, H - BASE_GROUND_Y - 6);
+    /* ── Responsive, sharp canvas sizing ── */
+    function resizeCanvas() {
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var aspect = W / H; // 600/400 = 1.5
+      var cw, ch;
+      if (vw / vh > aspect) {
+        ch = vh;
+        cw = ch * aspect;
+      } else {
+        cw = vw;
+        ch = cw / aspect;
+      }
+      GameLoop.fitCanvas(canvas, ctx, W, H, cw, ch);
+      if (gameRunning) draw();
+      else if (fallAnim) drawDeath();
+      else drawIdle();
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
   })();
   </script>
 </body>
