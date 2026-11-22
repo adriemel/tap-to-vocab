@@ -30,6 +30,7 @@ All asset paths are absolute from root (`/assets/...`, `/data/...`), so file:// 
 - `sentences.html` — Sentence building game
 - `conjugation.html` — Verb conjugation practice
 - `fill-blank.html` — Fill-in-the-blank grammar game
+- `ropa.html` — "La ropa": clothing reel + colour reel, "¿Cómo se dice?" shows and speaks the agreeing noun phrase (grammar in `assets/js/ropa-phrase.js`, drawings in `assets/js/ropa-art.js`, test: `node ropa-phrase.test.js`)
 - `vocab.html` — Standalone spelling practice card (receives word via URL params `?w=...&de=...`)
 - `voices.html` — Debug utility for Web Speech API voices
 

@@ -1600,6 +1600,61 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 }
 
 
+/* ── La ropa (ropa.html): reuses the hora-* reel/phrase styles ── */
+.ropa-picker { gap: 14px; padding: 20px 12px; }
+
+.ropa-reel { height: 300px; }
+.ropa-reel-clothes {
+  width: min(200px, 54vw);
+  --ropa-fill: #e53935;
+  --ropa-line: #1b1f3b;
+}
+.ropa-reel-colors { min-width: 92px; width: 92px; }
+
+.ropa-item {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ropa-item.dist-1 { opacity: 0.5; }
+.ropa-item.dist-2 { opacity: 0.25; }
+.ropa-item.is-center {
+  height: 140px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ropa-item .ropa-svg { width: 32px; height: 32px; }
+.ropa-item.is-center .ropa-svg { width: 100px; height: 100px; }
+
+.ropa-de {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.ropa-swatch {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(232, 236, 255, 0.6);
+}
+.ropa-item.is-center .ropa-swatch { width: 68px; height: 68px; border-width: 3px; }
+
+.ropa-svg .b { fill: var(--ropa-fill); stroke: var(--ropa-line); stroke-width: 3; stroke-linejoin: round; }
+.ropa-svg .d,
+.ropa-svg .dd { fill: none; stroke: var(--ropa-line); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.ropa-svg .dd { stroke-dasharray: 4 3; }
+.ropa-svg .t { fill: var(--ropa-line); }
+.ropa-svg .s { fill: #f4f4f4; stroke: var(--ropa-line); stroke-width: 3; stroke-linejoin: round; }
+.ropa-svg .k { fill: #1a1f2e; stroke: var(--ropa-line); stroke-width: 2; }
+
+
 /* ═══════════════════════════════════════════════════
    Page header (home + Topics/Unidades sub-screens)
    ═══════════════════════════════════════════════════ */
@@ -1692,7 +1747,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 .tile-locations  { background: linear-gradient(135deg, #3c4f6a 0%, #2a364a 100%); }
 .tile-numbers    { background: linear-gradient(135deg, #2a3a5a 0%, #1a2540 100%); }
 .tile-quien-soy,
-.tile-hora       { background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%); }
+.tile-hora,
+.tile-ropa       { background: linear-gradient(135deg, #2a1f5a 0%, #1a1440 100%); }
 
 /* Practice skills: compact 2-column rows on phones, 3 columns of big tiles on
    iPad; an odd last tile fills its row */
