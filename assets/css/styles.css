@@ -1601,15 +1601,17 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 
 
 /* ── La ropa (ropa.html): reuses the hora-* reel/phrase styles ── */
-.ropa-picker { gap: 14px; padding: 20px 12px; }
+.ropa-picker { gap: 20px; padding: 20px 4px; }
 
-.ropa-reel { height: 300px; }
+.ropa-reel { height: 320px; flex: 0 0 auto; }
 .ropa-reel-clothes {
-  width: min(200px, 54vw);
+  /* fixed width (independent of the drawing/label), as wide as the card allows */
+  width: min(260px, calc(100% - 84px - 20px));
+  min-width: 0;
   --ropa-fill: #e53935;
   --ropa-line: #1b1f3b;
 }
-.ropa-reel-colors { min-width: 92px; width: 92px; }
+.ropa-reel-colors { min-width: 84px; width: 84px; }
 
 .ropa-item {
   height: 40px;
@@ -1621,13 +1623,13 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
 .ropa-item.dist-1 { opacity: 0.5; }
 .ropa-item.dist-2 { opacity: 0.25; }
 .ropa-item.is-center {
-  height: 140px;
+  height: 160px;
   flex-direction: column;
   gap: 4px;
 }
 
 .ropa-item .ropa-svg { width: 32px; height: 32px; }
-.ropa-item.is-center .ropa-svg { width: 100px; height: 100px; }
+.ropa-item.is-center .ropa-svg { width: 116px; height: 116px; }
 
 .ropa-de {
   font-size: 1rem;
@@ -1635,6 +1637,8 @@ input[type="checkbox"] { transform: scale(1.2); margin-right: 6px; }
   color: var(--accent);
   line-height: 1.2;
   text-align: center;
+  max-width: 100%;
+  padding: 0 4px;
 }
 
 .ropa-swatch {
