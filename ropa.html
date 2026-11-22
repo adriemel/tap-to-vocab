@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👕</text></svg>">
+  <title>La ropa – Tap‑to‑Vocab</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <div class="container hora-page">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <h1 style="margin:0">👕 La ropa</h1>
+        <a class="btn secondary" href="/">🏠 Home</a>
+      </div>
+
+      <div class="hora-clock-card ropa-picker">
+        <div class="hora-reel ropa-reel ropa-reel-clothes" id="ropa-clothes" role="spinbutton" tabindex="0" aria-label="Ropa">
+          <div class="hora-reel-track" id="ropa-clothes-track"></div>
+        </div>
+        <div class="hora-reel ropa-reel ropa-reel-colors" id="ropa-colors" role="spinbutton" tabindex="0" aria-label="Color">
+          <div class="hora-reel-track" id="ropa-colors-track"></div>
+        </div>
+      </div>
+
+      <button type="button" class="btn hora-cta" id="ropa-cta">🗣️ ¿Cómo se dice?</button>
+
+      <div class="hora-phrase-card">
+        <p class="hora-phrase is-placeholder" id="ropa-phrase">Elige la ropa y el color y pulsa "¿Cómo se dice?"</p>
+        <button type="button" class="btn" id="ropa-repeat" hidden>↺ Repeat</button>
+      </div>
+    </div>
+  </div>
+  <script src="/assets/js/ropa-phrase.js"></script>
+  <script src="/assets/js/ropa-art.js"></script>
+  <script>
+(function () {
+  var RP = window.RopaPhrase;
+  var ROW_PX = 40; // drag distance per step = height of a neighbour row
+
+  function mod(n, m) {
+    return ((n % m) + m) % m;
+  }
+
+  var clothesReel = {
+    el: document.getElementById('ropa-clothes'),
+    trackEl: document.getElementById('ropa-clothes-track'),
+    values: RP.ENTRIES,
+    index: 0,
+    renderItem: function (entry, isCenter) {
+      var html = window.RopaArt.svg(entry.id, entry.pictures);
+      if (isCenter) html += '<span class="ropa-de"></span>';
+      return html;
+    },
+    afterRender: function (entry, centerEl) {
+      centerEl.querySelector('.ropa-de').textContent = entry.de;
+      clothesReel.el.setAttribute('aria-valuetext', entry.de);
+    }
+  };
+
+  var colorReel = {
+    el: document.getElementById('ropa-colors'),
+    trackEl: document.getElementById('ropa-colors-track'),
+    values: RP.COLORS,
+    index: 0,
+    renderItem: function (color) {
+      return '<span class="ropa-swatch" style="background:' + color.hex + '"></span>';
+    },
+    afterRender: function (color) {
+      colorReel.el.setAttribute('aria-valuetext', color.de);
+      // Live recolour of the clothing drawings
+      clothesReel.el.style.setProperty('--ropa-fill', color.hex);
+      clothesReel.el.style.setProperty('--ropa-line', color.line);
+    }
+  };
+
+  function getReelValue(reel) {
+    return reel.values[reel.index];
+  }
+
+  function renderReel(reel) {
+    reel.trackEl.textContent = '';
+    var centerEl = null;
+    for (var offset = -2; offset <= 2; offset++) {
+      var value = reel.values[mod(reel.index + offset, reel.values.length)];
+      var row = document.createElement('div');
+      row.innerHTML = reel.renderItem(value, offset === 0);
+      row.className = 'ropa-item';
+      if (offset === 0) { row.className += ' is-center'; centerEl = row; }
+      if (Math.abs(offset) === 1) row.className += ' dist-1';
+      if (Math.abs(offset) === 2) row.className += ' dist-2';
+      reel.trackEl.appendChild(row);
+    }
+    reel.afterRender(getReelValue(reel), centerEl);
+  }
+
+  renderReel(colorReel);
+  renderReel(clothesReel);
+
+  /* ── Reel drag (same as hora.html) ── */
+  var settleTimer = null;
+
+  function attachReelDrag(reel) {
+    var dragging = false;
+    var lastY = 0;
+    var offsetPx = 0;
+    var pointerId = null;
+
+    reel.el.ondragstart = function () { return false; };
+
+    function onPointerDown(e) {
+      if (!e.isPrimary) return;
+      e.preventDefault();
+      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+      try { reel.el.setPointerCapture(e.pointerId); } catch (err) {}
+      lastY = e.clientY;
+      offsetPx = 0;
+      dragging = true;
+      pointerId = e.pointerId;
+      reel.trackEl.style.transition = 'none';
+      reel.el.classList.add('dragging');
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerMove(e) {
+      if (!e.isPrimary) return;
+      if (!dragging) return;
+      offsetPx += (e.clientY - lastY);
+      lastY = e.clientY;
+      var steps = Math.round(offsetPx / ROW_PX);
+      if (steps !== 0) {
+        reel.index = mod(reel.index - steps, reel.values.length);
+        offsetPx -= steps * ROW_PX;
+        renderReel(reel);
+      }
+      reel.trackEl.style.transform = 'translateY(' + offsetPx + 'px)';
+    }
+
+    function onPointerUp(e) {
+      if (!e.isPrimary) return;
+      dragging = false;
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('pointercancel', onPointerUp);
+      try { reel.el.releasePointerCapture(pointerId); } catch (err) {}
+      reel.trackEl.style.transition = 'transform 250ms cubic-bezier(0.4, 0.2, 0.2, 1)';
+      reel.trackEl.style.transform = 'translateY(0)';
+      reel.el.classList.remove('dragging');
+      settleTimer = setTimeout(function () {
+        reel.trackEl.style.transition = '';
+        settleTimer = null;
+      }, 260);
+    }
+
+    reel.el.addEventListener('pointerdown', onPointerDown);
+  }
+
+  attachReelDrag(clothesReel);
+  attachReelDrag(colorReel);
+
+  /* ── Speech (same as hora.html) ── */
+  function getSpanishVoice() {
+    var voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    var normalize = function (s) { return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
+    var monica = voices.find(function (v) { return normalize(v.name).includes("monica") && v.lang.toLowerCase().startsWith("es"); });
+    if (monica) return monica;
+    var preferred = voices.filter(function (v) { return v.lang && v.lang.toLowerCase().startsWith("es"); });
+    return preferred[0] || voices[0] || null;
+  }
+
+  // iOS/Safari load voices asynchronously; touching getVoices() early
+  // triggers the load so the first tap already has a Spanish voice.
+  if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.getVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.addEventListener("voiceschanged", getSpanishVoice);
+    }
+  }
+
+  function speakSpanish(text) {
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-ES";
+      var v = getSpanishVoice();
+      if (v) u.voice = v;
+      u.rate = 0.95; u.pitch = 1.0;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(u);
+    } catch (e) { console.warn("Speech synthesis failed:", e); }
+  }
+
+  /* ── CTA / Repeat ── */
+  var lastPhrase = null;
+  var phraseEl = document.getElementById('ropa-phrase');
+  var repeatBtn = document.getElementById('ropa-repeat');
+
+  document.getElementById('ropa-cta').addEventListener('click', function () {
+    var entry = getReelValue(clothesReel);
+    var color = getReelValue(colorReel);
+    lastPhrase = RP.buildClothingPhrase(entry.id, entry.plural, color.id);
+    phraseEl.textContent = lastPhrase;
+    phraseEl.classList.remove('is-placeholder');
+    speakSpanish(lastPhrase);
+    repeatBtn.hidden = false;
+  });
+
+  repeatBtn.addEventListener('click', function () {
+    if (lastPhrase) speakSpanish(lastPhrase);
+  });
+})();
+  </script>
+</body>
+</html>
